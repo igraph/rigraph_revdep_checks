@@ -1,0 +1,15 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/DiffCorr.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘DiffCorr/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘DiffCorr’ version ‘0.4.1’
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Packages required but not available: ‘pcaMethods’ ‘multtest’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+Status: 1 ERROR

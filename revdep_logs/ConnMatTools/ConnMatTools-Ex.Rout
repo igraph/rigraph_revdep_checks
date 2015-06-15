@@ -1,0 +1,682 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "ConnMatTools"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "ConnMatTools-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('ConnMatTools')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("ConnMatTools")
+> ### * ConnMatTools
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ConnMatTools
+> ### Title: Tools for working with connectivity matrices
+> ### Aliases: ConnMatTools ConnMatTools-package
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+> ## Not run: optimalSplitConnMat(CM)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ConnMatTools", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("DispersalPerRecruitModel")
+> ### * DispersalPerRecruitModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: DispersalPerRecruitModel
+> ### Title: Population dynamics model based on lifetime-egg-production
+> ### Aliases: DispersalPerRecruitModel
+> 
+> ### ** Examples
+> 
+> library(ConnMatTools)
+> data(chile.loco)
+> 
+> # Get appropriate collapse slope
+> # critical.FLEP=0.2 is just an example
+> slope <- settlerRecruitSlopeCorrection(chile.loco,critical.FLEP=0.2)
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> # Make the middle 20 sites a reserve
+> # All other sites: scorched earth
+> n <- dim(chile.loco)[2]
+> LEP <- rep(0,n)
+> nn <- round(n/2)-9
+> LEP[nn:(nn+19)] <- 1
+> 
+> Rmax <- 1
+> 
+> recruits0 <- rep(Rmax,n)
+> 
+> # Use DPR model
+> ret <- DispersalPerRecruitModel(LEP,chile.loco,recruits0,1:20,slope=slope,Rmax=Rmax,
++                                 settler.recruit.func=BevertonHolt)
+> image(1:n,1:20,ret$settlers,xlab="sites",ylab="timesteps",
++       main=c("Settlement","click to proceed"))
+> locator(1)
+> plot(ret$settlers[,20],xlab="sites",ylab="equilibrium settlement",
++      main="click to proceed")
+> locator(1)
+> 
+> # Same, but with a uniform Laplacian dispersal matrix and hockeyStick
+> cm <- laplacianConnMat(n,10,0,"circular")
+> ret <- DispersalPerRecruitModel(LEP,cm,recruits0,1:20,slope=1/0.35,Rmax=Rmax)
+> image(1:n,1:20,ret$settlers,xlab="sites",ylab="timesteps",
++       main=c("Settlement","click to proceed"))
+> locator(1)
+> plot(ret$settlers[,20],xlab="sites",ylab="equilibrium settlement")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("DispersalPerRecruitModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("laplacianConnMat")
+> ### * laplacianConnMat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: laplacianConnMat
+> ### Title: Uniform Laplacian connectivity matrix
+> ### Aliases: laplacianConnMat
+> 
+> ### ** Examples
+> 
+> library(ConnMatTools)
+> cm <- laplacianConnMat(100,10,15,"circular")
+> image(cm)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("laplacianConnMat", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("localRetention")
+> ### * localRetention
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: localRetention
+> ### Title: Local retention of a connectivity matrix
+> ### Aliases: localRetention
+> 
+> ### ** Examples
+> 
+> library(ConnMatTools)
+> data(chile.loco)
+> 
+> sr <- selfRecruitment(chile.loco)
+> lr <- localRetention(chile.loco)
+> rlr <- relativeLocalRetention(chile.loco)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("localRetention", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("optimalSplitConnMat")
+> ### * optimalSplitConnMat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: optimalSplitConnMat
+> ### Title: Iteratively, optimally split a connectivity matrix
+> ### Aliases: optimalSplitConnMat
+> 
+> ### ** Examples
+> 
+> library(ConnMatTools)
+> data(chile.loco)
+> 
+> num <- prod(dim(chile.loco)) / sum(chile.loco)
+> betas <- betasVectorDefault(n=num,steps=4)
+> chile.loco.split <- optimalSplitConnMat(chile.loco,normalize.cols=FALSE,
++                                         betas=betas)
+[1] "Starting cycle 1"
+[1] "beta = 7.87433911214873"
+[1] "beta = 1.35019532101316"
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+[1] "beta = 7.87433911214873"
+[1] "beta = 984.292389018592"
+[1] "Starting cycle 2"
+[1] "beta = 7.87433911214873"
+[1] "beta = 1.35019532101316"
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+[1] "beta = 7.87433911214873"
+[1] "beta = 984.292389018592"
+> 
+> # Extra 3rd division
+> print(paste("Examining split with",names(chile.loco.split$best.splits)[1],
++             "subpopulations."))
+[1] "Examining split with 1 subpopulations."
+> pops <- subpopsVectorToList(chile.loco.split$subpops[,chile.loco.split$best.splits[[1]]$index])
+> 
+> reduce.loco <- reducedConnMat(pops,chile.loco)
+> 
+> sr <- selfRecruitment(reduce.loco)
+> lr <- localRetention(reduce.loco)
+> rlr <- relativeLocalRetention(reduce.loco)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("optimalSplitConnMat", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("reducedConnMat")
+> ### * reducedConnMat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: reducedConnMat
+> ### Title: Reduced connectivity matrix according to a set of subpopulations
+> ### Aliases: reducedConnMat
+> 
+> ### ** Examples
+> 
+> library(ConnMatTools)
+> data(chile.loco)
+> 
+> num <- prod(dim(chile.loco)) / sum(chile.loco)
+> betas <- betasVectorDefault(n=num,steps=4)
+> chile.loco.split <- optimalSplitConnMat(chile.loco,normalize.cols=FALSE,
++                                         betas=betas)
+[1] "Starting cycle 1"
+[1] "beta = 7.87433911214873"
+[1] "beta = 1.35019532101316"
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+[1] "beta = 7.87433911214873"
+[1] "beta = 984.292389018592"
+[1] "Starting cycle 2"
+[1] "beta = 7.87433911214873"
+[1] "beta = 1.35019532101316"
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+Warning in FUN(X[[i]], ...) : Reached max iterations
+[1] "beta = 7.87433911214873"
+[1] "beta = 984.292389018592"
+> 
+> # Extra 3rd division
+> print(paste("Examining split with",names(chile.loco.split$best.splits)[1],
++             "subpopulations."))
+[1] "Examining split with 1 subpopulations."
+> pops <- subpopsVectorToList(chile.loco.split$subpops[,chile.loco.split$best.splits[[1]]$index])
+> 
+> reduce.loco <- reducedConnMat(pops,chile.loco)
+> 
+> sr <- selfRecruitment(reduce.loco)
+> lr <- localRetention(reduce.loco)
+> rlr <- relativeLocalRetention(reduce.loco)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("reducedConnMat", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("relativeLocalRetention")
+> ### * relativeLocalRetention
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: relativeLocalRetention
+> ### Title: Relative local retention of a connectivity matrix
+> ### Aliases: relativeLocalRetention
+> 
+> ### ** Examples
+> 
+> library(ConnMatTools)
+> data(chile.loco)
+> 
+> sr <- selfRecruitment(chile.loco)
+> lr <- localRetention(chile.loco)
+> rlr <- relativeLocalRetention(chile.loco)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("relativeLocalRetention", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("selfRecruitment")
+> ### * selfRecruitment
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: selfRecruitment
+> ### Title: Self recruitment of a connectivity matrix
+> ### Aliases: selfRecruitment
+> 
+> ### ** Examples
+> 
+> library(ConnMatTools)
+> data(chile.loco)
+> 
+> sr <- selfRecruitment(chile.loco)
+> lr <- localRetention(chile.loco)
+> rlr <- relativeLocalRetention(chile.loco)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("selfRecruitment", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  2.337 0.073 2.43 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

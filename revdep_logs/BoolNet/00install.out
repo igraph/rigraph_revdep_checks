@@ -1,0 +1,35 @@
+* installing *source* package ‘BoolNet’ ...
+** package ‘BoolNet’ successfully unpacked and MD5 sums checked
+** libs
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c attractor_info.c -o attractor_info.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c attractor_search_interface.c -o attractor_search_interface.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c common.c -o common.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c picosat.c -o picosat.o
+picosat.c:3776:10: warning: unused variable 'start' [-Wunused-variable]
+  double start = picosat_time_stamp ();
+         ^
+picosat.c:7377:24: warning: unused variable 'norig' [-Wunused-variable]
+  int i, j, ilit, len, norig = ps->alshead - ps->als, nwork, * work, res;
+                       ^
+picosat.c:6967:21: warning: unused function 'enumstr' [-Wunused-function]
+static const char * enumstr (int i) {
+                    ^
+3 warnings generated.
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c probabilistic_boolean_network.c -o probabilistic_boolean_network.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c reconstruct_network.c -o reconstruct_network.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c sat_search.c -o sat_search.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c statespace_search.c -o statespace_search.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c symbolic_network.c -o symbolic_network.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c symbolic_simulator.c -o symbolic_simulator.o
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o BoolNet.so attractor_info.o attractor_search_interface.o common.o picosat.o probabilistic_boolean_network.o reconstruct_network.o sat_search.o statespace_search.o symbolic_network.o symbolic_simulator.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/BoolNet.Rcheck/BoolNet/libs
+** R
+** data
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+* DONE (BoolNet)

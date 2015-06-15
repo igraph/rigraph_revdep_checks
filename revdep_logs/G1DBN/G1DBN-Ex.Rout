@@ -1,0 +1,1222 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "G1DBN"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "G1DBN-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('G1DBN')
+Loading required package: MASS
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("BuildEdges")
+> ### * BuildEdges
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BuildEdges
+> ### Title: Edges listing and evaluation
+> ### Aliases: BuildEdges
+> ### Keywords: utilities
+> 
+> ### ** Examples
+> 
+> library(G1DBN)
+> ## ======================================
+> ## SIMULATING THE NETWORK
+> 
+> ## number of genes
+> p <- 10
+> ## the network - adjacency Matrix
+> MyNet <- SimulNetworkAdjMatrix(p,0.05,c(-1.5,-0.5,0.5,1.5))
+> MyNet
+$Vertices
+$Vertices$Num
+[1] 10
+
+$Vertices$Labels
+ [1]  1  2  3  4  5  6  7  8  9 10
+
+$Vertices$Regulated
+[1]  2  3  4  6  7  9 10
+
+
+$Edges
+$Edges$Prop
+[1] 0.05
+
+$Edges$Num
+[1] 5
+
+
+$A
+      [,1]      [,2]     [,3]      [,4] [,5]      [,6] [,7] [,8]      [,9]
+ [1,]    0 0.0000000 0.000000  0.000000    0  0.000000    0    0 0.0000000
+ [2,]    0 0.0000000 0.000000  0.000000    0  0.000000    0    0 0.0000000
+ [3,]    0 0.0000000 0.000000  0.000000    0  0.000000    0    0 0.0000000
+ [4,]    0 0.0000000 0.000000  0.000000    0  0.000000    0    0 0.0000000
+ [5,]    0 0.0000000 0.000000  0.000000    0  0.000000    0    0 0.0000000
+ [6,]    0 0.0000000 0.000000  0.000000    0  0.000000    0    0 0.0000000
+ [7,]    0 0.0000000 1.444675 -0.870886    0 -1.323443    0    0 0.0000000
+ [8,]    0 0.0000000 0.000000  0.000000    0  0.000000    0    0 0.0000000
+ [9,]    0 0.0000000 0.000000  0.000000    0  0.000000    0    0 0.9976992
+[10,]    0 0.8800352 0.000000  0.000000    0  0.000000    0    0 0.0000000
+      [,10]
+ [1,]     0
+ [2,]     0
+ [3,]     0
+ [4,]     0
+ [5,]     0
+ [6,]     0
+ [7,]     0
+ [8,]     0
+ [9,]     0
+[10,]     0
+
+$AdjMatrix
+      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+ [1,]    0    0    0    0    0    0    0    0    0     0
+ [2,]    0    0    0    0    0    0    0    0    0     0
+ [3,]    0    0    0    0    0    0    0    0    0     0
+ [4,]    0    0    0    0    0    0    0    0    0     0
+ [5,]    0    0    0    0    0    0    0    0    0     0
+ [6,]    0    0    0    0    0    0    0    0    0     0
+ [7,]    0    0    1    1    0    1    0    0    0     0
+ [8,]    0    0    0    0    0    0    0    0    0     0
+ [9,]    0    0    0    0    0    0    0    0    1     0
+[10,]    0    1    0    0    0    0    0    0    0     0
+
+> 
+> ## ======================================
+> ## SIMULATING THE TIME SERIES EXPERIMENTS
+> 
+> ## number of time points
+> n <- 20
+> ## initializing the B vector
+> B <- runif(p,-1,1)
+> ## initializing the variance of the noise
+> sigmaEps <- runif(p,0.1,0.5)
+> ## initializing the process Xt
+> X0 <- B + rnorm(p,0,sigmaEps*10)
+> ## the times series process
+> Xn <- SimulGeneExpressionAR1(MyNet$A,B,X0,sigmaEps,n)
+> 
+> 
+> ## ======================================
+> ## NETWORK INFERENCE WITH G1DBN
+> 
+> ## STEP 1 - The first step score matrix
+> S1 <- DBNScoreStep1(Xn, method='ls')
+Treating 10 vertices:
+10% 20% 30% 40% 50% 60% 70% 80% 90% 100% 
+> 
+> ## Building the edges of the network inferred after Step1
+> alpha1 <- 0.5
+> G1 <- BuildEdges(S1$S1ls,threshold=alpha1,dec=FALSE)
+> G1
+      Pred Target Score
+ [1,]    9      9 0.000
+ [2,]    2     10 0.001
+ [3,]    6      7 0.002
+ [4,]    9      2 0.046
+ [5,]    3      5 0.080
+ [6,]    6      1 0.129
+ [7,]    4      7 0.188
+ [8,]    8      1 0.234
+ [9,]    6      8 0.242
+[10,]    6      2 0.302
+[11,]    6      5 0.303
+[12,]    3      3 0.332
+[13,]   10      4 0.372
+[14,]    8      5 0.379
+[15,]   10      9 0.391
+[16,]    3      6 0.430
+[17,]    1      9 0.454
+> ## STEP 2- The second step score matrix
+> S2 <- DBNScoreStep2(S1$S1ls, Xn, method='ls', alpha1)
+> 
+> ## Building the edges of the network inferred after Step2
+> alpha2 <- 0.05
+> G2 <- BuildEdges(S2,threshold=alpha2,dec=FALSE)
+> G2
+     Pred Target Score
+[1,]    9      9 0.000
+[2,]    2     10 0.000
+[3,]    4      7 0.000
+[4,]    6      7 0.000
+[5,]    9      2 0.016
+[6,]    3      5 0.044
+[7,]    8      1 0.046
+[8,]    6      1 0.049
+> 
+> ## Building the edges of the simulation Graph
+> Gsimul <- BuildEdges(MyNet$AdjMatrix,threshold=0,dec=TRUE)
+> Gsimul
+     Pred Target Score
+[1,]    2     10     1
+[2,]    3      7     1
+[3,]    4      7     1
+[4,]    6      7     1
+[5,]    9      9     1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BuildEdges", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BuildNetwork")
+> ### * BuildNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BuildNetwork
+> ### Title: Network object creation
+> ### Aliases: BuildNetwork
+> ### Keywords: datagen
+> 
+> ### ** Examples
+> 
+> library(G1DBN)
+> 
+> ## ========================
+> ## SIMULATING THE NETWORK
+> ## ________________________
+> 
+> ## number of genes
+> p <- 10
+> ## number of time points
+> n <- 20
+> ## proportion of genes
+> geneProp <- 0.05
+> ## the network - adjacency Matrix
+> MyNet <- SimulNetworkAdjMatrix(p,geneProp,c(-1.5,-0.5,0.5,1.5))
+> 
+> cat("\n==========================================\n")
+
+==========================================
+> cat("SIMULATION\n")
+SIMULATION
+> 
+> ## ======================================
+> ## SIMULATING THE TIME SERIES EXPERIMENTS
+> ## ______________________________________
+> ##
+> ## Autoregressive model
+> ##
+> cat("Time series experiments with")
+Time series experiments with> 
+> ## initializing the B vector
+> B <- runif(p,-1,1)
+> ## initializing the variance of the noise
+> sigmaEps <- runif(p,0.1,0.5)
+> ## initializing the process Xt
+> X0 <- B + rnorm(p,0,sigmaEps*10)
+> ## the times series process
+> Xn <- SimulGeneExpressionAR1(MyNet$A,B,X0,sigmaEps,n)
+> 
+> ## ======================================
+> ## NETWORK INFERENCE WITH G1DBN
+> ## ______________________________________
+> ##
+> cat("\n==========================================\n")
+
+==========================================
+> cat("NETWORK INFERENCE\n")
+NETWORK INFERENCE
+> cat("Using a Dynamic Bayesian Network model\n")
+Using a Dynamic Bayesian Network model
+> 
+> ## STEP 1
+> ## ------
+> cat("STEP 1...\n")
+STEP 1...
+> S1 <- DBNScoreStep1(Xn, method='ls')
+Treating 10 vertices:
+10% 20% 30% 40% 50% 60% 70% 80% 90% 100% 
+> 
+> ## STEP 2
+> ## ------
+> cat("STEP 2...\n")
+STEP 2...
+> alpha1=0.5
+> S2 <- DBNScoreStep2(S1$S1ls, data=Xn, method='ls', alpha1=alpha1)
+> 
+> ## ======================================
+> ## POST TREATMENTS
+> 
+> ## building the inferred Graph
+> G1 <- BuildEdges(S1$S1ls,threshold=alpha1,dec=FALSE)
+> 
+> ## encoding as the adjancecy matrix graph
+> Step1InferredNet <- BuildNetwork(G1,1:p)
+> Step1InferredNet
+$Vertices
+$Vertices$Num
+[1] 10
+
+$Vertices$Labels
+ [1]  1  2  3  4  5  6  7  8  9 10
+
+$Vertices$Connected
+ [1]  1  2  3  4  5  6  7  8  9 10
+
+
+$Edges
+$Edges$Prop
+[1] 0.17
+
+$Edges$Num
+[1] 17
+
+$Edges$List
+      Pred Target Score
+ [1,]    9      9 0.000
+ [2,]    2     10 0.001
+ [3,]    6      7 0.002
+ [4,]    9      2 0.046
+ [5,]    3      5 0.080
+ [6,]    6      1 0.129
+ [7,]    4      7 0.188
+ [8,]    8      1 0.234
+ [9,]    6      8 0.242
+[10,]    6      2 0.302
+[11,]    6      5 0.303
+[12,]    3      3 0.332
+[13,]   10      4 0.372
+[14,]    8      5 0.379
+[15,]   10      9 0.391
+[16,]    3      6 0.430
+[17,]    1      9 0.454
+
+
+$AdjMatrix
+      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+ [1,]    0    0    0    0    0    1    0    1    0     0
+ [2,]    0    0    0    0    0    1    0    0    1     0
+ [3,]    0    0    1    0    0    0    0    0    0     0
+ [4,]    0    0    0    0    0    0    0    0    0     1
+ [5,]    0    0    1    0    0    1    0    1    0     0
+ [6,]    0    0    1    0    0    0    0    0    0     0
+ [7,]    0    0    0    1    0    1    0    0    0     0
+ [8,]    0    0    0    0    0    1    0    0    0     0
+ [9,]    1    0    0    0    0    0    0    0    1     1
+[10,]    0    1    0    0    0    0    0    0    0     0
+
+$Score
+       [,1]  [,2]  [,3]  [,4] [,5]  [,6] [,7]  [,8]  [,9] [,10]
+ [1,]    NA    NA    NA    NA   NA 0.129   NA 0.234    NA    NA
+ [2,]    NA    NA    NA    NA   NA 0.302   NA    NA 0.046    NA
+ [3,]    NA    NA 0.332    NA   NA    NA   NA    NA    NA    NA
+ [4,]    NA    NA    NA    NA   NA    NA   NA    NA    NA 0.372
+ [5,]    NA    NA 0.080    NA   NA 0.303   NA 0.379    NA    NA
+ [6,]    NA    NA 0.430    NA   NA    NA   NA    NA    NA    NA
+ [7,]    NA    NA    NA 0.188   NA 0.002   NA    NA    NA    NA
+ [8,]    NA    NA    NA    NA   NA 0.242   NA    NA    NA    NA
+ [9,] 0.454    NA    NA    NA   NA    NA   NA    NA 0.000 0.391
+[10,]    NA 0.001    NA    NA   NA    NA   NA    NA    NA    NA
+
+> 
+> #Step 2
+> alpha2=0.05
+> G2 <- BuildEdges(S2,threshold=alpha2,dec=FALSE)
+> Step2InferredNet <- BuildNetwork(G2,1:p)
+> 
+> 
+> ## ======================================
+> ## PLOTTING THE RESULTS...
+> ## ______________________________________
+> ## Not run: 
+> ##D cat("\n==========================================\n")
+> ##D cat("SUMMARY\n")
+> ##D cat("Plotting the results...\n")
+> ##D split.screen(c(1,3))
+> ##D 
+> ##D 
+> ##D ## The Original graph and data
+> ##D ## ---------------------------
+> ##D # set the edges list of the simulated network
+> ##D G0 <- BuildEdges(MyNet$AdjMatrix,threshold=0.9,dec=TRUE)
+> ##D 
+> ##D ## Nodes coordinates are calculated according to the global structure of the network
+> ##D all_parents=c(G0[,1],G1[,1], G2[,1])
+> ##D all_targets=c(G0[,2],G1[,2], G2[,2])
+> ##D posEdgesG0=1:dim(G0)[1]
+> ##D posEdgesG1=(dim(G0)[1]+1):(dim(G0)[1]+dim(G1)[1])
+> ##D posEdgesG2=(dim(G0)[1]+dim(G1)[1]+1):length(all_parents)
+> ##D 
+> ##D ## Global network with all the edges
+> ##D netAll =
+> ##D graph.edgelist(cbind(as.character(all_parents),as.character(all_targets)))
+> ##D 
+> ##D ## Nodes coordinates
+> ##D nodeCoord=layout.fruchterman.reingold(netAll)
+> ##D 
+> ##D 
+> ##D #after Step 1
+> ##D screen(1)
+> ##D # set the edges list
+> ##D netG1 = graph.edgelist(cbind(as.character(G1[,1]),as.character(G1[,2])))
+> ##D # set the object for plotting the network with global coordinates of all nodes
+> ##D G1toPlot=delete.edges(netAll, E(netAll)[c(posEdgesG0,posEdgesG2)-1] )
+> ##D # plot the network
+> ##D plot(G1toPlot, layout=nodeCoord, vertex.label = 
+> ##D get.vertex.attribute(G1toPlot, name="name"), edge.arrow.size = 0.2,
+> ##D main="G1DBN Inferred network:\n Step 1")
+> ##D 
+> ##D #after Step 2
+> ##D screen(2)
+> ##D # set the edges list
+> ##D netG2 = graph.edgelist(cbind(as.character(G2[,1]),as.character(G2[,2])))
+> ##D # set the object for plotting the network with global coordinates of all nodes
+> ##D G2toPlot=delete.edges(netAll, E(netAll)[c(posEdgesG0,posEdgesG1)-1 ] )
+> ##D # plot the network
+> ##D plot(G2toPlot, layout=nodeCoord, vertex.label = 
+> ##D get.vertex.attribute(G2toPlot, name="name"),edge.arrow.size = 0.2,
+> ##D main="G1DBN Inferred network:\n Step 2")
+> ##D 
+> ##D screen(3)
+> ##D net0 = graph.edgelist(cbind(as.character(G0[,1]),as.character(G0[,2])))
+> ##D # set the object for plotting the network with global coordinates of all nodes
+> ##D G0toPlot=delete.edges(netAll, E(netAll)[c(posEdgesG1,posEdgesG2)-1] )
+> ##D plot(G0toPlot, layout=nodeCoord, vertex.label =
+> ##D get.vertex.attribute(G0toPlot, name="name"), edge.arrow.size = 0.2,
+> ##D main="Simulated network:")
+> ##D 
+> ##D close.screen(all = TRUE)
+> ## End(Not run)
+> cat("")
+> cat("\nDONE !\n")
+
+DONE !
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BuildNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("DBNScoreStep1")
+> ### * DBNScoreStep1
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: DBNScoreStep1
+> ### Title: First order dependence graph G(1) inference
+> ### Aliases: DBNScoreStep1
+> ### Keywords: graphs ts models regression robust
+> 
+> ### ** Examples
+> 
+> ## load G1DBN Library
+> library(G1DBN)
+> 
+> data(arth800line)
+> data<-as.matrix(arth800line)
+> id<-c(60, 141, 260, 333, 365, 424, 441, 512, 521, 578, 789, 799)
+> names<-c("carbohydrate/sugar transporter","ATGPX2","putative integral
++ membrane prot" ,
++ "AT3G05900", "At3g27350", "At1g16720","ATISA3/ISA3","AT4G32190",
++ "catalase", "plasma membrane intrinsic prot", "At4g16146", "DPE2")
+> 
+> ## compute score S1 
+> out<-DBNScoreStep1(data,method='ls', targetPosition=id,predPosition=id)
+Treating 12 vertices:
+10% 20% 30% 40% 50% 60% 70% 80% 90% 100% 
+> round(out$S1ls,2)
+      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]
+ [1,] 0.96 0.99 0.95 0.98 0.95 0.95 0.61 0.99 0.85  0.94  0.94     0
+ [2,] 0.60 0.97 0.92 0.79 0.92 0.08 0.43 0.95 0.93  0.86  0.82     0
+ [3,] 0.82 0.91 0.87 0.97 0.83 0.97 0.97 0.85 0.60  0.68  0.43     0
+ [4,] 0.86 0.93 0.98 0.91 0.77 0.44 0.47 0.76 0.69  0.81  0.88     0
+ [5,] 0.99 0.99 0.97 0.69 0.93 0.57 0.45 0.99 0.85  0.97  0.73     0
+ [6,] 0.97 0.97 0.98 0.97 0.92 0.38 0.59 0.92 0.89  0.99  0.93     0
+ [7,] 0.71 0.92 0.98 0.99 0.93 0.35 0.55 0.98 0.86  0.99  0.89     0
+ [8,] 0.43 0.97 0.79 0.99 0.99 0.77 0.62 0.96 0.80  0.92  0.96     0
+ [9,] 0.84 0.86 0.99 0.89 0.84 0.44 0.47 0.95 0.56  0.98  0.96     0
+[10,] 0.89 0.91 0.95 0.80 0.94 0.31 0.36 0.96 0.95  0.93  0.86     0
+[11,] 0.83 0.97 0.92 0.98 0.90 0.22 0.82 0.97 0.88  0.98  0.90     0
+[12,] 0.95 0.87 0.96 0.75 0.98 0.24 0.60 0.99 0.70  0.99  0.84     0
+> 
+> 
+> ## Threshold for the selection of the edges after Step 1
+> alpha1=0.5
+> ## Build the edges with id as label
+> edgesG1id<-BuildEdges(score=out$S1ls,threshold=alpha1,
++                        targetNames=id,predNames=id,prec=6)
+> ## Build the edges with names as label
+> edgesG1names<-BuildEdges(score=out$S1ls,threshold=alpha1,
++                          targetNames=names,predNames=names,prec=6)
+> edgesG1id[1:15,]
+      Pred Target    Score
+ [1,]  799    441 0.000000
+ [2,]  799    260 0.000000
+ [3,]  799    424 0.000000
+ [4,]  799    789 0.000000
+ [5,]  799    333 0.000000
+ [6,]  799    578 0.000002
+ [7,]  799    365 0.000003
+ [8,]  799    512 0.000004
+ [9,]  799     60 0.000004
+[10,]  799    521 0.000006
+[11,]  799    141 0.000024
+[12,]  799    799 0.000049
+[13,]  424    141 0.080329
+[14,]  424    789 0.223773
+[15,]  424    799 0.237105
+> edgesG1names[1:15,]
+      Pred        Target                             Score     
+ [1,] "DPE2"      "ATISA3/ISA3"                      "0"       
+ [2,] "DPE2"      "putative integral\nmembrane prot" "0"       
+ [3,] "DPE2"      "At1g16720"                        "0"       
+ [4,] "DPE2"      "At4g16146"                        "0"       
+ [5,] "DPE2"      "AT3G05900"                        "0"       
+ [6,] "DPE2"      "plasma membrane intrinsic prot"   "2e-06"   
+ [7,] "DPE2"      "At3g27350"                        "3e-06"   
+ [8,] "DPE2"      "AT4G32190"                        "4e-06"   
+ [9,] "DPE2"      "carbohydrate/sugar transporter"   "4e-06"   
+[10,] "DPE2"      "catalase"                         "6e-06"   
+[11,] "DPE2"      "ATGPX2"                           "2.4e-05" 
+[12,] "DPE2"      "DPE2"                             "4.9e-05" 
+[13,] "At1g16720" "ATGPX2"                           "0.080329"
+[14,] "At1g16720" "At4g16146"                        "0.223773"
+[15,] "At1g16720" "DPE2"                             "0.237105"
+> 
+> 
+> ## compute score S2 from S1 
+> S2<-DBNScoreStep2(out$S1ls,data,method='ls',alpha1=alpha1,
++                   predPosition=id,targetPosition=id)
+> S2
+           [,1] [,2] [,3] [,4] [,5]        [,6]      [,7] [,8] [,9] [,10]
+ [1,]        NA   NA   NA   NA   NA          NA        NA   NA   NA    NA
+ [2,]        NA   NA   NA   NA   NA 0.057481250 0.4462198   NA   NA    NA
+ [3,]        NA   NA   NA   NA   NA          NA        NA   NA   NA    NA
+ [4,]        NA   NA   NA   NA   NA 0.834565939 0.1985818   NA   NA    NA
+ [5,]        NA   NA   NA   NA   NA          NA 0.4472457   NA   NA    NA
+ [6,]        NA   NA   NA   NA   NA 0.093391292        NA   NA   NA    NA
+ [7,]        NA   NA   NA   NA   NA 0.087434598        NA   NA   NA    NA
+ [8,] 0.2110705   NA   NA   NA   NA          NA        NA   NA   NA    NA
+ [9,]        NA   NA   NA   NA   NA 0.762332106 0.8580382   NA   NA    NA
+[10,]        NA   NA   NA   NA   NA 0.484504489 0.9807137   NA   NA    NA
+[11,]        NA   NA   NA   NA   NA 0.172879975        NA   NA   NA    NA
+[12,]        NA   NA   NA   NA   NA 0.008166515        NA   NA   NA    NA
+          [,11]        [,12]
+ [1,]        NA 1.471160e-10
+ [2,]        NA 2.832079e-05
+ [3,] 0.3826499 4.383087e-08
+ [4,]        NA 5.583852e-07
+ [5,]        NA 2.722249e-06
+ [6,]        NA 2.229491e-07
+ [7,]        NA 2.302728e-08
+ [8,]        NA 6.436842e-08
+ [9,]        NA 1.619752e-05
+[10,]        NA 6.472977e-06
+[11,]        NA 4.138759e-07
+[12,]        NA 2.393478e-05
+> 
+> ## Threshold for the selection of the edges after Step 2
+> alpha2=0.05
+> ## Build the edges with id as label
+> edgesG2id<-BuildEdges(score=S2,threshold=alpha2,
++                       targetNames=id,predNames=id,prec=6)
+> ## Build the edges with names as label
+> edgesG2names<-BuildEdges(score=S2,threshold=alpha2,
++                          targetNames=names,predNames=names,prec=6)
+> edgesG2id
+      Pred Target    Score
+ [1,]  799     60 0.000000
+ [2,]  799    441 0.000000
+ [3,]  799    260 0.000000
+ [4,]  799    512 0.000000
+ [5,]  799    424 0.000000
+ [6,]  799    789 0.000000
+ [7,]  799    333 0.000001
+ [8,]  799    365 0.000003
+ [9,]  799    578 0.000006
+[10,]  799    521 0.000016
+[11,]  799    799 0.000024
+[12,]  799    141 0.000028
+[13,]  424    799 0.008167
+> edgesG2names
+      Pred        Target                             Score     
+ [1,] "DPE2"      "carbohydrate/sugar transporter"   "0"       
+ [2,] "DPE2"      "ATISA3/ISA3"                      "0"       
+ [3,] "DPE2"      "putative integral\nmembrane prot" "0"       
+ [4,] "DPE2"      "AT4G32190"                        "0"       
+ [5,] "DPE2"      "At1g16720"                        "0"       
+ [6,] "DPE2"      "At4g16146"                        "0"       
+ [7,] "DPE2"      "AT3G05900"                        "1e-06"   
+ [8,] "DPE2"      "At3g27350"                        "3e-06"   
+ [9,] "DPE2"      "plasma membrane intrinsic prot"   "6e-06"   
+[10,] "DPE2"      "catalase"                         "1.6e-05" 
+[11,] "DPE2"      "DPE2"                             "2.4e-05" 
+[12,] "DPE2"      "ATGPX2"                           "2.8e-05" 
+[13,] "At1g16720" "DPE2"                             "0.008167"
+> 
+> 
+> ## As the number of genes is reduced to 10 here, this results slightly differ
+> ## from the results obtained in the paper (Lebre, 2009) cited in References.
+> 
+> 
+> ## ======================================
+> ## PLOTTING THE RESULTS...
+> ## ______________________________________
+> ## Not run: 
+> ##D ## The Inferred Nets
+> ##D ## -----------------
+> ##D 
+> ##D ## Nodes coordinates are calculated according to the global structure of the graph
+> ##D all_parents=c(edgesG1id[,1], edgesG2id[,1])
+> ##D all_targets=c(edgesG1id[,2], edgesG2id[,2])
+> ##D posEdgesG1=1:dim(edgesG1id)[1]
+> ##D posEdgesG2=(dim(edgesG1id)[1]+1):length(all_targets)
+> ##D 
+> ##D ## Global network with all the edges
+> ##D netAll = graph.edgelist(cbind(as.character(all_parents),as.character(all_targets )))
+> ##D 
+> ##D ## Nodes coordinates
+> ##D nodeCoord=layout.fruchterman.reingold(netAll)
+> ##D 
+> ##D 
+> ##D split.screen(c(1,2))
+> ##D 
+> ##D # after Step 1
+> ##D screen(1)
+> ##D # set the edges list
+> ##D netG1 = graph.edgelist(cbind(as.character(edgesG1id[,1]),as.character(edgesG1id[,2])))
+> ##D # set the object for plotting the network with global coordinates of all nodes
+> ##D G1toPlot=delete.edges(netAll, E(netAll)[posEdgesG2] )
+> ##D # plot the network
+> ##D plot(G1toPlot, layout=nodeCoord, vertex.label = 
+> ##D get.vertex.attribute(G1toPlot , name="name"), edge.arrow.size = 0.2,
+> ##D main="G1DBN Inferred network:\n Step 1")
+> ##D 
+> ##D # after Step 2
+> ##D screen(2)
+> ##D # set the edges list
+> ##D 
+> ##D netG2 = graph.edgelist(cbind(as.character(edgesG2id[,1]),as.character(edgesG2id[,2])))
+> ##D # set the object for plotting the network with global coordinates of all nodes
+> ##D G2toPlot=delete.edges(netAll, E(netAll)[posEdgesG1] )
+> ##D # plot the network
+> ##D plot(G2toPlot, layout=nodeCoord, vertex.label = 
+> ##D get.vertex.attribute(G2toPlot , name="name"),edge.arrow.size = 0.2,
+> ##D main="G1DBN Inferred network:\n Step 2")
+> ##D 
+> ##D close.screen(all = TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("DBNScoreStep1", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("DBNScoreStep2")
+> ### * DBNScoreStep2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: DBNScoreStep2
+> ### Title: Full order dependence DAG G score matrix inference from a 1st
+> ###   order dependence score matrix S1
+> ### Aliases: DBNScoreStep2
+> ### Keywords: graphs ts models regression robust
+> 
+> ### ** Examples
+> 
+> ## load G1DBN Library
+> library(G1DBN)
+> 
+> data(arth800line)
+> data<-as.matrix(arth800line)
+> id<-c(60, 141, 260, 333, 365, 424, 441, 512, 521, 578, 789, 799)
+> names<-c("carbohydrate/sugar transporter","ATGPX2","putative integral
++ membrane prot" ,
++ "AT3G05900", "At3g27350", "At1g16720","ATISA3/ISA3","AT4G32190",
++ "catalase", "plasma membrane intrinsic prot", "At4g16146", "DPE2")
+> 
+> ## compute score S1 
+> out<-DBNScoreStep1(data,method='ls', targetPosition=id,predPosition=id)
+Treating 12 vertices:
+10% 20% 30% 40% 50% 60% 70% 80% 90% 100% 
+> round(out$S1ls,2)
+      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]
+ [1,] 0.96 0.99 0.95 0.98 0.95 0.95 0.61 0.99 0.85  0.94  0.94     0
+ [2,] 0.60 0.97 0.92 0.79 0.92 0.08 0.43 0.95 0.93  0.86  0.82     0
+ [3,] 0.82 0.91 0.87 0.97 0.83 0.97 0.97 0.85 0.60  0.68  0.43     0
+ [4,] 0.86 0.93 0.98 0.91 0.77 0.44 0.47 0.76 0.69  0.81  0.88     0
+ [5,] 0.99 0.99 0.97 0.69 0.93 0.57 0.45 0.99 0.85  0.97  0.73     0
+ [6,] 0.97 0.97 0.98 0.97 0.92 0.38 0.59 0.92 0.89  0.99  0.93     0
+ [7,] 0.71 0.92 0.98 0.99 0.93 0.35 0.55 0.98 0.86  0.99  0.89     0
+ [8,] 0.43 0.97 0.79 0.99 0.99 0.77 0.62 0.96 0.80  0.92  0.96     0
+ [9,] 0.84 0.86 0.99 0.89 0.84 0.44 0.47 0.95 0.56  0.98  0.96     0
+[10,] 0.89 0.91 0.95 0.80 0.94 0.31 0.36 0.96 0.95  0.93  0.86     0
+[11,] 0.83 0.97 0.92 0.98 0.90 0.22 0.82 0.97 0.88  0.98  0.90     0
+[12,] 0.95 0.87 0.96 0.75 0.98 0.24 0.60 0.99 0.70  0.99  0.84     0
+> 
+> 
+> ## Threshold for the selection of the edges after Step 1
+> alpha1=0.5
+> ## Build the edges with id as label
+> edgesG1id<-BuildEdges(score=out$S1ls,threshold=alpha1,
++                        targetNames=id,predNames=id,prec=6)
+> ## Build the edges with names as label
+> edgesG1names<-BuildEdges(score=out$S1ls,threshold=alpha1,
++                          targetNames=names,predNames=names,prec=6)
+> edgesG1id[1:15,]
+      Pred Target    Score
+ [1,]  799    441 0.000000
+ [2,]  799    260 0.000000
+ [3,]  799    424 0.000000
+ [4,]  799    789 0.000000
+ [5,]  799    333 0.000000
+ [6,]  799    578 0.000002
+ [7,]  799    365 0.000003
+ [8,]  799    512 0.000004
+ [9,]  799     60 0.000004
+[10,]  799    521 0.000006
+[11,]  799    141 0.000024
+[12,]  799    799 0.000049
+[13,]  424    141 0.080329
+[14,]  424    789 0.223773
+[15,]  424    799 0.237105
+> edgesG1names[1:15,]
+      Pred        Target                             Score     
+ [1,] "DPE2"      "ATISA3/ISA3"                      "0"       
+ [2,] "DPE2"      "putative integral\nmembrane prot" "0"       
+ [3,] "DPE2"      "At1g16720"                        "0"       
+ [4,] "DPE2"      "At4g16146"                        "0"       
+ [5,] "DPE2"      "AT3G05900"                        "0"       
+ [6,] "DPE2"      "plasma membrane intrinsic prot"   "2e-06"   
+ [7,] "DPE2"      "At3g27350"                        "3e-06"   
+ [8,] "DPE2"      "AT4G32190"                        "4e-06"   
+ [9,] "DPE2"      "carbohydrate/sugar transporter"   "4e-06"   
+[10,] "DPE2"      "catalase"                         "6e-06"   
+[11,] "DPE2"      "ATGPX2"                           "2.4e-05" 
+[12,] "DPE2"      "DPE2"                             "4.9e-05" 
+[13,] "At1g16720" "ATGPX2"                           "0.080329"
+[14,] "At1g16720" "At4g16146"                        "0.223773"
+[15,] "At1g16720" "DPE2"                             "0.237105"
+> 
+> 
+> ## compute score S2 from S1 
+> S2<-DBNScoreStep2(out$S1ls,data,method='ls',alpha1=alpha1,
++                   predPosition=id,targetPosition=id)
+> S2
+           [,1] [,2] [,3] [,4] [,5]        [,6]      [,7] [,8] [,9] [,10]
+ [1,]        NA   NA   NA   NA   NA          NA        NA   NA   NA    NA
+ [2,]        NA   NA   NA   NA   NA 0.057481250 0.4462198   NA   NA    NA
+ [3,]        NA   NA   NA   NA   NA          NA        NA   NA   NA    NA
+ [4,]        NA   NA   NA   NA   NA 0.834565939 0.1985818   NA   NA    NA
+ [5,]        NA   NA   NA   NA   NA          NA 0.4472457   NA   NA    NA
+ [6,]        NA   NA   NA   NA   NA 0.093391292        NA   NA   NA    NA
+ [7,]        NA   NA   NA   NA   NA 0.087434598        NA   NA   NA    NA
+ [8,] 0.2110705   NA   NA   NA   NA          NA        NA   NA   NA    NA
+ [9,]        NA   NA   NA   NA   NA 0.762332106 0.8580382   NA   NA    NA
+[10,]        NA   NA   NA   NA   NA 0.484504489 0.9807137   NA   NA    NA
+[11,]        NA   NA   NA   NA   NA 0.172879975        NA   NA   NA    NA
+[12,]        NA   NA   NA   NA   NA 0.008166515        NA   NA   NA    NA
+          [,11]        [,12]
+ [1,]        NA 1.471160e-10
+ [2,]        NA 2.832079e-05
+ [3,] 0.3826499 4.383087e-08
+ [4,]        NA 5.583852e-07
+ [5,]        NA 2.722249e-06
+ [6,]        NA 2.229491e-07
+ [7,]        NA 2.302728e-08
+ [8,]        NA 6.436842e-08
+ [9,]        NA 1.619752e-05
+[10,]        NA 6.472977e-06
+[11,]        NA 4.138759e-07
+[12,]        NA 2.393478e-05
+> 
+> ## Threshold for the selection of the edges after Step 2
+> alpha2=0.05
+> ## Build the edges with id as label
+> edgesG2id<-BuildEdges(score=S2,threshold=alpha2,
++                       targetNames=id,predNames=id,prec=6)
+> ## Build the edges with names as label
+> edgesG2names<-BuildEdges(score=S2,threshold=alpha2,
++                          targetNames=names,predNames=names,prec=6)
+> edgesG2id
+      Pred Target    Score
+ [1,]  799     60 0.000000
+ [2,]  799    441 0.000000
+ [3,]  799    260 0.000000
+ [4,]  799    512 0.000000
+ [5,]  799    424 0.000000
+ [6,]  799    789 0.000000
+ [7,]  799    333 0.000001
+ [8,]  799    365 0.000003
+ [9,]  799    578 0.000006
+[10,]  799    521 0.000016
+[11,]  799    799 0.000024
+[12,]  799    141 0.000028
+[13,]  424    799 0.008167
+> edgesG2names
+      Pred        Target                             Score     
+ [1,] "DPE2"      "carbohydrate/sugar transporter"   "0"       
+ [2,] "DPE2"      "ATISA3/ISA3"                      "0"       
+ [3,] "DPE2"      "putative integral\nmembrane prot" "0"       
+ [4,] "DPE2"      "AT4G32190"                        "0"       
+ [5,] "DPE2"      "At1g16720"                        "0"       
+ [6,] "DPE2"      "At4g16146"                        "0"       
+ [7,] "DPE2"      "AT3G05900"                        "1e-06"   
+ [8,] "DPE2"      "At3g27350"                        "3e-06"   
+ [9,] "DPE2"      "plasma membrane intrinsic prot"   "6e-06"   
+[10,] "DPE2"      "catalase"                         "1.6e-05" 
+[11,] "DPE2"      "DPE2"                             "2.4e-05" 
+[12,] "DPE2"      "ATGPX2"                           "2.8e-05" 
+[13,] "At1g16720" "DPE2"                             "0.008167"
+> 
+> 
+> ## As the number of genes is reduced to 10 here, this results slightly differ
+> ## from the results obtained in the paper (Lebre, 2009) cited in References.
+> 
+> 
+> ## ======================================
+> ## PLOTTING THE RESULTS...
+> ## ______________________________________
+> ## Not run: 
+> ##D ## The Inferred Nets
+> ##D ## -----------------
+> ##D 
+> ##D ## Nodes coordinates are calculated according to the global structure of the graph
+> ##D all_parents=c(edgesG1id[,1], edgesG2id[,1])
+> ##D all_targets=c(edgesG1id[,2], edgesG2id[,2])
+> ##D posEdgesG1=1:dim(edgesG1id)[1]
+> ##D posEdgesG2=(dim(edgesG1id)[1]+1):length(all_targets)
+> ##D 
+> ##D ## Global network with all the edges
+> ##D netAll = graph.edgelist(cbind(as.character(all_parents),as.character(all_targets )))
+> ##D 
+> ##D ## Nodes coordinates
+> ##D nodeCoord=layout.fruchterman.reingold(netAll)
+> ##D 
+> ##D 
+> ##D split.screen(c(1,2))
+> ##D 
+> ##D # after Step 1
+> ##D screen(1)
+> ##D # set the edges list
+> ##D netG1 = graph.edgelist(cbind(as.character(edgesG1id[,1]),as.character(edgesG1id[,2])))
+> ##D # set the object for plotting the network with global coordinates of all nodes
+> ##D G1toPlot=delete.edges(netAll, E(netAll)[posEdgesG2] )
+> ##D # plot the network
+> ##D plot(G1toPlot, layout=nodeCoord, vertex.label = 
+> ##D get.vertex.attribute(G1toPlot , name="name"),edge.arrow.size = 0.2,
+> ##D main="G1DBN Inferred network:\n Step 1")
+> ##D 
+> ##D # after Step 2
+> ##D screen(2)
+> ##D # set the edges list
+> ##D 
+> ##D netG2 = graph.edgelist(cbind(as.character(edgesG2id[,1]),as.character(edgesG2id[,2])))
+> ##D # set the object for plotting the network with global coordinates of all nodes
+> ##D G2toPlot=delete.edges(netAll, E(netAll)[posEdgesG1] )
+> ##D # plot the network
+> ##D plot(G2toPlot, layout=nodeCoord, vertex.label = 
+> ##D get.vertex.attribute(G2toPlot , name="name"),edge.arrow.size = 0.2,
+> ##D main="G1DBN Inferred network:\n Step 2")
+> ##D 
+> ##D close.screen(all = TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("DBNScoreStep2", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("PRcurve")
+> ### * PRcurve
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: PRcurve
+> ### Title: PR curves computation
+> ### Aliases: PRcurve
+> ### Keywords: utilities
+> 
+> ### ** Examples
+> 
+> library(G1DBN)
+> ## generate the validation matrix
+> ## number of genes
+> p <- 20
+> ## the network - adjacency Matrix
+> MyNet <- SimulNetworkAdjMatrix(p,0.05,c(-1,0.5,0.5,1))
+> 
+> ## generate the time series 
+> ## initializing the B vector
+> B <- runif(p,-1,1)
+> ## initializing the variance of the noise
+> sigmaEps <- runif(p,0.05,0.5)
+> ## initializing the process Xt
+> X0 <- B + rnorm(p,0,sigmaEps*10)
+> ## number of time points
+> n <- 20
+> 
+> 
+> ## the AR(1) times series process
+> Xn <- SimulGeneExpressionAR1(MyNet$A,B,X0,sigmaEps,n)
+> 
+> 
+> ## compute score S1 
+> out<-DBNScoreStep1(Xn)
+Treating 20 vertices:
+10% 20% 30% 40% 50% 60% 70% 80% 90% 100% 
+> pr1<-PRcurve(score=out$S1ls,validMat=abs(MyNet$AdjMatrix)>0,dec=FALSE)
+10 % 20 % 30 % 40 % 50 % 60 % 70 % 80 % 90 % 100 % 
+> 
+> ## compute score S2 from S1 
+> ## depending on the generated data, the threshold alpha1 has to be chosen differently.
+> alpha1=0.8
+> S2<-DBNScoreStep2(S1=out$S1ls,data=Xn,alpha1=alpha1)
+> pr2_0.8<-PRcurve(score=S2,validMat=abs(MyNet$AdjMatrix)>0,dec=FALSE)
+10 % 20 % 30 % 40 % 50 % 60 % 70 % 80 % 90 % 
+> 
+> alpha1=0.6
+> S2<-DBNScoreStep2(S1=out$S1ls,data=Xn,alpha1=alpha1)
+> pr2_0.6<-PRcurve(score=S2,validMat=abs(MyNet$AdjMatrix)>0,dec=FALSE)
+10 % 20 % 30 % 40 % 50 % 60 % 70 % 80 % 90 % 
+> 
+> alpha1=0.4
+> S2<-DBNScoreStep2(S1=out$S1ls,data=Xn,alpha1=alpha1)
+> pr2_0.4<-PRcurve(score=S2,validMat=abs(MyNet$AdjMatrix)>0,dec=FALSE)
+10 % 20 % 30 % 40 % 50 % 60 % 70 % 80 % 90 % 100 % 
+> 
+> alpha1=0.2
+> S2<-DBNScoreStep2(S1=out$S1ls,data=Xn,alpha1=alpha1)
+> pr2_0.2<-PRcurve(score=S2,validMat=abs(MyNet$AdjMatrix)>0,dec=FALSE)
+10 % 20 % 30 % 40 % 50 % 60 % 70 % 80 % 90 % 
+> 
+> plot(pr1$recall,pr1$precision,type="l",main="PR curves after both Step1 and Step2",
++      ylab="PPV", xlab="Sensitivity",lwd=2, xlim=c(0,1),ylim=c(0,1),lty=2)
+> lines(pr2_0.8$recall,pr2_0.8$precision, col=3,lwd=2)
+> lines(pr2_0.6$recall,pr2_0.6$precision, col=4,lwd=2)
+> lines(pr2_0.4$recall,pr2_0.4$precision, col=5,lwd=2)
+> lines(pr2_0.2$recall,pr2_0.2$precision, col=6,lwd=2)
+> lines(0:1,c(0,0),lty=3)
+> lines(0:1,c(1,1),lty=3)
+> lines(c(0,0),0:1,lty=3)
+> lines(c(1,1),0:1,lty=3)
+> 
+> leg=c("Step 1", "Step 2 (alpha1=0.8)", "Step 2 (alpha1=0.6)",
++       "Step 2 (alpha1=0.4)", "Step 2 (alpha1=0.2)")
+> legend(0,0.265, leg, lty=c(2,1,1,1,1), col=c(1,3,4,5,6),lwd=array(2,5))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("PRcurve", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ROCcurve")
+> ### * ROCcurve
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ROCcurve
+> ### Title: ROC curves computation
+> ### Aliases: ROCcurve
+> ### Keywords: utilities
+> 
+> ### ** Examples
+> 
+> ## generate the validation matrix
+> ## number of genes
+> p <- 20
+> ## the network - adjacency Matrix
+> MyNet <- SimulNetworkAdjMatrix(p,0.05,c(-1,0.5,0.5,1))
+> 
+> ## generate the time series 
+> ## initializing the B vector
+> B <- runif(p,-1,1)
+> ## initializing the variance of the noise
+> sigmaEps <- runif(p,0.05,0.5)
+> ## initializing the process Xt
+> X0 <- B + rnorm(p,0,sigmaEps*10)
+> ## number of time points
+> n <- 20
+> 
+> ## the AR(1) times series process
+> Xn <- SimulGeneExpressionAR1(MyNet$A,B,X0,sigmaEps,n)
+> 
+> 
+> ## compute score S1 
+> out<-DBNScoreStep1(Xn)
+Treating 20 vertices:
+10% 20% 30% 40% 50% 60% 70% 80% 90% 100% 
+> roc1<-ROCcurve(score=out$S1ls,validMat=abs(MyNet$AdjMatrix)>0,dec=FALSE)
+> 
+> ## compute score S2 from S1 
+> ## depending on the generated data, the threshold alpha1 has to be chosen differently.
+> alpha1=0.8
+> S2<-DBNScoreStep2(S1=out$S1ls,data=Xn,alpha1=alpha1)
+> roc2_0.8<-ROCcurve(score=S2,validMat=abs(MyNet$AdjMatrix)>0,dec=FALSE)
+> 
+> alpha1=0.6
+> S2<-DBNScoreStep2(S1=out$S1ls,data=Xn,alpha1=alpha1)
+> roc2_0.6<-ROCcurve(score=S2,validMat=abs(MyNet$AdjMatrix)>0,dec=FALSE)
+> 
+> alpha1=0.4
+> S2<-DBNScoreStep2(S1=out$S1ls,data=Xn,alpha1=alpha1)
+> roc2_0.4<-ROCcurve(score=S2,validMat=abs(MyNet$AdjMatrix)>0,dec=FALSE)
+> 
+> alpha1=0.2
+> S2<-DBNScoreStep2(S1=out$S1ls,data=Xn,alpha1=alpha1)
+> roc2_0.2<-ROCcurve(score=S2,validMat=abs(MyNet$AdjMatrix)>0,dec=FALSE)
+> 
+> 
+> TP=sum(abs(MyNet$AdjMatrix)>0)
+> FN=p^2-TP
+> 
+> plot(roc1$x/FN,roc1$y/TP,type="l", main="ROC curve after both Step1 and Step2",
++      ylab="True Positive Rate", xlab="False Negative Rate",lwd=2,lty=2)
+> lines(roc2_0.8$x/FN, roc2_0.8$y/TP, col=3,lwd=2)
+> lines(roc2_0.6$x/FN, roc2_0.6$y/TP, col=4,lwd=2)
+> lines(roc2_0.4$x/FN, roc2_0.4$y/TP, col=5,lwd=2)
+> lines(roc2_0.2$x/FN, roc2_0.2$y/TP, col=6,lwd=2)
+> lines(0:1,c(0,0),lty=3)
+> lines(0:1,c(1,1),lty=3)
+> lines(c(0,0),0:1,lty=3)
+> lines(c(1,1),0:1,lty=3)
+> leg=c("Step 1", "Step 2 (alpha1=0.8)", "Step 2 (alpha1=0.6)",
++       "Step 2 (alpha1=0.4)", "Step 2 (alpha1=0.2)")
+> legend(0.568,0.265, leg, lty=c(2,1,1,1,1), col=c(1,3,4,5,6),lwd=array(2,5))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ROCcurve", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("SimulGeneExpressionAR1")
+> ### * SimulGeneExpressionAR1
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: SimulGeneExpressionAR1
+> ### Title: First order multivariate Auto-Regressive time series generation
+> ### Aliases: SimulGeneExpressionAR1
+> ### Keywords: datagen ts
+> 
+> ### ** Examples
+> 
+> library(G1DBN)
+> ## number of genes
+> p <- 20
+> ## the network - adjacency Matrix
+> MyNet <- SimulNetworkAdjMatrix(p,0.05,c(-1,0,0,1))
+> 
+> ## initializing the B vector
+> B <- runif(p,0,0.5)
+> ## initializing the variance of the noise
+> sigmaEps <- runif(p,0.1,0.8)
+> ## initializing the process Xt
+> X0 <- B + rnorm(p,0,sigmaEps*10)
+> ## number of time points
+> n <- 30
+> 
+> ## the AR(1) time series process
+> Xn <- SimulGeneExpressionAR1(MyNet$A,B,X0,sigmaEps,n)
+> 
+> plot(1:n, Xn[,1],type="l", xlab="Time t", ylab="X(t)",
++ main="Simulated AR(1) time series", ylim=c(min(Xn),max(Xn)))
+> 
+> for (i in 2:p){
++   lines(1:n,Xn[,i],col=i)
++ }
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("SimulGeneExpressionAR1", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("SimulNetworkAdjMatrix")
+> ### * SimulNetworkAdjMatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: SimulNetworkAdjMatrix
+> ### Title: Network object generation
+> ### Aliases: SimulNetworkAdjMatrix
+> ### Keywords: datagen
+> 
+> ### ** Examples
+> 
+> library(G1DBN)
+> ## number of genes
+> p <- 10
+> ## the network - adjacency Matrix
+> MyNet <- SimulNetworkAdjMatrix(p,0.05,c(-1,0,0,1))
+> MyNet
+$Vertices
+$Vertices$Num
+[1] 10
+
+$Vertices$Labels
+ [1]  1  2  3  4  5  6  7  8  9 10
+
+$Vertices$Regulated
+[1]  2  3  4  6  7  9 10
+
+
+$Edges
+$Edges$Prop
+[1] 0.05
+
+$Edges$Num
+[1] 5
+
+
+$A
+      [,1]      [,2]      [,3]      [,4] [,5]       [,6] [,7] [,8]      [,9]
+ [1,]    0 0.0000000 0.0000000  0.000000    0  0.0000000    0    0 0.0000000
+ [2,]    0 0.0000000 0.0000000  0.000000    0  0.0000000    0    0 0.0000000
+ [3,]    0 0.0000000 0.0000000  0.000000    0  0.0000000    0    0 0.0000000
+ [4,]    0 0.0000000 0.0000000  0.000000    0  0.0000000    0    0 0.0000000
+ [5,]    0 0.0000000 0.0000000  0.000000    0  0.0000000    0    0 0.0000000
+ [6,]    0 0.0000000 0.0000000  0.000000    0  0.0000000    0    0 0.0000000
+ [7,]    0 0.0000000 0.9446753 -0.370886    0 -0.8234432    0    0 0.0000000
+ [8,]    0 0.0000000 0.0000000  0.000000    0  0.0000000    0    0 0.0000000
+ [9,]    0 0.0000000 0.0000000  0.000000    0  0.0000000    0    0 0.4976992
+[10,]    0 0.3800352 0.0000000  0.000000    0  0.0000000    0    0 0.0000000
+      [,10]
+ [1,]     0
+ [2,]     0
+ [3,]     0
+ [4,]     0
+ [5,]     0
+ [6,]     0
+ [7,]     0
+ [8,]     0
+ [9,]     0
+[10,]     0
+
+$AdjMatrix
+      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+ [1,]    0    0    0    0    0    0    0    0    0     0
+ [2,]    0    0    0    0    0    0    0    0    0     0
+ [3,]    0    0    0    0    0    0    0    0    0     0
+ [4,]    0    0    0    0    0    0    0    0    0     0
+ [5,]    0    0    0    0    0    0    0    0    0     0
+ [6,]    0    0    0    0    0    0    0    0    0     0
+ [7,]    0    0    1    1    0    1    0    0    0     0
+ [8,]    0    0    0    0    0    0    0    0    0     0
+ [9,]    0    0    0    0    0    0    0    0    1     0
+[10,]    0    1    0    0    0    0    0    0    0     0
+
+> 
+> ## initializing the B vector
+> B <- runif(p,0,0.5)
+> ## initializing the variance of the noise
+> sigmaEps <- runif(p,0.1,0.8)
+> ## initializing the process Xt
+> X0 <- B + rnorm(p,0,sigmaEps*10)
+> ## number of time points
+> n <- 20
+> 
+> ## the AR(1) times series process
+> Xn <- SimulGeneExpressionAR1(MyNet$AdjMatrix,B,X0,sigmaEps,n)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("SimulNetworkAdjMatrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("arth800line")
+> ### * arth800line
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: arth800line
+> ### Title: Arabidopsis Thaliana temporal gene expression data
+> ### Aliases: arth800line
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ## load G1DBN library
+> library(G1DBN)
+> 
+> ## load data set
+> data(arth800line)
+> id<-c(60, 141, 260, 333, 365, 424, 441, 512, 521, 578, 789, 799)
+> 
+> ## plot first ten time series
+> plot(1:23,arth800line[,60],type="l",ylim=c(2,12), xlab="Time",
++  ylab="Log2 transformed expression",lwd=2,
++  main="Log2 transformed expression of a subset of genes of A. Thaliana")
+> 
+> color=1
+> for (i in id){
++   color=color+1
++   lines(1:23,arth800line[,i,],col=color,lwd=2)
++ }
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("arth800line", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  12.065 0.059 12.151 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

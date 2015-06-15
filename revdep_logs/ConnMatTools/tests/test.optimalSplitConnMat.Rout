@@ -1,0 +1,51 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(ConnMatTools)
+> data(chile.loco)
+> 
+> num <- prod(dim(chile.loco)) / sum(chile.loco)
+> betas <- betasVectorDefault(n=num,steps=4)
+> chile.loco.split <- optimalSplitConnMat(chile.loco,normalize.cols=FALSE,
++                                         betas=betas)
+[1] "Starting cycle 1"
+[1] "beta = 7.87433911214873"
+[1] "beta = 1.35019532101316"
+[1] "beta = 7.87433911214873"
+[1] "beta = 984.292389018592"
+[1] "Starting cycle 2"
+[1] "beta = 7.87433911214873"
+[1] "beta = 1.35019532101316"
+[1] "beta = 7.87433911214873"
+[1] "beta = 984.292389018592"
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> # Extra 3rd division
+> print(paste("Examining split with",names(chile.loco.split$best.splits)[1],
++             "subpopulations."))
+[1] "Examining split with 1 subpopulations."
+> pops <- subpopsVectorToList(chile.loco.split$subpops[,chile.loco.split$best.splits[[1]]$index])
+> 
+> reduce.loco <- reducedConnMat(pops,chile.loco)
+> 
+> sr <- selfRecruitment(reduce.loco)
+> lr <- localRetention(reduce.loco)
+> rlr <- relativeLocalRetention(reduce.loco)
+> 
+> proc.time()
+   user  system elapsed 
+  1.524   0.076   1.840 

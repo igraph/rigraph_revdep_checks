@@ -1,0 +1,558 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "cvxclustr"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "cvxclustr-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('cvxclustr')
+Loading required package: Matrix
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("AMA_step_size")
+> ### * AMA_step_size
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: AMA_step_size
+> ### Title: Compute step size Anderson-Morely upper bound on the largest
+> ###   eigenvalue of the Laplacian
+> ### Aliases: AMA_step_size
+> 
+> ### ** Examples
+> 
+> data(mammals)
+> X <- as.matrix(mammals[,-1])
+> X <- t(scale(X,center=TRUE,scale=FALSE))
+> n <- ncol(X)
+> 
+> ## Pick some weights and a sequence of regularization parameters.
+> k <- 5
+> phi <- 0.5
+> w <- kernel_weights(X,phi)
+> w <- knn_weights(w,k,n)
+> AMA_step_size(w,n)
+[1] 0.05263158
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("AMA_step_size", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("create_adjacency")
+> ### * create_adjacency
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: create_adjacency
+> ### Title: Create adjacency matrix from V
+> ### Aliases: create_adjacency
+> 
+> ### ** Examples
+> 
+> ## Clusterpaths for Mammal Dentition
+> data(mammals)
+> X <- as.matrix(mammals[,-1])
+> X <- t(scale(X,center=TRUE,scale=FALSE))
+> n <- ncol(X)
+> 
+> ## Pick some weights and a sequence of regularization parameters.
+> k <- 5
+> phi <- 0.5
+> w <- kernel_weights(X,phi)
+> w <- knn_weights(w,k,n)
+> gamma <- seq(0.0,43, length.out=100)
+> 
+> ## Perform clustering
+> nu <- AMA_step_size(w,n)
+> sol <- cvxclust_path_ama(X,w,gamma,nu=nu)
+> 
+> ## Construct adjacency matrix
+> A <- create_adjacency(sol$V[[10]],w,n)
+> G <- graph.adjacency(A, mode = 'upper')
+> plot(G,vertex.label=as.character(mammals[,1]),vertex.label.cex=0.65,vertex.label.font=2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("create_adjacency", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("create_clustering_problem")
+> ### * create_clustering_problem
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: create_clustering_problem
+> ### Title: Create a random clustering problem
+> ### Aliases: create_clustering_problem
+> 
+> ### ** Examples
+> 
+> p <- 10
+> n <- 20
+> seed <- 12345
+> rnd_problem_admm <- create_clustering_problem(p,n,seed)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("create_clustering_problem", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cvxclust")
+> ### * cvxclust
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cvxclust
+> ### Title: Convex Clustering Path via Variable Splitting Methods
+> ### Aliases: cvxclust
+> 
+> ### ** Examples
+> 
+> ## Clusterpaths for Mammal Dentition
+> data(mammals)
+> X <- as.matrix(mammals[,-1])
+> X <- t(scale(X,center=TRUE,scale=FALSE))
+> n <- ncol(X)
+> 
+> ## Pick some weights and a sequence of regularization parameters.
+> k <- 5
+> phi <- 0.5
+> w <- kernel_weights(X,phi)
+> w <- knn_weights(w,k,n)
+> gamma <- seq(0.0,43, length.out=100)
+> 
+> ## Perform clustering
+> sol <- cvxclust(X,w,gamma)
+Warning in cvxclust_ama(X, Lambda, ix - 1, M1 - 1, M2 - 1, s1, s2, w[w >  :
+  The stepsize nu may be too large. Setting it to maximum of 1/n and 1/AnM.
+> 
+> ## Plot the cluster path
+> library(ggplot2)
+> svdX <- svd(X)
+> pc <- svdX$u[,1:2,drop=FALSE]
+> pc.df <- as.data.frame(t(pc)%*%X)
+> nGamma <- sol$nGamma
+> df.paths <- data.frame(x=c(),y=c(), group=c())
+> for (j in 1:nGamma) {
++   pcs <- t(pc)%*%sol$U[[j]]
++   x <- pcs[1,]
++   y <- pcs[2,]
++   df <- data.frame(x=pcs[1,], y=pcs[2,], group=1:n)
++   df.paths <- rbind(df.paths,df)
++ }
+> X_data <- as.data.frame(t(X)%*%pc)
+> colnames(X_data) <- c("x","y")
+> X_data$Name <- mammals[,1]
+> data_plot <- ggplot(data=df.paths,aes(x=x,y=y))
+> data_plot <- data_plot + geom_path(aes(group=group),colour='grey30',alpha=0.5)
+> data_plot <- data_plot + geom_text(data=X_data,aes(x=x,y=y,label=Name),
++   position=position_jitter(h=0.125,w=0.125))
+> data_plot <- data_plot + geom_point(data=X_data,aes(x=x,y=y),size=1.5)
+> data_plot <- data_plot + xlab('Principal Component 1') + ylab('Principal Component 2')
+> data_plot + theme_bw()
+> 
+> ## Output Cluster Assignment at 10th gamma
+> A <- create_adjacency(sol$V[[10]],w,n)
+> find_clusters(A)
+$cluster
+ [1]  1  2  3  1  1  1  1  1  4  5  5  6  6  4  7  2  2  2  2  2  2  2  2  8  9
+[26] 10 10
+
+$size
+ [1] 6 9 1 2 2 2 1 1 1 2
+
+> 
+> ## Visualize Cluster Assignment
+> G <- graph.adjacency(A, mode = 'upper')
+> plot(G,vertex.label=as.character(mammals[,1]),vertex.label.cex=0.65,vertex.label.font=2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cvxclust", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("cvxclust_admm")
+> ### * cvxclust_admm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cvxclust_admm
+> ### Title: Convex clustering via ADMM
+> ### Aliases: cvxclust_admm
+> 
+> ### ** Examples
+> 
+> ## Create random problems
+> p <- 10
+> n <- 20
+> seed <- 12345
+> nProbs <- 10
+> errors <- double(nProbs)
+> for (i in 1:nProbs) {
++   seed <- seed + sample(1:1e2,1)
++   rnd_problem <- create_clustering_problem(p,n,seed=seed,method='admm')
++   X <- rnd_problem$X
++   ix <- rnd_problem$ix
++   M1 <- rnd_problem$M1
++   M2 <- rnd_problem$M2
++   s1 <- rnd_problem$s1
++   s2 <- rnd_problem$s2
++   w  <- rnd_problem$w
++   nK <- length(w)
++   Lambda <- matrix(rnorm(p*nK),p,nK)
++   gamma <- 0.1
++   nu <- 1
++   max_iter <- 1e6
++   tol_abs <- 1e-15
++   tol_rel <- 1e-15
++   sol_admm_acc <- cvxclust_admm(X,Lambda,ix,M1,M2,s1,s2,w,gamma,nu,max_iter=max_iter,
++     tol_abs=tol_abs,tol_rel=tol_rel,accelerate=TRUE)
++   sol_admm <- cvxclust_admm(X,Lambda,ix,M1,M2,s1,s2,w,gamma,nu,max_iter=max_iter,
++     tol_abs=tol_abs,tol_rel=tol_rel,accelerate=FALSE)
++   errors[i] <- norm(as.matrix(sol_admm_acc$U-sol_admm$U),'i')
++ }
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cvxclust_admm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cvxclust_ama")
+> ### * cvxclust_ama
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cvxclust_ama
+> ### Title: Convex clustering via AMA
+> ### Aliases: cvxclust_ama
+> 
+> ### ** Examples
+> 
+> ## Create random problem
+> seed <- 12345
+> p <- 10
+> n <- 20
+> rnd_problem <- create_clustering_problem(p,n,seed)
+> X <- rnd_problem$X
+> ix <- rnd_problem$ix
+> M1 <- rnd_problem$M1
+> M2 <- rnd_problem$M2
+> s1 <- rnd_problem$s1
+> s2 <- rnd_problem$s2
+> w  <- rnd_problem$w
+> nK <- nrow(ix)
+> Lambda <- matrix(rnorm(p*nK),p,nK)
+> gamma <- 0.1
+> nu <- 1.999/n
+> max_iter <- 1e6
+> tol <- 1e-15
+> sol_ama <- cvxclust_ama(X,Lambda,ix,M1,M2,s1,s2,w,gamma,nu,max_iter=max_iter,tol=tol)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cvxclust_ama", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cvxclust_path_admm")
+> ### * cvxclust_path_admm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cvxclust_path_admm
+> ### Title: Convex Clustering Path via ADMM
+> ### Aliases: cvxclust_path_admm
+> 
+> ### ** Examples
+> 
+> ## Clusterpaths for Mammal Dentition
+> data(mammals)
+> X <- as.matrix(mammals[,-1])
+> X <- t(scale(X,center=TRUE,scale=FALSE))
+> n <- ncol(X)
+> 
+> ## Pick some weights and a sequence of regularization parameters.
+> k <- 5
+> phi <- 0.5
+> w <- kernel_weights(X,phi)
+> w <- knn_weights(w,k,n)
+> gamma <- seq(0.0,43, length.out=100)
+> 
+> ## Perform clustering
+> sol <- cvxclust_path_admm(X,w,gamma)
+> 
+> ## Plot the cluster path
+> library(ggplot2)
+> svdX <- svd(X)
+> pc <- svdX$u[,1:2,drop=FALSE]
+> pc.df <- as.data.frame(t(pc)%*%X)
+> nGamma <- sol$nGamma
+> df.paths <- data.frame(x=c(),y=c(), group=c())
+> for (j in 1:nGamma) {
++   pcs <- t(pc)%*%sol$U[[j]]
++   x <- pcs[1,]
++   y <- pcs[2,]
++   df <- data.frame(x=pcs[1,], y=pcs[2,], group=1:n)
++   df.paths <- rbind(df.paths,df)
++ }
+> X_data <- as.data.frame(t(X)%*%pc)
+> colnames(X_data) <- c("x","y")
+> X_data$Name <- mammals[,1]
+> data_plot <- ggplot(data=df.paths,aes(x=x,y=y))
+> data_plot <- data_plot + geom_path(aes(group=group),colour='grey30',alpha=0.5)
+> data_plot <- data_plot + geom_text(data=X_data,aes(x=x,y=y,label=Name),
++   position=position_jitter(h=0.125,w=0.125))
+> data_plot <- data_plot + geom_point(data=X_data,aes(x=x,y=y),size=1.5)
+> data_plot <- data_plot + xlab('Principal Component 1') + ylab('Principal Component 2')
+> data_plot + theme_bw()
+> 
+> ## Output Cluster Assignment at 10th gamma
+> A <- create_adjacency(sol$V[[10]],w,n,method='admm')
+> find_clusters(A)
+$cluster
+ [1]  1  2  3  1  1  1  1  1  4  5  5  6  6  4  7  2  2  2  2  2  2  2  2  8  9
+[26] 10 10
+
+$size
+ [1] 6 9 1 2 2 2 1 1 1 2
+
+> 
+> ## Visualize Cluster Assignment
+> G <- graph.adjacency(A, mode = 'upper')
+> plot(G,vertex.label=as.character(mammals[,1]),vertex.label.cex=0.65,vertex.label.font=2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cvxclust_path_admm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("cvxclust_path_ama")
+> ### * cvxclust_path_ama
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cvxclust_path_ama
+> ### Title: Convex Clustering Path via AMA
+> ### Aliases: cvxclust_path_ama
+> 
+> ### ** Examples
+> 
+> ## Clusterpaths for Mammal Dentition
+> data(mammals)
+> X <- as.matrix(mammals[,-1])
+> X <- t(scale(X,center=TRUE,scale=FALSE))
+> n <- ncol(X)
+> 
+> ## Pick some weights and a sequence of regularization parameters.
+> k <- 5
+> phi <- 0.5
+> w <- kernel_weights(X,phi)
+> w <- knn_weights(w,k,n)
+> gamma <- seq(0.0,43, length.out=100)
+> 
+> ## Perform clustering
+> nu <- AMA_step_size(w,n)
+> sol <- cvxclust_path_ama(X,w,gamma,nu=nu)
+> 
+> ## Plot the cluster path
+> library(ggplot2)
+> svdX <- svd(X)
+> pc <- svdX$u[,1:2,drop=FALSE]
+> pc.df <- as.data.frame(t(pc)%*%X)
+> nGamma <- sol$nGamma
+> df.paths <- data.frame(x=c(),y=c(), group=c())
+> for (j in 1:nGamma) {
++   pcs <- t(pc)%*%sol$U[[j]]
++   x <- pcs[1,]
++   y <- pcs[2,]
++   df <- data.frame(x=pcs[1,], y=pcs[2,], group=1:n)
++   df.paths <- rbind(df.paths,df)
++ }
+> X_data <- as.data.frame(t(X)%*%pc)
+> colnames(X_data) <- c("x","y")
+> X_data$Name <- mammals[,1]
+> data_plot <- ggplot(data=df.paths,aes(x=x,y=y))
+> data_plot <- data_plot + geom_path(aes(group=group),colour='grey30',alpha=0.5)
+> data_plot <- data_plot + geom_text(data=X_data,aes(x=x,y=y,label=Name),
++   position=position_jitter(h=0.125,w=0.125))
+> data_plot <- data_plot + geom_point(data=X_data,aes(x=x,y=y),size=1.5)
+> data_plot <- data_plot + xlab('Principal Component 1') + ylab('Principal Component 2')
+> data_plot + theme_bw()
+> 
+> ## Output Cluster Assignment at 10th gamma
+> A <- create_adjacency(sol$V[[10]],w,n)
+> find_clusters(A)
+$cluster
+ [1]  1  2  3  1  1  1  1  1  4  5  5  6  6  4  7  2  2  2  2  2  2  2  2  8  9
+[26] 10 10
+
+$size
+ [1] 6 9 1 2 2 2 1 1 1 2
+
+> 
+> ## Visualize Cluster Assignment
+> G <- graph.adjacency(A, mode = 'upper')
+> plot(G,vertex.label=as.character(mammals[,1]),vertex.label.cex=0.65,vertex.label.font=2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cvxclust_path_ama", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("find_clusters")
+> ### * find_clusters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: find_clusters
+> ### Title: Find clusters
+> ### Aliases: find_clusters
+> 
+> ### ** Examples
+> 
+> ## Clusterpaths for Mammal Dentition
+> data(mammals)
+> X <- as.matrix(mammals[,-1])
+> X <- t(scale(X,center=TRUE,scale=FALSE))
+> n <- ncol(X)
+> 
+> ## Pick some weights and a sequence of regularization parameters.
+> k <- 5
+> phi <- 0.5
+> w <- kernel_weights(X,phi)
+> w <- knn_weights(w,k,n)
+> gamma <- seq(0.0,43, length.out=100)
+> 
+> ## Perform clustering
+> nu <- AMA_step_size(w,n)
+> sol <- cvxclust_path_ama(X,w,gamma,nu=nu)
+> 
+> ## Construct adjacency matrix
+> A <- create_adjacency(sol$V[[10]],w,n)
+> find_clusters(A)
+$cluster
+ [1]  1  2  3  1  1  1  1  1  4  5  5  6  6  4  7  2  2  2  2  2  2  2  2  8  9
+[26] 10 10
+
+$size
+ [1] 6 9 1 2 2 2 1 1 1 2
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("find_clusters", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("weights_graph")
+> ### * weights_graph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: weights_graph
+> ### Title: Weights Graph Adjacency Matrix
+> ### Aliases: weights_graph
+> 
+> ### ** Examples
+> 
+> ## Clusterpaths for Mammal Dentition
+> data(mammals)
+> X <- as.matrix(mammals[,-1])
+> X <- t(scale(X,center=TRUE,scale=FALSE))
+> n <- ncol(X)
+> 
+> ## Pick some weights and a sequence of regularization parameters.
+> k <- 5
+> phi <- 0.5
+> w <- kernel_weights(X,phi)
+> w <- knn_weights(w,k,n)
+> 
+> A <- weights_graph(w,n)
+> find_clusters(A)
+$cluster
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+
+$size
+[1] 27
+
+> 
+> ## Visualize Cluster Assignment
+> G <- graph.adjacency(A, mode = 'upper')
+> plot(G,vertex.label=as.character(mammals[,1]),vertex.label.cex=0.65,vertex.label.font=2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("weights_graph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  7.923 0.382 8.385 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

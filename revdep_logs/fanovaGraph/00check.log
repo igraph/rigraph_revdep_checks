@@ -1,0 +1,102 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/fanovaGraph.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘fanovaGraph/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘fanovaGraph’ version ‘1.4.7’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘fanovaGraph’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... NOTE
+'library' or 'require' calls in package code:
+  ‘manipulate’ ‘tcltk’
+  Please use :: or requireNamespace() instead.
+  See section 'Suggested packages' in the 'Writing R Extensions' manual.
+* checking S3 generic/method consistency ... NOTE
+Found the following apparent S3 methods exported but not registered:
+  plot.graphlist print.graphlist
+See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+manual.
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+plotTk: no visible global function definition for ‘tclVar’
+plotTk : refresh: no visible global function definition for ‘tclvalue’
+plotTk: no visible global function definition for ‘tktoplevel’
+plotTk: no visible global function definition for ‘tkwm.title’
+plotTk: no visible global function definition for ‘tkframe’
+plotTk: no visible global function definition for ‘tkscale’
+plotTk: no visible global function definition for ‘tkpack’
+plotTk: no visible global function definition for ‘tklabel’
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... ERROR
+Running examples in ‘fanovaGraph-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: estimateGraph
+> ### Title: FANOVA graph estimation.
+> ### Aliases: estimateGraph print.graphlist
+> 
+> ### ** Examples
+> 
+> # Ishigami function, true analytical values: D12 = D23 = 0, D13 =~ 3.374
+> q.arg = list(list(min=-pi, max=pi), list(min=-pi, max=pi), list(min=-pi, max=pi)) 
+> estimateGraph(f.mat=ishigami.fun, d=3, q.arg=q.arg, n.tot=10000, method="LiuOwen")
+Error in graph(as.vector(t(E)), d, FALSE) : Extra arguments in make_graph
+Calls: estimateGraph ... maximal.cliques -> is_igraph -> %in% -> match -> graph
+Execution halted
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... ERROR
+Running the tests in ‘tests/run-all.R’ failed.
+Last 13 lines of output:
+  11: stop("Extra arguments in make_graph")
+  
+  testthat results ================================================================
+  OK: 6 SKIPPED: 0 FAILED: 6
+  1. Error: the full example works as before 
+  2. Error: estimateGraph works for different n.tot and d for all methods 
+  3. Error: estimateGraph works for very small values 
+  4. Error: confint works for estimateGraph 
+  5. Error: overall variance and standard sobol indices work 
+  6. Error: thresholdIdentification works 
+  
+  Error: testthat unit tests failed
+  Execution halted
+* DONE
+Status: 2 ERRORs, 3 NOTEs

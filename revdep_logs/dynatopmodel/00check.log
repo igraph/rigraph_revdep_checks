@@ -1,0 +1,89 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/dynatopmodel.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘dynatopmodel/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘dynatopmodel’ version ‘1.0’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘dynatopmodel’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... NOTE
+'library' or 'require' call to ‘igraph’ in package code.
+  Please use :: or requireNamespace() instead.
+  See section 'Suggested packages' in the 'Writing R Extensions' manual.
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+DisplayObservedFlows: no visible global function definition for
+  ‘plot.zoo’
+GetTimeSeriesInputRange: no visible global function definition for
+  ‘index’
+RunTOPMODEL: no visible global function definition for ‘index’
+SpatialLinesDataFrameToIgraph: no visible global function definition
+  for ‘graph.data.frame’
+aggregate.qobs: no visible global function definition for ‘zoo’
+aggregate.xts: no visible global function definition for ‘is.zoo’
+aggregate.xts: no visible global function definition for ‘zoo’
+allocate.rain: no visible global function definition for ‘index’
+disaggregate.xts: no visible global function definition for ‘is.zoo’
+disaggregate.xts: no visible global function definition for ‘index’
+disaggregate.xts: no visible global function definition for ‘coredata’
+disp.discharge.selection: no visible global function definition for
+  ‘index’
+disp.discharges: no visible global function definition for ‘plot.zoo’
+disp.qsim: no visible global function definition for ‘plot.zoo’
+disp.rain: no visible global function definition for ‘plot.zoo’
+fix.obs: no visible global function definition for ‘na.approx’
+fix.run.dates: no visible global function definition for ‘index’
+get.obs: no visible global function definition for ‘is.zoo’
+gof.run: no visible global function definition for ‘index’
+init.input: no visible global function definition for ‘index’
+read.obs: no visible global function definition for ‘index’
+report.series: no visible global function definition for ‘is.zoo’
+report.series: no visible global function definition for ‘index’
+subset.zoo: no visible global function definition for ‘is.zoo’
+subset.zoo: no visible global function definition for ‘index’
+time.interval.intersection: no visible global function definition for
+  ‘index’
+write.obs: no visible global function definition for ‘index’
+write.proj: no visible global function definition for ‘write.zoo’
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... OK
+* DONE
+Status: 2 NOTEs

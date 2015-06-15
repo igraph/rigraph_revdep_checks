@@ -1,0 +1,91 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/fuzzyMM.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘fuzzyMM/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘fuzzyMM’ version ‘1.0.1’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘fuzzyMM’ can be installed ... WARNING
+Found the following significant warnings:
+  Warning: replacing previous import by ‘rgeos::union’ when loading ‘fuzzyMM’
+See ‘/Users/gaborcsardi/works/igraph/revdep_check/fuzzyMM.Rcheck/00install.out’ for details.
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+create_drn: no visible global function definition for ‘getURL’
+create_drn: no visible global function definition for ‘xmlParse’
+err_region: no visible global function definition for ‘coordinates<-’
+err_region: no visible global function definition for ‘proj4string<-’
+err_region: no visible global function definition for ‘CRS’
+err_region: no visible global function definition for ‘spTransform’
+err_region: no visible global function definition for ‘coordinates’
+err_region: no visible global function definition for ‘Polygons’
+err_region: no visible global function definition for ‘Polygon’
+err_region: no visible global function definition for ‘SpatialPolygons’
+imp : <anonymous>: no visible global function definition for
+  ‘dist2Line’
+lines2segments: no visible global function definition for ‘coordinates’
+lines2segments: no visible global function definition for ‘Lines’
+lines2segments: no visible global function definition for ‘Line’
+lines2segments: no visible global function definition for
+  ‘SpatialLines’
+mm: no visible global function definition for ‘proj4string’
+mm: no visible global function definition for ‘spTransform’
+mm: no visible global function definition for ‘dist2Line’
+mm: no visible global function definition for ‘SpatialPointsDataFrame’
+smp1: no visible global function definition for ‘bearing’
+smp1: no visible global function definition for ‘spDists’
+smp2 : <anonymous>: no visible global function definition for
+  ‘dist2Line’
+smp2: no visible global function definition for ‘spDists’
+smp2 : <anonymous>: no visible global function definition for ‘spDists’
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking sizes of PDF files under ‘inst/doc’ ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking running R code from vignettes ... [85s/97s] OK
+* checking re-building of vignette outputs ... [96s/108s] OK
+* DONE
+Status: 1 WARNING, 1 NOTE

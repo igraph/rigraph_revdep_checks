@@ -1,0 +1,15 @@
+* installing *source* package ‘fuzzyMM’ ...
+** package ‘fuzzyMM’ successfully unpacked and MD5 sums checked
+** R
+** data
+** demo
+** inst
+** preparing package for lazy loading
+Warning: replacing previous import by ‘rgeos::union’ when loading ‘fuzzyMM’
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+Warning: replacing previous import by ‘rgeos::union’ when loading ‘fuzzyMM’
+* DONE (fuzzyMM)

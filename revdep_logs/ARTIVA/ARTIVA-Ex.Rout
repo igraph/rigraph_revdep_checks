@@ -1,0 +1,746 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "ARTIVA"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "ARTIVA-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('ARTIVA')
+Loading required package: MASS
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: gplots
+
+Attaching package: ‘gplots’
+
+The following object is masked from ‘package:stats’:
+
+    lowess
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("ARTIVAnet")
+> ### * ARTIVAnet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ARTIVAnet
+> ### Title: Function to run the ARTIVA procedure for Auto Regressive
+> ###   TIme-VArying network inference on several target genes
+> ### Aliases: ARTIVAnet
+> ### Keywords: DBN inference network inference graphical model time series
+> 
+> ### ** Examples
+> 
+> library(ARTIVA)
+> 
+> # Load the dataset with simulated gene expression profiles
+> data(simulatedProfiles)
+> 
+> # List of target genes to be analyzed independantly with ARTIVA 
+> targetGenes = c(1, 10, 20, "TF3", 45, 50)
+> 
+> # Names of the parent genes (typically transcription factors) 
+> parentGenes = c("TF1", "TF2", "TF3", "TF4", "TF5")
+> 
+> ###
+> # ARTIVA analysis searching for potential interactions between each target 
+> # genes and a predefined list of parent genes. 
+> ###
+> 
+> # Note that the number of iterations in the RJ-MCMC sampling is reduced 
+> # to 'niter=20000' in this example, but it should be increased (e.g. up to
+> # 50000) for a better estimation.
+> 
+> ## Not run: 
+> ##D ARTIVAtest1=ARTIVAnet(targetData = simulatedProfiles[targetGenes,],
+> ##D   parentData = simulatedProfiles[parentGenes,], 
+> ##D   targetNames= targetGenes,
+> ##D   parentNames = parentGenes,
+> ##D   niter = 20000,
+> ##D   savePictures=FALSE)
+> ##D 
+> ##D # Note that function ARTIVAnet calls fonction ARTIVAsubnet for each 
+> ##D # target gene successively and provides a global estimated regulatory 
+> ##D # network entitled "ARTIVA_FinalNetwork.pdf" in addition to the output 
+> ##D # results given by function ARTIVAsubnet.
+> ##D 
+> ##D ## Gene names for the target and the parent genes, minimum segment length, 
+> ##D ## threshold for the edges selection can be specified as follow:
+> ##D ARTIVAtest2=ARTIVAnet(targetData = simulatedProfiles[targetGenes,],
+> ##D   parentData = simulatedProfiles[parentGenes,], 
+> ##D   targetNames= targetGenes,
+> ##D   parentNames = parentGenes,
+> ##D   segMinLength = 2,
+> ##D   edgesThreshold = 0.5, 
+> ##D   niter = 20000,
+> ##D   outputPath = "ARTIVA-test")
+> ## End(Not run)
+> 
+> # By default, the output results (pictures and estimation values) are
+> # saved in a folder named "ARTIVAnet" created in the current directory
+> # In order to save the results in a specific folder, for example a
+> # folder entitled "ARTIVA-test" in the current directory:
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ARTIVAnet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ARTIVAsubnet")
+> ### * ARTIVAsubnet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ARTIVAsubnet
+> ### Title: Function to recover Auto Regressive TIme-VArying interactions
+> ###   between a gene of interest (referred to as "target gene") and a set
+> ###   of genes which may explain the expression of the target gene.
+> ### Aliases: ARTIVAsubnet
+> ### Keywords: DBN inference network inference graphical model time series
+> 
+> ### ** Examples
+> 
+> # Load the ARTIVA R package
+> library(ARTIVA)
+> 
+> # Load the dataset with simulated gene expression profiles
+> data(simulatedProfiles)
+> 
+> # Name of the target gene to be analyzed with ARTIVA 
+> targetGene = 1
+> 
+> # Names of the parent genes (typically transcription factors) 
+> parentGenes = c("TF1", "TF2", "TF3", "TF4", "TF5")
+> 
+> ###
+> # ARTIVA analysis searching for potential interactions between the target 
+> # genes and a predefined list of parent genes. 
+> ###
+> 
+> # Note that the number of iterations in the RJ-MCMC sampling is reduced 
+> # to in this example to 'niter=20000' (in order obtain a quick overview
+> # of the ARTIVAnet fonction, but it should be increased (e.g. up to
+> # 50000) for a better parameter estimation.
+> 
+> # Without saving the output pictures "savePictures=FALSE"
+> ## Not run: 
+> ##D ARTIVAtest = ARTIVAsubnet(targetData = simulatedProfiles[targetGene,],
+> ##D   parentData = simulatedProfiles[parentGenes,],
+> ##D   targetName = targetGene,
+> ##D   parentNames = parentGenes,
+> ##D   segMinLength = 2,
+> ##D   edgesThreshold = 0.5, 
+> ##D   niter = 20000,
+> ##D   savePictures=FALSE)
+> ##D 
+> ##D # By default, the output results (pictures and estimation values) are
+> ##D # saved in a folder named "ARTIVAsubnet" created in the current directory
+> ##D ARTIVAtest = ARTIVAsubnet(targetData = simulatedProfiles[targetGene,],
+> ##D   parentData = simulatedProfiles[parentGenes,],
+> ##D   targetName = targetGene,
+> ##D   parentNames = parentGenes,
+> ##D   segMinLength = 2,
+> ##D   edgesThreshold = 0.5, 
+> ##D   niter = 20000)
+> ##D 
+> ##D # In order to save the results in a specific folder, for example a
+> ##D # folder entitled "ARTIVA-test" in the current directory:
+> ##D 
+> ##D ARTIVAtest2 = ARTIVAsubnet(targetData = simulatedProfiles[targetGene,],
+> ##D   parentData = simulatedProfiles[parentGenes,],
+> ##D   targetName = targetGene,
+> ##D   parentNames = parentGenes,
+> ##D   segMinLength = 2,
+> ##D   edgesThreshold = 0.5, 
+> ##D   niter = 20000,
+> ##D   outputPath = "ARTIVA-test")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ARTIVAsubnet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ARTIVAsubnetAnalysis")
+> ### * ARTIVAsubnetAnalysis
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ARTIVAsubnetAnalysis
+> ### Title: Function to estimate a regulatory time-varying network from the
+> ###   output of function ARTIVAsubnet.
+> ### Aliases: ARTIVAsubnetAnalysis
+> ### Keywords: DBN inference network inference graphical model time series
+> 
+> ### ** Examples
+> 
+> # Load the ARTIVA R package
+> library(ARTIVA)
+> 
+> # Load the dataset with simulated gene expression profiles
+> data(simulatedProfiles)
+> 
+> # Name of the target gene to be analyzed with ARTIVA 
+> targetGene = 1
+> 
+> # Names of the parent genes (typically transcription factors) 
+> parentGenes = c("TF1", "TF2", "TF3", "TF4", "TF5")
+> 
+> 
+> # Note that the number of iterations in the RJ-MCMC sampling is reduced 
+> # to 'niter=20000' in this example, but it should be increased (e.g. up to
+> # 50000) for a better estimation.
+> 
+> # Run the ARTIVAsubnet function
+> ## Not run: 
+> ##D ARTIVAtest = ARTIVAsubnet(targetData = simulatedProfiles[targetGene,],
+> ##D   parentData = simulatedProfiles[parentGenes,],
+> ##D   targetName = targetGene,
+> ##D   parentNames = parentGenes,
+> ##D   segMinLength = 2,
+> ##D   edgesThreshold = 0.6, 
+> ##D   niter= 20000,
+> ##D   savePictures=FALSE)
+> ##D 
+> ##D # Re-compute a time-varying network from the output of function 
+> ##D # ARTIVAsubnet with new analysis parameters
+> ##D analysis2 = ARTIVAsubnetAnalysis(ARTIVAsubnet=ARTIVAtest,
+> ##D   segMinLength = 3,
+> ##D   edgesThreshold = 0.5,
+> ##D   outputPath="ARTIVAsubnet2",
+> ##D   savePictures=FALSE)
+> ##D 
+> ##D # Trace the obtained network.
+> ##D traceNetworks(analysis2$network, edgesThreshold = 0.3)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ARTIVAsubnetAnalysis", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CP.postDist")
+> ### * CP.postDist
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CP.postDist
+> ### Title: Function to compute the CPs posterior distribution for the
+> ###   ARTIVA network model from the the ouput samples of function
+> ###   ARTIVAsubnet.
+> ### Aliases: CP.postDist
+> ### Keywords: util
+> 
+> ### ** Examples
+> 
+> # Load the ARTIVA R package
+> library(ARTIVA)
+> 
+> # Load the dataset with simulated gene expression profiles
+> data(simulatedProfiles)
+> 
+> # Name of the target gene to be analyzed with ARTIVA 
+> targetGene = 1
+> 
+> # Names of the parent genes (typically transcription factors) 
+> parentGenes = c("TF1", "TF2", "TF3", "TF4", "TF5")
+> 
+> # run ARTIVAsubnet
+> 
+> # Note that the number of iterations in the RJ-MCMC sampling is reduced 
+> # to 'niter=20000' in this example, but it should be increased (e.g. up to
+> # 50000) for a better estimation.
+> ## Not run: 
+> ##D ARTIVAtest = ARTIVAsubnet(targetData = simulatedProfiles[targetGene,],
+> ##D   parentData = simulatedProfiles[parentGenes,],
+> ##D   targetName = targetGene,
+> ##D   parentNames = parentGenes,
+> ##D   segMinLength = 2,
+> ##D   edgesThreshold = 0.6, 
+> ##D   niter= 20000,
+> ##D   savePictures=FALSE)
+> ##D 
+> ##D # compute the PC posterior distribution with other parameters
+> ##D outCPpostDist = CP.postDist(ARTIVAtest$Samples$CP, burn_in=10000, 
+> ##D 			    segMinLength=3)
+> ##D 
+> ##D # plot the CP posterior distribution
+> ##D plotCP.postDist(outCPpostDist, targetName=paste("Target", targetGene), 
+> ##D 		  estimatedCPpos=outCPpostDist$estimatedCPpos)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CP.postDist", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("choosePriors")
+> ### * choosePriors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: choosePriors
+> ### Title: Function to plot an overview of possible priors for the number
+> ###   of changepoints and/or edges.
+> ### Aliases: choosePriors
+> ### Keywords: util
+> 
+> ### ** Examples
+> 
+> # See some prior probabbility density when the maximal number of
+> # CPs/parents is equal to 5
+> data(priors)
+> choosePriors(kmax=5,priors)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("choosePriors", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("drosophila")
+> ### * drosophila
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: drosophila
+> ### Title: Drosphila life cycyle time series by Arbeitman et al 2002.
+> ### Aliases: drosophila
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> #load the data
+> data(drosophila)
+> 
+> #plot time serie for a chosen gene 
+> gene=1
+> plot(1:67,drosophila[gene,],type="l",xlab="Timepoints", ylab="LogRatio",
++ main=row.names(drosophila)[gene])
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("drosophila", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("geneNetworkSummary")
+> ### * geneNetworkSummary
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: geneNetworkSummary
+> ### Title: Function to
+> ### Aliases: geneNetworkSummary
+> ### Keywords: graphics util
+> 
+> ### ** Examples
+> 
+> # Load the ARTIVA R package
+> library(ARTIVA)
+> 
+> # Load the dataset with simulated gene expression profiles
+> data(simulatedProfiles)
+> 
+> # Name of the target gene to be analyzed with ARTIVA 
+> targetGene = 1
+> 
+> # Names of the parent genes (typically transcription factors) 
+> parentGenes = c("TF1", "TF2", "TF3", "TF4", "TF5")
+> 
+> 
+> # Run the ARTIVAsubnet function
+> # Note that the number of iterations in the RJ-MCMC sampling is reduced 
+> # to 'niter=20000' in this example, but it should be increased (e.g. up to
+> # 50000) for a better estimation.
+> 
+> ## Not run: 
+> ##D ARTIVAtest = ARTIVAsubnet(targetData = simulatedProfiles[targetGene,],
+> ##D   parentData = simulatedProfiles[parentGenes,],
+> ##D   targetName = targetGene,
+> ##D   parentNames = parentGenes,
+> ##D   segMinLength = 2,
+> ##D   edgesThreshold = 0.6, 
+> ##D   niter= 2000,
+> ##D   savePictures=FALSE)
+> ##D 
+> ##D # Print a summary of the obtained network 
+> ##D geneNetworkSummary(ARTIVAtest$network, edgesThreshold = 0.3)
+> ##D 
+> ##D # List of target genes to be analyzed independantly with ARTIVA
+> ##D targetGenes = c("TF3", 45, 50)
+> ##D ARTIVAtest2 = ARTIVAnet(targetData = simulatedProfiles[targetGenes,],
+> ##D   parentData = simulatedProfiles[parentGenes,],
+> ##D   targetName = targetGenes,
+> ##D   parentNames = parentGenes,
+> ##D   segMinLength = 2,
+> ##D   edgesThreshold = 0.6, 
+> ##D   niter= 2000,
+> ##D   savePictures=FALSE)
+> ##D 
+> ##D # Print a summary of the obtained network 
+> ##D geneNetworkSummary(ARTIVAtest2, edgesThreshold = 0.3)
+> ##D 
+> ##D # Re-compute a time-varying network from the output of function 
+> ##D # ARTIVAsubnet with new analysis parameters
+> ##D analysis2 = ARTIVAsubnetAnalysis(ARTIVAsubnet=ARTIVAtest,
+> ##D   segMinLength = 3,
+> ##D   edgesThreshold = 0.5,
+> ##D   outputPath="ARTIVAsubnet2",
+> ##D   savePictures=FALSE)
+> ##D 
+> ##D # Print a summary of the network obtained with the 2nd analysis.
+> ##D geneNetworkSummary(analysis2$network, edgesThreshold = 0.3)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("geneNetworkSummary", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotCP.postDist")
+> ### * plotCP.postDist
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotCP.postDist
+> ### Title: Function to plot the estimated posterior distribution for the
+> ###   changepoints (CPs) number and position
+> ### Aliases: plotCP.postDist
+> ### Keywords: graphics util
+> 
+> ### ** Examples
+> 
+> # Load the ARTIVA R package
+> library(ARTIVA)
+> 
+> # Load the dataset with simulated gene expression profiles
+> data(simulatedProfiles)
+> 
+> # Name of the target gene to be analyzed with ARTIVA 
+> targetGene = 1
+> 
+> # Names of the parent genes (typically transcription factors) 
+> parentGenes = c("TF1", "TF2", "TF3", "TF4", "TF5")
+> 
+> # run ARTIVAsubnet
+> # Note that the number of iterations in the RJ-MCMC sampling is reduced 
+> # to 'niter=20000' in this example, but it should be increased (e.g. up to
+> # 50000) for a better estimation.
+> 
+> ## Not run: 
+> ##D ARTIVAtest = ARTIVAsubnet(targetData = simulatedProfiles[targetGene,],
+> ##D   parentData = simulatedProfiles[parentGenes,],
+> ##D   targetName = targetGene,
+> ##D   parentNames = parentGenes,
+> ##D   segMinLength = 2,
+> ##D   edgesThreshold = 0.6, 
+> ##D   niter= 20000,
+> ##D   savePictures=FALSE)
+> ##D 
+> ##D # compute the PC posterior distribution with other parameters
+> ##D outCPpostDist = CP.postDist(ARTIVAtest$Samples$CP, burn_in=500, 
+> ##D 			    segMinLength=3)
+> ##D 
+> ##D # plot the CP posterior distribution
+> ##D plotCP.postDist(outCPpostDist, targetName=paste("Target", targetGene), 
+> ##D 		  estimatedCPpos=outCPpostDist$estimatedCPpos)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotCP.postDist", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("priors")
+> ### * priors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: priors
+> ### Title: Set of possible priors for the number of changepoints (CPs) or
+> ###   incoming edges.
+> ### Aliases: priors
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> # See some prior probability density when the maximal number of
+> # CPs/parents is equal to 5
+> data(priors)
+> choosePriors(kmax=5,priors)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("priors", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simulatedProfiles")
+> ### * simulatedProfiles
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simulatedProfiles
+> ### Title: Simulated gene expression profiles dataset.
+> ### Aliases: simulatedProfiles
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> 
+> # Load the ARTIVA R package
+> library(ARTIVA)
+> 
+> # Load the simulated profiles dataset
+> data(simulatedProfiles)
+> 
+> # Name of the target gene to be analyzed with ARTIVA 
+> targetGene = 1
+> 
+> # Names of the parent genes (typically transcription factors) 
+> parentGenes = c("TF1", "TF2", "TF3", "TF4", "TF5")
+> 
+> # Plot of the gene expression profiles for target gene and parent genes
+> traceGeneProfiles(targetData= simulatedProfiles[targetGene,], 
++ 		  parentData= simulatedProfiles[parentGenes,])
+> 
+> ###
+> # ARTIVA analysis searching for potential interactions between the target 
+> # genes and a predefined list of parent genes. 
+> ###
+> 
+> # Note that the number of iterations in the RJ-MCMC sampling is reduced 
+> # to in this example to 'niter=20000' in order obtain a quick overview of
+> # the ARTIVAnet fonction, but it should be increased (e.g. up to 50000)
+> # for a better parameter estimation.
+> ## Not run: 
+> ##D ARTIVAtest = ARTIVAsubnet(targetData = simulatedProfiles[targetGene,],
+> ##D   parentData = simulatedProfiles[parentGenes,],
+> ##D   targetName = targetGene,
+> ##D   parentNames = parentGenes,
+> ##D   niter = 5000,
+> ##D   savePictures = FALSE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simulatedProfiles", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("traceGeneProfiles")
+> ### * traceGeneProfiles
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: traceGeneProfiles
+> ### Title: Function to plot the gene expression profiles
+> ### Aliases: traceGeneProfiles
+> ### Keywords: graphics util
+> 
+> ### ** Examples
+> 
+> # Load the R package ARTIVA
+> library(ARTIVA)
+> 
+> # Load the dataset with simulated gene expression profiles
+> data(simulatedProfiles)
+> 
+> # Name of the target gene to be analyzed with ARTIVA 
+> targetGene = 1
+> 
+> # Names of the parent genes (typically transcription factors) 
+> parentGenes = c("TF1", "TF2", "TF3", "TF4", "TF5")
+> 
+> # Plot of the gene expression profiles for target gene and parent genes
+> traceGeneProfiles(targetData= simulatedProfiles[targetGene,], 
++ 		  parentData= simulatedProfiles[parentGenes,])
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("traceGeneProfiles", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("traceNetworks")
+> ### * traceNetworks
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: traceNetworks
+> ### Title: Function to plot the network estimated with functions ARTIVAnet
+> ###   or ARTIVAsubnet
+> ### Aliases: traceNetworks
+> ### Keywords: graphics util
+> 
+> ### ** Examples
+> 
+> # Load the ARTIVA R package
+> library(ARTIVA)
+> 
+> # Load the dataset with simulated gene expression profiles
+> data(simulatedProfiles)
+> 
+> # Name of the target gene to be analyzed with ARTIVA 
+> targetGene = 1
+> 
+> # Names of the parent genes (typically transcription factors) 
+> parentGenes = c("TF1", "TF2", "TF3", "TF4", "TF5")
+> 
+> 
+> # Run the ARTIVAsubnet function
+> # Note that the number of iterations in the RJ-MCMC sampling is reduced 
+> # to 'niter=20000' in this example, but it should be increased (e.g. up to
+> # 50000) for a better estimation.
+> 
+> ## Not run: 
+> ##D ARTIVAtest = ARTIVAsubnet(targetData = simulatedProfiles[targetGene,],
+> ##D   parentData = simulatedProfiles[parentGenes,],
+> ##D   targetName = targetGene,
+> ##D   parentNames = parentGenes,
+> ##D   segMinLength = 2,
+> ##D   edgesThreshold = 0.6, 
+> ##D   niter= 2000,
+> ##D   savePictures=FALSE)
+> ##D 
+> ##D # Re-compute a time-varying network from the output of function 
+> ##D # ARTIVAsubnet with new analysis parameters
+> ##D analysis2 = ARTIVAsubnetAnalysis(ARTIVAsubnet=ARTIVAtest,
+> ##D   segMinLength = 3,
+> ##D   edgesThreshold = 0.5,
+> ##D   outputPath="ARTIVAsubnet2",
+> ##D   savePictures=FALSE)
+> ##D 
+> ##D # Trace the obtained network.
+> ##D traceNetworks(analysis2$network, edgesThreshold = 0.3)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("traceNetworks", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("yeast")
+> ### * yeast
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: yeast
+> ### Title: Yeast stress response data
+> ### Aliases: yeast
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ####
+> # Datasets related to the analysis of the genomic response of the yeast 
+> # Saccharomyces cerevisiae to an environmental stress induced by 
+> # benomyl (a toxic compound).
+> # Analysis of the yeast data is presented in the original article of 
+> # ARTIVA (Lebre et al. BMC Syst. Biol, 2010)
+> ####
+> 
+> # Load the yeast dataset
+> data(yeast)
+> # This is a a list that comprises information for the 18 clusters of genes
+> # whose expression is identically modified in strains deleted for
+> # YAP1, PDR1, PDR3 and YRR1 transcription factors,
+> # compared to the wild type strain.
+> 
+> # As an illustration : analysis of one cluster
+> cluster=4
+> 
+> # Different genes in a cluster is considered as repeated measurements.
+> # Organisation of the different time point measurements is described in
+> # variable : yeast[[cluster]]$dataDescription
+> # Beacause of repeated measurements, the minimum segment length is set to
+> # segMinLength = 1.
+> # The parentdata is the experiment design (YAP1, PDR1, PDR3 and YRR1
+> # deletion) described in variable: yeast[[cluster]]$parentData
+> # Time delay between parent and target genes is fixed to dyn=0.
+> ## Not run: 
+> ##D ARTIVAtest = ARTIVAsubnet(targetData = yeast[[cluster]]$targetData,
+> ##D   targetName = yeast[[cluster]]$targetName,
+> ##D   parentData = yeast[[cluster]]$parentData,
+> ##D   parentNames = row.names(yeast[[cluster]]$parentData),
+> ##D   dataDescription = yeast[[cluster]]$dataDescription,
+> ##D   outputPath = paste("ARTIVA_Results_Cluster", cluster, sep = ""),
+> ##D   dyn = 0,
+> ##D   segMinLength = 1,
+> ##D   edgesThreshold = 0.7,
+> ##D   niter = 20000)
+> ## End(Not run)
+> # Detailed results can be found in the folder named
+> # "ARTIVA_Results_Cluster4" (with the subfolders "Estimations" for
+> # detailled results of the estimated parameters and "Pictures" for
+> # graphical representations).
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("yeast", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.28 0.019 0.3 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

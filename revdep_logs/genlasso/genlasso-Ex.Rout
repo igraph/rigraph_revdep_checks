@@ -1,0 +1,506 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "genlasso"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "genlasso-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('genlasso')
+Loading required package: MASS
+Loading required package: Matrix
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("coef.genlasso")
+> ### * coef.genlasso
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: coef.genlasso
+> ### Title: Extract cefficients from a genlasso object
+> ### Aliases: coef.genlasso
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> # Constant trend filtering (the 1d fused lasso)
+> set.seed(0)
+> n = 20
+> beta0 = rep(sample(1:10,5),each=n/5)
+> y = beta0 + rnorm(n,sd=0.5)
+> a = fusedlasso1d(y)
+> 
+> # Get the coefficients that use 3, 4, and 5 degrees
+> # of freedom 
+> coef(a,df=3:5)
+$beta
+             3        4        5
+ [1,] 7.408399 8.538306 8.589766
+ [2,] 7.408399 8.538306 8.589766
+ [3,] 7.408399 8.538306 8.589766
+ [4,] 7.408399 8.538306 8.589766
+ [5,] 6.437393 4.177579 4.074660
+ [6,] 6.437393 4.177579 4.074660
+ [7,] 6.437393 4.177579 4.074660
+ [8,] 6.437393 4.177579 4.074660
+ [9,] 6.632836 8.892650 9.029876
+[10,] 6.632836 8.892650 9.029876
+[11,] 6.632836 8.892650 9.029876
+[12,] 6.632836 8.892650 8.892650
+[13,] 6.632836 6.067883 6.042153
+[14,] 6.632836 6.067883 6.042153
+[15,] 6.632836 6.067883 6.042153
+[16,] 6.632836 6.067883 6.042153
+[17,] 6.632836 6.067883 6.042153
+[18,] 6.632836 6.067883 6.042153
+[19,] 6.632836 6.067883 6.042153
+[20,] 6.632836 6.067883 6.042153
+
+$lambda
+[1] 6.500749 1.981121 1.775283
+
+$df
+[1] 3 4 5
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("coef.genlasso", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cv.trendfilter")
+> ### * cv.trendfilter
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cv.trendfilter
+> ### Title: Perform k-fold cross-validation to choose a trend filtering
+> ###   model
+> ### Aliases: cv.trendfilter
+> ### Keywords: utilities
+> 
+> ### ** Examples
+> 
+> # Constant trend filtering (the 1d fused lasso)
+> set.seed(0)
+> n = 50
+> beta0 = rep(sample(1:10,5),each=n/5)
+> y = beta0 + rnorm(n,sd=0.8)
+> a = fusedlasso1d(y)
+> plot(a)
+> 
+> # Choose lambda by 5-fold cross-validation
+> cv = cv.trendfilter(a)
+Fold 1 ... Fold 2 ... Fold 3 ... Fold 4 ... Fold 5 ... 
+> plot(cv)
+> plot(a,lambda=cv$lambda.min,main="Minimal CV error")
+> plot(a,lambda=cv$lambda.1se,main="One standard error rule")
+> 
+> ## Not run: 
+> ##D # Cubic trend filtering
+> ##D set.seed(0)
+> ##D n = 100
+> ##D beta0 = numeric(100)
+> ##D beta0[1:40] = (1:40-20)^3
+> ##D beta0[40:50] = -60*(40:50-50)^2 + 60*100+20^3
+> ##D beta0[50:70] = -20*(50:70-50)^2 + 60*100+20^3
+> ##D beta0[70:100] = -1/6*(70:100-110)^3 + -1/6*40^3 + 6000
+> ##D beta0 = -beta0
+> ##D beta0 = (beta0-min(beta0))*10/diff(range(beta0))
+> ##D y = beta0 + rnorm(n)
+> ##D a = trendfilter(y,ord=3,maxsteps=150)
+> ##D plot(a,nlam=5)
+> ##D 
+> ##D # Choose lambda by 5-fold cross-validation
+> ##D cv = cv.trendfilter(a)
+> ##D plot(cv)
+> ##D plot(a,lambda=cv$lambda.min,main="Minimal CV error")
+> ##D plot(a,lambda=cv$lambda.1se,main="One standard error rule")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cv.trendfilter", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fusedlasso")
+> ### * fusedlasso
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fusedlasso
+> ### Title: Compute the fused lasso solution path for a general graph, or a
+> ###   1d or 2d grid
+> ### Aliases: fusedlasso fusedlasso1d fusedlasso2d
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Fused lasso on a custom graph
+> set.seed(0)
+> edges = c(1,2,1,3,1,5,2,4,2,5,3,6,3,7,3,8,6,7,6,8)
+> gr = graph(edges=edges,directed=FALSE)
+> plot(gr)
+> y = c(1,1,0,1,1,0,0,0) + rnorm(8,0.1)
+> 
+> # Can either pass the graph object directly, or
+> # first construct the penalty matrix, and then
+> # pass this
+> a1 = fusedlasso(y,graph=gr)
+> D = getDgSparse(gr)
+> a2 = fusedlasso(y,D=D)
+> 
+> plot(a1,numbers=TRUE)
+> 
+> ## Not run: 
+> ##D # The 2d fused lasso with a predictor matrix X
+> ##D set.seed(0)
+> ##D dim1 = dim2 = 16
+> ##D p = dim1*dim2
+> ##D n = 300
+> ##D X = matrix(rnorm(n*p),nrow=n)
+> ##D beta0 = matrix(0,dim1,dim2)
+> ##D beta0[(row(beta0)-dim1/2)^2 + (col(beta0)-dim2/2)^2 <=
+> ##D (min(dim1,dim2)/3)^2] = 1
+> ##D y = X %*% as.numeric(beta0) + rnorm(n)
+> ##D 
+> ##D # Takes about 30 seconds for the full solution path
+> ##D out = fusedlasso2d(y,X,dim1=dim1,dim2=dim2)
+> ##D 
+> ##D # Grab the solution at 8 values of lambda over the path
+> ##D a = coef(out,nlam=8)
+> ##D 
+> ##D # Plot these against the true coefficients
+> ##D par(mar=c(1,1,2,1),mfrow=c(3,3))
+> ##D cols = terrain.colors(30)
+> ##D zlim = range(c(range(beta0),range(a$beta)))
+> ##D image(beta0,col=cols,zlim=zlim,axes=FALSE)
+> ##D 
+> ##D for (i in 1:8) {
+> ##D   image(matrix(a$beta[,i],nrow=dim1),col=cols,zlim=zlim,
+> ##D   axes=FALSE)
+> ##D   mtext(bquote(lambda==.(sprintf("%.3f",a$lambda[i]))))
+> ##D }
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fusedlasso", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("genlasso")
+> ### * genlasso
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: genlasso
+> ### Title: Compute the generalized lasso solution path for arbitrary
+> ###   penalty matrix
+> ### Aliases: genlasso print.genlasso print.summary.genlasso
+> ###   summary.genlasso
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Using the generalized lasso to run a standard lasso regression
+> # (for example purposes only! for pure lasso problems, use LARS
+> # instead)
+> set.seed(1)
+> n = 100
+> p = 10
+> X = matrix(rnorm(n*p),nrow=n)
+> y = 3*X[,1] + rnorm(n)
+> D = diag(1,p)
+> out = genlasso(y,X,D)
+> coef(out, lambda=sqrt(n*log(p)))
+$beta
+             15.174
+ [1,]  2.656231e+00
+ [2,]  1.811714e-16
+ [3,] -1.126276e-17
+ [4,] -2.906445e-16
+ [5,]  3.957981e-16
+ [6,] -9.506691e-17
+ [7,] -7.429587e-17
+ [8,] -3.868683e-17
+ [9,] -8.436640e-17
+[10,]  2.438849e-16
+
+$lambda
+[1] 15.17427
+
+$df
+[1] 91
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("genlasso", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getD2d")
+> ### * getD2d
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getDxx
+> ### Title: Helper functions for constructing generalized lasso penalty
+> ###   matrices
+> ### Aliases: getD1dSparse getD2dSparse getDgSparse getDtfSparse
+> ###   getDtfPosSparse getD1d getD2d getDg getDtf getDtfPos getGraph
+> ### Keywords: utilities
+> 
+> ### ** Examples
+> 
+> getD1d(9)
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9]
+[1,]   -1    1    0    0    0    0    0    0    0
+[2,]    0   -1    1    0    0    0    0    0    0
+[3,]    0    0   -1    1    0    0    0    0    0
+[4,]    0    0    0   -1    1    0    0    0    0
+[5,]    0    0    0    0   -1    1    0    0    0
+[6,]    0    0    0    0    0   -1    1    0    0
+[7,]    0    0    0    0    0    0   -1    1    0
+[8,]    0    0    0    0    0    0    0   -1    1
+> getDtfSparse(10,2)
+7 x 10 sparse Matrix of class "dgCMatrix"
+                                 
+[1,] -1  3 -3  1  .  .  .  .  . .
+[2,]  . -1  3 -3  1  .  .  .  . .
+[3,]  .  . -1  3 -3  1  .  .  . .
+[4,]  .  .  . -1  3 -3  1  .  . .
+[5,]  .  .  .  . -1  3 -3  1  . .
+[6,]  .  .  .  .  . -1  3 -3  1 .
+[7,]  .  .  .  .  .  . -1  3 -3 1
+> 
+> graph = getGraph(getD2dSparse(4,4))
+> plot(graph)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getD2d", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("iterate")
+> ### * iterate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: iterate
+> ### Title: Iterate a genlasso object
+> ### Aliases: iterate
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+>   # Sparse 2d fused lasso
+>   library(genlasso)
+>   set.seed(1)
+>   dim1 = dim2 = 10
+>   n = 100
+>   y = as.numeric(row(diag(dim1)) > 5 & col(diag(dim2)) > 5) * 3 + rnorm(n)
+> 
+>   a10 = fusedlasso2d(y, dim1=dim1, dim2=dim2, gamma=0.5, maxsteps=10)
+>   a20 = fusedlasso2d(y, dim1=dim1, dim2=dim2, gamma=0.5, maxsteps=20)
+>   a30 = fusedlasso2d(y, dim1=dim1, dim2=dim2, gamma=0.5, maxsteps=30)
+>   b20 = iterate(a10, moresteps=10)
+>   b30 = iterate(b20, moresteps=10)
+> 
+>   # Check for equality; should match on all but 'call'
+>   b20$call = a20$call
+>   b30$call = a30$call
+>   all.equal(target=a20, current=b20)
+[1] "Component “pathobjs”: Component “gr”: Component 10: Names: 1 string mismatch"                                    
+[2] "Component “pathobjs”: Component “gr”: Component 10: Length mismatch: comparison on first 2 components"           
+[3] "Component “pathobjs”: Component “gr”: Component 10: Component 2: Modes: character, list"                         
+[4] "Component “pathobjs”: Component “gr”: Component 10: Component 2: Lengths: 1, 10"                                 
+[5] "Component “pathobjs”: Component “gr”: Component 10: Component 2: Attributes: < target is NULL, current is list >"
+[6] "Component “pathobjs”: Component “gr”: Component 10: Component 2: target is character, current is igraph"         
+>   all.equal(target=a30, current=b30)
+[1] "Component “pathobjs”: Component “gr”: Component 10: Component 3: 1 string mismatch"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("iterate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.genlasso")
+> ### * plot.genlasso
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.genlasso
+> ### Title: Plotting methods for generalized lasso objects
+> ### Aliases: plot.genlasso plot.trendfilter plot.cv.trendfilter
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> # Constant trend filtering (the 1d fused lasso)
+> set.seed(0)
+> n = 100
+> beta0 = rep(sample(1:10,5),each=n/5)
+> y = beta0 + rnorm(n,sd=0.8)
+> a = fusedlasso1d(y)
+> cv = cv.trendfilter(a)
+Fold 1 ... Fold 2 ... Fold 3 ... Fold 4 ... Fold 5 ... 
+> 
+> plot(a,style="path")
+> plot(cv)
+> plot(a,lambda=cv$lambda.1se)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.genlasso", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("softthresh")
+> ### * softthresh
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: softthresh
+> ### Title: Fit a sparse variant of the fused lasso
+> ### Aliases: softthresh
+> ### Keywords: utilities
+> 
+> ### ** Examples
+> 
+> # The 1d fused lasso
+> set.seed(0)
+> n = 100
+> beta0 = rep(sample(1:10,5),each=n/5)
+> beta0 = beta0-mean(beta0)
+> y = beta0 + rnorm(n,sd=0.8)
+> a = fusedlasso1d(y)
+> 
+> lambda = 4
+> b1 = coef(a,lambda=lambda)$beta
+> 
+> gamma = 0.5
+> b2 = softthresh(a,lambda=lambda,gamma=gamma)
+> 
+> plot(1:n,y)
+> lines(1:n,b1)
+> lines(1:n,b2,col="red")
+> legend("topright",lty=1,col=c("black","red"),
++        legend=c(expression(gamma==0),expression(gamma==0.5)))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("softthresh", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("trendfilter")
+> ### * trendfilter
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: trendfilter
+> ### Title: Compute the trend filtering solution path for any polynomial
+> ###   order
+> ### Aliases: trendfilter
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Constant trend filtering (the 1d fused lasso)
+> set.seed(0)
+> n = 100
+> beta0 = rep(sample(1:10,5),each=n/5)
+> y = beta0 + rnorm(n,sd=0.8)
+> a = fusedlasso1d(y)
+> plot(a)
+> 
+> # Linear trend filtering
+> set.seed(0)
+> n = 100
+> beta0 = numeric(n)
+> beta0[1:20] = (0:19)*4/19+2
+> beta0[20:45] = (25:0)*3/25+3
+> beta0[45:80] = (0:35)*9/35+3
+> beta0[80:100] = (20:0)*4/20+8
+> y = beta0 + rnorm(n)
+> a = trendfilter(y,ord=1)
+> plot(a,df=c(2,3,4,10))
+> 
+> # Cubic trend filtering
+> set.seed(0)
+> n = 100
+> beta0 = numeric(100)
+> beta0[1:40] = (1:40-20)^3
+> beta0[40:50] = -60*(40:50-50)^2 + 60*100+20^3
+> beta0[50:70] = -20*(50:70-50)^2 + 60*100+20^3
+> beta0[70:100] = -1/6*(70:100-110)^3 + -1/6*40^3 + 6000
+> beta0 = -beta0
+> beta0 = (beta0-min(beta0))*10/diff(range(beta0))
+> y = beta0 + rnorm(n)
+> a = trendfilter(y,ord=3)
+> plot(a,nlam=5)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("trendfilter", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  5.668 0.074 5.755 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

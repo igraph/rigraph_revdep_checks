@@ -1,0 +1,9 @@
+* installing *source* package ‘dcGOR’ ...
+** package ‘dcGOR’ successfully unpacked and MD5 sums checked
+** R
+** data
+** inst
+** preparing package for lazy loading
+Error : package ‘supraHex’ required by ‘dnet’ could not be found
+ERROR: lazy loading failed for package ‘dcGOR’
+* removing ‘/Users/gaborcsardi/works/igraph/revdep_check/dcGOR.Rcheck/dcGOR’

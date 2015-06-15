@@ -1,0 +1,635 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "dynatopmodel"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "dynatopmodel-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('dynatopmodel')
+Loading required package: raster
+Loading required package: sp
+Loading required package: xts
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("add.disc")
+> ### * add.disc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: add.disc
+> ### Title: Add new or replace an existing discretisation
+> ### Aliases: add.disc
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # load the Morland Eden DTC test project
+> ##D require(dynatopmod)
+> ##D data(mor)
+> ##D 
+> ##D # discretise by slope and aspect
+> ##D slope <- terrain(mor$dem, opt="slope", unit="degrees")
+> ##D a <- upslope.area(mor$dem)
+> ##D 
+> ##D # new catchment stack
+> ##D mor$catch <- stack(list("a"=a, "slope"=slope))
+> ##D # new discretisation 
+> ##D disc <- add.disc(mor, a=4, slope=3)
+> ##D plot(mor$disc$hru)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("add.disc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("apply.params")
+> ### * apply.params
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: apply.params
+> ### Title: Apply parameters to all sets in a project
+> ### Aliases: apply.params
+> 
+> ### ** Examples
+> 
+>   ## Not run: 
+> ##D   require(dynatopmod)
+> ##D   
+> ##D   # load the Morland DTC project
+> ##D   data(mor)
+> ##D   data(mor.demo.run)
+> ##D   mor$obs$qobs <- with(mor.demo.run, cbind("Observed"=ts[,"qobs"], "lnt0=11.8"=ts[,"qsim"])) 
+> ##D   mor$sim.start<-start(mor.demo.run$qobs)
+> ##D   mor$sim.end<-end(mor.demo.run$qobs)
+> ##D   # see the effect of reducing the saturated transmissivity
+> ##D   mor <- apply.params(mor, list(ln_t0=10))
+> ##D   
+> ##D   run.proj(mor)
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("apply.params", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("approx.pe.ts")
+> ### * approx.pe.ts
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: approx.pe.ts
+> ### Title: Estimate potential evapotranspiration
+> ### Aliases: approx.pe.ts
+> ### Keywords: ~evapotranspiration
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D   require(dynatopmod)
+> ##D 
+> ##D # generate a time series of p.e using an annual daily maximum of 3mm
+> ##D   pe <- approx.pe.ts("2013-01-01", "2013-12-31", emax=3/1000)
+> ##D   
+> ##D   # show a few months
+> ##D   plot.zoo(pe["2013-05-01::2013-07-31"])
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("approx.pe.ts", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("build.calib.set")
+> ### * build.calib.set
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: build.calib.set
+> ### Title: Construct Latin hypercube of Dynamic TOPMODEL parameters
+> ### Aliases: build.calib.set
+> ### Keywords: ~calibration
+> 
+> ### ** Examples
+> 
+>   ## Not run: 
+> ##D   require(dynatopmod)
+> ##D   
+> ##D   # load the Morland DTC project
+> ##D   data(mor)
+> ##D   
+> ##D   # initial parameter values
+> ##D   hru <- mor$disc[[1]]$groups
+> ##D   
+> ##D   # parameter value ranges
+> ##D   m <-seq(0.007, 0.011, by=0.001)
+> ##D   ln_t0<-seq(13.2, 15.2, by=0.4)
+> ##D   
+> ##D   # explicit values for less sensitive parameters
+> ##D   td <- c(0.5, 1, 10)
+> ##D   vchan <- seq(500, 4000, by=500)
+> ##D   
+> ##D   # build a calibration set
+> ##D   calib.set <- build.calib.set(groups=hru, 
+> ##D                              list(td=td, vchan=vchan, ln_t0=ln_t0, m=m)))
+> ##D 
+> ##D   cat("No. calibration sets = ", nrow(calib.set), "\n")
+> ##D 
+> ##D   res <- run.sets(mor, calib.set=calib.set)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("build.calib.set", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("create.proj")
+> ### * create.proj
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: create.proj
+> ### Title: Create and / or load Dynamic TOPMODEL project
+> ### Aliases: create.proj
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D   require(dynatopmod)
+> ##D   # Load data for morland catchment
+> ##D   data(mor)
+> ##D   # write to a new temporary directory
+> ##D   dn <- file.path(Sys.getenv("TMP"), "morland")
+> ##D   write.proj(mor, dn)
+> ##D   # examine contents
+> ##D   dir(dn)  
+> ##D   
+> ##D   # reload the project, adding a new discretisation
+> ##D   new.proj <- create.proj(dn, cuts=c(a=20))
+> ##D   
+> ##D   # show
+> ##D   dev.new()
+> ##D   plot(new.proj$dem)
+> ##D   plot(new.proj$drn, add=T, col="blue", lwd=2)
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("create.proj", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("disc.catch")
+> ### * disc.catch
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: disc.catch
+> ### Title: Discretisation from a multi-band raster of catchment landscape
+> ###   layers
+> ### Aliases: disc.catch
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # load the Morland Eden DTC mitigation catchment
+> ##D require(dynatopmod.dtm)
+> ##D data(mor)
+> ##D attach(mor)
+> ##D 
+> ##D # discretise by slope and and upslope area
+> ##D slope <- terrain(dem, opt="slope", unit="degrees")
+> ##D a <- upslope.area(dem)
+> ##D # create a two-band catchment raster
+> ##D catch <- stack(list("a"=a, "slope"=slope))
+> ##D disc <- disc.catch(dem, catch, cuts=c(a=4,slope=3), drn=drn)
+> ##D # show  results
+> ##D dev.new()
+> ##D plot(disc$hru)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("disc.catch", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("disp.run")
+> ### * disp.run
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: disp.run
+> ### Title: Display results of a Dynamic TOPMODEL simulation run
+> ### Aliases: disp.run
+> 
+> ### ** Examples
+> 
+>  ## Not run: 
+> ##D   require(dynatopmod)
+> ##D   # pre run simulation taken from Morland DTC. Manual calibration
+> ##D   data(mor_demo_run)  
+> ##D   disp.run(mor.demo.run, title="Morland Beck, Eden DTC. 10.1 sq.km")
+> ##D   title(sub="Discharge data collected and rated by Eden DTC Team http://www.edendtc.org.uk.\n
+> ##D   Rainfall from Casella TBR AWS. PE estimated. All data at 15 minute intervals", cex.sub=0.75)
+> ##D 
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("disp.run", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gr.off")
+> ### * gr.off
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gr.off
+> ### Title: Switch off graphical output for simulation runs.
+> ### Aliases: gr.off
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+>  ## Not run: 
+> ##D   require(dynatopmod)
+> ##D   
+> ##D   # load the Morland DTC project
+> ##D   data(mor)
+> ##D   
+> ##D   # run with console output only
+> ##D   mor <- graphics.off(mor)
+> ##D   run.proj(mor)
+> ##D   
+> ##D   
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gr.off", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gr.on")
+> ### * gr.on
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gr.on
+> ### Title: Switch on graphical output
+> ### Aliases: gr.on
+> 
+> ### ** Examples
+> 
+>  ## Not run: 
+> ##D   require(dynatopmod)
+> ##D   
+> ##D   # load the Morland DTC project
+> ##D   data(mor)
+> ##D   
+> ##D   # run with console output only
+> ##D   mor <- graphics.on(mor)
+> ##D   run.proj(mor)
+> ##D   
+> ##D   
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gr.on", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gwy.demo.run")
+> ### * gwy.demo.run
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gwy.demo.run
+> ### Title: Calibration run for Gwy catchment
+> ### Aliases: gwy.demo.run
+> ### Keywords: ~Gwy ~Calibration
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D require(dynatopmodel)
+> ##D data(gwy_demo_run)
+> ##D # plot all series: simulated discharges, pe and ae
+> ##D plot.zoo(gwy.demo.run)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gwy.demo.run", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mor")
+> ### * mor
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mor
+> ### Title: Hydrometric and topographic data for the Morland Beck test
+> ###   catchment, Eden DTC.
+> ### Aliases: mor
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D require(dynatopmod)
+> ##D 
+> ##D data(mor)
+> ##D 
+> ##D dev.new()
+> ##D attach(mor)
+> ##D 
+> ##D par(family="serif")
+> ##D plot(dem, legend=F)
+> ##D grid()
+> ##D contour(dem, add=T, col="brown", nlevels=30)
+> ##D plot(drn, add=T, col="blue")
+> ##D 
+> ##D # monitoring locations and AWS
+> ##D plot(sites, add=T, col=rainbow(6), pch=16)
+> ##D legend(x="bottomright", cex=0.8, legend=sites@data$Site_id, col=rainbow(6), bg="white", pch=16)
+> ##D compassRose(x="topleft", cex=0.9)
+> ##D scalebar(d=1000, x=c(356000, 516000), type="bar", cex=0.9, below="m", divs=5)
+> ##D title(sub="Fig1: Morland Beck, Eden DTC (10.1 sq.km),showing locations of automated weather,\n 
+> ##D   flow and water quality monitoring sites and approx location of channel network.", 
+> ##D   cex.sub=0.8, adj=0)
+> ##D   detach(mor)
+> ##D 
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mor", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mor.demo.run")
+> ### * mor.demo.run
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mor.demo.run
+> ### Title: Demo run for Morland test catchment
+> ### Aliases: mor.demo.run
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(mor_demo_run)
+> ##D disp.run(mor.demo.run)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mor.demo.run", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rebuild.disc")
+> ### * rebuild.disc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rebuild.disc
+> ### Title: Rebuild an existing discretisation
+> ### Aliases: rebuild.disc
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D require(dynatopmodel)
+> ##D data(mor)
+> ##D # rebuild the test discretisation
+> ##D rebuild.disc(mor)
+> ##D # show
+> ##D dir(mor$disc[[1]]$dir)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rebuild.disc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("run.gof")
+> ### * run.gof
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: run.gof
+> ### Title: Quantatitive goodness of fit measures
+> ### Aliases: run.gof
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D   require(dynatopmod)
+> ##D   data(mor_demo_run)  
+> ##D   with(mor.demo.run, run.gof(qsim, qobs))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("run.gof", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("run.proj")
+> ### * run.proj
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: run.proj
+> ### Title: Run a Dynamic TOPMODEL simulation
+> ### Aliases: run.proj
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # morland demo catchment
+> ##D data(mor)
+> ##D run<-run.proj(mor)
+> ##D disp.run(run)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("run.proj", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("run.sets")
+> ### * run.sets
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: run.sets
+> ### Title: Run model against an ensemble of parameter sets
+> ### Aliases: run.sets
+> ### Keywords: ~calibration ~TOPMODEL
+> 
+> ### ** Examples
+> 
+>  ## Not run: 
+> ##D   require(dynatopmod)
+> ##D   
+> ##D   # load the Morland DTC project
+> ##D   data(mor)
+> ##D   
+> ##D   # initial parameter values
+> ##D   hru <- mor$disc[[1]]$groups
+> ##D   
+> ##D   # parameter value ranges
+> ##D   m <-seq(0.005, 0.01, by=0.001)
+> ##D   ln_t0<-seq(11, 12, by=0.1)
+> ##D   
+> ##D   # explicit values for less sensitive parameters
+> ##D   td <- c(0.5, 1, 10)
+> ##D   vchan <- seq(1500, 5500, by=1000)
+> ##D   
+> ##D   # build a calibration set
+> ##D   calib.set <- build.calib.set(groups=hru, 
+> ##D                              list(td=td, vchan=vchan, ln_t0=ln_t0, m=m))
+> ##D 
+> ##D   cat("No. calibration sets = ", nrow(calib.set), "\n")
+> ##D 
+> ##D   res <- run.sets(mor, calib.set=calib.set)
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("run.sets", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("upslope.area")
+> ### * upslope.area
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: upslope.area
+> ### Title: Upslope contributing area and wetness index calculation
+> ### Aliases: upslope.area
+> 
+> ### ** Examples
+> 
+> 
+> ## Not run: 
+> ##D require(dynatopmod)
+> ##D data(mor)
+> ##D a.atb <- upslope.area(mor$dem, atb=T)
+> ##D plot(a.atb)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("upslope.area", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("write.proj")
+> ### * write.proj
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: write.proj
+> ### Title: Write a project contents to disk
+> ### Aliases: write.proj
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+>   ## Not run: 
+> ##D   require(dynatopmod)
+> ##D   # Load data for morland catchment
+> ##D   data(mor)
+> ##D   # write to a new temporary directory
+> ##D   dn <- file.path(Sys.getenv("TMP"), "morland")
+> ##D   write.proj(mor, dn)
+> ##D   # examine contents
+> ##D   dir(dn)  
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("write.proj", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  2.197 0.057 2.262 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

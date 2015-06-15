@@ -1,0 +1,273 @@
+* installing *source* package ‘camel’ ...
+** package ‘camel’ successfully unpacked and MD5 sums checked
+** libs
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c SFGen.c -o SFGen.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c cmr_sparse_mfista.c -o cmr_sparse_mfista.o
+cmr_sparse_mfista.c:248:33: warning: using the result of an assignment as a condition without parentheses [-Wparentheses]
+                if(F_ls[n_ls-1] = F_ls[0])
+                   ~~~~~~~~~~~~~^~~~~~~~~
+cmr_sparse_mfista.c:248:33: note: place parentheses around the assignment to silence this warning
+                if(F_ls[n_ls-1] = F_ls[0])
+                                ^
+                   (                     )
+cmr_sparse_mfista.c:248:33: note: use '==' to turn this assignment into an equality comparison
+                if(F_ls[n_ls-1] = F_ls[0])
+                                ^
+                                ==
+cmr_sparse_mfista.c:14:12: warning: unused variable 'norm_dif' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT,tmp;
+           ^
+cmr_sparse_mfista.c:14:21: warning: unused variable 'z_dif' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT,tmp;
+                    ^
+cmr_sparse_mfista.c:15:20: warning: unused variable 'end' [-Wunused-variable]
+    clock_t start, end;
+                   ^
+cmr_sparse_mfista.c:15:13: warning: unused variable 'start' [-Wunused-variable]
+    clock_t start, end;
+            ^
+cmr_sparse_mfista.c:11:9: warning: unused variable 'size' [-Wunused-variable]
+    int size,size_x0, size_y1, size_z1, w_idx, min_dm, max_dm, dm,flag,n_ls,cnt_ls;
+        ^
+cmr_sparse_mfista.c:13:30: warning: unused variable 'z1_norm1' [-Wunused-variable]
+    double x1_norm1,y1_norm1,z1_norm1,y1_norm1_pre,obj_base,ilambda,ilambda0,Q,Fx,Fz;
+                             ^
+cmr_sparse_mfista.c:13:39: warning: unused variable 'y1_norm1_pre' [-Wunused-variable]
+    double x1_norm1,y1_norm1,z1_norm1,y1_norm1_pre,obj_base,ilambda,ilambda0,Q,Fx,Fz;
+                                      ^
+cmr_sparse_mfista.c:14:70: warning: unused variable 'tmp' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT,tmp;
+                                                                     ^
+cmr_sparse_mfista.c:12:26: warning: unused variable 'cpuTime' [-Wunused-variable]
+    double T,Tinv,T0,imu,cpuTime,opt_dif,zero,fro;
+                         ^
+cmr_sparse_mfista.c:14:27: warning: unused variable 'x_dif' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT,tmp;
+                          ^
+cmr_sparse_mfista.c:14:40: warning: unused variable 'obj_tmp' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT,tmp;
+                                       ^
+cmr_sparse_mfista.c:10:13: warning: unused variable 'k' [-Wunused-variable]
+    int i,j,k,m,dim,ndata,mdata,nlambda,max_ite1,ite0,ite1,ite2,ite21,gap_track;
+            ^
+cmr_sparse_mfista.c:11:41: warning: unused variable 'w_idx' [-Wunused-variable]
+    int size,size_x0, size_y1, size_z1, w_idx, min_dm, max_dm, dm,flag,n_ls,cnt_ls;
+                                        ^
+14 warnings generated.
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c euc_proj.c -o euc_proj.o
+euc_proj.c:200:20: warning: unused variable 'runt' [-Wunused-variable]
+    double lambda, runt;
+                   ^
+1 warning generated.
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c mymath.c -o mymath.o
+mymath.c:252:12: warning: unused variable 'mu' [-Wunused-variable]
+    double mu, zero, tmp_sum;
+           ^
+1 warning generated.
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c slim_dantzig_mfista.c -o slim_dantzig_mfista.o
+slim_dantzig_mfista.c:78:24: warning: '&&' within '||' [-Wlogical-op-parentheses]
+                if(i>0 && *intercept==1 || *intercept==0){
+                   ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_dantzig_mfista.c:78:24: note: place parentheses around the '&&' expression to silence this warning
+                if(i>0 && *intercept==1 || *intercept==0){
+                       ^
+                   (                   )
+slim_dantzig_mfista.c:108:20: warning: '&&' within '||' [-Wlogical-op-parentheses]
+            if(i>0 && *intercept==1 || *intercept==0){
+               ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_dantzig_mfista.c:108:20: note: place parentheses around the '&&' expression to silence this warning
+            if(i>0 && *intercept==1 || *intercept==0){
+                   ^
+               (                   )
+slim_dantzig_mfista.c:176:32: warning: '&&' within '||' [-Wlogical-op-parentheses]
+                        if(i>0 && *intercept==1 || *intercept==0){
+                           ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_dantzig_mfista.c:176:32: note: place parentheses around the '&&' expression to silence this warning
+                        if(i>0 && *intercept==1 || *intercept==0){
+                               ^
+                           (                   )
+slim_dantzig_mfista.c:202:28: warning: '&&' within '||' [-Wlogical-op-parentheses]
+                    if(i>0 && *intercept==1 || *intercept==0){
+                       ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_dantzig_mfista.c:202:28: note: place parentheses around the '&&' expression to silence this warning
+                    if(i>0 && *intercept==1 || *intercept==0){
+                           ^
+                       (                   )
+slim_dantzig_mfista.c:14:12: warning: unused variable 'norm_dif' [-Wunused-variable]
+    double norm_dif,z_dif,y1_dif,opt_dif,eps1,t1,t2,ratio1,ratio2,epsT;
+           ^
+slim_dantzig_mfista.c:10:11: warning: unused variable 'j' [-Wunused-variable]
+    int i,j,m,dim,ndata,nlambda,max_ite1,ite0,gap_track,ite1,ite2,ite21;
+          ^
+slim_dantzig_mfista.c:11:43: warning: unused variable 'cnt1' [-Wunused-variable]
+    int size_x0, size_y1, size_z1, w_idx, cnt1;
+                                          ^
+slim_dantzig_mfista.c:12:43: warning: unused variable 'tmp' [-Wunused-variable]
+    double T,T0,imu,ilambda,Q,Fx,Fz, runt,tmp;
+                                          ^
+slim_dantzig_mfista.c:15:13: warning: unused variable 'start' [-Wunused-variable]
+    clock_t start, end;
+            ^
+slim_dantzig_mfista.c:13:12: warning: unused variable 'u_norm1x' [-Wunused-variable]
+    double u_norm1x,x1_norm1,y1_norm1,z1_norm1,y1_norm1_pre,obj_base;
+           ^
+slim_dantzig_mfista.c:15:20: warning: unused variable 'end' [-Wunused-variable]
+    clock_t start, end;
+                   ^
+11 warnings generated.
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c slim_lad_mfista.c -o slim_lad_mfista.o
+slim_lad_mfista.c:75:24: warning: '&&' within '||' [-Wlogical-op-parentheses]
+                if(i>0 && *intercept==1 || *intercept==0){
+                   ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_lad_mfista.c:75:24: note: place parentheses around the '&&' expression to silence this warning
+                if(i>0 && *intercept==1 || *intercept==0){
+                       ^
+                   (                   )
+slim_lad_mfista.c:106:20: warning: '&&' within '||' [-Wlogical-op-parentheses]
+            if(i>0 && *intercept==1 || *intercept==0){
+               ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_lad_mfista.c:106:20: note: place parentheses around the '&&' expression to silence this warning
+            if(i>0 && *intercept==1 || *intercept==0){
+                   ^
+               (                   )
+slim_lad_mfista.c:174:32: warning: '&&' within '||' [-Wlogical-op-parentheses]
+                        if(i>0 && *intercept==1 || *intercept==0){
+                           ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_lad_mfista.c:174:32: note: place parentheses around the '&&' expression to silence this warning
+                        if(i>0 && *intercept==1 || *intercept==0){
+                               ^
+                           (                   )
+slim_lad_mfista.c:201:28: warning: '&&' within '||' [-Wlogical-op-parentheses]
+                    if(i>0 && *intercept==1 || *intercept==0){
+                       ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_lad_mfista.c:201:28: note: place parentheses around the '&&' expression to silence this warning
+                    if(i>0 && *intercept==1 || *intercept==0){
+                           ^
+                       (                   )
+slim_lad_mfista.c:14:27: warning: unused variable 'x_dif' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT;
+                          ^
+slim_lad_mfista.c:14:40: warning: unused variable 'obj_tmp' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT;
+                                       ^
+slim_lad_mfista.c:12:21: warning: unused variable 'cpuTime' [-Wunused-variable]
+    double T,T0,imu,cpuTime,opt_dif;
+                    ^
+slim_lad_mfista.c:15:13: warning: unused variable 'start' [-Wunused-variable]
+    clock_t start, end;
+            ^
+slim_lad_mfista.c:15:20: warning: unused variable 'end' [-Wunused-variable]
+    clock_t start, end;
+                   ^
+slim_lad_mfista.c:10:11: warning: unused variable 'j' [-Wunused-variable]
+    int i,j,m,dim,ndata,nlambda,max_ite1,ite0,ite1,ite2,ite21,gap_track;
+          ^
+slim_lad_mfista.c:14:12: warning: unused variable 'norm_dif' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT;
+           ^
+11 warnings generated.
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c slim_sqrt_mfista.c -o slim_sqrt_mfista.o
+slim_sqrt_mfista.c:75:24: warning: '&&' within '||' [-Wlogical-op-parentheses]
+                if(i>0 && *intercept==1 || *intercept==0){
+                   ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_sqrt_mfista.c:75:24: note: place parentheses around the '&&' expression to silence this warning
+                if(i>0 && *intercept==1 || *intercept==0){
+                       ^
+                   (                   )
+slim_sqrt_mfista.c:106:20: warning: '&&' within '||' [-Wlogical-op-parentheses]
+            if(i>0 && *intercept==1 || *intercept==0){
+               ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_sqrt_mfista.c:106:20: note: place parentheses around the '&&' expression to silence this warning
+            if(i>0 && *intercept==1 || *intercept==0){
+                   ^
+               (                   )
+slim_sqrt_mfista.c:177:32: warning: '&&' within '||' [-Wlogical-op-parentheses]
+                        if(i>0 && *intercept==1 || *intercept==0){
+                           ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_sqrt_mfista.c:177:32: note: place parentheses around the '&&' expression to silence this warning
+                        if(i>0 && *intercept==1 || *intercept==0){
+                               ^
+                           (                   )
+slim_sqrt_mfista.c:204:28: warning: '&&' within '||' [-Wlogical-op-parentheses]
+                    if(i>0 && *intercept==1 || *intercept==0){
+                       ~~~~^~~~~~~~~~~~~~~~ ~~
+slim_sqrt_mfista.c:204:28: note: place parentheses around the '&&' expression to silence this warning
+                    if(i>0 && *intercept==1 || *intercept==0){
+                           ^
+                       (                   )
+slim_sqrt_mfista.c:15:13: warning: unused variable 'start' [-Wunused-variable]
+    clock_t start, end;
+            ^
+slim_sqrt_mfista.c:15:20: warning: unused variable 'end' [-Wunused-variable]
+    clock_t start, end;
+                   ^
+slim_sqrt_mfista.c:14:27: warning: unused variable 'x_dif' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT;
+                          ^
+slim_sqrt_mfista.c:14:12: warning: unused variable 'norm_dif' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT;
+           ^
+slim_sqrt_mfista.c:14:40: warning: unused variable 'obj_tmp' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT;
+                                       ^
+slim_sqrt_mfista.c:12:21: warning: unused variable 'cpuTime' [-Wunused-variable]
+    double T,T0,imu,cpuTime,opt_dif;
+                    ^
+slim_sqrt_mfista.c:10:11: warning: unused variable 'j' [-Wunused-variable]
+    int i,j,m,dim,ndata,nlambda,max_ite1,ite0,ite1,ite2,ite21,gap_track;
+          ^
+11 warnings generated.
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c slimh.c -o slimh.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c tiger_clime_mfista.c -o tiger_clime_mfista.o
+tiger_clime_mfista.c:10:11: warning: unused variable 'j' [-Wunused-variable]
+    int i,j,k,m,dim,dd,nlambda,max_ite1,ite1,ite2,gap_track;
+          ^
+tiger_clime_mfista.c:14:12: warning: unused variable 'norm_dif' [-Wunused-variable]
+    double norm_dif,z_dif,y1_dif,opt_dif,eps1,t1,t2,ratio,epsT;
+           ^
+tiger_clime_mfista.c:13:48: warning: unused variable 'y1_norm1_pre' [-Wunused-variable]
+    double u_norm1x,x1_norm1,y1_norm1,z1_norm1,y1_norm1_pre,obj_base;
+                                               ^
+tiger_clime_mfista.c:13:21: warning: unused variable 'x1_norm1' [-Wunused-variable]
+    double u_norm1x,x1_norm1,y1_norm1,z1_norm1,y1_norm1_pre,obj_base;
+                    ^
+tiger_clime_mfista.c:15:20: warning: unused variable 'end' [-Wunused-variable]
+    clock_t start, end;
+                   ^
+tiger_clime_mfista.c:13:12: warning: unused variable 'u_norm1x' [-Wunused-variable]
+    double u_norm1x,x1_norm1,y1_norm1,z1_norm1,y1_norm1_pre,obj_base;
+           ^
+tiger_clime_mfista.c:15:13: warning: unused variable 'start' [-Wunused-variable]
+    clock_t start, end;
+            ^
+7 warnings generated.
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c tiger_slasso_mfista.c -o tiger_slasso_mfista.o
+tiger_slasso_mfista.c:14:12: warning: unused variable 'norm_dif' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT,tau0;
+           ^
+tiger_slasso_mfista.c:12:21: warning: unused variable 'cpuTime' [-Wunused-variable]
+    double T,T0,imu,cpuTime,u_norm_y,u_norm_z,u_norm_x,y1_norm1_pre,obj_base,munru2,ilambda,Q,Fx,Fz;
+                    ^
+tiger_slasso_mfista.c:13:39: warning: unused variable 'u_norm1x' [-Wunused-variable]
+    double u_norm2y,u_norm2z,u_norm2x,u_norm1x,x0_norm1,x1_norm1,y1_norm1,z1_norm1;
+                                      ^
+tiger_slasso_mfista.c:14:70: warning: unused variable 'tau0' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT,tau0;
+                                                                     ^
+tiger_slasso_mfista.c:12:78: warning: unused variable 'munru2' [-Wunused-variable]
+    double T,T0,imu,cpuTime,u_norm_y,u_norm_z,u_norm_x,y1_norm1_pre,obj_base,munru2,ilambda,Q,Fx,Fz;
+                                                                             ^
+tiger_slasso_mfista.c:14:27: warning: unused variable 'x_dif' [-Wunused-variable]
+    double norm_dif,z_dif,x_dif,y1_dif,obj_tmp,eps1,t1,t2,ratio,epsT,tau0;
+                          ^
+6 warnings generated.
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o camel.so SFGen.o cmr_sparse_mfista.o euc_proj.o mymath.o slim_dantzig_mfista.o slim_lad_mfista.o slim_sqrt_mfista.o slimh.o tiger_clime_mfista.o tiger_slasso_mfista.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/camel.Rcheck/camel/libs
+** R
+** data
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (camel)

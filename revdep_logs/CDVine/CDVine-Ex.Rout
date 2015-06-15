@@ -1,0 +1,1489 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "CDVine"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "CDVine-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('CDVine')
+Loading required package: MASS
+Loading required package: mvtnorm
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("BiCopCDF")
+> ### * BiCopCDF
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopCDF
+> ### Title: Distribution function of a bivariate copula
+> ### Aliases: BiCopCDF
+> 
+> ### ** Examples
+> 
+> # simulate from a bivariate t-copula
+> simdata = BiCopSim(300,2,-0.7,par2=4)
+> 
+> # evaluate the distribution function of the bivariate t-copula
+> u1 = simdata[,1]
+> u2 = simdata[,2]
+> BiCopCDF(u1,u2,2,-0.7,par2=4)
+  [1] 0.0569353926 0.3728164306 0.1391655551 0.1381170274 0.0159334156
+  [6] 0.0224553761 0.1012814682 0.1374885863 0.6578921050 0.1916694225
+ [11] 0.0241355982 0.0308296946 0.0594913495 0.0035098749 0.0666254316
+ [16] 0.1566548077 0.0432567081 0.2126550000 0.0226286069 0.1090976532
+ [21] 0.2011997468 0.1595282673 0.2571678256 0.0075427850 0.2374977235
+ [26] 0.2817834695 0.0534057340 0.0052509255 0.0947806808 0.1088613356
+ [31] 0.0439910281 0.0753430044 0.0644317754 0.2258995311 0.0566125266
+ [36] 0.1983473416 0.0627139587 0.3046144644 0.0817663818 0.5827004469
+ [41] 0.1862480012 0.0675494650 0.0463948592 0.0288363687 0.0214303239
+ [46] 0.0096704247 0.3698061740 0.3187570085 0.0945126118 0.1801329674
+ [51] 0.0917826010 0.2511046134 0.0526665487 0.0391883075 0.1281695507
+ [56] 0.1214227368 0.0844218917 0.0018969974 0.0244271069 0.1623918218
+ [61] 0.0189190248 0.0400342004 0.1221059631 0.0488611580 0.0846729625
+ [66] 0.0195894738 0.0157802907 0.1241838228 0.1437714510 0.0321191968
+ [71] 0.1861402934 0.0362237589 0.1234016116 0.0891645538 0.0686716291
+ [76] 0.1616522822 0.0837192877 0.0422855290 0.0189227994 0.0339750623
+ [81] 0.1918701212 0.2203620128 0.0837850325 0.0140967671 0.0854072225
+ [86] 0.3302215383 0.0842935279 0.2513677011 0.2587696163 0.3836547515
+ [91] 0.0320823935 0.1114714026 0.0314960617 0.2588239400 0.0915346245
+ [96] 0.1021488655 0.0758415232 0.1010860546 0.0686887874 0.1658691981
+[101] 0.0338635750 0.0639502344 0.0583692995 0.0316579297 0.1198859008
+[106] 0.0068516217 0.5399728828 0.0677928869 0.4855790077 0.0358411221
+[111] 0.0257346834 0.0943644800 0.0944022498 0.0083389813 0.2469006076
+[116] 0.0255429954 0.1391424684 0.1626772641 0.1651243956 0.1019655777
+[121] 0.1053235836 0.0188650019 0.0446448026 0.0292587027 0.3428148245
+[126] 0.5045709222 0.1555290447 0.0257826112 0.0736909751 0.2745915182
+[131] 0.0766705154 0.1483660018 0.0394470422 0.0346171356 0.0417016281
+[136] 0.0050417642 0.0343461870 0.0326361091 0.0275423577 0.2277035803
+[141] 0.0099358720 0.0724750476 0.0048470845 0.0281586366 0.0187833495
+[146] 0.0185911069 0.0169108458 0.1949092714 0.0083452560 0.0384250859
+[151] 0.0232897816 0.1137876772 0.3443579935 0.1022100183 0.0179167764
+[156] 0.0175978520 0.2442350658 0.0780046809 0.0190646938 0.0868873030
+[161] 0.0796190066 0.3859067470 0.5983357292 0.3026419564 0.1362608276
+[166] 0.0112094433 0.2156859821 0.0182524192 0.0347804531 0.4734329974
+[171] 0.0044051424 0.0964203739 0.0672170887 0.0390957330 0.1675593793
+[176] 0.0159049122 0.1062559181 0.0138935243 0.0147697708 0.1003560351
+[181] 0.0231868978 0.0567815043 0.3113136589 0.0346616976 0.1286721940
+[186] 0.1343556913 0.0284448260 0.0555432066 0.2069302366 0.0541136291
+[191] 0.1333894056 0.5524451318 0.0331027314 0.3551286355 0.0940010298
+[196] 0.0140085047 0.0922897858 0.0333418267 0.0794451580 0.0286928149
+[201] 0.0453247822 0.3985592044 0.1781475039 0.1889049645 0.0087965335
+[206] 0.0078864227 0.3131746380 0.1329703424 0.0723202705 0.3323661892
+[211] 0.1198360655 0.0349337069 0.0768241698 0.0651356855 0.4207981889
+[216] 0.0072669400 0.1142943543 0.0607367443 0.0124242329 0.3335067791
+[221] 0.0082504483 0.1644451039 0.0649635425 0.2766668380 0.0064758145
+[226] 0.0460086256 0.0338586776 0.0244935058 0.5143036340 0.0167626660
+[231] 0.0479347331 0.0005936212 0.1974474730 0.0385613989 0.1901433489
+[236] 0.3580740296 0.1048407067 0.0182300954 0.0962281606 0.1970447204
+[241] 0.0348680088 0.5741442692 0.1382414488 0.0004762146 0.0214992760
+[246] 0.0178396086 0.0278046750 0.0985436579 0.1203555924 0.0100743567
+[251] 0.2098340764 0.2153749512 0.3873892691 0.2362981401 0.1533102678
+[256] 0.1032999548 0.0042791209 0.0445250842 0.1579521147 0.1288265789
+[261] 0.2393816625 0.0250528417 0.2796820380 0.2826070018 0.9068086705
+[266] 0.0082545663 0.0508636757 0.0041274036 0.0664244610 0.0694750850
+[271] 0.3121692602 0.0844322084 0.0147991907 0.0059615334 0.2346405612
+[276] 0.1464043471 0.0080656490 0.0959368125 0.0038093989 0.3515535152
+[281] 0.0325415534 0.1588695815 0.1951168729 0.0981159382 0.2246624593
+[286] 0.0409871735 0.0150947687 0.1392022256 0.1093667509 0.2574251376
+[291] 0.2688469273 0.0095478561 0.1095079825 0.0266976270 0.1387909142
+[296] 0.0590118029 0.2109098271 0.1998378647 0.1219534546 0.0928998378
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopCDF", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopChiPlot")
+> ### * BiCopChiPlot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopChiPlot
+> ### Title: Chi-plot for bivariate copula data
+> ### Aliases: BiCopChiPlot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # chi-plots for bivariate Gaussian copula data
+> ##D n = 500
+> ##D tau = 0.5
+> ##D 
+> ##D # simulate copula data
+> ##D fam = 1	
+> ##D theta = BiCopTau2Par(fam,tau)
+> ##D dat = BiCopSim(n,fam,theta)	
+> ##D 
+> ##D # create chi-plots
+> ##D dev.new(width=16,height=5)
+> ##D par(mfrow=c(1,3))
+> ##D BiCopChiPlot(dat[,1],dat[,2],xlim=c(-1,1),ylim=c(-1,1),
+> ##D              main="General chi-plot")
+> ##D BiCopChiPlot(dat[,1],dat[,2],mode="lower",xlim=c(-1,1),
+> ##D              ylim=c(-1,1),main="Lower chi-plot")
+> ##D BiCopChiPlot(dat[,1],dat[,2],mode="upper",xlim=c(-1,1),
+> ##D              ylim=c(-1,1),main="Upper chi-plot")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopChiPlot", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopEst")
+> ### * BiCopEst
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopEst
+> ### Title: Parameter estimation for bivariate copula data using inversion
+> ###   of Kendall's tau or maximum likelihood estimation
+> ### Aliases: BiCopEst
+> 
+> ### ** Examples
+> 
+> ## Example 1: bivariate Gaussian copula
+> dat = BiCopSim(500,1,0.7)
+> u1 = dat[,1]
+> v1 = dat[,2]
+> 
+> # empirical Kendall's tau
+> tau1 = cor(u1,v1,method="kendall")
+> 
+> # inversion of empirical Kendall's tau 
+> BiCopTau2Par(1,tau1)
+[1] 0.7045111
+> BiCopEst(u1,v1,family=1,method="itau")$par
+[1] 0.7045111
+> 
+> # maximum likelihood estimate for comparison
+> BiCopEst(u1,v1,family=1,method="mle")$par
+[1] 0.7032379
+> 
+> 
+> ## Example 2: bivariate Clayton and survival Gumbel copulas
+> # simulate from a Clayton copula
+> dat = BiCopSim(500,3,2.5)
+> u2 = dat[,1]
+> v2 = dat[,2]
+> 
+> # empirical Kendall's tau
+> tau2 = cor(u2,v2,method="kendall")
+> 
+> # inversion of empirical Kendall's tau for the Clayton copula
+> BiCopTau2Par(3,tau2)
+[1] 2.480802
+> BiCopEst(u2,v2,family=3,method="itau",se=TRUE) 
+$par
+[1] 2.480802
+
+$par2
+[1] 0
+
+$se
+[1] 0.2366735
+
+$se2
+[1] 0
+
+> 
+> # inversion of empirical Kendall's tau for the survival Gumbel copula
+> BiCopTau2Par(14,tau2)
+[1] 2.240401
+> BiCopEst(u2,v2,family=14,method="itau",se=TRUE)
+$par
+[1] 2.240401
+
+$par2
+[1] 0
+
+$se
+[1] 0.1183367
+
+$se2
+[1] 0
+
+> 
+> # maximum likelihood estimates for comparison
+> BiCopEst(u2,v2,family=3,method="mle",se=TRUE)
+$par
+[1] 2.370793
+
+$par2
+[1] 0
+
+$se
+[1] 0.1337379
+
+$se2
+[1] 0
+
+> BiCopEst(u2,v2,family=14,method="mle",se=TRUE)
+$par
+[1] 2.244569
+
+$par2
+[1] 0
+
+$se
+[1] 0.08094232
+
+$se2
+[1] 0
+
+> 
+> ## Example 3: fit of a t-copula to standardized residuals of
+> ## S&P 500 and DAX returns
+> data(worldindices)
+> BiCopEst(worldindices[,1],worldindices[,4],family=2,method="mle",se=TRUE) 
+$par
+[1] 0.7301541
+
+$par2
+[1] 5.004927
+
+$se
+[1] 0.02607857
+
+$se2
+[1] 2.026819
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopEst", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopGofKendall")
+> ### * BiCopGofKendall
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopGofKendall
+> ### Title: Goodness-of-fit test based on Kendall's process for bivariate
+> ###   copula data
+> ### Aliases: BiCopGofKendall
+> 
+> ### ** Examples
+> 
+> # sample from a Gaussian copula
+> par1 = 3
+> fam1 = 3
+> dat1 = BiCopSim(500,fam1,par1)
+> 
+> ## Not run: 
+> ##D # perform the goodness-of-fit test for the true copula
+> ##D gof = BiCopGofKendall(dat1[,1],dat1[,2],fam1)
+> ##D gof$p.value.CvM
+> ##D gof$p.value.KS
+> ##D 
+> ##D # perform the goodness-of-fit test for the Frank copula
+> ##D gof = BiCopGofKendall(dat1[,1],dat1[,2],5)
+> ##D gof$p.value.CvM
+> ##D gof$p.value.KS
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopGofKendall", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopHfunc")
+> ### * BiCopHfunc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopHfunc
+> ### Title: Conditional distribution function (h-function) of a bivariate
+> ###   copula
+> ### Aliases: BiCopHfunc
+> 
+> ### ** Examples
+> 
+> ## Example 1: 4-dimensional C-vine model with mixed pair-copulas
+> data(worldindices)
+> Data = as.matrix(worldindices)[,1:4]
+> d = dim(Data)[2]
+> fam = c(5,1,3,14,3,2)
+> 
+> # sequential estimation
+> seqpar1 = CDVineSeqEst(Data,fam,type=1,method="itau")
+For two parameter copulas the estimation method 'itau' cannot be used. The method is automatically set to 'mle'.
+> 
+> # calculate the inputs of the second tree using h-functions
+> h1 = BiCopHfunc(Data[,1],Data[,2],fam[1],seqpar1$par[1])
+> h2 = BiCopHfunc(Data[,1],Data[,3],fam[2],seqpar1$par[2])
+> h3 = BiCopHfunc(Data[,1],Data[,4],fam[3],seqpar1$par[3])
+> 
+> # compare estimated parameters
+> BiCopEst(h1$hfunc1,h2$hfunc1,fam[4],method="itau")
+$par
+[1] 1.239108
+
+$par2
+[1] 0
+
+> seqpar1$par[4]
+[1] 1.239108
+> 
+> BiCopEst(h1$hfunc1,h3$hfunc1,fam[5],method="itau")
+$par
+[1] 0.1655822
+
+$par2
+[1] 0
+
+> seqpar1$par[5]
+[1] 0.1655822
+> 
+> 
+> ## Example 2: 4-dimensional D-vine model with mixed pair-copulas
+> 
+> # sequential estimation
+> seqpar2 = CDVineSeqEst(Data,fam,type=2,method="itau")
+For two parameter copulas the estimation method 'itau' cannot be used. The method is automatically set to 'mle'.
+> 
+> # calculate the inputs of the second tree using h-functions
+> h1 = BiCopHfunc(Data[,1],Data[,2],fam[1],seqpar2$par[1])
+> h2 = BiCopHfunc(Data[,2],Data[,3],fam[2],seqpar2$par[2])
+> h3 = BiCopHfunc(Data[,3],Data[,4],fam[3],seqpar2$par[3])
+> 
+> # compare estimated parameters
+> BiCopEst(h1$hfunc2,h2$hfunc1,fam[4],method="itau")
+$par
+[1] 1.080577
+
+$par2
+[1] 0
+
+> seqpar2$par[4]
+[1] 1.080577
+> 
+> BiCopEst(h2$hfunc2,h3$hfunc1,fam[5],method="itau")
+$par
+[1] 0.2578596
+
+$par2
+[1] 0
+
+> seqpar2$par[5]
+[1] 0.2578596
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopHfunc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopIndTest")
+> ### * BiCopIndTest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopIndTest
+> ### Title: Independence test for bivariate copula data
+> ### Aliases: BiCopIndTest
+> 
+> ### ** Examples
+> 
+> ## Example 1: Gaussian copula with large dependence parameter
+> par1 = 0.7
+> fam1 = 1
+> dat1 = BiCopSim(500,fam1,par1)
+> 
+> # perform the asymptotic independence test
+> BiCopIndTest(dat1[,1],dat1[,2])
+$statistic
+[1] 16.63404
+
+$p.value
+[1] 0
+
+> 
+> 
+> ## Example 2: Gaussian copula with small dependence parameter
+> par2 = 0.01
+> fam2 = 1
+> dat2 = BiCopSim(500,fam2,par2)
+> 
+> # perform the asymptotic independence test
+> BiCopIndTest(dat2[,1],dat2[,2])
+$statistic
+[1] 1.453241
+
+$p.value
+[1] 0.1461569
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopIndTest", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopKPlot")
+> ### * BiCopKPlot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopKPlot
+> ### Title: Kendall's plot (K-plot) for bivariate copula data
+> ### Aliases: BiCopKPlot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Gaussian and Clayton copulas
+> ##D n = 500
+> ##D tau = 0.5
+> ##D 
+> ##D # simulate from Gaussian copula
+> ##D fam1 = 1	
+> ##D theta1 = BiCopTau2Par(fam1,tau)
+> ##D dat1 = BiCopSim(n,fam1,theta1)	
+> ##D 
+> ##D # simulate from Clayton copula
+> ##D fam2 = 3
+> ##D theta2 = BiCopTau2Par(fam2,tau)
+> ##D dat2 = BiCopSim(n,fam2,theta2)
+> ##D 
+> ##D # create K-plots
+> ##D dev.new(width=10,height=5)
+> ##D par(mfrow=c(1,2))
+> ##D BiCopKPlot(dat1[,1],dat1[,2],main="Gaussian copula")
+> ##D BiCopKPlot(dat2[,1],dat2[,2],main="Clayton copula")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopKPlot", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopLambda")
+> ### * BiCopLambda
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopLambda
+> ### Title: Lambda-function (plot) for bivariate copula data
+> ### Aliases: BiCopLambda
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Clayton and rotated Clayton copulas
+> ##D n = 1000
+> ##D tau = 0.5
+> ##D 
+> ##D # simulate from Clayton copula
+> ##D fam = 3	
+> ##D theta = BiCopTau2Par(fam,tau)
+> ##D dat = BiCopSim(n,fam,theta)
+> ##D 
+> ##D # create lambda-function plots
+> ##D dev.new(width=16,height=5)
+> ##D par(mfrow=c(1,3))
+> ##D BiCopLambda(dat[,1],dat[,2])	# empirical lambda-function	
+> ##D BiCopLambda(family=fam,par=theta)	# theoretical lambda-function
+> ##D BiCopLambda(dat[,1],dat[,2],family=fam,par=theta)	# both
+> ##D 
+> ##D # simulate from rotated Clayton copula (90 degrees)
+> ##D fam = 23  
+> ##D theta = BiCopTau2Par(fam,-tau)
+> ##D dat = BiCopSim(n,fam,theta)
+> ##D 
+> ##D # rotate the data to standard Clayton copula data
+> ##D rot_dat = 1-dat[,1]
+> ##D 
+> ##D dev.new(width=16,height=5)
+> ##D par(mfrow=c(1,3))
+> ##D BiCopLambda(rot_dat,dat[,2])  # empirical lambda-function	
+> ##D BiCopLambda(family=3,par=-theta)	# theoretical lambda-function
+> ##D BiCopLambda(rot_dat,dat[,2],family=3,par=-theta)	# both
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopLambda", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopMetaContour")
+> ### * BiCopMetaContour
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopMetaContour
+> ### Title: Contour plot of bivariate meta distribution with different
+> ###   margins and copula (theoretical and empirical)
+> ### Aliases: BiCopMetaContour
+> 
+> ### ** Examples
+> 
+> ## Example 1: contour plot of meta Gaussian copula distribution
+> ## with Gaussian margins
+> tau = 0.5
+> fam = 1
+> theta = BiCopTau2Par(fam,tau)	
+> BiCopMetaContour(u1=NULL,u2=NULL,bw=1,size=100,
++                  levels=c(0.01,0.05,0.1,0.15,0.2),
++                  family=fam,par=theta,main="tau=0.5")
+> 
+> 
+> ## Example 2: empirical contour plot with standard normal margins
+> dat = BiCopSim(N=1000,fam,theta)
+> BiCopMetaContour(dat[,1],dat[,2],bw=2,size=100,
++                  levels=c(0.01,0.05,0.1,0.15,0.2),
++                  par=0,family="emp",main="N=1000")
+> 
+> # empirical contour plot with exponential margins
+> BiCopMetaContour(dat[,1],dat[,2],bw=2,size=100,
++                  levels=c(0.01,0.05,0.1,0.15,0.2),
++                  par=0,family="emp",main="n=500",
++                  margins="exp",margins.par=1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopMetaContour", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopName")
+> ### * BiCopName
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopName
+> ### Title: Bivariate copula family names
+> ### Aliases: BiCopName
+> 
+> ### ** Examples
+> 
+> # family as number
+> family = 1
+> BiCopName(family,short=TRUE)	 # short version
+[1] "N"
+> BiCopName(family,short=FALSE)	# long version
+[1] "Gaussian"
+> 
+> # family as character expression (short version)
+> family = "C"
+> BiCopName(family)	# as number
+[1] 3
+> 
+> # long version
+> family = "Clayton"
+> BiCopName(family)	# as number
+[1] 3
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopName", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopPDF")
+> ### * BiCopPDF
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopPDF
+> ### Title: Density of a bivariate copula
+> ### Aliases: BiCopPDF
+> 
+> ### ** Examples
+> 
+> # simulate from a bivariate t-copula
+> simdata = BiCopSim(300,2,-0.7,par2=4)
+> 
+> # evaluate the density of the bivariate t-copula
+> u1 = simdata[,1]
+> u2 = simdata[,2]
+> BiCopPDF(u1,u2,2,-0.7,par2=4)
+  [1]  1.4509532  0.7450191  1.8841319  1.7781436  0.9356300  0.8177811
+  [7]  1.7640099  1.7900306  0.1805557  1.4960027  4.7939019  1.3124508
+ [13]  1.4847751  4.2339710  2.7018458  1.5585314  1.1721709  1.3683209
+ [19]  1.8857129  1.8239689  1.4396319  1.6819455  1.2040565  4.6814185
+ [25]  1.2789549  1.0715891  1.2477247  0.3931863  1.6853215  1.7119779
+ [31]  3.6163336  1.4391155  1.6270213  1.3335671  3.9591288  1.4571431
+ [37]  1.3719928  0.9563759  2.4986207  0.3128186  1.4980675  1.3835487
+ [43]  1.9285981  1.4993152  0.7354036  0.4082332  0.7851634  0.9227819
+ [49]  1.5333402  1.5704021  1.7039627  0.5321449  1.5098625  2.0504398
+ [55]  2.0153110  1.6097740  1.5482732  0.1588145  1.4363680  1.5611646
+ [61] 10.7965393  1.1209806  1.8398386  1.2563819  1.9618356  0.9084514
+ [67]  5.8878895  2.0636994  1.5799545  6.6466197  1.4992094  1.1200087
+ [73]  1.7884328  2.4028859  3.3494090  1.5586288  1.5892621  1.1677560
+ [79]  0.8178396  1.0017327  1.4430653  1.3570455  2.5727364  1.6772328
+ [85]  1.8677113  0.9238600  2.4250247  1.1397584  1.2010392  0.7256479
+ [91]  0.9471255  2.2343033  3.0432788  1.1762044  2.6748038  1.8143599
+ [97]  3.0861394  1.8103573  3.2703773  1.6526328  1.0123612  1.3970405
+[103]  1.9628508  1.1125880  1.9358269  7.5223244  0.3772627  2.3157766
+[109]  0.4506797  5.1004606  0.8303653  1.6693870  2.5948045  0.3705532
+[115]  1.2117334  0.8011258  1.6581749  1.5985404  1.5860419  1.5657355
+[121]  1.7555414  3.8122667  1.1342192  0.9067486  0.7342144  0.4398795
+[127]  1.5641945  0.8974143  1.7495701  0.9532840  1.4820237  1.7860343
+[133]  1.6090307  4.6918580  1.3724016  0.4203984  0.9705821  0.9548961
+[139]  0.8795845  1.3257603  5.0197995  2.7203733  0.5354001  0.8543785
+[145]  0.9427534  0.6732535 10.3018041  1.4498344  0.4999090  5.6515653
+[151]  1.2456783  1.5775241  0.4078087  2.3607234  2.0848759  0.8325547
+[157]  1.1806543  1.7129055  1.6721061  2.6235600  1.7095824  0.2732758
+[163]  0.2804538  0.9538261  1.8602440 14.2416730  1.3746683  1.7670624
+[169]  1.0079503  0.4156592 22.8242334  1.5670967  1.7056025  1.0934714
+[175]  1.6014404  0.6922932  1.9842416 11.1945396  2.2421284  2.3787593
+[181]  1.4657757  2.4965163  0.9897267  4.1093775  1.7241310  1.6029155
+[187]  4.4162566  1.6043477  1.3925170  1.9037497  1.6077500  0.3044241
+[193]  1.0598432  0.7855435  2.2756730  0.6428059  2.6409788  1.4488698
+[199]  1.6983484  0.8639165  1.5161660  0.3722867  1.3231312  1.5118884
+[205] 22.2053066 22.7677421  0.9624509  1.7196748  1.4355914  0.9121916
+[211]  1.5988648  1.4092142  1.5096132  3.5087530  0.5691759  4.5757083
+[217]  1.6408382  3.4053772  1.2075836  0.8195577  1.5677741  1.5381682
+[223]  1.5722479  0.9173303  0.3449143  4.7069431  0.9601523  4.5702961
+[229]  0.2891748  0.8991030  1.8975717 24.7319236  1.2834306  1.6558974
+[235]  1.4717198  0.6557624  1.8106882  1.0225199  2.3383869  1.4439077
+[241]  1.8447412  0.3095081  1.5999247  0.1055318  2.9658562 11.3953377
+[247]  0.8567873  1.5741799  1.5997922  1.9725311  1.3936658  1.3762864
+[253]  0.5353565  1.2609574  1.6920802  2.2989613 23.3790442  1.7178132
+[259]  1.5849119  1.7238737  1.2197203  0.7913705  0.9572230  1.0426147
+[265]  0.1119637  0.6393720  1.2343863  0.2462628  1.3890449  2.2522210
+[271]  0.7572411  1.6933671  0.5848253 30.7046313  1.2985987  1.8373985
+[277] 23.3352220  1.9883252  0.2466282  0.7731763  1.3484265  1.6579735
+[283]  1.3572918  1.9714652  1.0384721  1.7073857  0.5605196  1.8619266
+[289]  1.7203929  1.1129925  0.9155025  0.7716646  1.6289793  2.8401968
+[295]  1.5914814  1.4042917  1.3976471  1.4433943  1.5849122  1.5682857
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopPDF", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopPar2TailDep")
+> ### * BiCopPar2TailDep
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopPar2TailDep
+> ### Title: Tail dependence coefficients of a bivariate copula
+> ### Aliases: BiCopPar2TailDep
+> 
+> ### ** Examples
+> 
+> ## Example 1: Gaussian copula
+> BiCopPar2TailDep(1,0.7)
+$lower
+[1] 0
+
+$upper
+[1] 0
+
+> 
+> ## Example 2: t copula
+> BiCopPar2TailDep(2,0.7,4)
+$lower
+[1] 0.390684
+
+$upper
+[1] 0.390684
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopPar2TailDep", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopPar2Tau")
+> ### * BiCopPar2Tau
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopPar2Tau
+> ### Title: Kendall's tau value of a bivariate copula
+> ### Aliases: BiCopPar2Tau
+> 
+> ### ** Examples
+> 
+> ## Example 1: Gaussian copula
+> tt1 = BiCopPar2Tau(1,0.7)
+> 
+> # transform back
+> BiCopTau2Par(1,tt1)
+[1] 0.7
+> 
+> 
+> ## Example 2: Clayton copula
+> BiCopPar2Tau(3,1.3)
+[1] 0.3939394
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopPar2Tau", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopSelect")
+> ### * BiCopSelect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopSelect
+> ### Title: Selection and maximum likelihood estimation of bivariate copula
+> ###   families
+> ### Aliases: BiCopSelect
+> 
+> ### ** Examples
+> 
+> ## Example 1: Gaussian copula with large dependence parameter
+> par1 = 0.7
+> fam1 = 1
+> dat1 = BiCopSim(500,fam1,par1)
+> 
+> # select the bivariate copula family and estimate the parameter(s)
+> cop1 = BiCopSelect(dat1[,1],dat1[,2],familyset=c(1:10),indeptest=FALSE,level=0.05)
+> cop1$family
+[1] 1
+> cop1$par
+[1] 0.7032379
+> cop1$par2
+[1] 0
+> 
+> 
+> ## Example 2: Gaussian copula with small dependence parameter
+> par2 = 0.01
+> fam2 = 1
+> dat2 = BiCopSim(500,fam2,par2)
+> 
+> # select the bivariate copula family and estimate the parameter(s)
+> cop2 = BiCopSelect(dat2[,1],dat2[,2],familyset=c(1:10),indeptest=TRUE,level=0.05)
+> cop2$family
+[1] 0
+> cop2$par
+[1] 0
+> cop2$par2
+[1] 0
+> 
+> ## Not run: 
+> ##D ## Example 3: empirical data
+> ##D data(worldindices)
+> ##D cop3 = BiCopSelect(worldindices[,1],worldindices[,4],familyset=c(1:10,13,14,16,23,24,26))
+> ##D cop3$family
+> ##D cop3$par
+> ##D cop3$par2
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopSelect", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopSim")
+> ### * BiCopSim
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopSim
+> ### Title: Simulation from a bivariate copula
+> ### Aliases: BiCopSim
+> 
+> ### ** Examples
+> 
+> # simulate from a bivariate t-copula
+> simdata = BiCopSim(300,2,-0.7,par2=4)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopSim", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopTau2Par")
+> ### * BiCopTau2Par
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopTau2Par
+> ### Title: Parameter of a bivariate copula for a given Kendall's tau value
+> ### Aliases: BiCopTau2Par
+> 
+> ### ** Examples
+> 
+> ## Example 1: Gaussian copula
+> tt1 = BiCopTau2Par(1,0.5)
+> 
+> # transform back
+> BiCopPar2Tau(1,tt1)
+[1] 0.5
+> 
+> 
+> ## Example 2: Clayton copula
+> BiCopTau2Par(3,0.4)
+[1] 1.333333
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopTau2Par", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BiCopVuongClarke")
+> ### * BiCopVuongClarke
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BiCopVuongClarke
+> ### Title: Scoring goodness-of-fit test based on Vuong and Clarke tests for
+> ###   bivariate copula data
+> ### Aliases: BiCopVuongClarke
+> 
+> ### ** Examples
+> 
+> # simulate from a t-copula
+> dat = BiCopSim(500,2,0.7,5)
+> 
+> # apply the test for families 1-10
+> ## Not run: 
+> ##D vcgof = BiCopVuongClarke(dat[,1],dat[,2],familyset=c(1:10))
+> ##D 
+> ##D # display the Vuong test scores
+> ##D vcgof[1,]
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BiCopVuongClarke", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CDVineAICBIC")
+> ### * CDVineAICBIC
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CDVineAIC-BIC
+> ### Title: AIC and BIC of C- and D-vine copula models
+> ### Aliases: CDVineAIC CDVineBIC
+> 
+> ### ** Examples
+> 
+> ## Example 1: 3-dimensional D-vine model with Gaussian pair-copulas
+> data(worldindices)
+> Data = as.matrix(worldindices)[,1:3]
+> fam1 = c(1,1,1) 
+> par1 = c(0.2,0.3,0.4)
+> 
+> # calculate AIC and BIC
+> CDVineAIC(Data,fam1,par1,type=2)
+$AIC
+[1] -18.36512
+
+$pair.AIC
+[1] -14.83439 -42.40985  38.87912
+
+> CDVineBIC(Data,fam1,par1,type=2)
+$BIC
+[1] -6.420878
+
+$pair.BIC
+[1] -10.85297 -38.42844  42.86053
+
+> 
+> 
+> ## Example 2: 6-dimensional C-vine model with Student t pair-copulas
+> ## with 5 degrees of freedom
+> data(worldindices)
+> Data = as.matrix(worldindices)
+> dd = dim(Data)[2]*(dim(Data)[2]-1)/2
+> fam2 = rep(2,dd)
+> par2 = rep(0.5,dd)
+> nu2 = rep(5,dd)
+> 
+> # calculate AIC and BIC
+> CDVineAIC(Data,fam2,par2,nu2,type=1)
+$AIC
+[1] -1230.874
+
+$pair.AIC
+ [1]   51.064455   49.564629 -275.064075 -275.661120 -260.698047   -9.477981
+ [7]  117.258206   88.256120  109.304104  133.670869  143.605391  134.791573
+[13] -560.747289 -470.809333 -205.931355
+
+> CDVineBIC(Data,fam2,par2,nu2,type=1)
+$BIC
+[1] -1111.431
+
+$pair.BIC
+ [1]   59.027283   57.527458 -267.101246 -267.698291 -252.735219   -1.515153
+ [7]  125.221035   96.218948  117.266932  141.633697  151.568219  142.754402
+[13] -552.784461 -462.846504 -197.968527
+
+> 
+> 
+> ## Example 3: 4-dimensional C-vine model with mixed pair-copulas
+> fam3 = c(5,1,3,14,3,2)
+> par3 = c(0.9,0.3,0.2,1.1,0.2,0.7)
+> nu3 = c(0,0,0,0,0,7)
+> 
+> # calculate AIC and BIC
+> CDVineAIC(Data[,1:4],fam3,par3,nu3,type=1)
+$AIC
+[1] 179.9519
+
+$pair.AIC
+[1]   -7.094134   -3.092514 -100.740776  -26.419653  -12.400389  329.699337
+
+> CDVineBIC(Data[,1:4],fam3,par3,nu3,type=1)
+$BIC
+[1] 207.8218
+
+$pair.BIC
+[1]  -3.1127195   0.8889002 -96.7593621 -22.4382391  -8.4189752 337.6621655
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CDVineAICBIC", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CDVineClarkeTest")
+> ### * CDVineClarkeTest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CDVineClarkeTest
+> ### Title: Clarke test comparing two vine copula models
+> ### Aliases: CDVineClarkeTest
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # load data set
+> ##D data(worldindices)
+> ##D d = dim(worldindices)[2]
+> ##D 
+> ##D # select the C-vine families and parameters
+> ##D cvine = CDVineCopSelect(worldindices,c(1:6),type="CVine")
+> ##D 
+> ##D # select the D-vine families and parameters
+> ##D dvine = CDVineCopSelect(worldindices,c(1:6),type="DVine")
+> ##D 
+> ##D # compare the two models based on the data
+> ##D clarke = CDVineClarkeTest(worldindices,1:d,1:d,cvine$family,dvine$family,
+> ##D                           cvine$par,dvine$par,cvine$par2,dvine$par2,
+> ##D                           Model1.type=1,Model2.type=2)
+> ##D clarke$statistic
+> ##D clarke$statistic.Schwarz
+> ##D clarke$p.value
+> ##D clarke$p.value.Schwarz
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CDVineClarkeTest", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CDVineCopSelect")
+> ### * CDVineCopSelect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CDVineCopSelect
+> ### Title: Sequential copula selection and estimation of C- and D-vine
+> ###   copula models
+> ### Aliases: CDVineCopSelect
+> 
+> ### ** Examples
+> 
+> # simulate from a 4-dimensional D-vine copula with mixed pair-copulas
+> d = 4
+> dd = d*(d-1)/2
+> family = c(1,2,3,4,7,3)
+> par = c(0.5,0.4,2,1.5,1.2,1.5)
+> par2 = c(0,5,0,0,2,0)
+> type = 2
+> simdata = CDVineSim(1000,family,par,par2,type)
+> 
+> # determine appropriate pair-copula families and parameters
+> # of a D-vine structure
+> ## Not run: 
+> ##D CDVineCopSelect(simdata,type=2,familyset=c(1:10,13,14,23,24))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CDVineCopSelect", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CDVineLogLik")
+> ### * CDVineLogLik
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CDVineLogLik
+> ### Title: Log-likelihood of C- and D-vine copula models
+> ### Aliases: CDVineLogLik
+> 
+> ### ** Examples
+> 
+> ## Example 1: 3-dimensional D-vine model with Gaussian pair-copulas
+> data(worldindices)
+> Data = as.matrix(worldindices)[,1:3]
+> fam1 = c(1,1,1) 
+> par1 = c(0.2,0.3,0.4)
+> 
+> # calculate the log-likelihood
+> logLik1 = CDVineLogLik(Data,fam1,par1,type=2)
+> 
+> # check the above formula
+> sum(logLik1$ll)
+[1] 12.18256
+> logLik1$loglik
+[1] 12.18256
+> 
+> 
+> ## Example 2: 6-dimensional C-vine model with Student t pair-copulas
+> ## with 5 degrees of freedom
+> data(worldindices)
+> Data = as.matrix(worldindices)
+> dd = dim(Data)[2]*(dim(Data)[2]-1)/2
+> fam2 = rep(2,dd)
+> par2 = rep(0.5,dd)
+> nu2 = rep(5,dd)
+> 
+> # calculate the log-likelihood
+> logLik2 = CDVineLogLik(Data,fam2,par2,nu2,type=1)
+> logLik2$loglik
+[1] 645.4369
+> 
+> 
+> ## Example 3: 4-dimensional C-vine model with mixed pair-copulas
+> fam3 = c(5,1,3,14,3,2)
+> par3 = c(0.9,0.3,0.2,1.1,0.2,0.7)
+> nu3 = c(0,0,0,0,0,7)
+> 
+> # calculate the log-likelihood
+> logLik3 = CDVineLogLik(Data[,1:4],fam3,par3,nu3,type=2)
+> logLik3$loglik
+[1] 197.9972
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CDVineLogLik", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CDVineMLE")
+> ### * CDVineMLE
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CDVineMLE
+> ### Title: Maximum likelihood estimation of C- and D-vine copula models
+> ### Aliases: CDVineMLE
+> 
+> ### ** Examples
+> 
+> ## Example 1: 4-dimensional D-vine model with Gaussian pair-copulas
+> data(worldindices)
+> Data = as.matrix(worldindices)[,1:4]
+> fam = rep(1,6)
+> 
+> # maximum likelihood estimation
+> ## Not run: 
+> ##D CDVineMLE(Data,family=fam,type=2,maxit=100)
+> ## End(Not run)
+> 
+> ## Example 2: 4-dimensional D-vine model with mixed pair-copulas
+> fam2 = c(5,1,3,14,3,2)
+> 
+> # sequential estimation
+> m = CDVineSeqEst(Data,family=fam2,type=2)
+> m
+$par
+[1] 0.9154534 0.3246330 0.1916378 1.0688747 0.2340853 0.7185443
+
+$par2
+[1] 0.000000 0.000000 0.000000 0.000000 0.000000 7.802587
+
+> 
+> # calculate the log-likelihood
+> LogLik0 = CDVineLogLik(Data,fam2,m$par,m$par2,type=2)
+> LogLik0$loglik
+[1] 198.2273
+> 
+> # maximum likelihood estimation
+> ## Not run: 
+> ##D CDVineMLE(Data,family=fam2,type=2,maxit=5)  # 5 iterations
+> ##D CDVineMLE(Data,family=fam2,type=2)  # default: 200 iterations
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CDVineMLE", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CDVinePar2Tau")
+> ### * CDVinePar2Tau
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CDVinePar2Tau
+> ### Title: Kendall's tau values of a vine copula model
+> ### Aliases: CDVinePar2Tau
+> 
+> ### ** Examples
+> 
+> # specify the vine
+> fam3 = c(5,1,3,14,3,2)
+> par3 = c(0.9,0.3,0.2,1.1,0.2,0.7)
+> nu3 = c(0,0,0,0,0,7)
+> 
+> # compute the corresponding Kendall's tau values 
+> tau = CDVinePar2Tau(fam3,par3,nu3)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CDVinePar2Tau", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CDVineSeqEst")
+> ### * CDVineSeqEst
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CDVineSeqEst
+> ### Title: Sequential estimation of C- and D-vine copula models
+> ### Aliases: CDVineSeqEst
+> 
+> ### ** Examples
+> 
+> ## Example 1: 4-dimensional D-vine model with Gaussian pair-copulas
+> data(worldindices)
+> Data = as.matrix(worldindices)[,1:4]
+> d = dim(Data)[2]
+> fam = rep(1,d*(d-1)/2)
+> 
+> # sequential estimation 
+> CDVineSeqEst(Data,fam,type=2,method="itau")$par
+[1] 0.1599446 0.3122243 0.1901583 0.1153481 0.1945338 0.6941092
+> CDVineSeqEst(Data,fam,type=2,method="mle")$par
+[1] 0.2017503 0.3246330 0.1901583 0.1190999 0.2154168 0.7265423
+> 
+> 
+> ## Example 2: 4-dimensional D-vine model with mixed pair-copulas
+> fam2 = c(5,1,3,14,3,2)
+> 
+> # sequential estimation
+> CDVineSeqEst(Data,fam2,type=2,method="mle",se=TRUE,progress=TRUE)
+1,2
+2,3
+3,4
+1,3|2
+2,4|3
+1,4|2,3
+$par
+[1] 0.9154534 0.3246330 0.1916378 1.0688747 0.2340853 0.7185443
+
+$par2
+[1] 0.000000 0.000000 0.000000 0.000000 0.000000 7.802587
+
+$se
+[1] 0.30291987 0.04249825 0.06049709 0.02975006 0.06241570 0.02439818
+
+$se2
+[1] 0.00000 0.00000 0.00000 0.00000 0.00000 4.37455
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CDVineSeqEst", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CDVineSim")
+> ### * CDVineSim
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CDVineSim
+> ### Title: Simulation from C- and D-vine copula models
+> ### Aliases: CDVineSim
+> 
+> ### ** Examples
+> 
+> ## Example 1: simulate from a 6-dimensional C-vine model 
+> ## with Gaussian pair-copulas
+> d = 6
+> dd = d*(d-1)/2
+> fam1 = rep(1,dd)
+> par1 = c(0.2,0.69,0.73,0.22,-0.09,0.51,0.32,0.01,0.82,0.01,
++          -0.2,-0.32,-0.19,-0.17,-0.06)
+> N = 100
+> U1 = CDVineSim(N,fam1,par1,type=1)
+> head(U1)
+          [,1]      [,2]       [,3]      [,4]      [,5]      [,6]
+[1,] 0.2655087 0.3281841 0.33056881 0.6306384 0.1146029 0.6319502
+[2,] 0.9446753 0.7658722 0.92771166 0.6026796 0.4209325 0.4243531
+[3,] 0.6870228 0.4241531 0.75402630 0.6150148 0.6920401 0.7996491
+[4,] 0.3800352 0.7539864 0.84432549 0.2865524 0.5620724 0.4311459
+[5,] 0.2672207 0.3416877 0.02778543 0.2342606 0.9196117 0.4985808
+[6,] 0.4820801 0.5941140 0.52074450 0.2893642 0.8516026 0.6901184
+> 
+> # calculate the log-likelihood
+> logLik = CDVineLogLik(U1,fam1,par1,type=1)
+> logLik$loglik
+[1] 181.4353
+> 
+> 
+> ## Example 2: simulate from a 6-dimensional C-vine model 
+> ## with Student t pair-copulas each with three degrees of freedom
+> fam2 = rep(2,dd)
+> par2 = rep(0.5,dd)
+> nu2 = rep(3,dd)
+> U2 = CDVineSim(N,fam2,par2,nu2,type=1)
+> 
+> # calculate the log-likelihood
+> logLik2 = CDVineLogLik(U2,fam2,par2,nu2,type=1)
+> logLik2$loglik
+[1] 225.6075
+> 
+> 
+> ## Example 3: simulate from a 6-dimensional D-vine model
+> ## with Student t pair-copulas each with five degrees of freedom
+> fam3 = rep(2,dd)
+> par3 = rep(0.4,dd)
+> nu3 = rep(5,dd)
+> U3 = CDVineSim(N,fam3,par3,nu3,type=2)
+> 
+> # calculate the log-likelihood
+> logLik3 = CDVineLogLik(U3,fam3,par3,nu3,type=2)
+> logLik3$loglik
+[1] 131.1821
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CDVineSim", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CDVineTreePlot")
+> ### * CDVineTreePlot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CDVineTreePlot
+> ### Title: Plot function for C- or D-vine trees
+> ### Aliases: CDVineTreePlot
+> 
+> ### ** Examples
+> 
+> # simulate from a 6-dimensional C-vine model with Gaussian pair-copulas
+> d = 6
+> dd = d*(d-1)/2
+> par1 = c(0.2,0.69,0.73,0.22,-0.09,0.51,0.32,0.01,0.82,0.01,-0.2,
++          -0.32,-0.19,-0.17,-0.06);
+> fam1 = rep(1,dd)
+> N = 100
+> U = CDVineSim(N,fam1,par1,type=1)
+> 
+> # plot the first tree with pair-copula families and
+> # empirical Kendall's tau values as edge labels
+> CDVineTreePlot(U,fam1,type=1,tree=1,edge.labels=c("family","emptau"))
+[[1]]
+         [,1]     [,2]
+[1,] 15.80256 17.67467
+[2,] 16.02908 19.09194
+[3,] 14.51957 18.33490
+[4,] 14.77675 16.65751
+[5,] 16.45352 16.38688
+[6,] 17.22096 17.89884
+
+[[2]]
+[1] 0
+
+[[3]]
+[1] 0
+
+[[4]]
+[1] 0
+
+[[5]]
+[1] 0
+
+> 
+> # plot all trees without edge labels and without sequential estimation
+> CDVineTreePlot(data=NULL,family=fam1,par=par1,type=1, edge.labels=FALSE)
+[[1]]
+         [,1]     [,2]
+[1,] 29.37041 15.32175
+[2,] 28.46001 14.19918
+[3,] 30.15760 14.11123
+[4,] 29.45695 16.76304
+[5,] 28.02510 15.84129
+[6,] 30.76200 15.69078
+
+[[2]]
+         [,1]     [,2]
+[1,] 27.49729 30.66007
+[2,] 28.85397 30.71468
+[3,] 26.14036 30.61579
+[4,] 27.44573 32.01948
+[5,] 27.55488 29.30367
+
+[[3]]
+         [,1]     [,2]
+[1,] 34.74922 24.74634
+[2,] 33.68774 25.42305
+[3,] 35.86044 25.33202
+[4,] 34.71729 23.48733
+
+[[4]]
+         [,1]     [,2]
+[1,] 25.44786 25.36262
+[2,] 26.08365 24.41238
+[3,] 24.81627 26.31488
+
+[[5]]
+         [,1]     [,2]
+[1,] 129.0758 73.56043
+[2,] 128.2561 72.98889
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CDVineTreePlot", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CDVineVuongTest")
+> ### * CDVineVuongTest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CDVineVuongTest
+> ### Title: Vuong test comparing two vine copula models
+> ### Aliases: CDVineVuongTest
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # load data set
+> ##D data(worldindices)
+> ##D d = dim(worldindices)[2]
+> ##D 
+> ##D # select the C-vine families and parameters
+> ##D cvine = CDVineCopSelect(worldindices,c(1:6),type="CVine")
+> ##D 
+> ##D # select the D-vine families and parameters
+> ##D dvine = CDVineCopSelect(worldindices,c(1:6),type="DVine")
+> ##D 
+> ##D # compare the two models based on the data
+> ##D vuong = CDVineVuongTest(worldindices,1:d,1:d,cvine$family,dvine$family,
+> ##D                         cvine$par,dvine$par,cvine$par2,dvine$par2,
+> ##D                         Model1.type=1,Model2.type=2)
+> ##D vuong$statistic
+> ##D vuong$statistic.Schwarz
+> ##D vuong$p.value
+> ##D vuong$p.value.Schwarz
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CDVineVuongTest", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("worldindices")
+> ### * worldindices
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: worldindices
+> ### Title: Major World Indices
+> ### Aliases: worldindices
+> 
+> ### ** Examples
+> 
+> # load the data set
+> data(worldindices)
+> 
+> # compute the empirical Kendall's tau matrix
+> cor(worldindices,method="kendall")
+           ^GSPC     ^N225     ^SSEC    ^GDAXI     ^FCHI     ^FTSE
+^GSPC  1.0000000 0.1022631 0.1040020 0.5033372 0.5018284 0.4863828
+^N225  0.1022631 1.0000000 0.2021481 0.1551975 0.1843754 0.1614116
+^SSEC  0.1040020 0.2021481 1.0000000 0.1218003 0.1362997 0.1489324
+^GDAXI 0.5033372 0.1551975 0.1218003 1.0000000 0.8234241 0.7322849
+^FCHI  0.5018284 0.1843754 0.1362997 0.8234241 1.0000000 0.7747091
+^FTSE  0.4863828 0.1614116 0.1489324 0.7322849 0.7747091 1.0000000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("worldindices", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  2.496 0.037 2.54 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

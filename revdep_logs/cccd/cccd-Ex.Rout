@@ -1,0 +1,76 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "cccd"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "cccd-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('cccd')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("cccd")
+> ### * cccd
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cccd
+> ### Title: Class Cover Catch Digraph
+> ### Aliases: cccd cccd.rw cccd.classify cccd.classifier cccd.classifier.rw
+> ###   cccd.multiclass.classifier cccd.multiclass.classify plot.cccd
+> ###   plot.cccdClassifier
+> ### Keywords: graphs
+> 
+> ### ** Examples
+> 
+> set.seed(456330)
+> z <- matrix(runif(1000),ncol=2)
+> ind <- which(z[,1]<.5 & z[,2]<.5)
+> x <- z[ind,]
+> y <- z[-ind,]
+> g <- cccd(x,y)
+> C <- cccd.classifier(x,y)
+Error in graph(n = vc, edges, directed = (mode == "directed")) : 
+  'edges' must be numeric of character
+Calls: cccd.classifier ... dominate.greedy -> graph.adjacency -> graph.adjacency.sparse -> graph
+Execution halted

@@ -1,0 +1,1194 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "fastclime"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "fastclime-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('fastclime')
+Loading required package: lattice
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: MASS
+Loading required package: Matrix
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("fastclime")
+> ### * fastclime
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fastclime
+> ### Title: The main solver for fastclime package
+> ### Aliases: fastclime
+> 
+> ### ** Examples
+> 
+> #generate data
+> L = fastclime.generator(n = 100, d = 20)
+Generating data from the multivariate normal distribution with the random graph structure....done.
+> 
+> #graph path estimation
+> out1 = fastclime(L$data,0.1)
+Allocating memory 
+start recovering 
+preparing precision and path matrix list 
+Done! 
+> O = fastclime.lambda(out1$lambdamtx, out1$icovlist,0.2)
+> fastclime.plot(O$path)
+> 
+> #graph path estimation using the sample covariance matrix as the input.
+> out1 = fastclime(cor(L$data),0.1)
+Allocating memory 
+start recovering 
+preparing precision and path matrix list 
+Done! 
+> O = fastclime.lambda(out1$lambdamtx, out1$icovlist,0.2)
+> fastclime.plot(O$path)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fastclime", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fastclime.generator")
+> ### * fastclime.generator
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fastclime.generator
+> ### Title: Data generator
+> ### Aliases: fastclime.generator
+> 
+> ### ** Examples
+> 
+> ## band graph with bandwidth 3
+> L = fastclime.generator(graph = "band", g = 3)
+Generating data from the multivariate normal distribution with the band graph structure....done.
+> plot(L)
+> 
+> ## random sparse graph
+> L = fastclime.generator(vis = TRUE)
+Generating data from the multivariate normal distribution with the random graph structure....done.
+> 
+> ## random dense graph
+> L = fastclime.generator(prob = 0.5, vis = TRUE)
+Generating data from the multivariate normal distribution with the random graph structure....done.
+> 
+> ## hub graph with 6 hubs
+> L = fastclime.generator(graph = "hub", g = 6, vis = TRUE)
+Generating data from the multivariate normal distribution with the hub graph structure....done.
+> 
+> ## hub graph with 8 clusters
+> L = fastclime.generator(graph = "cluster", g = 8, vis = TRUE)
+Generating data from the multivariate normal distribution with the cluster graph structure....done.
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fastclime.generator", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fastclime.lambda")
+> ### * fastclime.lambda
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fastclime.lambda
+> ### Title: A precision matrix and path selector function for fastclime
+> ### Aliases: fastclime.lambda
+> 
+> ### ** Examples
+> 
+> #generate data
+> L = fastclime.generator(n = 100, d = 20)
+Generating data from the multivariate normal distribution with the random graph structure....done.
+> 
+> #graph path estimation
+> out1 = fastclime(L$data,0.1)
+Allocating memory 
+start recovering 
+preparing precision and path matrix list 
+Done! 
+> O = fastclime.lambda(out1$lambdamtx, out1$icovlist,0.2)
+> fastclime.plot(O$path)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fastclime.lambda", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fastclime.plot")
+> ### * fastclime.plot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fastclime.plot
+> ### Title: Graph visualization
+> ### Aliases: fastclime.plot
+> 
+> ### ** Examples
+> 
+> ## visualize the hub graph
+> L = fastclime.generator(graph = "hub")
+Generating data from the multivariate normal distribution with the hub graph structure....done.
+> fastclime.plot(L$theta)
+> 
+> ## visualize the band graph
+> L = fastclime.generator(graph = "band",g=5)
+Generating data from the multivariate normal distribution with the band graph structure....done.
+> fastclime.plot(L$theta)
+> 
+> ## visualize the cluster graph
+> L = fastclime.generator(graph = "cluster")
+Generating data from the multivariate normal distribution with the cluster graph structure....done.
+> fastclime.plot(L$theta)
+> 
+> #show working directory
+> getwd()
+[1] "/Users/gaborcsardi/works/igraph/revdep_check/fastclime.Rcheck"
+> #plot 5 graphs and save the plots as eps files in the working directory  
+> fastclime.plot(L$theta, epsflag = TRUE, cur.num = 5)
+pdf 
+  2 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fastclime.plot", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fastlp")
+> ### * fastlp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fastlp
+> ### Title: A generic LP solver
+> ### Aliases: fastlp
+> 
+> ### ** Examples
+> 
+> #generate an LP problem and solve it
+> A=matrix(c(-1,-1,0,1,-2,1),nrow=3)
+> b=c(-1,-2,1)
+> c=c(-2,3)
+> fastlp(c,A,b)
+optimal solution found! 
+[1] 2 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fastlp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("paralp")
+> ### * paralp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: paralp
+> ### Title: A solver for parameterized LP problems
+> ### Aliases: paralp
+> 
+> ### ** Examples
+> 
+> #generate an LP problem and solve it
+> A=matrix(c(-1,-1,0,1,-2,1),nrow=3)
+> b=c(-1,-2,1)
+> c=c(-2,3)
+> b_bar=c(1,1,1)
+> c_bar=c(1,1)
+> paralp(c,A,b,c_bar,b_bar)
+optimal solution found! 
+[1] 1.3333333 0.3333333
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("paralp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("stockdata")
+> ### * stockdata
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: stockdata
+> ### Title: Stock price of S&P 500 companies from 2003 to 2008
+> ### Aliases: stockdata
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(stockdata)
+> image(stockdata$data)
+> stockdata$info
+       V1      V2                           
+  [1,] "MMM"   "Industrials"                
+  [2,] "ACE"   "Financials"                 
+  [3,] "ABT"   "Health Care"                
+  [4,] "ANF"   "Consumer Discretionary"     
+  [5,] "ADBE"  "Information Technology"     
+  [6,] "AMD"   "Information Technology"     
+  [7,] "AES"   "Utilities"                  
+  [8,] "AET"   "Health Care"                
+  [9,] "AFL"   "Financials"                 
+ [10,] "A"     "Information Technology"     
+ [11,] "APD"   "Materials"                  
+ [12,] "ARG"   "Materials"                  
+ [13,] "AKS"   "Materials"                  
+ [14,] "AKAM"  "Information Technology"     
+ [15,] "AA"    "Materials"                  
+ [16,] "ATI"   "Materials"                  
+ [17,] "AGN"   "Health Care"                
+ [18,] "ALL"   "Financials"                 
+ [19,] "ALTR"  "Information Technology"     
+ [20,] "MO"    "Consumer Staples"           
+ [21,] "AMZN"  "Consumer Discretionary"     
+ [22,] "AEE"   "Utilities"                  
+ [23,] "AEP"   "Utilities"                  
+ [24,] "AXP"   "Financials"                 
+ [25,] "AIG"   "Financials"                 
+ [26,] "AMT"   "Telecommunications Services"
+ [27,] "ABC"   "Health Care"                
+ [28,] "AMGN"  "Health Care"                
+ [29,] "APH"   "Industrials"                
+ [30,] "APC"   "Energy"                     
+ [31,] "ADI"   "Information Technology"     
+ [32,] "AON"   "Financials"                 
+ [33,] "APA"   "Energy"                     
+ [34,] "AIV"   "Financials"                 
+ [35,] "APOL"  "Consumer Discretionary"     
+ [36,] "AAPL"  "Information Technology"     
+ [37,] "AMAT"  "Information Technology"     
+ [38,] "ADM"   "Consumer Staples"           
+ [39,] "T"     "Telecommunications Services"
+ [40,] "ADSK"  "Information Technology"     
+ [41,] "ADP"   "Information Technology"     
+ [42,] "AN"    "Consumer Discretionary"     
+ [43,] "AZO"   "Consumer Discretionary"     
+ [44,] "AVB"   "Financials"                 
+ [45,] "AVY"   "Industrials"                
+ [46,] "AVP"   "Consumer Staples"           
+ [47,] "BHI"   "Energy"                     
+ [48,] "BLL"   "Materials"                  
+ [49,] "BAC"   "Financials"                 
+ [50,] "BK"    "Financials"                 
+ [51,] "BCR"   "Health Care"                
+ [52,] "BAX"   "Health Care"                
+ [53,] "BBT"   "Financials"                 
+ [54,] "BDX"   "Health Care"                
+ [55,] "BBBY"  "Consumer Discretionary"     
+ [56,] "BMS"   "Materials"                  
+ [57,] "BBY"   "Consumer Discretionary"     
+ [58,] "BIG"   "Consumer Discretionary"     
+ [59,] "BIIB"  "Health Care"                
+ [60,] "BLK"   "Financials"                 
+ [61,] "HRB"   "Consumer Discretionary"     
+ [62,] "BMC"   "Information Technology"     
+ [63,] "BA"    "Industrials"                
+ [64,] "BXP"   "Financials"                 
+ [65,] "BSX"   "Health Care"                
+ [66,] "BMY"   "Health Care"                
+ [67,] "BRCM"  "Information Technology"     
+ [68,] "CA"    "Information Technology"     
+ [69,] "CVC"   "Consumer Discretionary"     
+ [70,] "COG"   "Energy"                     
+ [71,] "CAM"   "Energy"                     
+ [72,] "CPB"   "Consumer Staples"           
+ [73,] "COF"   "Financials"                 
+ [74,] "CAH"   "Health Care"                
+ [75,] "KMX"   "Consumer Discretionary"     
+ [76,] "CCL"   "Consumer Discretionary"     
+ [77,] "CAT"   "Industrials"                
+ [78,] "CELG"  "Health Care"                
+ [79,] "CNP"   "Utilities"                  
+ [80,] "CTL"   "Telecommunications Services"
+ [81,] "CEPH"  "Health Care"                
+ [82,] "CERN"  "Health Care"                
+ [83,] "SCHW"  "Financials"                 
+ [84,] "CHK"   "Energy"                     
+ [85,] "CVX"   "Energy"                     
+ [86,] "CB"    "Financials"                 
+ [87,] "CI"    "Health Care"                
+ [88,] "CINF"  "Financials"                 
+ [89,] "CTAS"  "Industrials"                
+ [90,] "CSCO"  "Information Technology"     
+ [91,] "C"     "Financials"                 
+ [92,] "CTXS"  "Information Technology"     
+ [93,] "CLF"   "Materials"                  
+ [94,] "CLX"   "Consumer Staples"           
+ [95,] "CME"   "Financials"                 
+ [96,] "CMS"   "Utilities"                  
+ [97,] "COH"   "Consumer Discretionary"     
+ [98,] "KO"    "Consumer Staples"           
+ [99,] "CCE"   "Consumer Staples"           
+[100,] "CTSH"  "Information Technology"     
+[101,] "CL"    "Consumer Staples"           
+[102,] "CMCSA" "Consumer Discretionary"     
+[103,] "CMA"   "Financials"                 
+[104,] "CSC"   "Information Technology"     
+[105,] "CPWR"  "Information Technology"     
+[106,] "COP"   "Energy"                     
+[107,] "CNX"   "Energy"                     
+[108,] "ED"    "Utilities"                  
+[109,] "STZ"   "Consumer Staples"           
+[110,] "CEG"   "Utilities"                  
+[111,] "GLW"   "Industrials"                
+[112,] "COST"  "Consumer Staples"           
+[113,] "CVH"   "Health Care"                
+[114,] "CSX"   "Industrials"                
+[115,] "CMI"   "Industrials"                
+[116,] "CVS"   "Consumer Staples"           
+[117,] "DHI"   "Consumer Discretionary"     
+[118,] "DHR"   "Industrials"                
+[119,] "DRI"   "Consumer Discretionary"     
+[120,] "DVA"   "Health Care"                
+[121,] "DF"    "Consumer Staples"           
+[122,] "DE"    "Industrials"                
+[123,] "DELL"  "Information Technology"     
+[124,] "DNR"   "Energy"                     
+[125,] "XRAY"  "Health Care"                
+[126,] "DVN"   "Energy"                     
+[127,] "DV"    "Consumer Discretionary"     
+[128,] "DO"    "Energy"                     
+[129,] "D"     "Utilities"                  
+[130,] "RRD"   "Industrials"                
+[131,] "DOV"   "Industrials"                
+[132,] "DOW"   "Materials"                  
+[133,] "DTE"   "Utilities"                  
+[134,] "DD"    "Materials"                  
+[135,] "DUK"   "Utilities"                  
+[136,] "DNB"   "Industrials"                
+[137,] "ETFC"  "Financials"                 
+[138,] "EMN"   "Materials"                  
+[139,] "EBAY"  "Information Technology"     
+[140,] "ECL"   "Materials"                  
+[141,] "EIX"   "Utilities"                  
+[142,] "EW"    "Health Care"                
+[143,] "EP"    "Energy"                     
+[144,] "ERTS"  "Information Technology"     
+[145,] "EMC"   "Information Technology"     
+[146,] "EMR"   "Industrials"                
+[147,] "ETR"   "Utilities"                  
+[148,] "EOG"   "Energy"                     
+[149,] "EQT"   "Utilities"                  
+[150,] "EFX"   "Financials"                 
+[151,] "EQR"   "Financials"                 
+[152,] "EL"    "Consumer Staples"           
+[153,] "EXC"   "Utilities"                  
+[154,] "EXPD"  "Industrials"                
+[155,] "ESRX"  "Health Care"                
+[156,] "XOM"   "Energy"                     
+[157,] "FFIV"  "Information Technology"     
+[158,] "FDO"   "Consumer Discretionary"     
+[159,] "FAST"  "Industrials"                
+[160,] "FII"   "Financials"                 
+[161,] "FDX"   "Industrials"                
+[162,] "FIS"   "Information Technology"     
+[163,] "FITB"  "Financials"                 
+[164,] "FHN"   "Financials"                 
+[165,] "FE"    "Utilities"                  
+[166,] "FISV"  "Information Technology"     
+[167,] "FLIR"  "Information Technology"     
+[168,] "FLS"   "Industrials"                
+[169,] "FLR"   "Industrials"                
+[170,] "FMC"   "Materials"                  
+[171,] "FTI"   "Energy"                     
+[172,] "F"     "Consumer Discretionary"     
+[173,] "FRX"   "Health Care"                
+[174,] "FO"    "Consumer Discretionary"     
+[175,] "BEN"   "Financials"                 
+[176,] "FCX"   "Materials"                  
+[177,] "FTR"   "Telecommunications Services"
+[178,] "GME"   "Consumer Discretionary"     
+[179,] "GCI"   "Consumer Discretionary"     
+[180,] "GPS"   "Consumer Discretionary"     
+[181,] "GD"    "Industrials"                
+[182,] "GE"    "Industrials"                
+[183,] "GIS"   "Consumer Staples"           
+[184,] "GPC"   "Consumer Discretionary"     
+[185,] "GILD"  "Health Care"                
+[186,] "GS"    "Financials"                 
+[187,] "GR"    "Industrials"                
+[188,] "GT"    "Consumer Discretionary"     
+[189,] "GWW"   "Industrials"                
+[190,] "HAL"   "Energy"                     
+[191,] "HOG"   "Consumer Discretionary"     
+[192,] "HAR"   "Consumer Discretionary"     
+[193,] "HRS"   "Information Technology"     
+[194,] "HIG"   "Financials"                 
+[195,] "HAS"   "Consumer Discretionary"     
+[196,] "HCP"   "Financials"                 
+[197,] "HCN"   "Financials"                 
+[198,] "HNZ"   "Consumer Staples"           
+[199,] "HP"    "Energy"                     
+[200,] "HES"   "Energy"                     
+[201,] "HPQ"   "Information Technology"     
+[202,] "HD"    "Consumer Discretionary"     
+[203,] "HON"   "Industrials"                
+[204,] "HRL"   "Consumer Staples"           
+[205,] "HST"   "Financials"                 
+[206,] "HCBK"  "Financials"                 
+[207,] "HUM"   "Health Care"                
+[208,] "HBAN"  "Financials"                 
+[209,] "ITW"   "Industrials"                
+[210,] "TEG"   "Utilities"                  
+[211,] "INTC"  "Information Technology"     
+[212,] "IBM"   "Information Technology"     
+[213,] "IFF"   "Materials"                  
+[214,] "IGT"   "Consumer Discretionary"     
+[215,] "IP"    "Materials"                  
+[216,] "IPG"   "Consumer Discretionary"     
+[217,] "INTU"  "Information Technology"     
+[218,] "ISRG"  "Health Care"                
+[219,] "IVZ"   "Financials"                 
+[220,] "IRM"   "Industrials"                
+[221,] "ITT"   "Industrials"                
+[222,] "JBL"   "Information Technology"     
+[223,] "JEC"   "Industrials"                
+[224,] "JNS"   "Financials"                 
+[225,] "JDSU"  "Information Technology"     
+[226,] "JNJ"   "Health Care"                
+[227,] "JCI"   "Consumer Discretionary"     
+[228,] "JOYG"  "Industrials"                
+[229,] "JPM"   "Financials"                 
+[230,] "JNPR"  "Information Technology"     
+[231,] "K"     "Consumer Staples"           
+[232,] "KEY"   "Financials"                 
+[233,] "KMB"   "Consumer Staples"           
+[234,] "KIM"   "Financials"                 
+[235,] "KLAC"  "Information Technology"     
+[236,] "KSS"   "Consumer Discretionary"     
+[237,] "KFT"   "Consumer Staples"           
+[238,] "KR"    "Consumer Staples"           
+[239,] "LLL"   "Industrials"                
+[240,] "LH"    "Health Care"                
+[241,] "LM"    "Financials"                 
+[242,] "LEG"   "Consumer Discretionary"     
+[243,] "LEN"   "Consumer Discretionary"     
+[244,] "LUK"   "Financials"                 
+[245,] "LXK"   "Information Technology"     
+[246,] "LIFE"  "Health Care"                
+[247,] "LLY"   "Health Care"                
+[248,] "LTD"   "Consumer Discretionary"     
+[249,] "LNC"   "Financials"                 
+[250,] "LLTC"  "Information Technology"     
+[251,] "LMT"   "Industrials"                
+[252,] "L"     "Financials"                 
+[253,] "LOW"   "Consumer Discretionary"     
+[254,] "LSI"   "Information Technology"     
+[255,] "MTB"   "Financials"                 
+[256,] "M"     "Consumer Discretionary"     
+[257,] "MRO"   "Energy"                     
+[258,] "MAR"   "Consumer Discretionary"     
+[259,] "MMC"   "Financials"                 
+[260,] "MI"    "Financials"                 
+[261,] "MAS"   "Industrials"                
+[262,] "MAT"   "Consumer Discretionary"     
+[263,] "MKC"   "Consumer Staples"           
+[264,] "MCD"   "Consumer Discretionary"     
+[265,] "MHP"   "Consumer Discretionary"     
+[266,] "MCK"   "Health Care"                
+[267,] "MWV"   "Materials"                  
+[268,] "MDT"   "Health Care"                
+[269,] "WFR"   "Information Technology"     
+[270,] "MRK"   "Health Care"                
+[271,] "MET"   "Financials"                 
+[272,] "MCHP"  "Information Technology"     
+[273,] "MU"    "Information Technology"     
+[274,] "MSFT"  "Information Technology"     
+[275,] "MOLX"  "Information Technology"     
+[276,] "TAP"   "Consumer Staples"           
+[277,] "MON"   "Materials"                  
+[278,] "MWW"   "Industrials"                
+[279,] "MCO"   "Financials"                 
+[280,] "MS"    "Financials"                 
+[281,] "MSI"   "Information Technology"     
+[282,] "MUR"   "Energy"                     
+[283,] "MYL"   "Health Care"                
+[284,] "NBR"   "Energy"                     
+[285,] "NDAQ"  "Financials"                 
+[286,] "NOV"   "Energy"                     
+[287,] "NSM"   "Information Technology"     
+[288,] "NTAP"  "Information Technology"     
+[289,] "NFLX"  "Information Technology"     
+[290,] "NWL"   "Consumer Discretionary"     
+[291,] "NFX"   "Energy"                     
+[292,] "NEM"   "Materials"                  
+[293,] "NWSA"  "Consumer Discretionary"     
+[294,] "NEE"   "Utilities"                  
+[295,] "GAS"   "Utilities"                  
+[296,] "NKE"   "Consumer Discretionary"     
+[297,] "NI"    "Utilities"                  
+[298,] "NE"    "Energy"                     
+[299,] "NBL"   "Energy"                     
+[300,] "JWN"   "Consumer Discretionary"     
+[301,] "NSC"   "Industrials"                
+[302,] "NTRS"  "Financials"                 
+[303,] "NOC"   "Industrials"                
+[304,] "NU"    "Utilities"                  
+[305,] "NVLS"  "Information Technology"     
+[306,] "NUE"   "Materials"                  
+[307,] "NVDA"  "Information Technology"     
+[308,] "ORLY"  "Consumer Discretionary"     
+[309,] "OXY"   "Energy"                     
+[310,] "OMC"   "Consumer Discretionary"     
+[311,] "OKE"   "Utilities"                  
+[312,] "ORCL"  "Information Technology"     
+[313,] "OI"    "Materials"                  
+[314,] "PCAR"  "Industrials"                
+[315,] "IR"    "Industrials"                
+[316,] "PLL"   "Industrials"                
+[317,] "PH"    "Industrials"                
+[318,] "PDCO"  "Health Care"                
+[319,] "PAYX"  "Information Technology"     
+[320,] "BTU"   "Energy"                     
+[321,] "JCP"   "Consumer Discretionary"     
+[322,] "PBCT"  "Financials"                 
+[323,] "POM"   "Utilities"                  
+[324,] "PEP"   "Consumer Staples"           
+[325,] "PKI"   "Health Care"                
+[326,] "PFE"   "Health Care"                
+[327,] "PCG"   "Utilities"                  
+[328,] "PNW"   "Utilities"                  
+[329,] "PXD"   "Energy"                     
+[330,] "PBI"   "Industrials"                
+[331,] "PCL"   "Financials"                 
+[332,] "PNC"   "Financials"                 
+[333,] "RL"    "Consumer Discretionary"     
+[334,] "PPG"   "Materials"                  
+[335,] "PPL"   "Utilities"                  
+[336,] "PX"    "Materials"                  
+[337,] "PCP"   "Industrials"                
+[338,] "PCLN"  "Industrials"                
+[339,] "PFG"   "Financials"                 
+[340,] "PG"    "Consumer Staples"           
+[341,] "PGN"   "Utilities"                  
+[342,] "PGR"   "Financials"                 
+[343,] "PLD"   "Financials"                 
+[344,] "PRU"   "Financials"                 
+[345,] "PSA"   "Financials"                 
+[346,] "PHM"   "Consumer Discretionary"     
+[347,] "PWR"   "Industrials"                
+[348,] "QCOM"  "Information Technology"     
+[349,] "DGX"   "Health Care"                
+[350,] "RSH"   "Consumer Discretionary"     
+[351,] "RRC"   "Energy"                     
+[352,] "RTN"   "Industrials"                
+[353,] "RHT"   "Information Technology"     
+[354,] "RF"    "Financials"                 
+[355,] "RSG"   "Industrials"                
+[356,] "RAI"   "Consumer Staples"           
+[357,] "RHI"   "Industrials"                
+[358,] "ROK"   "Industrials"                
+[359,] "COL"   "Industrials"                
+[360,] "ROP"   "Industrials"                
+[361,] "ROST"  "Consumer Discretionary"     
+[362,] "RDC"   "Energy"                     
+[363,] "R"     "Industrials"                
+[364,] "SWY"   "Consumer Staples"           
+[365,] "SNDK"  "Information Technology"     
+[366,] "SLE"   "Consumer Staples"           
+[367,] "SCG"   "Utilities"                  
+[368,] "SLB"   "Energy"                     
+[369,] "SEE"   "Materials"                  
+[370,] "SRE"   "Utilities"                  
+[371,] "SHW"   "Consumer Discretionary"     
+[372,] "SIAL"  "Materials"                  
+[373,] "SPG"   "Financials"                 
+[374,] "SLM"   "Financials"                 
+[375,] "SJM"   "Consumer Staples"           
+[376,] "SNA"   "Consumer Discretionary"     
+[377,] "SO"    "Utilities"                  
+[378,] "LUV"   "Industrials"                
+[379,] "SWN"   "Energy"                     
+[380,] "S"     "Telecommunications Services"
+[381,] "STJ"   "Health Care"                
+[382,] "SWK"   "Consumer Discretionary"     
+[383,] "SPLS"  "Consumer Discretionary"     
+[384,] "SBUX"  "Consumer Discretionary"     
+[385,] "HOT"   "Consumer Discretionary"     
+[386,] "STT"   "Financials"                 
+[387,] "SRCL"  "Industrials"                
+[388,] "SYK"   "Health Care"                
+[389,] "SUN"   "Energy"                     
+[390,] "STI"   "Financials"                 
+[391,] "SVU"   "Consumer Staples"           
+[392,] "SYMC"  "Information Technology"     
+[393,] "SYY"   "Consumer Staples"           
+[394,] "TROW"  "Financials"                 
+[395,] "TGT"   "Consumer Discretionary"     
+[396,] "TE"    "Utilities"                  
+[397,] "TLAB"  "Information Technology"     
+[398,] "THC"   "Health Care"                
+[399,] "TER"   "Information Technology"     
+[400,] "TSO"   "Energy"                     
+[401,] "TXN"   "Information Technology"     
+[402,] "TXT"   "Industrials"                
+[403,] "HSY"   "Consumer Staples"           
+[404,] "TRV"   "Financials"                 
+[405,] "TMO"   "Health Care"                
+[406,] "TIF"   "Consumer Discretionary"     
+[407,] "TWX"   "Consumer Discretionary"     
+[408,] "TIE"   "Materials"                  
+[409,] "TJX"   "Consumer Discretionary"     
+[410,] "TMK"   "Financials"                 
+[411,] "TSS"   "Information Technology"     
+[412,] "TSN"   "Consumer Staples"           
+[413,] "TYC"   "Industrials"                
+[414,] "USB"   "Financials"                 
+[415,] "UNP"   "Industrials"                
+[416,] "UNH"   "Health Care"                
+[417,] "UPS"   "Industrials"                
+[418,] "X"     "Materials"                  
+[419,] "UTX"   "Industrials"                
+[420,] "UNM"   "Financials"                 
+[421,] "URBN"  "Consumer Discretionary"     
+[422,] "VFC"   "Consumer Discretionary"     
+[423,] "VLO"   "Energy"                     
+[424,] "VAR"   "Health Care"                
+[425,] "VTR"   "Financials"                 
+[426,] "VRSN"  "Information Technology"     
+[427,] "VZ"    "Telecommunications Services"
+[428,] "VNO"   "Financials"                 
+[429,] "VMC"   "Materials"                  
+[430,] "WMT"   "Consumer Staples"           
+[431,] "WAG"   "Consumer Staples"           
+[432,] "DIS"   "Consumer Discretionary"     
+[433,] "WPO"   "Consumer Discretionary"     
+[434,] "WM"    "Industrials"                
+[435,] "WAT"   "Health Care"                
+[436,] "WPI"   "Health Care"                
+[437,] "WFC"   "Financials"                 
+[438,] "WDC"   "Information Technology"     
+[439,] "WY"    "Materials"                  
+[440,] "WHR"   "Consumer Discretionary"     
+[441,] "WFM"   "Consumer Staples"           
+[442,] "WMB"   "Energy"                     
+[443,] "WEC"   "Utilities"                  
+[444,] "WYNN"  "Consumer Discretionary"     
+[445,] "XEL"   "Utilities"                  
+[446,] "XRX"   "Information Technology"     
+[447,] "XLNX"  "Information Technology"     
+[448,] "XL"    "Financials"                 
+[449,] "YHOO"  "Information Technology"     
+[450,] "YUM"   "Consumer Discretionary"     
+[451,] "ZMH"   "Health Care"                
+[452,] "ZION"  "Financials"                 
+       V3                                      
+  [1,] "3M Co"                                 
+  [2,] "ACE Limited"                           
+  [3,] "Abbott Laboratories"                   
+  [4,] "Abercrombie & Fitch Company A"         
+  [5,] "Adobe Systems Inc"                     
+  [6,] "Advanced Micro Devices"                
+  [7,] "AES Corp"                              
+  [8,] "Aetna Inc"                             
+  [9,] "AFLAC Inc"                             
+ [10,] "Agilent Technologies Inc"              
+ [11,] "Air Products & Chemicals Inc"          
+ [12,] "Airgas Inc"                            
+ [13,] "AK Steel Hldg Corp"                    
+ [14,] "Akamai Technologies Inc"               
+ [15,] "Alcoa Inc"                             
+ [16,] "Allegheny Technologies Inc"            
+ [17,] "Allergan Inc"                          
+ [18,] "Allstate Corp"                         
+ [19,] "Altera Corp"                           
+ [20,] "Altria Group Inc"                      
+ [21,] "Amazon.com Inc"                        
+ [22,] "Ameren Corp"                           
+ [23,] "American Electric Power"               
+ [24,] "American Express Co"                   
+ [25,] "American Intl Group Inc"               
+ [26,] "American Tower Corp A"                 
+ [27,] "AmerisourceBergen Corp"                
+ [28,] "Amgen Inc"                             
+ [29,] "Amphenol Corp A"                       
+ [30,] "Anadarko Petroleum Corp"               
+ [31,] "Analog Devices Inc"                    
+ [32,] "Aon Corporation"                       
+ [33,] "Apache Corporation"                    
+ [34,] "Apartment Investment & Mgmt"           
+ [35,] "Apollo Group Inc"                      
+ [36,] "Apple Inc."                            
+ [37,] "Applied Materials Inc"                 
+ [38,] "Archer-Daniels-Midland Co"             
+ [39,] "AT&T Inc"                              
+ [40,] "Autodesk Inc"                          
+ [41,] "Automatic Data Processing"             
+ [42,] "AutoNation Inc"                        
+ [43,] "AutoZone Inc"                          
+ [44,] "AvalonBay Communities Inc"             
+ [45,] "Avery Dennison Corp"                   
+ [46,] "Avon Products"                         
+ [47,] "Baker Hughes Inc"                      
+ [48,] "Ball Corp"                             
+ [49,] "Bank of America Corp"                  
+ [50,] "The Bank of New York Mellon Corp."     
+ [51,] "Bard (C.R.) Inc."                      
+ [52,] "Baxter International Inc."             
+ [53,] "BB&T Corporation"                      
+ [54,] "Becton Dickinson"                      
+ [55,] "Bed Bath & Beyond"                     
+ [56,] "Bemis Company"                         
+ [57,] "Best Buy Co. Inc."                     
+ [58,] "Big Lots Inc."                         
+ [59,] "BIOGEN IDEC Inc."                      
+ [60,] "Blackrock"                             
+ [61,] "Block H&R"                             
+ [62,] "BMC Software"                          
+ [63,] "Boeing Company"                        
+ [64,] "Boston Properties"                     
+ [65,] "Boston Scientific"                     
+ [66,] "Bristol-Myers Squibb"                  
+ [67,] "Broadcom Corporation"                  
+ [68,] "CA, Inc."                              
+ [69,] "Cablevision Systems Corp."             
+ [70,] "Cabot Oil & Gas"                       
+ [71,] "Cameron International Corp."           
+ [72,] "Campbell Soup"                         
+ [73,] "Capital One Financial"                 
+ [74,] "Cardinal Health Inc."                  
+ [75,] "Carmax Inc"                            
+ [76,] "Carnival Corp."                        
+ [77,] "Caterpillar Inc."                      
+ [78,] "Celgene Corp."                         
+ [79,] "CenterPoint Energy"                    
+ [80,] "CenturyTel Inc"                        
+ [81,] "Cephalon Inc"                          
+ [82,] "Cerner"                                
+ [83,] "Charles Schwab"                        
+ [84,] "Chesapeake Energy"                     
+ [85,] "Chevron Corp."                         
+ [86,] "Chubb Corp."                           
+ [87,] "CIGNA Corp."                           
+ [88,] "Cincinnati Financial"                  
+ [89,] "Cintas Corporation"                    
+ [90,] "Cisco Systems"                         
+ [91,] "Citigroup Inc."                        
+ [92,] "Citrix Systems"                        
+ [93,] "Cliffs Natural Resources"              
+ [94,] "Clorox Co."                            
+ [95,] "CME Group Inc."                        
+ [96,] "CMS Energy"                            
+ [97,] "Coach Inc."                            
+ [98,] "Coca Cola Co."                         
+ [99,] "Coca-Cola Enterprises"                 
+[100,] "Cognizant Technology Solutions"        
+[101,] "Colgate-Palmolive"                     
+[102,] "Comcast Corp."                         
+[103,] "Comerica Inc."                         
+[104,] "Computer Sciences Corp."               
+[105,] "Compuware Corp."                       
+[106,] "ConocoPhillips"                        
+[107,] "CONSOL Energy Inc."                    
+[108,] "Consolidated Edison"                   
+[109,] "Constellation Brands"                  
+[110,] "Constellation Energy Group"            
+[111,] "Corning Inc."                          
+[112,] "Costco Co."                            
+[113,] "Coventry Health Care Inc."             
+[114,] "CSX Corp."                             
+[115,] "Cummins Inc."                          
+[116,] "CVS Caremark Corp."                    
+[117,] "D. R. Horton"                          
+[118,] "Danaher Corp."                         
+[119,] "Darden Restaurants"                    
+[120,] "DaVita Inc."                           
+[121,] "Dean Foods"                            
+[122,] "Deere & Co."                           
+[123,] "Dell Inc."                             
+[124,] "Denbury Resources Inc."                
+[125,] "Dentsply International"                
+[126,] "Devon Energy Corp."                    
+[127,] "DeVry, Inc."                           
+[128,] "Diamond Offshore Drilling"             
+[129,] "Dominion Resources"                    
+[130,] "Donnelley (R.R.) & Sons"               
+[131,] "Dover Corp."                           
+[132,] "Dow Chemical"                          
+[133,] "DTE Energy Co."                        
+[134,] "Du Pont (E.I.)"                        
+[135,] "Duke Energy"                           
+[136,] "Dun & Bradstreet"                      
+[137,] "E-Trade"                               
+[138,] "Eastman Chemical"                      
+[139,] "eBay Inc."                             
+[140,] "Ecolab Inc."                           
+[141,] "Edison Int'l"                          
+[142,] "Edwards Lifesciences"                  
+[143,] "El Paso Corp."                         
+[144,] "Electronic Arts"                       
+[145,] "EMC Corp."                             
+[146,] "Emerson Electric"                      
+[147,] "Entergy Corp."                         
+[148,] "EOG Resources"                         
+[149,] "EQT Corporation"                       
+[150,] "Equifax Inc."                          
+[151,] "Equity Residential"                    
+[152,] "Estee Lauder Cos."                     
+[153,] "Exelon Corp."                          
+[154,] "Expeditors Int'l"                      
+[155,] "Express Scripts"                       
+[156,] "Exxon Mobil Corp."                     
+[157,] "F5 Networks"                           
+[158,] "Family Dollar Stores"                  
+[159,] "Fastenal Co"                           
+[160,] "Federated Investors Inc."              
+[161,] "FedEx Corporation"                     
+[162,] "Fidelity National Information Services"
+[163,] "Fifth Third Bancorp"                   
+[164,] "First Horizon National"                
+[165,] "FirstEnergy Corp"                      
+[166,] "Fiserv Inc"                            
+[167,] "FLIR Systems"                          
+[168,] "Flowserve Corporation"                 
+[169,] "Fluor Corp."                           
+[170,] "FMC Corporation"                       
+[171,] "FMC Technologies Inc."                 
+[172,] "Ford Motor"                            
+[173,] "Forest Laboratories"                   
+[174,] "Fortune Brands Inc."                   
+[175,] "Franklin Resources"                    
+[176,] "Freeport-McMoran Cp & Gld"             
+[177,] "Frontier Communications"               
+[178,] "GameStop Corp."                        
+[179,] "Gannett Co."                           
+[180,] "Gap (The)"                             
+[181,] "General Dynamics"                      
+[182,] "General Electric"                      
+[183,] "General Mills"                         
+[184,] "Genuine Parts"                         
+[185,] "Gilead Sciences"                       
+[186,] "Goldman Sachs Group"                   
+[187,] "Goodrich Corporation"                  
+[188,] "Goodyear Tire & Rubber"                
+[189,] "Grainger (W.W.) Inc."                  
+[190,] "Halliburton Co."                       
+[191,] "Harley-Davidson"                       
+[192,] "Harman Int'l Industries"               
+[193,] "Harris Corporation"                    
+[194,] "Hartford Financial Svc.Gp."            
+[195,] "Hasbro Inc."                           
+[196,] "HCP Inc."                              
+[197,] "Health Care REIT"                      
+[198,] "Heinz (H.J.)"                          
+[199,] "Helmerich & Payne"                     
+[200,] "Hess Corporation"                      
+[201,] "Hewlett-Packard"                       
+[202,] "Home Depot"                            
+[203,] "Honeywell Int'l Inc."                  
+[204,] "Hormel Foods Corp."                    
+[205,] "Host Hotels & Resorts"                 
+[206,] "Hudson City Bancorp"                   
+[207,] "Humana Inc."                           
+[208,] "Huntington Bancshares"                 
+[209,] "Illinois Tool Works"                   
+[210,] "Integrys Energy Group Inc."            
+[211,] "Intel Corp."                           
+[212,] "International Bus. Machines"           
+[213,] "International Flav/Frag"               
+[214,] "International Game Technology"         
+[215,] "International Paper"                   
+[216,] "Interpublic Group"                     
+[217,] "Intuit Inc."                           
+[218,] "Intuitive Surgical Inc."               
+[219,] "Invesco Ltd."                          
+[220,] "Iron Mountain Incorporated"            
+[221,] "ITT Corporation"                       
+[222,] "Jabil Circuit"                         
+[223,] "Jacobs Engineering Group"              
+[224,] "Janus Capital Group"                   
+[225,] "JDS Uniphase Corp."                    
+[226,] "Johnson & Johnson"                     
+[227,] "Johnson Controls"                      
+[228,] "Joy Global Inc."                       
+[229,] "JPMorgan Chase & Co."                  
+[230,] "Juniper Networks"                      
+[231,] "Kellogg Co."                           
+[232,] "KeyCorp"                               
+[233,] "Kimberly-Clark"                        
+[234,] "Kimco Realty"                          
+[235,] "KLA-Tencor Corp."                      
+[236,] "Kohl's Corp."                          
+[237,] "Kraft Foods Inc-A"                     
+[238,] "Kroger Co."                            
+[239,] "L-3 Communications Holdings"           
+[240,] "Laboratory Corp. of America Holding"   
+[241,] "Legg Mason"                            
+[242,] "Leggett & Platt"                       
+[243,] "Lennar Corp."                          
+[244,] "Leucadia National Corp."               
+[245,] "Lexmark Int'l Inc"                     
+[246,] "Life Technologies"                     
+[247,] "Lilly (Eli) & Co."                     
+[248,] "Limited Brands Inc."                   
+[249,] "Lincoln National"                      
+[250,] "Linear Technology Corp."               
+[251,] "Lockheed Martin Corp."                 
+[252,] "Loews Corp."                           
+[253,] "Lowe's Cos."                           
+[254,] "LSI Corporation"                       
+[255,] "M&T Bank Corp."                        
+[256,] "Macy's Inc."                           
+[257,] "Marathon Oil Corp."                    
+[258,] "Marriott Int'l."                       
+[259,] "Marsh & McLennan"                      
+[260,] "Marshall & Ilsley Corp."               
+[261,] "Masco Corp."                           
+[262,] "Mattel Inc."                           
+[263,] "McCormick & Co."                       
+[264,] "McDonald's Corp."                      
+[265,] "McGraw-Hill"                           
+[266,] "McKesson Corp."                        
+[267,] "MeadWestvaco Corporation"              
+[268,] "Medtronic Inc."                        
+[269,] "MEMC Electronic Materials"             
+[270,] "Merck & Co."                           
+[271,] "MetLife Inc."                          
+[272,] "Microchip Technology"                  
+[273,] "Micron Technology"                     
+[274,] "Microsoft Corp."                       
+[275,] "Molex Inc."                            
+[276,] "Molson Coors Brewing Company"          
+[277,] "Monsanto Co."                          
+[278,] "Monster Worldwide"                     
+[279,] "Moody's Corp"                          
+[280,] "Morgan Stanley"                        
+[281,] "Motorola Solutions Inc."               
+[282,] "Murphy Oil"                            
+[283,] "Mylan Inc."                            
+[284,] "Nabors Industries Ltd."                
+[285,] "NASDAQ OMX Group"                      
+[286,] "National Oilwell Varco Inc."           
+[287,] "National Semiconductor"                
+[288,] "NetApp"                                
+[289,] "NetFlix Inc."                          
+[290,] "Newell Rubbermaid Co."                 
+[291,] "Newfield Exploration Co"               
+[292,] "Newmont Mining Corp. (Hldg. Co.)"      
+[293,] "News Corporation"                      
+[294,] "NextEra Energy Resources"              
+[295,] "NICOR Inc."                            
+[296,] "NIKE Inc."                             
+[297,] "NiSource Inc."                         
+[298,] "Noble Corp"                            
+[299,] "Noble Energy Inc"                      
+[300,] "Nordstrom"                             
+[301,] "Norfolk Southern Corp."                
+[302,] "Northern Trust Corp."                  
+[303,] "Northrop Grumman Corp."                
+[304,] "Northeast Utilities"                   
+[305,] "Novellus Systems"                      
+[306,] "Nucor Corp."                           
+[307,] "Nvidia Corporation"                    
+[308,] "O'Reilly Automotive"                   
+[309,] "Occidental Petroleum"                  
+[310,] "Omnicom Group"                         
+[311,] "ONEOK"                                 
+[312,] "Oracle Corp."                          
+[313,] "Owens-Illinois Inc"                    
+[314,] "PACCAR Inc."                           
+[315,] "Ingersoll-Rand PLC"                    
+[316,] "Pall Corp."                            
+[317,] "Parker-Hannifin"                       
+[318,] "Patterson Companies"                   
+[319,] "Paychex Inc."                          
+[320,] "Peabody Energy"                        
+[321,] "Penney (J.C.)"                         
+[322,] "People's United Bank"                  
+[323,] "Pepco Holdings Inc."                   
+[324,] "PepsiCo Inc."                          
+[325,] "PerkinElmer"                           
+[326,] "Pfizer Inc."                           
+[327,] "PG&E Corp."                            
+[328,] "Pinnacle West Capital"                 
+[329,] "Pioneer Natural Resources"             
+[330,] "Pitney-Bowes"                          
+[331,] "Plum Creek Timber Co."                 
+[332,] "PNC Financial Services"                
+[333,] "Polo Ralph Lauren Corp."               
+[334,] "PPG Industries"                        
+[335,] "PPL Corp."                             
+[336,] "Praxair Inc."                          
+[337,] "Precision Castparts"                   
+[338,] "Priceline.com Inc"                     
+[339,] "Principal Financial Group"             
+[340,] "Procter & Gamble"                      
+[341,] "Progress Energy Inc."                  
+[342,] "Progressive Corp."                     
+[343,] "ProLogis"                              
+[344,] "Prudential Financial"                  
+[345,] "Public Storage"                        
+[346,] "Pulte Homes Inc."                      
+[347,] "Quanta Services Inc."                  
+[348,] "QUALCOMM Inc."                         
+[349,] "Quest Diagnostics"                     
+[350,] "RadioShack Corp"                       
+[351,] "Range Resources Corp."                 
+[352,] "Raytheon Co."                          
+[353,] "Red Hat Inc."                          
+[354,] "Regions Financial Corp."               
+[355,] "Republic Services Inc"                 
+[356,] "Reynolds American Inc."                
+[357,] "Robert Half International"             
+[358,] "Rockwell Automation Inc."              
+[359,] "Rockwell Collins"                      
+[360,] "Roper Industries"                      
+[361,] "Ross Stores Inc."                      
+[362,] "Rowan Cos."                            
+[363,] "Ryder System"                          
+[364,] "Safeway Inc."                          
+[365,] "SanDisk Corporation"                   
+[366,] "Sara Lee Corp."                        
+[367,] "SCANA Corp"                            
+[368,] "Schlumberger Ltd."                     
+[369,] "Sealed Air Corp.(New)"                 
+[370,] "Sempra Energy"                         
+[371,] "Sherwin-Williams"                      
+[372,] "Sigma-Aldrich"                         
+[373,] "Simon Property Group Inc"              
+[374,] "SLM Corporation"                       
+[375,] "Smucker (J.M.)"                        
+[376,] "Snap-On Inc."                          
+[377,] "Southern Co."                          
+[378,] "Southwest Airlines"                    
+[379,] "Southwestern Energy"                   
+[380,] "Sprint Nextel Corp."                   
+[381,] "St Jude Medical"                       
+[382,] "Stanley Black & Decker"                
+[383,] "Staples Inc."                          
+[384,] "Starbucks Corp."                       
+[385,] "Starwood Hotels & Resorts"             
+[386,] "State Street Corp."                    
+[387,] "Stericycle Inc"                        
+[388,] "Stryker Corp."                         
+[389,] "Sunoco Inc."                           
+[390,] "SunTrust Banks"                        
+[391,] "Supervalu Inc."                        
+[392,] "Symantec Corp."                        
+[393,] "Sysco Corp."                           
+[394,] "T. Rowe Price Group"                   
+[395,] "Target Corp."                          
+[396,] "TECO Energy"                           
+[397,] "Tellabs Inc."                          
+[398,] "Tenet Healthcare Corp."                
+[399,] "Teradyne Inc."                         
+[400,] "Tesoro Petroleum Co."                  
+[401,] "Texas Instruments"                     
+[402,] "Textron Inc."                          
+[403,] "The Hershey Company"                   
+[404,] "The Travelers Companies Inc."          
+[405,] "Thermo Fisher Scientific"              
+[406,] "Tiffany & Co."                         
+[407,] "Time Warner Inc."                      
+[408,] "Titanium Metals Corp"                  
+[409,] "TJX Companies Inc."                    
+[410,] "Torchmark Corp."                       
+[411,] "Total System Services"                 
+[412,] "Tyson Foods"                           
+[413,] "Tyco International"                    
+[414,] "U.S. Bancorp"                          
+[415,] "Union Pacific"                         
+[416,] "United Health Group Inc."              
+[417,] "United Parcel Service"                 
+[418,] "United States Steel Corp."             
+[419,] "United Technologies"                   
+[420,] "Unum Group"                            
+[421,] "Urban Outfitters"                      
+[422,] "V.F. Corp."                            
+[423,] "Valero Energy"                         
+[424,] "Varian Medical Systems"                
+[425,] "Ventas Inc"                            
+[426,] "Verisign Inc."                         
+[427,] "Verizon Communications"                
+[428,] "Vornado Realty Trust"                  
+[429,] "Vulcan Materials"                      
+[430,] "Wal-Mart Stores"                       
+[431,] "Walgreen Co."                          
+[432,] "Walt Disney Co."                       
+[433,] "Washington Post Co B"                  
+[434,] "Waste Management Inc."                 
+[435,] "Waters Corporation"                    
+[436,] "Watson Pharmaceuticals"                
+[437,] "Wells Fargo"                           
+[438,] "Western Digital"                       
+[439,] "Weyerhaeuser Corp."                    
+[440,] "Whirlpool Corp."                       
+[441,] "Whole Foods Market"                    
+[442,] "Williams Cos."                         
+[443,] "Wisconsin Energy Corporation"          
+[444,] "Wynn Resorts Ltd"                      
+[445,] "Xcel Energy Inc"                       
+[446,] "Xerox Corp."                           
+[447,] "Xilinx Inc"                            
+[448,] "XL Capital"                            
+[449,] "Yahoo Inc."                            
+[450,] "Yum! Brands Inc"                       
+[451,] "Zimmer Holdings"                       
+[452,] "Zions Bancorp"                         
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("stockdata", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  7.742 0.097 7.856 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

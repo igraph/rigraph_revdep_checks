@@ -1,0 +1,2421 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(FrF2)
+Loading required package: DoE.base
+Loading required package: grid
+Loading required package: conf.design
+
+Attaching package: 'DoE.base'
+
+The following objects are masked from 'package:stats':
+
+    aov, lm
+
+The following object is masked from 'package:graphics':
+
+    plot.design
+
+The following object is masked from 'package:base':
+
+    lengths
+
+> ### test programs for FrF2
+> ### FrF2 functionality
+> ### combination of everything with everything is not included, 
+> ###    but presumably also not needed
+> FrF2(8,4,randomize=FALSE)
+   A  B  C  D
+1 -1 -1 -1 -1
+2  1 -1 -1  1
+3 -1  1 -1  1
+4  1  1 -1 -1
+5 -1 -1  1  1
+6  1 -1  1 -1
+7 -1  1  1 -1
+8  1  1  1  1
+class=design, type= FrF2 
+> set.seed(98776)
+> test <- FrF2(8,4,replications=2, repeat.only=FALSE)
+> set.seed(98776)
+> test <- FrF2(8,4,replications=2, repeat.only=TRUE)
+> run.order(test)
+   run.no.in.std.order run.no run.no.std.rp
+1                    1      1           1.1
+2                    1      2           1.2
+3                    7      3           7.1
+4                    7      4           7.2
+5                    3      5           3.1
+6                    3      6           3.2
+7                    8      7           8.1
+8                    8      8           8.2
+9                    2      9           2.1
+10                   2     10           2.2
+11                   5     11           5.1
+12                   5     12           5.2
+13                   4     13           4.1
+14                   4     14           4.2
+15                   6     15           6.1
+16                   6     16           6.2
+> test
+   run.no run.no.std.rp  A  B  C  D
+1       1           1.1 -1 -1 -1 -1
+2       2           1.2 -1 -1 -1 -1
+3       3           7.1 -1  1  1 -1
+4       4           7.2 -1  1  1 -1
+5       5           3.1 -1  1 -1  1
+6       6           3.2 -1  1 -1  1
+7       7           8.1  1  1  1  1
+8       8           8.2  1  1  1  1
+9       9           2.1  1 -1 -1  1
+10     10           2.2  1 -1 -1  1
+11     11           5.1 -1 -1  1  1
+12     12           5.2 -1 -1  1  1
+13     13           4.1  1  1 -1 -1
+14     14           4.2  1  1 -1 -1
+15     15           6.1  1 -1  1 -1
+16     16           6.2  1 -1  1 -1
+class=design, type= FrF2 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+> test <- FrF2(8,4,replications=2, repeat.only=TRUE, randomize=FALSE)
+> test <- FrF2(8,4,replications=2, repeat.only=FALSE)
+> run.order(test)
+   run.no.in.std.order run.no run.no.std.rp
+1                    5      1           5.1
+2                    2      2           2.1
+3                    1      3           1.1
+4                    4      4           4.1
+5                    6      5           6.1
+6                    8      6           8.1
+7                    3      7           3.1
+8                    7      8           7.1
+9                    5      9           5.2
+10                   7     10           7.2
+11                   2     11           2.2
+12                   4     12           4.2
+13                   3     13           3.2
+14                   6     14           6.2
+15                   8     15           8.2
+16                   1     16           1.2
+> test
+   run.no run.no.std.rp  A  B  C  D
+1       1           5.1 -1 -1  1  1
+2       2           2.1  1 -1 -1  1
+3       3           1.1 -1 -1 -1 -1
+4       4           4.1  1  1 -1 -1
+5       5           6.1  1 -1  1 -1
+6       6           8.1  1  1  1  1
+7       7           3.1 -1  1 -1  1
+8       8           7.1 -1  1  1 -1
+9       9           5.2 -1 -1  1  1
+10     10           7.2 -1  1  1 -1
+11     11           2.2  1 -1 -1  1
+12     12           4.2  1  1 -1 -1
+13     13           3.2 -1  1 -1  1
+14     14           6.2  1 -1  1 -1
+15     15           8.2  1  1  1  1
+16     16           1.2 -1 -1 -1 -1
+class=design, type= FrF2 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+> 
+> str.wover <- function(obj){
++     di <- attr(obj, "design.info") 
++     if (!is.null(di$orig.design.info)) di$orig.design.info <- di$orig.design.info[-which(names(di$orig.design.info)=="FrF2.version")]
++     attr(obj, "design.info") <- di[-which(names(di)=="FrF2.version")]
++     str(obj)
++ }
+> 
+> str.wover(FrF2(16,6,randomize=FALSE, factor.names=list(eins=c(1,2),zwei=c(43,87),drei=c("alt","neu"),vier="",fuenf="",sechs="")))
+Classes 'design' and 'data.frame':	16 obs. of  6 variables:
+ $ eins : Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1" "2"
+  .. .. ..$ : NULL
+ $ zwei : Factor w/ 2 levels "43","87": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "43" "87"
+  .. .. ..$ : NULL
+ $ drei : Factor w/ 2 levels "alt","neu": 1 1 1 1 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "alt" "neu"
+  .. .. ..$ : NULL
+ $ vier : Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ fuenf: Factor w/ 2 levels "-1","1": 1 2 2 1 2 1 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ sechs: Factor w/ 2 levels "-1","1": 1 2 2 1 1 2 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:16, 1:6] -1 1 -1 1 -1 1 -1 1 -1 1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "eins" "zwei" "drei" "vier" ...
+ - attr(*, "run.order")='data.frame':	16 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+ - attr(*, "design.info")=List of 12
+  ..$ type        : chr "FrF2"
+  ..$ nruns       : num 16
+  ..$ nfactors    : num 6
+  ..$ factor.names:List of 6
+  .. ..$ eins : num  1 2
+  .. ..$ zwei : num  43 87
+  .. ..$ drei : chr  "alt" "neu"
+  .. ..$ vier : num  -1 1
+  .. ..$ fuenf: num  -1 1
+  .. ..$ sechs: num  -1 1
+  ..$ catlg.name  : chr "catlg"
+  ..$ catlg.entry :List of 1
+  .. ..$ 6-2.1:List of 9
+  .. .. ..$ res           : int 4
+  .. .. ..$ nfac          : num 6
+  .. .. ..$ nruns         : num 16
+  .. .. ..$ gen           : num  7 11
+  .. .. ..$ WLP           : num  0 0 0 3 0 0 0
+  .. .. ..$ nclear.2fis   : num 0
+  .. .. ..$ clear.2fis    : num 
+  .. .. ..$ all.2fis.clear: num 
+  .. .. ..$ dominating    : logi FALSE
+  .. ..- attr(*, "class")= chr  "catlg" "list"
+  ..$ aliased     :List of 3
+  .. ..$ legend: chr  "A=eins" "B=zwei" "C=drei" "D=vier" ...
+  .. ..$ main  : chr 
+  .. ..$ fi2   : chr  "AB=CE=DF" "AC=BE" "AD=BF" "AE=BC" ...
+  ..$ replications: num 1
+  ..$ repeat.only : logi FALSE
+  ..$ randomize   : logi FALSE
+  ..$ seed        : NULL
+  ..$ creator     : language FrF2(16, 6, randomize = FALSE, factor.names = list(eins = c(1, 2), zwei = c(43,      87), drei = c("alt", "neu"), vier = "", fuenf = "", sechs = ""))
+> str.wover(FrF2(16,randomize=FALSE, factor.names=list(eins=c(1,2),zwei=c(43,87),drei=c("alt","neu"),vier="",fuenf="",sechs="")))
+Classes 'design' and 'data.frame':	16 obs. of  6 variables:
+ $ eins : Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1" "2"
+  .. .. ..$ : NULL
+ $ zwei : Factor w/ 2 levels "43","87": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "43" "87"
+  .. .. ..$ : NULL
+ $ drei : Factor w/ 2 levels "alt","neu": 1 1 1 1 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "alt" "neu"
+  .. .. ..$ : NULL
+ $ vier : Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ fuenf: Factor w/ 2 levels "-1","1": 1 2 2 1 2 1 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ sechs: Factor w/ 2 levels "-1","1": 1 2 2 1 1 2 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:16, 1:6] -1 1 -1 1 -1 1 -1 1 -1 1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "eins" "zwei" "drei" "vier" ...
+ - attr(*, "run.order")='data.frame':	16 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+ - attr(*, "design.info")=List of 12
+  ..$ type        : chr "FrF2"
+  ..$ nruns       : num 16
+  ..$ nfactors    : int 6
+  ..$ factor.names:List of 6
+  .. ..$ eins : num  1 2
+  .. ..$ zwei : num  43 87
+  .. ..$ drei : chr  "alt" "neu"
+  .. ..$ vier : num  -1 1
+  .. ..$ fuenf: num  -1 1
+  .. ..$ sechs: num  -1 1
+  ..$ catlg.name  : chr "catlg"
+  ..$ catlg.entry :List of 1
+  .. ..$ 6-2.1:List of 9
+  .. .. ..$ res           : int 4
+  .. .. ..$ nfac          : num 6
+  .. .. ..$ nruns         : num 16
+  .. .. ..$ gen           : num  7 11
+  .. .. ..$ WLP           : num  0 0 0 3 0 0 0
+  .. .. ..$ nclear.2fis   : num 0
+  .. .. ..$ clear.2fis    : num 
+  .. .. ..$ all.2fis.clear: num 
+  .. .. ..$ dominating    : logi FALSE
+  .. ..- attr(*, "class")= chr  "catlg" "list"
+  ..$ aliased     :List of 3
+  .. ..$ legend: chr  "A=eins" "B=zwei" "C=drei" "D=vier" ...
+  .. ..$ main  : chr 
+  .. ..$ fi2   : chr  "AB=CE=DF" "AC=BE" "AD=BF" "AE=BC" ...
+  ..$ replications: num 1
+  ..$ repeat.only : logi FALSE
+  ..$ randomize   : logi FALSE
+  ..$ seed        : NULL
+  ..$ creator     : language FrF2(16, randomize = FALSE, factor.names = list(eins = c(1, 2), zwei = c(43,      87), drei = c("alt", "neu"), vier = "", fuenf = "", sechs = ""))
+> str.wover(FrF2(16,design="6-2.2",randomize=FALSE))
+Classes 'design' and 'data.frame':	16 obs. of  6 variables:
+ $ A: Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ B: Factor w/ 2 levels "-1","1": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ C: Factor w/ 2 levels "-1","1": 1 1 1 1 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ D: Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ E: Factor w/ 2 levels "-1","1": 2 1 1 2 2 1 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ F: Factor w/ 2 levels "-1","1": 1 2 1 2 2 1 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:16, 1:6] -1 1 -1 1 -1 1 -1 1 -1 1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "A" "B" "C" "D" ...
+ - attr(*, "run.order")='data.frame':	16 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+ - attr(*, "design.info")=List of 12
+  ..$ type        : chr "FrF2"
+  ..$ nruns       : num 16
+  ..$ nfactors    : num 6
+  ..$ factor.names:List of 6
+  .. ..$ A: num  -1 1
+  .. ..$ B: num  -1 1
+  .. ..$ C: num  -1 1
+  .. ..$ D: num  -1 1
+  .. ..$ E: num  -1 1
+  .. ..$ F: num  -1 1
+  ..$ catlg.name  : chr "catlg"
+  ..$ catlg.entry :List of 1
+  .. ..$ 6-2.2:List of 9
+  .. .. ..$ res           : int 3
+  .. .. ..$ nfac          : num 6
+  .. .. ..$ nruns         : num 16
+  .. .. ..$ gen           : num  3 13
+  .. .. ..$ WLP           : num  0 0 1 1 1 0 0
+  .. .. ..$ nclear.2fis   : num 6
+  .. .. ..$ clear.2fis    : num [1:2, 1:6] 2 3 2 4 2 6 3 5 4 5 ...
+  .. .. ..$ all.2fis.clear: num 
+  .. .. ..$ dominating    : logi TRUE
+  .. ..- attr(*, "class")= chr  "catlg" "list"
+  ..$ aliased     :List of 3
+  .. ..$ legend: chr  "A=A" "B=B" "C=C" "D=D" ...
+  .. ..$ main  : chr  "A=BE" "B=AE" "E=AB"
+  .. ..$ fi2   : chr  "AC=DF" "AD=CF" "AF=CD"
+  ..$ replications: num 1
+  ..$ repeat.only : logi FALSE
+  ..$ randomize   : logi FALSE
+  ..$ seed        : NULL
+  ..$ creator     : language FrF2(16, design = "6-2.2", randomize = FALSE)
+> str.wover(FrF2(16,generators=catlg[["6-2.2"]]$gen,randomize=FALSE,factor.names=list(eins=c(1,2),zwei=c(43,87),drei=c("alt","neu"),vier="",fuenf="",sechs="")))
+Classes 'design' and 'data.frame':	16 obs. of  6 variables:
+ $ eins : Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1" "2"
+  .. .. ..$ : NULL
+ $ zwei : Factor w/ 2 levels "43","87": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "43" "87"
+  .. .. ..$ : NULL
+ $ drei : Factor w/ 2 levels "alt","neu": 1 1 1 1 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "alt" "neu"
+  .. .. ..$ : NULL
+ $ vier : Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ fuenf: Factor w/ 2 levels "-1","1": 2 1 1 2 2 1 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ sechs: Factor w/ 2 levels "-1","1": 1 2 1 2 2 1 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:16, 1:6] -1 1 -1 1 -1 1 -1 1 -1 1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "eins" "zwei" "drei" "vier" ...
+ - attr(*, "run.order")='data.frame':	16 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+ - attr(*, "design.info")=List of 11
+  ..$ type        : chr "FrF2.generators"
+  ..$ nruns       : num 16
+  ..$ nfactors    : int 6
+  ..$ factor.names:List of 6
+  .. ..$ eins : num  1 2
+  .. ..$ zwei : num  43 87
+  .. ..$ drei : chr  "alt" "neu"
+  .. ..$ vier : num  -1 1
+  .. ..$ fuenf: num  -1 1
+  .. ..$ sechs: num  -1 1
+  ..$ generators  : chr  "E=AB" "F=ACD"
+  ..$ aliased     :List of 3
+  .. ..$ legend: chr  "A=eins" "B=zwei" "C=drei" "D=vier" ...
+  .. ..$ main  : chr  "A=BE" "B=AE" "E=AB"
+  .. ..$ fi2   : chr  "AC=DF" "AD=CF" "AF=CD"
+  ..$ replications: num 1
+  ..$ repeat.only : logi FALSE
+  ..$ randomize   : logi FALSE
+  ..$ seed        : NULL
+  ..$ creator     : language FrF2(16, generators = catlg[["6-2.2"]]$gen, randomize = FALSE, factor.names = list(eins = c(1,      2), zwei = c(43, 87), drei = c("alt", "neu"), vier = "", fuenf = "",  ...
+> ## alias structure for three generators that differ only by sign
+> design.info(FrF2(16,generators=c(7,13,15),randomize=FALSE))$aliased
+$legend
+[1] "A=A" "B=B" "C=C" "D=D" "E=E" "F=F" "G=G"
+
+$main
+[1] "B=FG"    "D=EG"    "E=DG"    "F=BG"    "G=BF=DE"
+
+$fi2
+[1] "AB=CE"    "AC=BE=DF" "AD=CF"    "AE=BC"    "AF=CD"    "BD=EF"   
+
+> design.info(FrF2(16,generators=c(7,-13,15),randomize=FALSE))$aliased
+$legend
+[1] "A=A" "B=B" "C=C" "D=D" "E=E" "F=F" "G=G"
+
+$main
+[1] "B=-FG"    "D=EG"     "E=DG"     "F=-BG"    "G=-BF=DE"
+
+$fi2
+[1] "AB=CE"     "AC=BE=-DF" "AD=-CF"    "AE=BC"     "AF=-CD"    "BD=-EF"   
+
+> design.info(FrF2(16,generators=c(-7,-13,-15),randomize=FALSE))$aliased
+$legend
+[1] "A=A" "B=B" "C=C" "D=D" "E=E" "F=F" "G=G"
+
+$main
+[1] "B=FG"    "D=EG"    "E=DG"    "F=BG"    "G=BF=DE"
+
+$fi2
+[1] "AB=-CE"     "AC=-BE=-DF" "AD=-CF"     "AE=-BC"     "AF=-CD"    
+[6] "BD=EF"     
+
+> 
+> str.wover(FrF2(16,design="6-2.2",randomize=FALSE,factor.names=list(eins=c(1,2),zwei=c(43,87),drei=c("alt","neu"),vier="",fuenf="",sechs="")))
+Classes 'design' and 'data.frame':	16 obs. of  6 variables:
+ $ eins : Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1" "2"
+  .. .. ..$ : NULL
+ $ zwei : Factor w/ 2 levels "43","87": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "43" "87"
+  .. .. ..$ : NULL
+ $ drei : Factor w/ 2 levels "alt","neu": 1 1 1 1 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "alt" "neu"
+  .. .. ..$ : NULL
+ $ vier : Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ fuenf: Factor w/ 2 levels "-1","1": 2 1 1 2 2 1 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ sechs: Factor w/ 2 levels "-1","1": 1 2 1 2 2 1 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:16, 1:6] -1 1 -1 1 -1 1 -1 1 -1 1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "eins" "zwei" "drei" "vier" ...
+ - attr(*, "run.order")='data.frame':	16 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+ - attr(*, "design.info")=List of 12
+  ..$ type        : chr "FrF2"
+  ..$ nruns       : num 16
+  ..$ nfactors    : num 6
+  ..$ factor.names:List of 6
+  .. ..$ eins : num  1 2
+  .. ..$ zwei : num  43 87
+  .. ..$ drei : chr  "alt" "neu"
+  .. ..$ vier : num  -1 1
+  .. ..$ fuenf: num  -1 1
+  .. ..$ sechs: num  -1 1
+  ..$ catlg.name  : chr "catlg"
+  ..$ catlg.entry :List of 1
+  .. ..$ 6-2.2:List of 9
+  .. .. ..$ res           : int 3
+  .. .. ..$ nfac          : num 6
+  .. .. ..$ nruns         : num 16
+  .. .. ..$ gen           : num  3 13
+  .. .. ..$ WLP           : num  0 0 1 1 1 0 0
+  .. .. ..$ nclear.2fis   : num 6
+  .. .. ..$ clear.2fis    : num [1:2, 1:6] 2 3 2 4 2 6 3 5 4 5 ...
+  .. .. ..$ all.2fis.clear: num 
+  .. .. ..$ dominating    : logi TRUE
+  .. ..- attr(*, "class")= chr  "catlg" "list"
+  ..$ aliased     :List of 3
+  .. ..$ legend: chr  "A=eins" "B=zwei" "C=drei" "D=vier" ...
+  .. ..$ main  : chr  "A=BE" "B=AE" "E=AB"
+  .. ..$ fi2   : chr  "AC=DF" "AD=CF" "AF=CD"
+  ..$ replications: num 1
+  ..$ repeat.only : logi FALSE
+  ..$ randomize   : logi FALSE
+  ..$ seed        : NULL
+  ..$ creator     : language FrF2(16, design = "6-2.2", randomize = FALSE, factor.names = list(eins = c(1,      2), zwei = c(43, 87), drei = c("alt", "neu"), vier = "", fuenf = "",  ...
+> str.wover(FrF2(16,design="6-2.2",nfactors=6,randomize=FALSE))
+Classes 'design' and 'data.frame':	16 obs. of  6 variables:
+ $ A: Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ B: Factor w/ 2 levels "-1","1": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ C: Factor w/ 2 levels "-1","1": 1 1 1 1 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ D: Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ E: Factor w/ 2 levels "-1","1": 2 1 1 2 2 1 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ F: Factor w/ 2 levels "-1","1": 1 2 1 2 2 1 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:16, 1:6] -1 1 -1 1 -1 1 -1 1 -1 1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "A" "B" "C" "D" ...
+ - attr(*, "run.order")='data.frame':	16 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+ - attr(*, "design.info")=List of 12
+  ..$ type        : chr "FrF2"
+  ..$ nruns       : num 16
+  ..$ nfactors    : num 6
+  ..$ factor.names:List of 6
+  .. ..$ A: num  -1 1
+  .. ..$ B: num  -1 1
+  .. ..$ C: num  -1 1
+  .. ..$ D: num  -1 1
+  .. ..$ E: num  -1 1
+  .. ..$ F: num  -1 1
+  ..$ catlg.name  : chr "catlg"
+  ..$ catlg.entry :List of 1
+  .. ..$ 6-2.2:List of 9
+  .. .. ..$ res           : int 3
+  .. .. ..$ nfac          : num 6
+  .. .. ..$ nruns         : num 16
+  .. .. ..$ gen           : num  3 13
+  .. .. ..$ WLP           : num  0 0 1 1 1 0 0
+  .. .. ..$ nclear.2fis   : num 6
+  .. .. ..$ clear.2fis    : num [1:2, 1:6] 2 3 2 4 2 6 3 5 4 5 ...
+  .. .. ..$ all.2fis.clear: num 
+  .. .. ..$ dominating    : logi TRUE
+  .. ..- attr(*, "class")= chr  "catlg" "list"
+  ..$ aliased     :List of 3
+  .. ..$ legend: chr  "A=A" "B=B" "C=C" "D=D" ...
+  .. ..$ main  : chr  "A=BE" "B=AE" "E=AB"
+  .. ..$ fi2   : chr  "AC=DF" "AD=CF" "AF=CD"
+  ..$ replications: num 1
+  ..$ repeat.only : logi FALSE
+  ..$ randomize   : logi FALSE
+  ..$ seed        : NULL
+  ..$ creator     : language FrF2(16, design = "6-2.2", nfactors = 6, randomize = FALSE)
+> str.wover(FrF2(16,design="6-2.2",randomize=FALSE,factor.names=list(eins=c(1,2),zwei=c(43,87),drei=c("alt","neu"),vier="",fuenf="",sechs="")))
+Classes 'design' and 'data.frame':	16 obs. of  6 variables:
+ $ eins : Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1" "2"
+  .. .. ..$ : NULL
+ $ zwei : Factor w/ 2 levels "43","87": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "43" "87"
+  .. .. ..$ : NULL
+ $ drei : Factor w/ 2 levels "alt","neu": 1 1 1 1 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "alt" "neu"
+  .. .. ..$ : NULL
+ $ vier : Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ fuenf: Factor w/ 2 levels "-1","1": 2 1 1 2 2 1 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ sechs: Factor w/ 2 levels "-1","1": 1 2 1 2 2 1 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:16, 1:6] -1 1 -1 1 -1 1 -1 1 -1 1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "eins" "zwei" "drei" "vier" ...
+ - attr(*, "run.order")='data.frame':	16 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 16 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+ - attr(*, "design.info")=List of 12
+  ..$ type        : chr "FrF2"
+  ..$ nruns       : num 16
+  ..$ nfactors    : num 6
+  ..$ factor.names:List of 6
+  .. ..$ eins : num  1 2
+  .. ..$ zwei : num  43 87
+  .. ..$ drei : chr  "alt" "neu"
+  .. ..$ vier : num  -1 1
+  .. ..$ fuenf: num  -1 1
+  .. ..$ sechs: num  -1 1
+  ..$ catlg.name  : chr "catlg"
+  ..$ catlg.entry :List of 1
+  .. ..$ 6-2.2:List of 9
+  .. .. ..$ res           : int 3
+  .. .. ..$ nfac          : num 6
+  .. .. ..$ nruns         : num 16
+  .. .. ..$ gen           : num  3 13
+  .. .. ..$ WLP           : num  0 0 1 1 1 0 0
+  .. .. ..$ nclear.2fis   : num 6
+  .. .. ..$ clear.2fis    : num [1:2, 1:6] 2 3 2 4 2 6 3 5 4 5 ...
+  .. .. ..$ all.2fis.clear: num 
+  .. .. ..$ dominating    : logi TRUE
+  .. ..- attr(*, "class")= chr  "catlg" "list"
+  ..$ aliased     :List of 3
+  .. ..$ legend: chr  "A=eins" "B=zwei" "C=drei" "D=vier" ...
+  .. ..$ main  : chr  "A=BE" "B=AE" "E=AB"
+  .. ..$ fi2   : chr  "AC=DF" "AD=CF" "AF=CD"
+  ..$ replications: num 1
+  ..$ repeat.only : logi FALSE
+  ..$ randomize   : logi FALSE
+  ..$ seed        : NULL
+  ..$ creator     : language FrF2(16, design = "6-2.2", randomize = FALSE, factor.names = list(eins = c(1,      2), zwei = c(43, 87), drei = c("alt", "neu"), vier = "", fuenf = "",  ...
+> 
+> ## estimable in examples
+> ## replications in examples
+> ## randomize in examples
+> ## MaxC2 in examples
+> 
+> ## blocks
+>   ## automatic selection
+>   FrF2(32,14,blocks=8,randomize=FALSE,alias.block.2fis=TRUE)
+  run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H  J  K  L  M  N  O
+1      1        15.1.1      1 -1  1  1  1 -1 -1 -1 -1  1  1  1 -1  1 -1
+2      2        16.1.2      1 -1  1  1  1  1 -1 -1 -1  1 -1 -1  1 -1  1
+3      3        17.1.3      1  1 -1 -1 -1 -1  1  1  1 -1  1  1 -1  1 -1
+4      4        18.1.4      1  1 -1 -1 -1  1  1  1  1 -1 -1 -1  1 -1  1
+  run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H  J  K  L  M  N  O
+5      5        13.2.1      2 -1  1  1 -1 -1 -1  1  1 -1  1  1 -1 -1  1
+6      6        14.2.2      2 -1  1  1 -1  1 -1  1  1 -1 -1 -1  1  1 -1
+7      7        19.2.3      2  1 -1 -1  1 -1  1 -1 -1  1  1  1 -1 -1  1
+8      8        20.2.4      2  1 -1 -1  1  1  1 -1 -1  1 -1 -1  1  1 -1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H  J  K  L  M  N  O
+9       9        11.3.1      3 -1  1 -1  1 -1  1 -1  1 -1  1 -1  1  1 -1
+10     10        12.3.2      3 -1  1 -1  1  1  1 -1  1 -1 -1  1 -1 -1  1
+11     11        21.3.3      3  1 -1  1 -1 -1 -1  1 -1  1  1 -1  1  1 -1
+12     12        22.3.4      3  1 -1  1 -1  1 -1  1 -1  1 -1  1 -1 -1  1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H  J  K  L  M  N  O
+13     13         9.4.1      4 -1  1 -1 -1 -1  1  1 -1  1  1 -1  1 -1  1
+14     14        10.4.2      4 -1  1 -1 -1  1  1  1 -1  1 -1  1 -1  1 -1
+15     15        23.4.3      4  1 -1  1  1 -1 -1 -1  1 -1  1 -1  1 -1  1
+16     16        24.4.4      4  1 -1  1  1  1 -1 -1  1 -1 -1  1 -1  1 -1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H  J  K  L  M  N  O
+17     17         7.5.1      5 -1 -1  1  1 -1  1  1 -1 -1 -1  1  1  1  1
+18     18         8.5.2      5 -1 -1  1  1  1  1  1 -1 -1  1 -1 -1 -1 -1
+19     19        25.5.3      5  1  1 -1 -1 -1 -1 -1  1  1 -1  1  1  1  1
+20     20        26.5.4      5  1  1 -1 -1  1 -1 -1  1  1  1 -1 -1 -1 -1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H  J  K  L  M  N  O
+21     21         5.6.1      6 -1 -1  1 -1 -1  1 -1  1  1 -1  1  1 -1 -1
+22     22         6.6.2      6 -1 -1  1 -1  1  1 -1  1  1  1 -1 -1  1  1
+23     23        27.6.3      6  1  1 -1  1 -1 -1  1 -1 -1 -1  1  1 -1 -1
+24     24        28.6.4      6  1  1 -1  1  1 -1  1 -1 -1  1 -1 -1  1  1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H  J  K  L  M  N  O
+25     25         3.7.1      7 -1 -1 -1  1 -1 -1  1  1  1 -1 -1 -1  1  1
+26     26         4.7.2      7 -1 -1 -1  1  1 -1  1  1  1  1  1  1 -1 -1
+27     27        29.7.3      7  1  1  1 -1 -1  1 -1 -1 -1 -1 -1 -1  1  1
+28     28        30.7.4      7  1  1  1 -1  1  1 -1 -1 -1  1  1  1 -1 -1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H  J  K  L  M  N  O
+29     29         1.8.1      8 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+30     30         2.8.2      8 -1 -1 -1 -1  1 -1 -1 -1 -1  1  1  1  1  1
+31     31        31.8.3      8  1  1  1  1 -1  1  1  1  1 -1 -1 -1 -1 -1
+32     32        32.8.4      8  1  1  1  1  1  1  1  1  1  1  1  1  1  1
+class=design, type= FrF2.blocked 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+>   ## automatic selection without aliasing of 2fis with blocks
+>   FrF2(32,6,blocks=4,randomize=FALSE)
+  run.no run.no.std.rp Blocks  A  B  C  D  E  F
+1      1         1.1.1      1 -1 -1 -1 -1 -1 -1
+2      2         6.1.2      1 -1 -1  1 -1  1  1
+3      3        11.1.3      1 -1  1 -1  1 -1  1
+4      4        16.1.4      1 -1  1  1  1  1 -1
+5      5        20.1.5      1  1 -1 -1  1  1  1
+6      6        23.1.6      1  1 -1  1  1 -1 -1
+7      7        26.1.7      1  1  1 -1 -1  1 -1
+8      8        29.1.8      1  1  1  1 -1 -1  1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F
+9       9         2.2.1      2 -1 -1 -1 -1  1 -1
+10     10         5.2.2      2 -1 -1  1 -1 -1  1
+11     11        12.2.3      2 -1  1 -1  1  1  1
+12     12        15.2.4      2 -1  1  1  1 -1 -1
+13     13        19.2.5      2  1 -1 -1  1 -1  1
+14     14        24.2.6      2  1 -1  1  1  1 -1
+15     15        25.2.7      2  1  1 -1 -1 -1 -1
+16     16        30.2.8      2  1  1  1 -1  1  1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F
+17     17         3.3.1      3 -1 -1 -1  1 -1 -1
+18     18         8.3.2      3 -1 -1  1  1  1  1
+19     19         9.3.3      3 -1  1 -1 -1 -1  1
+20     20        14.3.4      3 -1  1  1 -1  1 -1
+21     21        18.3.5      3  1 -1 -1 -1  1  1
+22     22        21.3.6      3  1 -1  1 -1 -1 -1
+23     23        28.3.7      3  1  1 -1  1  1 -1
+24     24        31.3.8      3  1  1  1  1 -1  1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F
+25     25         4.4.1      4 -1 -1 -1  1  1 -1
+26     26         7.4.2      4 -1 -1  1  1 -1  1
+27     27        10.4.3      4 -1  1 -1 -1  1  1
+28     28        13.4.4      4 -1  1  1 -1 -1 -1
+29     29        17.4.5      4  1 -1 -1 -1 -1  1
+30     30        22.4.6      4  1 -1  1 -1  1 -1
+31     31        27.4.7      4  1  1 -1  1 -1 -1
+32     32        32.4.8      4  1  1  1  1  1  1
+class=design, type= FrF2.blocked 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+>   ## automatic selection with factor names
+>   FrF2(32,6,blocks=4,randomize=FALSE, factor.names=Letters[20:25])
+  run.no run.no.std.rp Blocks  U  V  W  X  Y  Z
+1      1         1.1.1      1 -1 -1 -1 -1 -1 -1
+2      2         6.1.2      1 -1 -1  1 -1  1  1
+3      3        11.1.3      1 -1  1 -1  1 -1  1
+4      4        16.1.4      1 -1  1  1  1  1 -1
+5      5        20.1.5      1  1 -1 -1  1  1  1
+6      6        23.1.6      1  1 -1  1  1 -1 -1
+7      7        26.1.7      1  1  1 -1 -1  1 -1
+8      8        29.1.8      1  1  1  1 -1 -1  1
+   run.no run.no.std.rp Blocks  U  V  W  X  Y  Z
+9       9         2.2.1      2 -1 -1 -1 -1  1 -1
+10     10         5.2.2      2 -1 -1  1 -1 -1  1
+11     11        12.2.3      2 -1  1 -1  1  1  1
+12     12        15.2.4      2 -1  1  1  1 -1 -1
+13     13        19.2.5      2  1 -1 -1  1 -1  1
+14     14        24.2.6      2  1 -1  1  1  1 -1
+15     15        25.2.7      2  1  1 -1 -1 -1 -1
+16     16        30.2.8      2  1  1  1 -1  1  1
+   run.no run.no.std.rp Blocks  U  V  W  X  Y  Z
+17     17         3.3.1      3 -1 -1 -1  1 -1 -1
+18     18         8.3.2      3 -1 -1  1  1  1  1
+19     19         9.3.3      3 -1  1 -1 -1 -1  1
+20     20        14.3.4      3 -1  1  1 -1  1 -1
+21     21        18.3.5      3  1 -1 -1 -1  1  1
+22     22        21.3.6      3  1 -1  1 -1 -1 -1
+23     23        28.3.7      3  1  1 -1  1  1 -1
+24     24        31.3.8      3  1  1  1  1 -1  1
+   run.no run.no.std.rp Blocks  U  V  W  X  Y  Z
+25     25         4.4.1      4 -1 -1 -1  1  1 -1
+26     26         7.4.2      4 -1 -1  1  1 -1  1
+27     27        10.4.3      4 -1  1 -1 -1  1  1
+28     28        13.4.4      4 -1  1  1 -1 -1 -1
+29     29        17.4.5      4  1 -1 -1 -1 -1  1
+30     30        22.4.6      4  1 -1  1 -1  1 -1
+31     31        27.4.7      4  1  1 -1  1 -1 -1
+32     32        32.4.8      4  1  1  1  1  1  1
+class=design, type= FrF2.blocked 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+>   ## manual selection
+>   FrF2(32,6,blocks="A",randomize=FALSE)
+   run.no run.no.std.rp Blocks  B  C  D  E  F
+1       1         1.1.1     -1 -1 -1 -1 -1 -1
+2       2         2.1.2     -1 -1 -1 -1  1  1
+3       3         3.1.3     -1 -1 -1  1 -1  1
+4       4         4.1.4     -1 -1 -1  1  1 -1
+5       5         5.1.5     -1 -1  1 -1 -1  1
+6       6         6.1.6     -1 -1  1 -1  1 -1
+7       7         7.1.7     -1 -1  1  1 -1 -1
+8       8         8.1.8     -1 -1  1  1  1  1
+9       9         9.1.9     -1  1 -1 -1 -1  1
+10     10       10.1.10     -1  1 -1 -1  1 -1
+11     11       11.1.11     -1  1 -1  1 -1 -1
+12     12       12.1.12     -1  1 -1  1  1  1
+13     13       13.1.13     -1  1  1 -1 -1 -1
+14     14       14.1.14     -1  1  1 -1  1  1
+15     15       15.1.15     -1  1  1  1 -1  1
+16     16       16.1.16     -1  1  1  1  1 -1
+   run.no run.no.std.rp Blocks  B  C  D  E  F
+17     17        17.2.1      1 -1 -1 -1 -1  1
+18     18        18.2.2      1 -1 -1 -1  1 -1
+19     19        19.2.3      1 -1 -1  1 -1 -1
+20     20        20.2.4      1 -1 -1  1  1  1
+21     21        21.2.5      1 -1  1 -1 -1 -1
+22     22        22.2.6      1 -1  1 -1  1  1
+23     23        23.2.7      1 -1  1  1 -1  1
+24     24        24.2.8      1 -1  1  1  1 -1
+25     25        25.2.9      1  1 -1 -1 -1 -1
+26     26       26.2.10      1  1 -1 -1  1  1
+27     27       27.2.11      1  1 -1  1 -1  1
+28     28       28.2.12      1  1 -1  1  1 -1
+29     29       29.2.13      1  1  1 -1 -1  1
+30     30       30.2.14      1  1  1 -1  1 -1
+31     31       31.2.15      1  1  1  1 -1 -1
+32     32       32.2.16      1  1  1  1  1  1
+class=design, type= FrF2.blocked 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+>   FrF2(32,6,blocks=c("ABC","DE"),randomize=FALSE)
+  run.no run.no.std.rp Blocks  A  B  C  D  E F
+1      1         2.1.1      1 -1 -1 -1 -1  1 1
+2      2         3.1.2      1 -1 -1 -1  1 -1 1
+3      3        14.1.3      1 -1  1  1 -1  1 1
+4      4        15.1.4      1 -1  1  1  1 -1 1
+5      5        22.1.5      1  1 -1  1 -1  1 1
+6      6        23.1.6      1  1 -1  1  1 -1 1
+7      7        26.1.7      1  1  1 -1 -1  1 1
+8      8        27.1.8      1  1  1 -1  1 -1 1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F
+9       9         1.2.1      2 -1 -1 -1 -1 -1 -1
+10     10         4.2.2      2 -1 -1 -1  1  1 -1
+11     11        13.2.3      2 -1  1  1 -1 -1 -1
+12     12        16.2.4      2 -1  1  1  1  1 -1
+13     13        21.2.5      2  1 -1  1 -1 -1 -1
+14     14        24.2.6      2  1 -1  1  1  1 -1
+15     15        25.2.7      2  1  1 -1 -1 -1 -1
+16     16        28.2.8      2  1  1 -1  1  1 -1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F
+17     17         6.3.1      3 -1 -1  1 -1  1 -1
+18     18         7.3.2      3 -1 -1  1  1 -1 -1
+19     19        10.3.3      3 -1  1 -1 -1  1 -1
+20     20        11.3.4      3 -1  1 -1  1 -1 -1
+21     21        18.3.5      3  1 -1 -1 -1  1 -1
+22     22        19.3.6      3  1 -1 -1  1 -1 -1
+23     23        30.3.7      3  1  1  1 -1  1 -1
+24     24        31.3.8      3  1  1  1  1 -1 -1
+   run.no run.no.std.rp Blocks  A  B  C  D  E F
+25     25         5.4.1      4 -1 -1  1 -1 -1 1
+26     26         8.4.2      4 -1 -1  1  1  1 1
+27     27         9.4.3      4 -1  1 -1 -1 -1 1
+28     28        12.4.4      4 -1  1 -1  1  1 1
+29     29        17.4.5      4  1 -1 -1 -1 -1 1
+30     30        20.4.6      4  1 -1 -1  1  1 1
+31     31        29.4.7      4  1  1  1 -1 -1 1
+32     32        32.4.8      4  1  1  1  1  1 1
+class=design, type= FrF2.blocked 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+>   FrF2(32,8,blocks=list(c(1,2,3),c(4,5)),randomize=FALSE)
+  run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H
+1      1         2.1.1      1 -1 -1 -1 -1  1 -1 -1 -1
+2      2         3.1.2      1 -1 -1 -1  1 -1 -1  1 -1
+3      3        14.1.3      1 -1  1  1 -1  1 -1  1  1
+4      4        15.1.4      1 -1  1  1  1 -1 -1 -1  1
+5      5        22.1.5      1  1 -1  1 -1  1 -1  1 -1
+6      6        23.1.6      1  1 -1  1  1 -1 -1 -1 -1
+7      7        26.1.7      1  1  1 -1 -1  1 -1 -1  1
+8      8        27.1.8      1  1  1 -1  1 -1 -1  1  1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H
+9       9         1.2.1      2 -1 -1 -1 -1 -1 -1 -1  1
+10     10         4.2.2      2 -1 -1 -1  1  1 -1  1  1
+11     11        13.2.3      2 -1  1  1 -1 -1 -1  1 -1
+12     12        16.2.4      2 -1  1  1  1  1 -1 -1 -1
+13     13        21.2.5      2  1 -1  1 -1 -1 -1  1  1
+14     14        24.2.6      2  1 -1  1  1  1 -1 -1  1
+15     15        25.2.7      2  1  1 -1 -1 -1 -1 -1 -1
+16     16        28.2.8      2  1  1 -1  1  1 -1  1 -1
+   run.no run.no.std.rp Blocks  A  B  C  D  E F  G  H
+17     17         6.3.1      3 -1 -1  1 -1  1 1 -1  1
+18     18         7.3.2      3 -1 -1  1  1 -1 1  1  1
+19     19        10.3.3      3 -1  1 -1 -1  1 1  1 -1
+20     20        11.3.4      3 -1  1 -1  1 -1 1 -1 -1
+21     21        18.3.5      3  1 -1 -1 -1  1 1  1  1
+22     22        19.3.6      3  1 -1 -1  1 -1 1 -1  1
+23     23        30.3.7      3  1  1  1 -1  1 1 -1 -1
+24     24        31.3.8      3  1  1  1  1 -1 1  1 -1
+   run.no run.no.std.rp Blocks  A  B  C  D  E F  G  H
+25     25         5.4.1      4 -1 -1  1 -1 -1 1 -1 -1
+26     26         8.4.2      4 -1 -1  1  1  1 1  1 -1
+27     27         9.4.3      4 -1  1 -1 -1 -1 1  1  1
+28     28        12.4.4      4 -1  1 -1  1  1 1 -1  1
+29     29        17.4.5      4  1 -1 -1 -1 -1 1  1 -1
+30     30        20.4.6      4  1 -1 -1  1  1 1 -1 -1
+31     31        29.4.7      4  1  1  1 -1 -1 1 -1  1
+32     32        32.4.8      4  1  1  1  1  1 1  1  1
+class=design, type= FrF2.blocked 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+>   FrF2(32,8,blocks=list(c(1,2,3,4),c(7,8)),randomize=FALSE)
+  run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H
+1      1         3.1.1      1 -1 -1 -1  1 -1 -1  1 -1
+2      2         6.1.2      1 -1 -1  1 -1  1  1 -1  1
+3      3        10.1.3      1 -1  1 -1 -1  1  1  1 -1
+4      4        15.1.4      1 -1  1  1  1 -1 -1 -1  1
+5      5        17.1.5      1  1 -1 -1 -1 -1  1  1 -1
+6      6        24.1.6      1  1 -1  1  1  1 -1 -1  1
+7      7        28.1.7      1  1  1 -1  1  1 -1  1 -1
+8      8        29.1.8      1  1  1  1 -1 -1  1 -1  1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H
+9       9         4.2.1      2 -1 -1 -1  1  1 -1  1  1
+10     10         5.2.2      2 -1 -1  1 -1 -1  1 -1 -1
+11     11         9.2.3      2 -1  1 -1 -1 -1  1  1  1
+12     12        16.2.4      2 -1  1  1  1  1 -1 -1 -1
+13     13        18.2.5      2  1 -1 -1 -1  1  1  1  1
+14     14        23.2.6      2  1 -1  1  1 -1 -1 -1 -1
+15     15        27.2.7      2  1  1 -1  1 -1 -1  1  1
+16     16        30.2.8      2  1  1  1 -1  1  1 -1 -1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H
+17     17         1.3.1      3 -1 -1 -1 -1 -1 -1 -1  1
+18     18         8.3.2      3 -1 -1  1  1  1  1  1 -1
+19     19        12.3.3      3 -1  1 -1  1  1  1 -1  1
+20     20        13.3.4      3 -1  1  1 -1 -1 -1  1 -1
+21     21        19.3.5      3  1 -1 -1  1 -1  1 -1  1
+22     22        22.3.6      3  1 -1  1 -1  1 -1  1 -1
+23     23        26.3.7      3  1  1 -1 -1  1 -1 -1  1
+24     24        31.3.8      3  1  1  1  1 -1  1  1 -1
+   run.no run.no.std.rp Blocks  A  B  C  D  E  F  G  H
+25     25         2.4.1      4 -1 -1 -1 -1  1 -1 -1 -1
+26     26         7.4.2      4 -1 -1  1  1 -1  1  1  1
+27     27        11.4.3      4 -1  1 -1  1 -1  1 -1 -1
+28     28        14.4.4      4 -1  1  1 -1  1 -1  1  1
+29     29        20.4.5      4  1 -1 -1  1  1  1 -1 -1
+30     30        21.4.6      4  1 -1  1 -1 -1 -1  1  1
+31     31        25.4.7      4  1  1 -1 -1 -1 -1 -1 -1
+32     32        32.4.8      4  1  1  1  1  1  1  1  1
+class=design, type= FrF2.blocked 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+>   FrF2(32,8,blocks=list(2,5,7),randomize=FALSE)
+  run.no run.no.std.rp Blocks  A  C  D  F  H
+1      1         1.1.1 -1-1-1 -1 -1 -1 -1  1
+2      2         5.1.2 -1-1-1 -1  1 -1  1 -1
+3      3        19.1.3 -1-1-1  1 -1  1  1  1
+4      4        23.1.4 -1-1-1  1  1  1 -1 -1
+  run.no run.no.std.rp Blocks  A  C  D  F  H
+5      5         3.2.1  -1-11 -1 -1  1 -1 -1
+6      6         7.2.2  -1-11 -1  1  1  1  1
+7      7        17.2.3  -1-11  1 -1 -1  1 -1
+8      8        21.2.4  -1-11  1  1 -1 -1  1
+   run.no run.no.std.rp Blocks  A  C  D  F  H
+9       9         2.3.1  -11-1 -1 -1 -1 -1 -1
+10     10         6.3.2  -11-1 -1  1 -1  1  1
+11     11        20.3.3  -11-1  1 -1  1  1 -1
+12     12        24.3.4  -11-1  1  1  1 -1  1
+   run.no run.no.std.rp Blocks  A  C  D  F  H
+13     13         4.4.1   -111 -1 -1  1 -1  1
+14     14         8.4.2   -111 -1  1  1  1 -1
+15     15        18.4.3   -111  1 -1 -1  1  1
+16     16        22.4.4   -111  1  1 -1 -1 -1
+   run.no run.no.std.rp Blocks  A  C  D  F  H
+17     17        11.5.1  1-1-1 -1 -1  1  1 -1
+18     18        15.5.2  1-1-1 -1  1  1 -1  1
+19     19        25.5.3  1-1-1  1 -1 -1 -1 -1
+20     20        29.5.4  1-1-1  1  1 -1  1  1
+   run.no run.no.std.rp Blocks  A  C  D  F  H
+21     21         9.6.1   1-11 -1 -1 -1  1  1
+22     22        13.6.2   1-11 -1  1 -1 -1 -1
+23     23        27.6.3   1-11  1 -1  1 -1  1
+24     24        31.6.4   1-11  1  1  1  1 -1
+   run.no run.no.std.rp Blocks  A  C  D  F  H
+25     25        12.7.1   11-1 -1 -1  1  1  1
+26     26        16.7.2   11-1 -1  1  1 -1 -1
+27     27        26.7.3   11-1  1 -1 -1 -1  1
+28     28        30.7.4   11-1  1  1 -1  1 -1
+   run.no run.no.std.rp Blocks  A  C  D  F  H
+29     29        10.8.1    111 -1 -1 -1  1 -1
+30     30        14.8.2    111 -1  1 -1 -1  1
+31     31        28.8.3    111  1 -1  1 -1 -1
+32     32        32.8.4    111  1  1  1  1  1
+class=design, type= FrF2.blocked 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+>   ## mixed single and generated
+>   str.wover(FrF2(32,8,blocks=list(2,5,c(6,7)),randomize=FALSE))
+Classes 'design' and 'data.frame':	32 obs. of  7 variables:
+ $ Blocks: Factor w/ 8 levels "1","2","3","4",..: 1 1 1 1 2 2 2 2 3 3 ...
+  ..- attr(*, "contrasts")= num [1:8, 1:7] -1 1 -1 1 -1 1 -1 1 -1 -1 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1" "2" "3" "4" ...
+  .. .. ..$ : NULL
+ $ A     : Factor w/ 2 levels "-1","1": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ C     : Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ D     : Factor w/ 2 levels "-1","1": 2 1 2 1 1 2 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ F     : Factor w/ 2 levels "-1","1": 1 2 2 1 1 2 2 1 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ G     : Factor w/ 2 levels "-1","1": 2 1 1 2 1 2 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ H     : Factor w/ 2 levels "-1","1": 1 1 2 2 2 2 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:32, 1:13] -1 -1 -1 -1 1 1 1 1 -1 -1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "Blocks1" "Blocks2" "Blocks3" "Blocks4" ...
+ - attr(*, "run.order")='data.frame':	32 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 32 levels "1.2.1","2.4.1",..: 3 5 19 21 1 7 17 23 4 6 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 32 levels "1.2.1","2.4.1",..: 3 5 19 21 1 7 17 23 4 6 ...
+ - attr(*, "design.info")=List of 21
+  ..$ type               : chr "FrF2.blocked"
+  ..$ block.name         : chr "Blocks"
+  ..$ nruns              : num 32
+  ..$ nfactors           : num 6
+  ..$ nblocks            : num 8
+  ..$ block.gen          : num  2 16 12
+  ..$ blocksize          : num 4
+  ..$ ntreat             : num 6
+  ..$ factor.names       :List of 6
+  .. ..$ A: num  -1 1
+  .. ..$ C: num  -1 1
+  .. ..$ D: num  -1 1
+  .. ..$ F: num  -1 1
+  .. ..$ G: num  -1 1
+  .. ..$ H: num  -1 1
+  ..$ aliased.with.blocks: chr  "AF" "BC" "DE"
+  ..$ aliased            :List of 3
+  .. ..$ legend: chr  "A=A" "B=C" "C=D" "D=F" ...
+  .. ..$ main  : chr 
+  .. ..$ fi2   : chr  "BD=CE" "BE=CD"
+  ..$ bbreps             : num 1
+  ..$ wbreps             : num 1
+  ..$ catlg.name         : chr "catlg"
+  ..$ base.design        : chr "8-3.1"
+  ..$ map                : NULL
+  ..$ replications       : num 1
+  ..$ repeat.only        : logi FALSE
+  ..$ randomize          : logi FALSE
+  ..$ seed               : NULL
+  ..$ creator            : language FrF2(32, 8, blocks = list(2, 5, c(6, 7)), randomize = FALSE)
+>   ## with factor names
+>   str.wover(FrF2(32,blocks=c("ABC","DE"),
++        factor.names=list(first=c("-","+"),second=c("old","new"),
++                          third=c(1000,2000),fourth="",fifth="",sixth=""),
++        randomize=FALSE))
+Classes 'design' and 'data.frame':	32 obs. of  7 variables:
+ $ Blocks: Factor w/ 4 levels "1","2","3","4": 1 1 1 1 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:4, 1:3] -1 1 -1 1 -1 -1 1 1 1 -1 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1" "2" "3" "4"
+  .. .. ..$ : NULL
+ $ first : Factor w/ 2 levels "-","+": 1 1 1 1 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-" "+"
+  .. .. ..$ : NULL
+ $ second: Factor w/ 2 levels "old","new": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "old" "new"
+  .. .. ..$ : NULL
+ $ third : Factor w/ 2 levels "1000","2000": 1 1 2 2 2 2 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1000" "2000"
+  .. .. ..$ : NULL
+ $ fourth: Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ fifth : Factor w/ 2 levels "-1","1": 2 1 2 1 2 1 2 1 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ sixth : Factor w/ 2 levels "-1","1": 2 2 2 2 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:32, 1:9] -1 -1 -1 -1 -1 -1 -1 -1 1 1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "Blocks1" "Blocks2" "Blocks3" "first" ...
+ - attr(*, "run.order")='data.frame':	32 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 32 levels "1.2.1","2.1.1",..: 2 3 14 15 22 23 26 27 1 4 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 32 levels "1.2.1","2.1.1",..: 2 3 14 15 22 23 26 27 1 4 ...
+ - attr(*, "design.info")=List of 21
+  ..$ type               : chr "FrF2.blocked"
+  ..$ block.name         : chr "Blocks"
+  ..$ nruns              : num 32
+  ..$ nfactors           : num 6
+  ..$ nblocks            : num 4
+  ..$ block.gen          : num  7 24
+  ..$ blocksize          : num 8
+  ..$ ntreat             : num 6
+  ..$ factor.names       :List of 6
+  .. ..$ first : chr  "-" "+"
+  .. ..$ second: chr  "old" "new"
+  .. ..$ third : num  1000 2000
+  .. ..$ fourth: num  -1 1
+  .. ..$ fifth : num  -1 1
+  .. ..$ sixth : num  -1 1
+  ..$ aliased.with.blocks: chr  "F" "DE"
+  ..$ aliased            :List of 1
+  .. ..$ legend: chr  "A=first" "B=second" "C=third" "D=fourth" ...
+  ..$ bbreps             : num 1
+  ..$ wbreps             : num 1
+  ..$ catlg.name         : chr "catlg"
+  ..$ base.design        : chr "6-1.1"
+  ..$ map                : NULL
+  ..$ replications       : num 1
+  ..$ repeat.only        : logi FALSE
+  ..$ randomize          : logi FALSE
+  ..$ seed               : NULL
+  ..$ creator            : language FrF2(32, blocks = c("ABC", "DE"), factor.names = list(first = c("-", "+"),      second = c("old", "new"), third = c(1000, 2000), fourth = "", fifth = "",  ...
+>   str.wover(dat <- FrF2(32,blocks=c(7,20,25),
++        factor.names=list(first=c("-","+"),second=c("old","new"),
++                          third=c(1000,2000),fourth="",fifth="",sixth=""),
++        randomize=FALSE,alias.info=3))
+Classes 'design' and 'data.frame':	32 obs. of  7 variables:
+ $ Blocks: Factor w/ 8 levels "1","2","3","4",..: 1 1 1 1 2 2 2 2 3 3 ...
+  ..- attr(*, "contrasts")= num [1:8, 1:7] -1 1 -1 1 -1 1 -1 1 -1 -1 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1" "2" "3" "4" ...
+  .. .. ..$ : NULL
+ $ first : Factor w/ 2 levels "-","+": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-" "+"
+  .. .. ..$ : NULL
+ $ second: Factor w/ 2 levels "old","new": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "old" "new"
+  .. .. ..$ : NULL
+ $ third : Factor w/ 2 levels "1000","2000": 1 2 2 1 1 2 2 1 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1000" "2000"
+  .. .. ..$ : NULL
+ $ fourth: Factor w/ 2 levels "-1","1": 2 1 2 1 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ fifth : Factor w/ 2 levels "-1","1": 2 1 1 2 2 1 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ sixth : Factor w/ 2 levels "-1","1": 1 1 2 2 2 2 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:32, 1:13] -1 -1 -1 -1 1 1 1 1 -1 -1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "Blocks1" "Blocks2" "Blocks3" "Blocks4" ...
+ - attr(*, "run.order")='data.frame':	32 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 32 levels "1.3.1","2.2.1",..: 4 13 23 26 2 15 21 28 1 16 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 32 levels "1.3.1","2.2.1",..: 4 13 23 26 2 15 21 28 1 16 ...
+ - attr(*, "design.info")=List of 21
+  ..$ type               : chr "FrF2.blocked"
+  ..$ block.name         : chr "Blocks"
+  ..$ nruns              : num 32
+  ..$ nfactors           : num 6
+  ..$ nblocks            : num 8
+  ..$ block.gen          : Named num  7 20 25
+  .. ..- attr(*, "names")= chr  "ABC" "CE" "ADE"
+  ..$ blocksize          : num 4
+  ..$ ntreat             : num 6
+  ..$ factor.names       :List of 6
+  .. ..$ first : chr  "-" "+"
+  .. ..$ second: chr  "old" "new"
+  .. ..$ third : num  1000 2000
+  .. ..$ fourth: num  -1 1
+  .. ..$ fifth : num  -1 1
+  .. ..$ sixth : num  -1 1
+  ..$ aliased.with.blocks: chr  "AF" "BD" "CE" "ABC" ...
+  ..$ aliased            :List of 4
+  .. ..$ legend: chr  "A=first" "B=second" "C=third" "D=fourth" ...
+  .. ..$ main  : chr 
+  .. ..$ fi2   : chr 
+  .. ..$ fi3   : chr  "ABD=CEF" "ABF=CDE" "ACE=BDF" "ACF=BDE" ...
+  ..$ bbreps             : num 1
+  ..$ wbreps             : num 1
+  ..$ catlg.name         : chr "catlg"
+  ..$ base.design        : chr "6-1.1"
+  ..$ map                : NULL
+  ..$ replications       : num 1
+  ..$ repeat.only        : logi FALSE
+  ..$ randomize          : logi FALSE
+  ..$ seed               : NULL
+  ..$ creator            : language FrF2(32, blocks = c(7, 20, 25), factor.names = list(first = c("-", "+"),      second = c("old", "new"), third = c(1000, 2000), fourth = "", fifth = "",  ...
+>   str.wover(FrF2(32,blocks=list(1,2),
++        factor.names=list(first=c("-","+"),second=c("old","new"),
++                          third=c(1000,2000),fourth="",fifth="",sixth="",seven="",eight="",nine=""),
++        randomize=FALSE))
+Classes 'design' and 'data.frame':	32 obs. of  8 variables:
+ $ Blocks: Factor w/ 4 levels "-old","-new",..: 1 1 1 1 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:4, 1:3] -1 1 -1 1 -1 -1 1 1 1 -1 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1" "2" "3" "4"
+  .. .. ..$ : NULL
+ $ third : Factor w/ 2 levels "1000","2000": 1 1 1 1 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1000" "2000"
+  .. .. ..$ : NULL
+ $ fourth: Factor w/ 2 levels "-1","1": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ fifth : Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ sixth : Factor w/ 2 levels "-1","1": 1 1 1 1 2 2 2 2 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ seven : Factor w/ 2 levels "-1","1": 1 1 2 2 1 1 2 2 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ eight : Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ nine  : Factor w/ 2 levels "-1","1": 2 1 1 2 1 2 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:32, 1:10] -1 -1 -1 -1 -1 -1 -1 -1 1 1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "Blocks1" "Blocks2" "Blocks3" "third" ...
+ - attr(*, "run.order")='data.frame':	32 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 32 levels "1.1.1","2.1.2",..: 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 32 levels "1.1.1","2.1.2",..: 1 2 3 4 5 6 7 8 9 10 ...
+ - attr(*, "design.info")=List of 21
+  ..$ type               : chr "FrF2.blocked"
+  ..$ block.name         : chr "Blocks"
+  ..$ nruns              : num 32
+  ..$ nfactors           : num 7
+  ..$ nblocks            : num 4
+  ..$ block.gen          : num  1 2
+  ..$ blocksize          : num 8
+  ..$ ntreat             : num 7
+  ..$ factor.names       :List of 7
+  .. ..$ third : num  1000 2000
+  .. ..$ fourth: num  -1 1
+  .. ..$ fifth : num  -1 1
+  .. ..$ sixth : num  -1 1
+  .. ..$ seven : num  -1 1
+  .. ..$ eight : num  -1 1
+  .. ..$ nine  : num  -1 1
+  ..$ aliased.with.blocks: chr  "AD" "BE" "CF"
+  ..$ aliased            :List of 3
+  .. ..$ legend: chr  "A=third" "B=fourth" "C=fifth" "D=sixth" ...
+  .. ..$ main  : chr 
+  .. ..$ fi2   : chr  "AB=DE" "AC=DF" "AE=BD" "AF=CD" ...
+  ..$ bbreps             : num 1
+  ..$ wbreps             : num 1
+  ..$ catlg.name         : chr "catlg"
+  ..$ base.design        : chr "9-4.1"
+  ..$ map                : NULL
+  ..$ replications       : num 1
+  ..$ repeat.only        : logi FALSE
+  ..$ randomize          : logi FALSE
+  ..$ seed               : NULL
+  ..$ creator            : language FrF2(32, blocks = list(1, 2), factor.names = list(first = c("-", "+"),      second = c("old", "new"), third = c(1000, 2000), fourth = "", fifth = "",  ...
+>   ## using blockpick.big
+>   str.wover(FrF2(64,7,blocks=32,alias.block.2fis=TRUE,randomize=FALSE))
+Classes 'design' and 'data.frame':	64 obs. of  8 variables:
+ $ Blocks: Factor w/ 32 levels "1","2","3","4",..: 1 1 2 2 3 3 4 4 5 5 ...
+  ..- attr(*, "contrasts")= num [1:32, 1:31] -1 1 -1 1 -1 1 -1 1 -1 1 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "1" "2" "3" "4" ...
+  .. .. ..$ : NULL
+ $ A     : Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ B     : Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ C     : Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ D     : Factor w/ 2 levels "-1","1": 1 2 1 2 2 1 2 1 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ E     : Factor w/ 2 levels "-1","1": 1 2 2 1 1 2 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ F     : Factor w/ 2 levels "-1","1": 2 1 1 2 1 2 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ G     : Factor w/ 2 levels "-1","1": 2 1 1 2 1 2 2 1 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:64, 1:38] -1 -1 1 1 -1 -1 1 1 -1 -1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "1" "2" "3" "4" ...
+  .. ..$ : chr  "Blocks1" "Blocks2" "Blocks3" "Blocks4" ...
+ - attr(*, "run.order")='data.frame':	64 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 64 levels "1.1.1","2.1.2",..: 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no             : int  1 2 3 4 5 6 7 8 9 10 ...
+  ..$ run.no.std.rp      : Factor w/ 64 levels "1.1.1","2.1.2",..: 1 2 3 4 5 6 7 8 9 10 ...
+ - attr(*, "design.info")=List of 21
+  ..$ type               : chr "FrF2.blocked"
+  ..$ block.name         : chr "Blocks"
+  ..$ nruns              : num 64
+  ..$ nfactors           : num 7
+  ..$ nblocks            : num 32
+  ..$ block.gen          : num  1 2 4 8 16
+  ..$ blocksize          : num 2
+  ..$ ntreat             : num 7
+  ..$ factor.names       :List of 7
+  .. ..$ A: num  -1 1
+  .. ..$ B: num  -1 1
+  .. ..$ C: num  -1 1
+  .. ..$ D: num  -1 1
+  .. ..$ E: num  -1 1
+  .. ..$ F: num  -1 1
+  .. ..$ G: num  -1 1
+  ..$ aliased.with.blocks: chr  "AB" "AC" "AD" "AE" ...
+  ..$ aliased            :List of 1
+  .. ..$ legend: chr  "A=A" "B=B" "C=C" "D=D" ...
+  ..$ bbreps             : num 1
+  ..$ wbreps             : num 1
+  ..$ catlg.name         : chr "catlg"
+  ..$ base.design        : chr "12-6.3"
+  ..$ map                : num  2 3 4 5 6 1
+  ..$ replications       : num 1
+  ..$ repeat.only        : logi FALSE
+  ..$ randomize          : logi FALSE
+  ..$ seed               : NULL
+  ..$ creator            : language FrF2(64, 7, blocks = 32, alias.block.2fis = TRUE, randomize = FALSE)
+> 
+> ## split plot
+>   ## automatic selection
+>   FrF2(32,14,WPs=8,nfac.WP=4,randomize=FALSE)
+  run.no run.no.std.rp  A  B  C  D  E  F  G  H  J  K  L  M  N  O
+1      1         1.1.1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+2      2         2.1.2 -1 -1 -1 -1 -1  1 -1 -1 -1  1  1  1  1  1
+3      3         3.1.3 -1 -1 -1 -1  1 -1  1  1  1 -1 -1 -1  1  1
+4      4         4.1.4 -1 -1 -1 -1  1  1  1  1  1  1  1  1 -1 -1
+  run.no run.no.std.rp  A  B C D  E  F  G  H  J  K  L  M  N  O
+5      5         5.2.1 -1 -1 1 1 -1 -1 -1  1  1 -1  1  1 -1 -1
+6      6         6.2.2 -1 -1 1 1 -1  1 -1  1  1  1 -1 -1  1  1
+7      7         7.2.3 -1 -1 1 1  1 -1  1 -1 -1 -1  1  1  1  1
+8      8         8.2.4 -1 -1 1 1  1  1  1 -1 -1  1 -1 -1 -1 -1
+   run.no run.no.std.rp  A B  C D  E  F  G  H  J  K  L  M  N  O
+9       9         9.3.1 -1 1 -1 1 -1 -1  1 -1  1  1 -1  1 -1  1
+10     10        10.3.2 -1 1 -1 1 -1  1  1 -1  1 -1  1 -1  1 -1
+11     11        11.3.3 -1 1 -1 1  1 -1 -1  1 -1  1 -1  1  1 -1
+12     12        12.3.4 -1 1 -1 1  1  1 -1  1 -1 -1  1 -1 -1  1
+   run.no run.no.std.rp  A B C  D  E  F  G  H  J  K  L  M  N  O
+13     13        13.4.1 -1 1 1 -1 -1 -1  1  1 -1  1  1 -1 -1  1
+14     14        14.4.2 -1 1 1 -1 -1  1  1  1 -1 -1 -1  1  1 -1
+15     15        15.4.3 -1 1 1 -1  1 -1 -1 -1  1  1  1 -1  1 -1
+16     16        16.4.4 -1 1 1 -1  1  1 -1 -1  1 -1 -1  1 -1  1
+   run.no run.no.std.rp A  B  C D  E  F  G  H  J  K  L  M  N  O
+17     17        17.5.1 1 -1 -1 1 -1 -1  1  1 -1  1  1 -1  1 -1
+18     18        18.5.2 1 -1 -1 1 -1  1  1  1 -1 -1 -1  1 -1  1
+19     19        19.5.3 1 -1 -1 1  1 -1 -1 -1  1  1  1 -1 -1  1
+20     20        20.5.4 1 -1 -1 1  1  1 -1 -1  1 -1 -1  1  1 -1
+   run.no run.no.std.rp A  B C  D  E  F  G  H  J  K  L  M  N  O
+21     21        21.6.1 1 -1 1 -1 -1 -1  1 -1  1  1 -1  1  1 -1
+22     22        22.6.2 1 -1 1 -1 -1  1  1 -1  1 -1  1 -1 -1  1
+23     23        23.6.3 1 -1 1 -1  1 -1 -1  1 -1  1 -1  1 -1  1
+24     24        24.6.4 1 -1 1 -1  1  1 -1  1 -1 -1  1 -1  1 -1
+   run.no run.no.std.rp A B  C  D  E  F  G  H  J  K  L  M  N  O
+25     25        25.7.1 1 1 -1 -1 -1 -1 -1  1  1 -1  1  1  1  1
+26     26        26.7.2 1 1 -1 -1 -1  1 -1  1  1  1 -1 -1 -1 -1
+27     27        27.7.3 1 1 -1 -1  1 -1  1 -1 -1 -1  1  1 -1 -1
+28     28        28.7.4 1 1 -1 -1  1  1  1 -1 -1  1 -1 -1  1  1
+   run.no run.no.std.rp A B C D  E  F  G  H  J  K  L  M  N  O
+29     29        29.8.1 1 1 1 1 -1 -1 -1 -1 -1 -1 -1 -1  1  1
+30     30        30.8.2 1 1 1 1 -1  1 -1 -1 -1  1  1  1 -1 -1
+31     31        31.8.3 1 1 1 1  1 -1  1  1  1 -1 -1 -1 -1 -1
+32     32        32.8.4 1 1 1 1  1  1  1  1  1  1  1  1  1  1
+class=design, type= FrF2.splitplot 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+>   FrF2(32,14,WPs=8,nfac.WP=2,randomize=FALSE)
+  run.no run.no.std.rp  A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+1      1         1.1.1 -1 -1  -1 -1 -1  1  1  1 -1 -1 -1  1  1  1  1
+2      2         2.1.2 -1 -1  -1 -1  1  1  1  1  1  1  1 -1 -1 -1 -1
+3      3         3.1.3 -1 -1  -1  1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+4      4         4.1.4 -1 -1  -1  1  1 -1 -1 -1  1  1  1  1  1  1  1
+  run.no run.no.std.rp  A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+5      5         5.2.1 -1 -1   1 -1 -1  1  1 -1 -1  1  1  1  1 -1 -1
+6      6         6.2.2 -1 -1   1 -1  1  1  1 -1  1 -1 -1 -1 -1  1  1
+7      7         7.2.3 -1 -1   1  1 -1 -1 -1  1 -1  1  1 -1 -1  1  1
+8      8         8.2.4 -1 -1   1  1  1 -1 -1  1  1 -1 -1  1  1 -1 -1
+   run.no run.no.std.rp  A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+9       9         9.3.1 -1 1  -1 -1 -1  1 -1  1  1 -1  1  1 -1  1 -1
+10     10        10.3.2 -1 1  -1 -1  1  1 -1  1 -1  1 -1 -1  1 -1  1
+11     11        11.3.3 -1 1  -1  1 -1 -1  1 -1  1 -1  1 -1  1 -1  1
+12     12        12.3.4 -1 1  -1  1  1 -1  1 -1 -1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp  A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+13     13        13.4.1 -1 1   1 -1 -1  1 -1 -1  1  1 -1  1 -1 -1  1
+14     14        14.4.2 -1 1   1 -1  1  1 -1 -1 -1 -1  1 -1  1  1 -1
+15     15        15.4.3 -1 1   1  1 -1 -1  1  1  1  1 -1 -1  1  1 -1
+16     16        16.4.4 -1 1   1  1  1 -1  1  1 -1 -1  1  1 -1 -1  1
+   run.no run.no.std.rp A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+17     17        17.5.1 1 -1  -1 -1 -1 -1  1  1  1  1 -1  1 -1 -1  1
+18     18        18.5.2 1 -1  -1 -1  1 -1  1  1 -1 -1  1 -1  1  1 -1
+19     19        19.5.3 1 -1  -1  1 -1  1 -1 -1  1  1 -1 -1  1  1 -1
+20     20        20.5.4 1 -1  -1  1  1  1 -1 -1 -1 -1  1  1 -1 -1  1
+   run.no run.no.std.rp A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+21     21        21.6.1 1 -1   1 -1 -1 -1  1 -1  1 -1  1  1 -1  1 -1
+22     22        22.6.2 1 -1   1 -1  1 -1  1 -1 -1  1 -1 -1  1 -1  1
+23     23        23.6.3 1 -1   1  1 -1  1 -1  1  1 -1  1 -1  1 -1  1
+24     24        24.6.4 1 -1   1  1  1  1 -1  1 -1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+25     25        25.7.1 1 1  -1 -1 -1 -1 -1  1 -1  1  1  1  1 -1 -1
+26     26        26.7.2 1 1  -1 -1  1 -1 -1  1  1 -1 -1 -1 -1  1  1
+27     27        27.7.3 1 1  -1  1 -1  1  1 -1 -1  1  1 -1 -1  1  1
+28     28        28.7.4 1 1  -1  1  1  1  1 -1  1 -1 -1  1  1 -1 -1
+   run.no run.no.std.rp A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+29     29        29.8.1 1 1   1 -1 -1 -1 -1 -1 -1 -1 -1  1  1  1  1
+30     30        30.8.2 1 1   1 -1  1 -1 -1 -1  1  1  1 -1 -1 -1 -1
+31     31        31.8.3 1 1   1  1 -1  1  1  1 -1 -1 -1 -1 -1 -1 -1
+32     32        32.8.4 1 1   1  1  1  1  1  1  1  1  1  1  1  1  1
+class=design, type= FrF2.splitplot 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+Warning message:
+In FrF2(32, 14, WPs = 8, nfac.WP = 2, randomize = FALSE) :
+  There are fewer factors than needed for a full factorial whole plot design. 1 dummy splitting factor(s) have been introduced.
+>   test <- FrF2(32,14,WPs=8,nfac.WP=6,randomize=FALSE)
+>   str.wover(test[32:1,])
+Classes 'design' and 'data.frame':	32 obs. of  14 variables:
+ $ A: Factor w/ 2 levels "-1","1": 2 2 2 2 2 2 2 2 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ B: Factor w/ 2 levels "-1","1": 2 2 2 2 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ C: Factor w/ 2 levels "-1","1": 2 2 2 2 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ D: Factor w/ 2 levels "-1","1": 2 2 2 2 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ E: Factor w/ 2 levels "-1","1": 2 2 2 2 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ F: Factor w/ 2 levels "-1","1": 2 2 2 2 1 1 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ G: Factor w/ 2 levels "-1","1": 2 2 1 1 2 2 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ H: Factor w/ 2 levels "-1","1": 2 1 2 1 2 1 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ J: Factor w/ 2 levels "-1","1": 2 2 1 1 2 2 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ K: Factor w/ 2 levels "-1","1": 2 2 1 1 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ L: Factor w/ 2 levels "-1","1": 2 1 2 1 2 1 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ M: Factor w/ 2 levels "-1","1": 2 1 2 1 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ N: Factor w/ 2 levels "-1","1": 2 1 1 2 2 1 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ O: Factor w/ 2 levels "-1","1": 2 1 1 2 1 2 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:32, 1:14] 1 1 1 1 1 1 1 1 1 1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "32" "31" "30" "29" ...
+  .. ..$ : chr  "A" "B" "C" "D" ...
+ - attr(*, "run.order")='data.frame':	32 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 32 levels "1.1.1","2.1.2",..: 32 31 30 29 28 27 26 25 24 23 ...
+  ..$ run.no             : int  32 31 30 29 28 27 26 25 24 23 ...
+  ..$ run.no.std.rp      : Factor w/ 32 levels "1.1.1","2.1.2",..: 32 31 30 29 28 27 26 25 24 23 ...
+ - attr(*, "design.info")=List of 19
+  ..$ type          : chr "FrF2.splitplot"
+  ..$ nruns         : num 32
+  ..$ nfactors      : num 14
+  ..$ nfac.WP       : num 6
+  ..$ nfac.SP       : num 8
+  ..$ factor.names  :List of 14
+  .. ..$ A: num  -1 1
+  .. ..$ B: num  -1 1
+  .. ..$ C: num  -1 1
+  .. ..$ D: num  -1 1
+  .. ..$ E: num  -1 1
+  .. ..$ F: num  -1 1
+  .. ..$ G: num  -1 1
+  .. ..$ H: num  -1 1
+  .. ..$ J: num  -1 1
+  .. ..$ K: num  -1 1
+  .. ..$ L: num  -1 1
+  .. ..$ M: num  -1 1
+  .. ..$ N: num  -1 1
+  .. ..$ O: num  -1 1
+  ..$ nWPs          : num 8
+  ..$ plotsize      : num 4
+  ..$ res.WP        : num 3
+  ..$ aliased       :List of 3
+  .. ..$ legend: chr  "A=A" "B=B" "C=C" "D=D" ...
+  .. ..$ main  : chr  "A=GJ=HL=BD=CE" "B=AD=CF" "C=AE=BF" "D=EF=AB" ...
+  .. ..$ fi2   : chr  "AF=JK=LM=NO=BE=CD" "AK=FJ" "AM=FL" "AN=FO" ...
+  ..$ catlg.name    : chr "catlg"
+  ..$ base.design   : chr "14-9.6"
+  ..$ map           : num  1 2 3 4 5
+  ..$ orig.fac.order: int  1 2 3 6 7 8 4 5 9 10 ...
+  ..$ replications  : num 1
+  ..$ repeat.only   : logi FALSE
+  ..$ randomize     : logi FALSE
+  ..$ seed          : NULL
+  ..$ creator       :List of 2
+  .. ..$ original: language FrF2(32, 14, WPs = 8, nfac.WP = 6, randomize = FALSE)
+  .. ..$ modify  : language `[.design`(test, 32:1, )
+>   str.wover(test[14:1,])
+'data.frame':	14 obs. of  14 variables:
+ $ A: Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ B: Factor w/ 2 levels "-1","1": 2 2 2 2 2 2 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ C: Factor w/ 2 levels "-1","1": 2 2 1 1 1 1 2 2 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ D: Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 2 2 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ E: Factor w/ 2 levels "-1","1": 1 1 2 2 2 2 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ F: Factor w/ 2 levels "-1","1": 2 2 1 1 1 1 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ G: Factor w/ 2 levels "-1","1": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ H: Factor w/ 2 levels "-1","1": 2 1 2 1 2 1 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ J: Factor w/ 2 levels "-1","1": 2 2 1 1 2 2 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ K: Factor w/ 2 levels "-1","1": 1 1 1 1 2 2 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ L: Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ M: Factor w/ 2 levels "-1","1": 2 1 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ N: Factor w/ 2 levels "-1","1": 1 2 2 1 1 2 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ O: Factor w/ 2 levels "-1","1": 2 1 2 1 1 2 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+>   str.wover(test[,14:1])
+'data.frame':	32 obs. of  14 variables:
+ $ O: Factor w/ 2 levels "-1","1": 2 1 1 2 1 2 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ N: Factor w/ 2 levels "-1","1": 1 2 2 1 1 2 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ M: Factor w/ 2 levels "-1","1": 1 2 1 2 2 1 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ L: Factor w/ 2 levels "-1","1": 2 1 2 1 2 1 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ K: Factor w/ 2 levels "-1","1": 1 1 2 2 2 2 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ J: Factor w/ 2 levels "-1","1": 2 2 1 1 2 2 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ H: Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ G: Factor w/ 2 levels "-1","1": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ F: Factor w/ 2 levels "-1","1": 2 2 2 2 1 1 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ E: Factor w/ 2 levels "-1","1": 2 2 2 2 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ D: Factor w/ 2 levels "-1","1": 2 2 2 2 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ C: Factor w/ 2 levels "-1","1": 1 1 1 1 2 2 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ B: Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ A: Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+>   str.wover(test[14:1,,drop.attr=FALSE])
+Classes 'design' and 'data.frame':	14 obs. of  14 variables:
+ $ A: Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ B: Factor w/ 2 levels "-1","1": 2 2 2 2 2 2 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ C: Factor w/ 2 levels "-1","1": 2 2 1 1 1 1 2 2 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ D: Factor w/ 2 levels "-1","1": 1 1 1 1 1 1 2 2 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ E: Factor w/ 2 levels "-1","1": 1 1 2 2 2 2 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ F: Factor w/ 2 levels "-1","1": 2 2 1 1 1 1 1 1 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ G: Factor w/ 2 levels "-1","1": 1 1 2 2 1 1 2 2 1 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ H: Factor w/ 2 levels "-1","1": 2 1 2 1 2 1 2 1 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ J: Factor w/ 2 levels "-1","1": 2 2 1 1 2 2 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ K: Factor w/ 2 levels "-1","1": 1 1 1 1 2 2 1 1 2 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ L: Factor w/ 2 levels "-1","1": 1 2 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ M: Factor w/ 2 levels "-1","1": 2 1 1 2 1 2 1 2 1 2 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ N: Factor w/ 2 levels "-1","1": 1 2 2 1 1 2 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ $ O: Factor w/ 2 levels "-1","1": 2 1 2 1 1 2 1 2 2 1 ...
+  ..- attr(*, "contrasts")= num [1:2, 1] -1 1
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr  "-1" "1"
+  .. .. ..$ : NULL
+ - attr(*, "desnum")= num [1:14, 1:14] -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr  "14" "13" "12" "11" ...
+  .. ..$ : chr  "A" "B" "C" "D" ...
+ - attr(*, "run.order")='data.frame':	14 obs. of  3 variables:
+  ..$ run.no.in.std.order: Factor w/ 32 levels "1.1.1","2.1.2",..: 14 13 12 11 10 9 8 7 6 5 ...
+  ..$ run.no             : int  14 13 12 11 10 9 8 7 6 5 ...
+  ..$ run.no.std.rp      : Factor w/ 32 levels "1.1.1","2.1.2",..: 14 13 12 11 10 9 8 7 6 5 ...
+ - attr(*, "design.info")= Named list()
+> 
+> ## replications in combination with blocks
+> ## (with randomization in examples)
+> run.order(FrF2(8,3,blocks=2,wbreps=2,randomize=FALSE))
+   run.no.in.std.order run.no run.no.std.rp
+1                1.1.1      1       1.1.1.1
+2                4.1.2      2       4.1.2.1
+3                6.1.3      3       6.1.3.1
+4                7.1.4      4       7.1.4.1
+5                1.1.1      5       1.1.1.2
+6                4.1.2      6       4.1.2.2
+7                6.1.3      7       6.1.3.2
+8                7.1.4      8       7.1.4.2
+9                2.2.1      9       2.2.1.1
+10               3.2.2     10       3.2.2.1
+11               5.2.3     11       5.2.3.1
+12               8.2.4     12       8.2.4.1
+13               2.2.1     13       2.2.1.2
+14               3.2.2     14       3.2.2.2
+15               5.2.3     15       5.2.3.2
+16               8.2.4     16       8.2.4.2
+> run.order(FrF2(8,3,blocks=2,wbreps=2,repeat.only=TRUE,randomize=FALSE))
+   run.no.in.std.order run.no run.no.std.rp
+1                1.1.1      1       1.1.1.1
+2                1.1.1      2       1.1.1.2
+3                4.1.2      3       4.1.2.1
+4                4.1.2      4       4.1.2.2
+5                6.1.3      5       6.1.3.1
+6                6.1.3      6       6.1.3.2
+7                7.1.4      7       7.1.4.1
+8                7.1.4      8       7.1.4.2
+9                2.2.1      9       2.2.1.1
+10               2.2.1     10       2.2.1.2
+11               3.2.2     11       3.2.2.1
+12               3.2.2     12       3.2.2.2
+13               5.2.3     13       5.2.3.1
+14               5.2.3     14       5.2.3.2
+15               8.2.4     15       8.2.4.1
+16               8.2.4     16       8.2.4.2
+> run.order(FrF2(8,3,blocks=2,bbreps=2,randomize=FALSE))
+   run.no.in.std.order run.no run.no.std.rp
+1                1.1.1      1       1.1.1.1
+2                4.1.2      2       4.1.2.1
+3                6.1.3      3       6.1.3.1
+4                7.1.4      4       7.1.4.1
+5                2.2.1      5       2.2.1.1
+6                3.2.2      6       3.2.2.1
+7                5.2.3      7       5.2.3.1
+8                8.2.4      8       8.2.4.1
+9                1.1.1      9       1.1.1.2
+10               4.1.2     10       4.1.2.2
+11               6.1.3     11       6.1.3.2
+12               7.1.4     12       7.1.4.2
+13               2.2.1     13       2.2.1.2
+14               3.2.2     14       3.2.2.2
+15               5.2.3     15       5.2.3.2
+16               8.2.4     16       8.2.4.2
+> run.order(FrF2(8,3,blocks=2,bbreps=2,wbreps=2,randomize=FALSE))
+   run.no.in.std.order run.no run.no.std.rp
+1                1.1.1      1     1.1.1.1.1
+2                4.1.2      2     4.1.2.1.1
+3                6.1.3      3     6.1.3.1.1
+4                7.1.4      4     7.1.4.1.1
+5                1.1.1      5     1.1.1.1.2
+6                4.1.2      6     4.1.2.1.2
+7                6.1.3      7     6.1.3.1.2
+8                7.1.4      8     7.1.4.1.2
+9                2.2.1      9     2.2.1.1.1
+10               3.2.2     10     3.2.2.1.1
+11               5.2.3     11     5.2.3.1.1
+12               8.2.4     12     8.2.4.1.1
+13               2.2.1     13     2.2.1.1.2
+14               3.2.2     14     3.2.2.1.2
+15               5.2.3     15     5.2.3.1.2
+16               8.2.4     16     8.2.4.1.2
+17               1.1.1     17     1.1.1.2.1
+18               4.1.2     18     4.1.2.2.1
+19               6.1.3     19     6.1.3.2.1
+20               7.1.4     20     7.1.4.2.1
+21               1.1.1     21     1.1.1.2.2
+22               4.1.2     22     4.1.2.2.2
+23               6.1.3     23     6.1.3.2.2
+24               7.1.4     24     7.1.4.2.2
+25               2.2.1     25     2.2.1.2.1
+26               3.2.2     26     3.2.2.2.1
+27               5.2.3     27     5.2.3.2.1
+28               8.2.4     28     8.2.4.2.1
+29               2.2.1     29     2.2.1.2.2
+30               3.2.2     30     3.2.2.2.2
+31               5.2.3     31     5.2.3.2.2
+32               8.2.4     32     8.2.4.2.2
+> FrF2(8,3,blocks=2,bbreps=2,wbreps=2,repeat.only=TRUE,randomize=FALSE)
+  run.no run.no.std.rp Blocks  A  B  C
+1      1     1.1.1.1.1    1.1 -1 -1 -1
+2      2     1.1.1.1.2    1.1 -1 -1 -1
+3      3     4.1.2.1.1    1.1 -1  1  1
+4      4     4.1.2.1.2    1.1 -1  1  1
+5      5     6.1.3.1.1    1.1  1 -1  1
+6      6     6.1.3.1.2    1.1  1 -1  1
+7      7     7.1.4.1.1    1.1  1  1 -1
+8      8     7.1.4.1.2    1.1  1  1 -1
+   run.no run.no.std.rp Blocks  A  B  C
+9       9     2.2.1.1.1    2.1 -1 -1  1
+10     10     2.2.1.1.2    2.1 -1 -1  1
+11     11     3.2.2.1.1    2.1 -1  1 -1
+12     12     3.2.2.1.2    2.1 -1  1 -1
+13     13     5.2.3.1.1    2.1  1 -1 -1
+14     14     5.2.3.1.2    2.1  1 -1 -1
+15     15     8.2.4.1.1    2.1  1  1  1
+16     16     8.2.4.1.2    2.1  1  1  1
+   run.no run.no.std.rp Blocks  A  B  C
+17     17     1.1.1.2.1    1.2 -1 -1 -1
+18     18     1.1.1.2.2    1.2 -1 -1 -1
+19     19     4.1.2.2.1    1.2 -1  1  1
+20     20     4.1.2.2.2    1.2 -1  1  1
+21     21     6.1.3.2.1    1.2  1 -1  1
+22     22     6.1.3.2.2    1.2  1 -1  1
+23     23     7.1.4.2.1    1.2  1  1 -1
+24     24     7.1.4.2.2    1.2  1  1 -1
+   run.no run.no.std.rp Blocks  A  B  C
+25     25     2.2.1.2.1    2.2 -1 -1  1
+26     26     2.2.1.2.2    2.2 -1 -1  1
+27     27     3.2.2.2.1    2.2 -1  1 -1
+28     28     3.2.2.2.2    2.2 -1  1 -1
+29     29     5.2.3.2.1    2.2  1 -1 -1
+30     30     5.2.3.2.2    2.2  1 -1 -1
+31     31     8.2.4.2.1    2.2  1  1  1
+32     32     8.2.4.2.2    2.2  1  1  1
+class=design, type= FrF2.blocked 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+> set.seed(68702)
+> run.order(FrF2(8,3,blocks=2,bbreps=2,wbreps=2,randomize=TRUE))
+   run.no.in.std.order run.no run.no.std.rp
+1                7.1.4      1     7.1.4.1.1
+2                6.1.3      2     6.1.3.1.1
+3                4.1.2      3     4.1.2.1.1
+4                1.1.1      4     1.1.1.1.1
+5                4.1.2      5     4.1.2.1.2
+6                6.1.3      6     6.1.3.1.2
+7                7.1.4      7     7.1.4.1.2
+8                1.1.1      8     1.1.1.1.2
+9                2.2.1      9     2.2.1.1.1
+10               8.2.4     10     8.2.4.1.1
+11               5.2.3     11     5.2.3.1.1
+12               3.2.2     12     3.2.2.1.1
+13               3.2.2     13     3.2.2.1.2
+14               5.2.3     14     5.2.3.1.2
+15               8.2.4     15     8.2.4.1.2
+16               2.2.1     16     2.2.1.1.2
+17               1.1.1     17     1.1.1.2.1
+18               4.1.2     18     4.1.2.2.1
+19               6.1.3     19     6.1.3.2.1
+20               7.1.4     20     7.1.4.2.1
+21               7.1.4     21     7.1.4.2.2
+22               6.1.3     22     6.1.3.2.2
+23               1.1.1     23     1.1.1.2.2
+24               4.1.2     24     4.1.2.2.2
+25               2.2.1     25     2.2.1.2.1
+26               8.2.4     26     8.2.4.2.1
+27               3.2.2     27     3.2.2.2.1
+28               5.2.3     28     5.2.3.2.1
+29               8.2.4     29     8.2.4.2.2
+30               3.2.2     30     3.2.2.2.2
+31               5.2.3     31     5.2.3.2.2
+32               2.2.1     32     2.2.1.2.2
+> set.seed(68702)
+> run.order(FrF2(8,3,blocks=2,bbreps=2,wbreps=2,repeat.only=TRUE,randomize=TRUE))
+   run.no.in.std.order run.no run.no.std.rp
+1                7.1.4      1     7.1.4.1.1
+2                7.1.4      2     7.1.4.1.2
+3                6.1.3      3     6.1.3.1.1
+4                6.1.3      4     6.1.3.1.2
+5                4.1.2      5     4.1.2.1.1
+6                4.1.2      6     4.1.2.1.2
+7                1.1.1      7     1.1.1.1.1
+8                1.1.1      8     1.1.1.1.2
+9                3.2.2      9     3.2.2.1.1
+10               3.2.2     10     3.2.2.1.2
+11               5.2.3     11     5.2.3.1.1
+12               5.2.3     12     5.2.3.1.2
+13               8.2.4     13     8.2.4.1.1
+14               8.2.4     14     8.2.4.1.2
+15               2.2.1     15     2.2.1.1.1
+16               2.2.1     16     2.2.1.1.2
+17               1.1.1     17     1.1.1.2.1
+18               1.1.1     18     1.1.1.2.2
+19               7.1.4     19     7.1.4.2.1
+20               7.1.4     20     7.1.4.2.2
+21               6.1.3     21     6.1.3.2.1
+22               6.1.3     22     6.1.3.2.2
+23               4.1.2     23     4.1.2.2.1
+24               4.1.2     24     4.1.2.2.2
+25               3.2.2     25     3.2.2.2.1
+26               3.2.2     26     3.2.2.2.2
+27               5.2.3     27     5.2.3.2.1
+28               5.2.3     28     5.2.3.2.2
+29               8.2.4     29     8.2.4.2.1
+30               8.2.4     30     8.2.4.2.2
+31               2.2.1     31     2.2.1.2.1
+32               2.2.1     32     2.2.1.2.2
+> 
+> ## replications in combination with split plot 
+>   FrF2(32,14,WPs=8,nfac.WP=2,randomize=FALSE, replications=3)
+  run.no run.no.std.rp  A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+1      1       1.1.1.1 -1 -1  -1 -1 -1  1  1  1 -1 -1 -1  1  1  1  1
+2      2       2.1.2.1 -1 -1  -1 -1  1  1  1  1  1  1  1 -1 -1 -1 -1
+3      3       3.1.3.1 -1 -1  -1  1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+4      4       4.1.4.1 -1 -1  -1  1  1 -1 -1 -1  1  1  1  1  1  1  1
+  run.no run.no.std.rp  A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+5      5       5.2.1.1 -1 -1   1 -1 -1  1  1 -1 -1  1  1  1  1 -1 -1
+6      6       6.2.2.1 -1 -1   1 -1  1  1  1 -1  1 -1 -1 -1 -1  1  1
+7      7       7.2.3.1 -1 -1   1  1 -1 -1 -1  1 -1  1  1 -1 -1  1  1
+8      8       8.2.4.1 -1 -1   1  1  1 -1 -1  1  1 -1 -1  1  1 -1 -1
+   run.no run.no.std.rp  A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+9       9       9.3.1.1 -1 1  -1 -1 -1  1 -1  1  1 -1  1  1 -1  1 -1
+10     10      10.3.2.1 -1 1  -1 -1  1  1 -1  1 -1  1 -1 -1  1 -1  1
+11     11      11.3.3.1 -1 1  -1  1 -1 -1  1 -1  1 -1  1 -1  1 -1  1
+12     12      12.3.4.1 -1 1  -1  1  1 -1  1 -1 -1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp  A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+13     13      13.4.1.1 -1 1   1 -1 -1  1 -1 -1  1  1 -1  1 -1 -1  1
+14     14      14.4.2.1 -1 1   1 -1  1  1 -1 -1 -1 -1  1 -1  1  1 -1
+15     15      15.4.3.1 -1 1   1  1 -1 -1  1  1  1  1 -1 -1  1  1 -1
+16     16      16.4.4.1 -1 1   1  1  1 -1  1  1 -1 -1  1  1 -1 -1  1
+   run.no run.no.std.rp A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+17     17      17.5.1.1 1 -1  -1 -1 -1 -1  1  1  1  1 -1  1 -1 -1  1
+18     18      18.5.2.1 1 -1  -1 -1  1 -1  1  1 -1 -1  1 -1  1  1 -1
+19     19      19.5.3.1 1 -1  -1  1 -1  1 -1 -1  1  1 -1 -1  1  1 -1
+20     20      20.5.4.1 1 -1  -1  1  1  1 -1 -1 -1 -1  1  1 -1 -1  1
+   run.no run.no.std.rp A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+21     21      21.6.1.1 1 -1   1 -1 -1 -1  1 -1  1 -1  1  1 -1  1 -1
+22     22      22.6.2.1 1 -1   1 -1  1 -1  1 -1 -1  1 -1 -1  1 -1  1
+23     23      23.6.3.1 1 -1   1  1 -1  1 -1  1  1 -1  1 -1  1 -1  1
+24     24      24.6.4.1 1 -1   1  1  1  1 -1  1 -1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+25     25      25.7.1.1 1 1  -1 -1 -1 -1 -1  1 -1  1  1  1  1 -1 -1
+26     26      26.7.2.1 1 1  -1 -1  1 -1 -1  1  1 -1 -1 -1 -1  1  1
+27     27      27.7.3.1 1 1  -1  1 -1  1  1 -1 -1  1  1 -1 -1  1  1
+28     28      28.7.4.1 1 1  -1  1  1  1  1 -1  1 -1 -1  1  1 -1 -1
+   run.no run.no.std.rp A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+29     29      29.8.1.1 1 1   1 -1 -1 -1 -1 -1 -1 -1 -1  1  1  1  1
+30     30      30.8.2.1 1 1   1 -1  1 -1 -1 -1  1  1  1 -1 -1 -1 -1
+31     31      31.8.3.1 1 1   1  1 -1  1  1  1 -1 -1 -1 -1 -1 -1 -1
+32     32      32.8.4.1 1 1   1  1  1  1  1  1  1  1  1  1  1  1  1
+   run.no run.no.std.rp  A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+33     33       1.1.1.2 -1 -1  -1 -1 -1  1  1  1 -1 -1 -1  1  1  1  1
+34     34       2.1.2.2 -1 -1  -1 -1  1  1  1  1  1  1  1 -1 -1 -1 -1
+35     35       3.1.3.2 -1 -1  -1  1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+36     36       4.1.4.2 -1 -1  -1  1  1 -1 -1 -1  1  1  1  1  1  1  1
+   run.no run.no.std.rp  A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+37     37       5.2.1.2 -1 -1   1 -1 -1  1  1 -1 -1  1  1  1  1 -1 -1
+38     38       6.2.2.2 -1 -1   1 -1  1  1  1 -1  1 -1 -1 -1 -1  1  1
+39     39       7.2.3.2 -1 -1   1  1 -1 -1 -1  1 -1  1  1 -1 -1  1  1
+40     40       8.2.4.2 -1 -1   1  1  1 -1 -1  1  1 -1 -1  1  1 -1 -1
+   run.no run.no.std.rp  A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+41     41       9.3.1.2 -1 1  -1 -1 -1  1 -1  1  1 -1  1  1 -1  1 -1
+42     42      10.3.2.2 -1 1  -1 -1  1  1 -1  1 -1  1 -1 -1  1 -1  1
+43     43      11.3.3.2 -1 1  -1  1 -1 -1  1 -1  1 -1  1 -1  1 -1  1
+44     44      12.3.4.2 -1 1  -1  1  1 -1  1 -1 -1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp  A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+45     45      13.4.1.2 -1 1   1 -1 -1  1 -1 -1  1  1 -1  1 -1 -1  1
+46     46      14.4.2.2 -1 1   1 -1  1  1 -1 -1 -1 -1  1 -1  1  1 -1
+47     47      15.4.3.2 -1 1   1  1 -1 -1  1  1  1  1 -1 -1  1  1 -1
+48     48      16.4.4.2 -1 1   1  1  1 -1  1  1 -1 -1  1  1 -1 -1  1
+   run.no run.no.std.rp A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+49     49      17.5.1.2 1 -1  -1 -1 -1 -1  1  1  1  1 -1  1 -1 -1  1
+50     50      18.5.2.2 1 -1  -1 -1  1 -1  1  1 -1 -1  1 -1  1  1 -1
+51     51      19.5.3.2 1 -1  -1  1 -1  1 -1 -1  1  1 -1 -1  1  1 -1
+52     52      20.5.4.2 1 -1  -1  1  1  1 -1 -1 -1 -1  1  1 -1 -1  1
+   run.no run.no.std.rp A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+53     53      21.6.1.2 1 -1   1 -1 -1 -1  1 -1  1 -1  1  1 -1  1 -1
+54     54      22.6.2.2 1 -1   1 -1  1 -1  1 -1 -1  1 -1 -1  1 -1  1
+55     55      23.6.3.2 1 -1   1  1 -1  1 -1  1  1 -1  1 -1  1 -1  1
+56     56      24.6.4.2 1 -1   1  1  1  1 -1  1 -1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+57     57      25.7.1.2 1 1  -1 -1 -1 -1 -1  1 -1  1  1  1  1 -1 -1
+58     58      26.7.2.2 1 1  -1 -1  1 -1 -1  1  1 -1 -1 -1 -1  1  1
+59     59      27.7.3.2 1 1  -1  1 -1  1  1 -1 -1  1  1 -1 -1  1  1
+60     60      28.7.4.2 1 1  -1  1  1  1  1 -1  1 -1 -1  1  1 -1 -1
+   run.no run.no.std.rp A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+61     61      29.8.1.2 1 1   1 -1 -1 -1 -1 -1 -1 -1 -1  1  1  1  1
+62     62      30.8.2.2 1 1   1 -1  1 -1 -1 -1  1  1  1 -1 -1 -1 -1
+63     63      31.8.3.2 1 1   1  1 -1  1  1  1 -1 -1 -1 -1 -1 -1 -1
+64     64      32.8.4.2 1 1   1  1  1  1  1  1  1  1  1  1  1  1  1
+   run.no run.no.std.rp  A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+65     65       1.1.1.3 -1 -1  -1 -1 -1  1  1  1 -1 -1 -1  1  1  1  1
+66     66       2.1.2.3 -1 -1  -1 -1  1  1  1  1  1  1  1 -1 -1 -1 -1
+67     67       3.1.3.3 -1 -1  -1  1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+68     68       4.1.4.3 -1 -1  -1  1  1 -1 -1 -1  1  1  1  1  1  1  1
+   run.no run.no.std.rp  A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+69     69       5.2.1.3 -1 -1   1 -1 -1  1  1 -1 -1  1  1  1  1 -1 -1
+70     70       6.2.2.3 -1 -1   1 -1  1  1  1 -1  1 -1 -1 -1 -1  1  1
+71     71       7.2.3.3 -1 -1   1  1 -1 -1 -1  1 -1  1  1 -1 -1  1  1
+72     72       8.2.4.3 -1 -1   1  1  1 -1 -1  1  1 -1 -1  1  1 -1 -1
+   run.no run.no.std.rp  A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+73     73       9.3.1.3 -1 1  -1 -1 -1  1 -1  1  1 -1  1  1 -1  1 -1
+74     74      10.3.2.3 -1 1  -1 -1  1  1 -1  1 -1  1 -1 -1  1 -1  1
+75     75      11.3.3.3 -1 1  -1  1 -1 -1  1 -1  1 -1  1 -1  1 -1  1
+76     76      12.3.4.3 -1 1  -1  1  1 -1  1 -1 -1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp  A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+77     77      13.4.1.3 -1 1   1 -1 -1  1 -1 -1  1  1 -1  1 -1 -1  1
+78     78      14.4.2.3 -1 1   1 -1  1  1 -1 -1 -1 -1  1 -1  1  1 -1
+79     79      15.4.3.3 -1 1   1  1 -1 -1  1  1  1  1 -1 -1  1  1 -1
+80     80      16.4.4.3 -1 1   1  1  1 -1  1  1 -1 -1  1  1 -1 -1  1
+   run.no run.no.std.rp A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+81     81      17.5.1.3 1 -1  -1 -1 -1 -1  1  1  1  1 -1  1 -1 -1  1
+82     82      18.5.2.3 1 -1  -1 -1  1 -1  1  1 -1 -1  1 -1  1  1 -1
+83     83      19.5.3.3 1 -1  -1  1 -1  1 -1 -1  1  1 -1 -1  1  1 -1
+84     84      20.5.4.3 1 -1  -1  1  1  1 -1 -1 -1 -1  1  1 -1 -1  1
+   run.no run.no.std.rp A  B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+85     85      21.6.1.3 1 -1   1 -1 -1 -1  1 -1  1 -1  1  1 -1  1 -1
+86     86      22.6.2.3 1 -1   1 -1  1 -1  1 -1 -1  1 -1 -1  1 -1  1
+87     87      23.6.3.3 1 -1   1  1 -1  1 -1  1  1 -1  1 -1  1 -1  1
+88     88      24.6.4.3 1 -1   1  1  1  1 -1  1 -1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+89     89      25.7.1.3 1 1  -1 -1 -1 -1 -1  1 -1  1  1  1  1 -1 -1
+90     90      26.7.2.3 1 1  -1 -1  1 -1 -1  1  1 -1 -1 -1 -1  1  1
+91     91      27.7.3.3 1 1  -1  1 -1  1  1 -1 -1  1  1 -1 -1  1  1
+92     92      28.7.4.3 1 1  -1  1  1  1  1 -1  1 -1 -1  1  1 -1 -1
+   run.no run.no.std.rp A B WP3  C  D  E  F  G  H  J  K  L  M  N  O
+93     93      29.8.1.3 1 1   1 -1 -1 -1 -1 -1 -1 -1 -1  1  1  1  1
+94     94      30.8.2.3 1 1   1 -1  1 -1 -1 -1  1  1  1 -1 -1 -1 -1
+95     95      31.8.3.3 1 1   1  1 -1  1  1  1 -1 -1 -1 -1 -1 -1 -1
+96     96      32.8.4.3 1 1   1  1  1  1  1  1  1  1  1  1  1  1  1
+class=design, type= FrF2.splitplot 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+Warning message:
+In FrF2(32, 14, WPs = 8, nfac.WP = 2, randomize = FALSE, replications = 3) :
+  There are fewer factors than needed for a full factorial whole plot design. 1 dummy splitting factor(s) have been introduced.
+>   FrF2(32,14,WPs=8,nfac.WP=6,randomize=FALSE, replications=3)
+  run.no run.no.std.rp  A  B  C D E F  G  H  J  K  L  M  N  O
+1      1       1.1.1.1 -1 -1 -1 1 1 1 -1 -1  1 -1  1 -1 -1  1
+2      2       2.1.2.1 -1 -1 -1 1 1 1 -1  1  1 -1 -1  1  1 -1
+3      3       3.1.3.1 -1 -1 -1 1 1 1  1 -1 -1  1  1 -1  1 -1
+4      4       4.1.4.1 -1 -1 -1 1 1 1  1  1 -1  1 -1  1 -1  1
+  run.no run.no.std.rp  A  B C D  E  F  G  H  J  K  L  M  N  O
+5      5       5.2.1.1 -1 -1 1 1 -1 -1 -1 -1  1  1  1  1 -1 -1
+6      6       6.2.2.1 -1 -1 1 1 -1 -1 -1  1  1  1 -1 -1  1  1
+7      7       7.2.3.1 -1 -1 1 1 -1 -1  1 -1 -1 -1  1  1  1  1
+8      8       8.2.4.1 -1 -1 1 1 -1 -1  1  1 -1 -1 -1 -1 -1 -1
+   run.no run.no.std.rp  A B  C  D E  F  G  H  J  K  L  M  N  O
+9       9       9.3.1.1 -1 1 -1 -1 1 -1 -1 -1  1  1  1  1  1  1
+10     10      10.3.2.1 -1 1 -1 -1 1 -1 -1  1  1  1 -1 -1 -1 -1
+11     11      11.3.3.1 -1 1 -1 -1 1 -1  1 -1 -1 -1  1  1 -1 -1
+12     12      12.3.4.1 -1 1 -1 -1 1 -1  1  1 -1 -1 -1 -1  1  1
+   run.no run.no.std.rp  A B C  D  E F  G  H  J  K  L  M  N  O
+13     13      13.4.1.1 -1 1 1 -1 -1 1 -1 -1  1 -1  1 -1  1 -1
+14     14      14.4.2.1 -1 1 1 -1 -1 1 -1  1  1 -1 -1  1 -1  1
+15     15      15.4.3.1 -1 1 1 -1 -1 1  1 -1 -1  1  1 -1 -1  1
+16     16      16.4.4.1 -1 1 1 -1 -1 1  1  1 -1  1 -1  1  1 -1
+   run.no run.no.std.rp A  B  C  D  E F  G  H  J  K  L  M  N  O
+17     17      17.5.1.1 1 -1 -1 -1 -1 1 -1 -1 -1 -1 -1 -1 -1 -1
+18     18      18.5.2.1 1 -1 -1 -1 -1 1 -1  1 -1 -1  1  1  1  1
+19     19      19.5.3.1 1 -1 -1 -1 -1 1  1 -1  1  1 -1 -1  1  1
+20     20      20.5.4.1 1 -1 -1 -1 -1 1  1  1  1  1  1  1 -1 -1
+   run.no run.no.std.rp A  B C  D E  F  G  H  J  K  L  M  N  O
+21     21      21.6.1.1 1 -1 1 -1 1 -1 -1 -1 -1  1 -1  1 -1  1
+22     22      22.6.2.1 1 -1 1 -1 1 -1 -1  1 -1  1  1 -1  1 -1
+23     23      23.6.3.1 1 -1 1 -1 1 -1  1 -1  1 -1 -1  1  1 -1
+24     24      24.6.4.1 1 -1 1 -1 1 -1  1  1  1 -1  1 -1 -1  1
+   run.no run.no.std.rp A B  C D  E  F  G  H  J  K  L  M  N  O
+25     25      25.7.1.1 1 1 -1 1 -1 -1 -1 -1 -1  1 -1  1  1 -1
+26     26      26.7.2.1 1 1 -1 1 -1 -1 -1  1 -1  1  1 -1 -1  1
+27     27      27.7.3.1 1 1 -1 1 -1 -1  1 -1  1 -1 -1  1 -1  1
+28     28      28.7.4.1 1 1 -1 1 -1 -1  1  1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp A B C D E F  G  H  J  K  L  M  N  O
+29     29      29.8.1.1 1 1 1 1 1 1 -1 -1 -1 -1 -1 -1  1  1
+30     30      30.8.2.1 1 1 1 1 1 1 -1  1 -1 -1  1  1 -1 -1
+31     31      31.8.3.1 1 1 1 1 1 1  1 -1  1  1 -1 -1 -1 -1
+32     32      32.8.4.1 1 1 1 1 1 1  1  1  1  1  1  1  1  1
+   run.no run.no.std.rp  A  B  C D E F  G  H  J  K  L  M  N  O
+33     33       1.1.1.2 -1 -1 -1 1 1 1 -1 -1  1 -1  1 -1 -1  1
+34     34       2.1.2.2 -1 -1 -1 1 1 1 -1  1  1 -1 -1  1  1 -1
+35     35       3.1.3.2 -1 -1 -1 1 1 1  1 -1 -1  1  1 -1  1 -1
+36     36       4.1.4.2 -1 -1 -1 1 1 1  1  1 -1  1 -1  1 -1  1
+   run.no run.no.std.rp  A  B C D  E  F  G  H  J  K  L  M  N  O
+37     37       5.2.1.2 -1 -1 1 1 -1 -1 -1 -1  1  1  1  1 -1 -1
+38     38       6.2.2.2 -1 -1 1 1 -1 -1 -1  1  1  1 -1 -1  1  1
+39     39       7.2.3.2 -1 -1 1 1 -1 -1  1 -1 -1 -1  1  1  1  1
+40     40       8.2.4.2 -1 -1 1 1 -1 -1  1  1 -1 -1 -1 -1 -1 -1
+   run.no run.no.std.rp  A B  C  D E  F  G  H  J  K  L  M  N  O
+41     41       9.3.1.2 -1 1 -1 -1 1 -1 -1 -1  1  1  1  1  1  1
+42     42      10.3.2.2 -1 1 -1 -1 1 -1 -1  1  1  1 -1 -1 -1 -1
+43     43      11.3.3.2 -1 1 -1 -1 1 -1  1 -1 -1 -1  1  1 -1 -1
+44     44      12.3.4.2 -1 1 -1 -1 1 -1  1  1 -1 -1 -1 -1  1  1
+   run.no run.no.std.rp  A B C  D  E F  G  H  J  K  L  M  N  O
+45     45      13.4.1.2 -1 1 1 -1 -1 1 -1 -1  1 -1  1 -1  1 -1
+46     46      14.4.2.2 -1 1 1 -1 -1 1 -1  1  1 -1 -1  1 -1  1
+47     47      15.4.3.2 -1 1 1 -1 -1 1  1 -1 -1  1  1 -1 -1  1
+48     48      16.4.4.2 -1 1 1 -1 -1 1  1  1 -1  1 -1  1  1 -1
+   run.no run.no.std.rp A  B  C  D  E F  G  H  J  K  L  M  N  O
+49     49      17.5.1.2 1 -1 -1 -1 -1 1 -1 -1 -1 -1 -1 -1 -1 -1
+50     50      18.5.2.2 1 -1 -1 -1 -1 1 -1  1 -1 -1  1  1  1  1
+51     51      19.5.3.2 1 -1 -1 -1 -1 1  1 -1  1  1 -1 -1  1  1
+52     52      20.5.4.2 1 -1 -1 -1 -1 1  1  1  1  1  1  1 -1 -1
+   run.no run.no.std.rp A  B C  D E  F  G  H  J  K  L  M  N  O
+53     53      21.6.1.2 1 -1 1 -1 1 -1 -1 -1 -1  1 -1  1 -1  1
+54     54      22.6.2.2 1 -1 1 -1 1 -1 -1  1 -1  1  1 -1  1 -1
+55     55      23.6.3.2 1 -1 1 -1 1 -1  1 -1  1 -1 -1  1  1 -1
+56     56      24.6.4.2 1 -1 1 -1 1 -1  1  1  1 -1  1 -1 -1  1
+   run.no run.no.std.rp A B  C D  E  F  G  H  J  K  L  M  N  O
+57     57      25.7.1.2 1 1 -1 1 -1 -1 -1 -1 -1  1 -1  1  1 -1
+58     58      26.7.2.2 1 1 -1 1 -1 -1 -1  1 -1  1  1 -1 -1  1
+59     59      27.7.3.2 1 1 -1 1 -1 -1  1 -1  1 -1 -1  1 -1  1
+60     60      28.7.4.2 1 1 -1 1 -1 -1  1  1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp A B C D E F  G  H  J  K  L  M  N  O
+61     61      29.8.1.2 1 1 1 1 1 1 -1 -1 -1 -1 -1 -1  1  1
+62     62      30.8.2.2 1 1 1 1 1 1 -1  1 -1 -1  1  1 -1 -1
+63     63      31.8.3.2 1 1 1 1 1 1  1 -1  1  1 -1 -1 -1 -1
+64     64      32.8.4.2 1 1 1 1 1 1  1  1  1  1  1  1  1  1
+   run.no run.no.std.rp  A  B  C D E F  G  H  J  K  L  M  N  O
+65     65       1.1.1.3 -1 -1 -1 1 1 1 -1 -1  1 -1  1 -1 -1  1
+66     66       2.1.2.3 -1 -1 -1 1 1 1 -1  1  1 -1 -1  1  1 -1
+67     67       3.1.3.3 -1 -1 -1 1 1 1  1 -1 -1  1  1 -1  1 -1
+68     68       4.1.4.3 -1 -1 -1 1 1 1  1  1 -1  1 -1  1 -1  1
+   run.no run.no.std.rp  A  B C D  E  F  G  H  J  K  L  M  N  O
+69     69       5.2.1.3 -1 -1 1 1 -1 -1 -1 -1  1  1  1  1 -1 -1
+70     70       6.2.2.3 -1 -1 1 1 -1 -1 -1  1  1  1 -1 -1  1  1
+71     71       7.2.3.3 -1 -1 1 1 -1 -1  1 -1 -1 -1  1  1  1  1
+72     72       8.2.4.3 -1 -1 1 1 -1 -1  1  1 -1 -1 -1 -1 -1 -1
+   run.no run.no.std.rp  A B  C  D E  F  G  H  J  K  L  M  N  O
+73     73       9.3.1.3 -1 1 -1 -1 1 -1 -1 -1  1  1  1  1  1  1
+74     74      10.3.2.3 -1 1 -1 -1 1 -1 -1  1  1  1 -1 -1 -1 -1
+75     75      11.3.3.3 -1 1 -1 -1 1 -1  1 -1 -1 -1  1  1 -1 -1
+76     76      12.3.4.3 -1 1 -1 -1 1 -1  1  1 -1 -1 -1 -1  1  1
+   run.no run.no.std.rp  A B C  D  E F  G  H  J  K  L  M  N  O
+77     77      13.4.1.3 -1 1 1 -1 -1 1 -1 -1  1 -1  1 -1  1 -1
+78     78      14.4.2.3 -1 1 1 -1 -1 1 -1  1  1 -1 -1  1 -1  1
+79     79      15.4.3.3 -1 1 1 -1 -1 1  1 -1 -1  1  1 -1 -1  1
+80     80      16.4.4.3 -1 1 1 -1 -1 1  1  1 -1  1 -1  1  1 -1
+   run.no run.no.std.rp A  B  C  D  E F  G  H  J  K  L  M  N  O
+81     81      17.5.1.3 1 -1 -1 -1 -1 1 -1 -1 -1 -1 -1 -1 -1 -1
+82     82      18.5.2.3 1 -1 -1 -1 -1 1 -1  1 -1 -1  1  1  1  1
+83     83      19.5.3.3 1 -1 -1 -1 -1 1  1 -1  1  1 -1 -1  1  1
+84     84      20.5.4.3 1 -1 -1 -1 -1 1  1  1  1  1  1  1 -1 -1
+   run.no run.no.std.rp A  B C  D E  F  G  H  J  K  L  M  N  O
+85     85      21.6.1.3 1 -1 1 -1 1 -1 -1 -1 -1  1 -1  1 -1  1
+86     86      22.6.2.3 1 -1 1 -1 1 -1 -1  1 -1  1  1 -1  1 -1
+87     87      23.6.3.3 1 -1 1 -1 1 -1  1 -1  1 -1 -1  1  1 -1
+88     88      24.6.4.3 1 -1 1 -1 1 -1  1  1  1 -1  1 -1 -1  1
+   run.no run.no.std.rp A B  C D  E  F  G  H  J  K  L  M  N  O
+89     89      25.7.1.3 1 1 -1 1 -1 -1 -1 -1 -1  1 -1  1  1 -1
+90     90      26.7.2.3 1 1 -1 1 -1 -1 -1  1 -1  1  1 -1 -1  1
+91     91      27.7.3.3 1 1 -1 1 -1 -1  1 -1  1 -1 -1  1 -1  1
+92     92      28.7.4.3 1 1 -1 1 -1 -1  1  1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp A B C D E F  G  H  J  K  L  M  N  O
+93     93      29.8.1.3 1 1 1 1 1 1 -1 -1 -1 -1 -1 -1  1  1
+94     94      30.8.2.3 1 1 1 1 1 1 -1  1 -1 -1  1  1 -1 -1
+95     95      31.8.3.3 1 1 1 1 1 1  1 -1  1  1 -1 -1 -1 -1
+96     96      32.8.4.3 1 1 1 1 1 1  1  1  1  1  1  1  1  1
+class=design, type= FrF2.splitplot 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+>   set.seed(123451)
+>   FrF2(32,14,WPs=8,nfac.WP=6,replications=3)
+  run.no run.no.std.rp A  B  C  D  E F  G  H  J  K  L  M  N  O
+1      1      18.5.2.1 1 -1 -1 -1 -1 1 -1  1 -1 -1  1  1  1  1
+2      2      20.5.4.1 1 -1 -1 -1 -1 1  1  1  1  1  1  1 -1 -1
+3      3      17.5.1.1 1 -1 -1 -1 -1 1 -1 -1 -1 -1 -1 -1 -1 -1
+4      4      19.5.3.1 1 -1 -1 -1 -1 1  1 -1  1  1 -1 -1  1  1
+  run.no run.no.std.rp  A  B  C D E F  G  H  J  K  L  M  N  O
+5      5       2.1.2.1 -1 -1 -1 1 1 1 -1  1  1 -1 -1  1  1 -1
+6      6       3.1.3.1 -1 -1 -1 1 1 1  1 -1 -1  1  1 -1  1 -1
+7      7       1.1.1.1 -1 -1 -1 1 1 1 -1 -1  1 -1  1 -1 -1  1
+8      8       4.1.4.1 -1 -1 -1 1 1 1  1  1 -1  1 -1  1 -1  1
+   run.no run.no.std.rp A B C D E F  G  H  J  K  L  M  N  O
+9       9      32.8.4.1 1 1 1 1 1 1  1  1  1  1  1  1  1  1
+10     10      31.8.3.1 1 1 1 1 1 1  1 -1  1  1 -1 -1 -1 -1
+11     11      30.8.2.1 1 1 1 1 1 1 -1  1 -1 -1  1  1 -1 -1
+12     12      29.8.1.1 1 1 1 1 1 1 -1 -1 -1 -1 -1 -1  1  1
+   run.no run.no.std.rp  A B C  D  E F  G  H  J  K  L  M  N  O
+13     13      13.4.1.1 -1 1 1 -1 -1 1 -1 -1  1 -1  1 -1  1 -1
+14     14      14.4.2.1 -1 1 1 -1 -1 1 -1  1  1 -1 -1  1 -1  1
+15     15      16.4.4.1 -1 1 1 -1 -1 1  1  1 -1  1 -1  1  1 -1
+16     16      15.4.3.1 -1 1 1 -1 -1 1  1 -1 -1  1  1 -1 -1  1
+   run.no run.no.std.rp  A B  C  D E  F  G  H  J  K  L  M  N  O
+17     17      11.3.3.1 -1 1 -1 -1 1 -1  1 -1 -1 -1  1  1 -1 -1
+18     18      10.3.2.1 -1 1 -1 -1 1 -1 -1  1  1  1 -1 -1 -1 -1
+19     19      12.3.4.1 -1 1 -1 -1 1 -1  1  1 -1 -1 -1 -1  1  1
+20     20       9.3.1.1 -1 1 -1 -1 1 -1 -1 -1  1  1  1  1  1  1
+   run.no run.no.std.rp A B  C D  E  F  G  H  J  K  L  M  N  O
+21     21      27.7.3.1 1 1 -1 1 -1 -1  1 -1  1 -1 -1  1 -1  1
+22     22      25.7.1.1 1 1 -1 1 -1 -1 -1 -1 -1  1 -1  1  1 -1
+23     23      28.7.4.1 1 1 -1 1 -1 -1  1  1  1 -1  1 -1  1 -1
+24     24      26.7.2.1 1 1 -1 1 -1 -1 -1  1 -1  1  1 -1 -1  1
+   run.no run.no.std.rp  A  B C D  E  F  G  H  J  K  L  M  N  O
+25     25       8.2.4.1 -1 -1 1 1 -1 -1  1  1 -1 -1 -1 -1 -1 -1
+26     26       7.2.3.1 -1 -1 1 1 -1 -1  1 -1 -1 -1  1  1  1  1
+27     27       5.2.1.1 -1 -1 1 1 -1 -1 -1 -1  1  1  1  1 -1 -1
+28     28       6.2.2.1 -1 -1 1 1 -1 -1 -1  1  1  1 -1 -1  1  1
+   run.no run.no.std.rp A  B C  D E  F  G  H  J  K  L  M  N  O
+29     29      21.6.1.1 1 -1 1 -1 1 -1 -1 -1 -1  1 -1  1 -1  1
+30     30      22.6.2.1 1 -1 1 -1 1 -1 -1  1 -1  1  1 -1  1 -1
+31     31      24.6.4.1 1 -1 1 -1 1 -1  1  1  1 -1  1 -1 -1  1
+32     32      23.6.3.1 1 -1 1 -1 1 -1  1 -1  1 -1 -1  1  1 -1
+33     33      22.6.2.2 1 -1 1 -1 1 -1 -1  1 -1  1  1 -1  1 -1
+34     34      21.6.1.2 1 -1 1 -1 1 -1 -1 -1 -1  1 -1  1 -1  1
+35     35      24.6.4.2 1 -1 1 -1 1 -1  1  1  1 -1  1 -1 -1  1
+36     36      23.6.3.2 1 -1 1 -1 1 -1  1 -1  1 -1 -1  1  1 -1
+   run.no run.no.std.rp  A B C  D  E F  G  H  J  K  L  M  N  O
+37     37      15.4.3.2 -1 1 1 -1 -1 1  1 -1 -1  1  1 -1 -1  1
+38     38      16.4.4.2 -1 1 1 -1 -1 1  1  1 -1  1 -1  1  1 -1
+39     39      14.4.2.2 -1 1 1 -1 -1 1 -1  1  1 -1 -1  1 -1  1
+40     40      13.4.1.2 -1 1 1 -1 -1 1 -1 -1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp A B  C D  E  F  G  H  J  K  L  M  N  O
+41     41      28.7.4.2 1 1 -1 1 -1 -1  1  1  1 -1  1 -1  1 -1
+42     42      27.7.3.2 1 1 -1 1 -1 -1  1 -1  1 -1 -1  1 -1  1
+43     43      26.7.2.2 1 1 -1 1 -1 -1 -1  1 -1  1  1 -1 -1  1
+44     44      25.7.1.2 1 1 -1 1 -1 -1 -1 -1 -1  1 -1  1  1 -1
+   run.no run.no.std.rp  A B  C  D E  F  G  H  J  K  L  M  N  O
+45     45       9.3.1.2 -1 1 -1 -1 1 -1 -1 -1  1  1  1  1  1  1
+46     46      10.3.2.2 -1 1 -1 -1 1 -1 -1  1  1  1 -1 -1 -1 -1
+47     47      11.3.3.2 -1 1 -1 -1 1 -1  1 -1 -1 -1  1  1 -1 -1
+48     48      12.3.4.2 -1 1 -1 -1 1 -1  1  1 -1 -1 -1 -1  1  1
+   run.no run.no.std.rp  A  B C D  E  F  G  H  J  K  L  M  N  O
+49     49       7.2.3.2 -1 -1 1 1 -1 -1  1 -1 -1 -1  1  1  1  1
+50     50       5.2.1.2 -1 -1 1 1 -1 -1 -1 -1  1  1  1  1 -1 -1
+51     51       6.2.2.2 -1 -1 1 1 -1 -1 -1  1  1  1 -1 -1  1  1
+52     52       8.2.4.2 -1 -1 1 1 -1 -1  1  1 -1 -1 -1 -1 -1 -1
+   run.no run.no.std.rp A  B  C  D  E F  G  H  J  K  L  M  N  O
+53     53      19.5.3.2 1 -1 -1 -1 -1 1  1 -1  1  1 -1 -1  1  1
+54     54      17.5.1.2 1 -1 -1 -1 -1 1 -1 -1 -1 -1 -1 -1 -1 -1
+55     55      20.5.4.2 1 -1 -1 -1 -1 1  1  1  1  1  1  1 -1 -1
+56     56      18.5.2.2 1 -1 -1 -1 -1 1 -1  1 -1 -1  1  1  1  1
+   run.no run.no.std.rp  A  B  C D E F  G  H  J  K  L  M  N  O
+57     57       2.1.2.2 -1 -1 -1 1 1 1 -1  1  1 -1 -1  1  1 -1
+58     58       1.1.1.2 -1 -1 -1 1 1 1 -1 -1  1 -1  1 -1 -1  1
+59     59       4.1.4.2 -1 -1 -1 1 1 1  1  1 -1  1 -1  1 -1  1
+60     60       3.1.3.2 -1 -1 -1 1 1 1  1 -1 -1  1  1 -1  1 -1
+   run.no run.no.std.rp A B C D E F  G  H  J  K  L  M  N  O
+61     61      32.8.4.2 1 1 1 1 1 1  1  1  1  1  1  1  1  1
+62     62      29.8.1.2 1 1 1 1 1 1 -1 -1 -1 -1 -1 -1  1  1
+63     63      30.8.2.2 1 1 1 1 1 1 -1  1 -1 -1  1  1 -1 -1
+64     64      31.8.3.2 1 1 1 1 1 1  1 -1  1  1 -1 -1 -1 -1
+   run.no run.no.std.rp A  B C  D E  F  G  H  J  K  L  M  N  O
+65     65      23.6.3.3 1 -1 1 -1 1 -1  1 -1  1 -1 -1  1  1 -1
+66     66      22.6.2.3 1 -1 1 -1 1 -1 -1  1 -1  1  1 -1  1 -1
+67     67      21.6.1.3 1 -1 1 -1 1 -1 -1 -1 -1  1 -1  1 -1  1
+68     68      24.6.4.3 1 -1 1 -1 1 -1  1  1  1 -1  1 -1 -1  1
+   run.no run.no.std.rp  A B C  D  E F  G  H  J  K  L  M  N  O
+69     69      14.4.2.3 -1 1 1 -1 -1 1 -1  1  1 -1 -1  1 -1  1
+70     70      13.4.1.3 -1 1 1 -1 -1 1 -1 -1  1 -1  1 -1  1 -1
+71     71      16.4.4.3 -1 1 1 -1 -1 1  1  1 -1  1 -1  1  1 -1
+72     72      15.4.3.3 -1 1 1 -1 -1 1  1 -1 -1  1  1 -1 -1  1
+   run.no run.no.std.rp A B  C D  E  F  G  H  J  K  L  M  N  O
+73     73      26.7.2.3 1 1 -1 1 -1 -1 -1  1 -1  1  1 -1 -1  1
+74     74      27.7.3.3 1 1 -1 1 -1 -1  1 -1  1 -1 -1  1 -1  1
+75     75      25.7.1.3 1 1 -1 1 -1 -1 -1 -1 -1  1 -1  1  1 -1
+76     76      28.7.4.3 1 1 -1 1 -1 -1  1  1  1 -1  1 -1  1 -1
+   run.no run.no.std.rp A  B  C  D  E F  G  H  J  K  L  M  N  O
+77     77      17.5.1.3 1 -1 -1 -1 -1 1 -1 -1 -1 -1 -1 -1 -1 -1
+78     78      18.5.2.3 1 -1 -1 -1 -1 1 -1  1 -1 -1  1  1  1  1
+79     79      20.5.4.3 1 -1 -1 -1 -1 1  1  1  1  1  1  1 -1 -1
+80     80      19.5.3.3 1 -1 -1 -1 -1 1  1 -1  1  1 -1 -1  1  1
+   run.no run.no.std.rp  A  B C D  E  F  G  H  J  K  L  M  N  O
+81     81       6.2.2.3 -1 -1 1 1 -1 -1 -1  1  1  1 -1 -1  1  1
+82     82       8.2.4.3 -1 -1 1 1 -1 -1  1  1 -1 -1 -1 -1 -1 -1
+83     83       5.2.1.3 -1 -1 1 1 -1 -1 -1 -1  1  1  1  1 -1 -1
+84     84       7.2.3.3 -1 -1 1 1 -1 -1  1 -1 -1 -1  1  1  1  1
+   run.no run.no.std.rp  A  B  C D E F  G  H  J  K  L  M  N  O
+85     85       4.1.4.3 -1 -1 -1 1 1 1  1  1 -1  1 -1  1 -1  1
+86     86       1.1.1.3 -1 -1 -1 1 1 1 -1 -1  1 -1  1 -1 -1  1
+87     87       3.1.3.3 -1 -1 -1 1 1 1  1 -1 -1  1  1 -1  1 -1
+88     88       2.1.2.3 -1 -1 -1 1 1 1 -1  1  1 -1 -1  1  1 -1
+   run.no run.no.std.rp  A B  C  D E  F  G  H  J  K  L  M  N  O
+89     89      11.3.3.3 -1 1 -1 -1 1 -1  1 -1 -1 -1  1  1 -1 -1
+90     90       9.3.1.3 -1 1 -1 -1 1 -1 -1 -1  1  1  1  1  1  1
+91     91      12.3.4.3 -1 1 -1 -1 1 -1  1  1 -1 -1 -1 -1  1  1
+92     92      10.3.2.3 -1 1 -1 -1 1 -1 -1  1  1  1 -1 -1 -1 -1
+   run.no run.no.std.rp A B C D E F  G  H  J  K  L  M  N  O
+93     93      31.8.3.3 1 1 1 1 1 1  1 -1  1  1 -1 -1 -1 -1
+94     94      30.8.2.3 1 1 1 1 1 1 -1  1 -1 -1  1  1 -1 -1
+95     95      32.8.4.3 1 1 1 1 1 1  1  1  1  1  1  1  1  1
+96     96      29.8.1.3 1 1 1 1 1 1 -1 -1 -1 -1 -1 -1  1  1
+class=design, type= FrF2.splitplot 
+NOTE: columns run.no and run.no.std.rp are annotation, not part of the data frame
+> 
+> ## generators in combination!!!
+> 
+> proc.time()
+   user  system elapsed 
+ 10.707   0.337  11.049 

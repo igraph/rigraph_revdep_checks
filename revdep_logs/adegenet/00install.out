@@ -1,0 +1,17 @@
+* installing *source* package ‘adegenet’ ...
+** package ‘adegenet’ successfully unpacked and MD5 sums checked
+** libs
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c GLfunctions.c -o GLfunctions.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c adesub.c -o adesub.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c monmonier-utils.c -o monmonier-utils.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c sharedAll.c -o sharedAll.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c snpbin.c -o snpbin.o
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o adegenet.so GLfunctions.o adesub.o monmonier-utils.o sharedAll.o snpbin.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/adegenet.Rcheck/adegenet/libs
+** R
+** data
+** inst
+** preparing package for lazy loading
+Error : objects ‘plot.igraph’, ‘print.igraph’ are not exported by 'namespace:igraph'
+ERROR: lazy loading failed for package ‘adegenet’
+* removing ‘/Users/gaborcsardi/works/igraph/revdep_check/adegenet.Rcheck/adegenet’

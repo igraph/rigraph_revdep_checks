@@ -1,0 +1,114 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "disparityfilter"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "disparityfilter-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('disparityfilter')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("get.backbone")
+> ### * get.backbone
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get.backbone
+> ### Title: Disparity Filter Algorithm of Weighted Network
+> ### Aliases: get.backbone
+> ### Keywords: backbone disparity extraction filter
+> 
+> ### ** Examples
+> 
+> head(network)
+  from to   weight
+1   57 68 0.211132
+2   92 89 0.490904
+3   91 51 0.617429
+4   49 51 0.134684
+5   75  1 0.632896
+6   52 71 0.085144
+> G = graph.data.frame(network, directed = FALSE)
+> G_backbone = get.backbone(graph = G, alpha = 0.05, directed = FALSE)
+Disparity Filter
+alpha = 0.05 
+
+Original graph
+IGRAPH UNW- 100 300 -- 
++ attr: name (v/c), weight (e/n)
++ edges (vertex names):
+ [1] 57--68 92--89 91--51 49--51 75--1  52--71 0 --93 43--84 50--71 8 --77
+[11] 65--27 40--6  46--66 82--29 64--22 29--72 90--10 55--32 96--11 40--42
+[21] 5 --84 75--11 90--81 22--13 88--59 48--33 90--59 50--80 49--70 50--86
+[31] 21--3  50--73 50--40 84--83 91--55 53--63 64--32 18--98 91--10 74--69
+[41] 10--34 42--31 8 --20 34--59 53--37 44--13 65--60 28--13 33--7  3 --87
+[51] 33--62 67--38 16--15 57--84 45--70 90--68 50--41 91--90 64--60 73--59
+[61] 81--28 22--53 73--94 46--82 88--36 81--61 68--85 9 --54 44--54 25--56
+[71] 81--77 86--98 53--66 88--89 73--70 60--56 82--35 11--7  62--39 22--4 
++ ... omitted several edges
+
+Backbone graph
+IGRAPH UNW- 6 3 -- 
++ attr: name (v/c), weight (e/c)
++ edges (vertex names):
+[1] 52--77 51--26 65--35
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get.backbone", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.196 0.006 0.204 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

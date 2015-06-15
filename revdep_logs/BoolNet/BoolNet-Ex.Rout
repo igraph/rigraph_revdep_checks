@@ -1,0 +1,4080 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "BoolNet"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "BoolNet-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('BoolNet')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("BoolNet-package")
+> ### * BoolNet-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BoolNet-package
+> ### Title: Construction, Simulation and Analysis of Boolean Networks
+> ### Aliases: BoolNet-package BoolNet
+> ### Keywords: package Boolean network probabilistic Boolean network PBN
+> ###   attractor cycle basin transition Markov chain simulation state graph
+> ###   reconstruction
+> 
+> ### ** Examples
+> 
+> ##################################
+> # Example 1: identify attractors #
+> ################################## 
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # get all synchronous attractors by exhaustive search
+> attractors <- getAttractors(cellcycle)
+> 
+> # plot attractors side by side
+> par(mfrow=c(2,length(attractors$attractors)))
+> plotAttractors(attractors)
+$`1`
+       Attr1.1
+CycD         0
+Rb           1
+E2F          0
+CycE         0
+CycA         0
+p27          1
+Cdc20        0
+Cdh1         1
+UbcH10       0
+CycB         0
+
+$`7`
+       Attr2.1 Attr2.2 Attr2.3 Attr2.4 Attr2.5 Attr2.6 Attr2.7
+CycD         1       1       1       1       1       1       1
+Rb           0       0       0       0       0       0       0
+E2F          0       0       0       0       1       1       1
+CycE         1       0       0       0       0       1       1
+CycA         1       1       1       0       0       0       1
+p27          0       0       0       0       0       0       0
+Cdc20        0       0       1       1       0       0       0
+Cdh1         0       0       0       1       1       1       1
+UbcH10       0       1       1       1       1       0       0
+CycB         0       1       1       0       0       0       0
+
+> 
+> # identifies asynchronous attractors
+> attractors <- getAttractors(cellcycle, 
++                             type="asynchronous", startStates=100)
+>                             
+> plotAttractors(attractors, mode="graph")
+[[1]]
+IGRAPH DN-- 1 1 -- 
++ attr: name (v/c)
++ edge (vertex names):
+[1] 0100010100->0100010100
+
+[[2]]
+IGRAPH DN-- 112 338 -- 
++ attr: name (v/c)
++ edges (vertex names):
+ [1] 1011101111->1011101110 1011101111->1011001111 1011101111->1001101111
+ [4] 1001101111->1001101110 1001101111->1001001111 1001101111->1000101111
+ [7] 1010101111->1010101110 1010101111->1010001111 1010101111->1011101111
+[10] 1010101111->1000101111 1000101111->1000101110 1000101111->1000001111
+[13] 1011001111->1011001110 1011001111->1001001111 1001001111->1001001110
+[16] 1001001111->1000001111 1010001111->1010001110 1010001111->1011001111
+[19] 1010001111->1000001111 1000001111->1000001110 1011101011->1011101010
+[22] 1011101011->1011101111 1011101011->1011001011 1011101011->1001101011
++ ... omitted several edges
+
+> 
+> ####################################
+> # Example 2: reconstruct a network #
+> ####################################
+> 
+> # load example data
+> data(yeastTimeSeries)
+> 
+> # perform binarization with k-means
+> bin <- binarizeTimeSeries(yeastTimeSeries)
+> 
+> # reconstruct networks from transition table
+> net <- reconstructNetwork(bin$binarizedMeasurements, 
++                           method="bestfit", maxK=3, returnPBN=TRUE)
+> 
+> # analyze the network using a Markov chain simulation
+> print(markovSimulation(net, returnTable=FALSE))
+States reached at the end of the simulation:
+  Fkh2 Swi5 Sic1 Clb1 Probability
+1    0    0    0    0   0.5000000
+2    1    1    0    1   0.3611111
+3    1    1    1    1   0.1388889
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BoolNet-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("attractorsToLaTeX")
+> ### * attractorsToLaTeX
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: attractorsToLaTeX
+> ### Title: Create LaTeX state table of attractors
+> ### Aliases: attractorsToLaTeX
+> ### Keywords: LaTeX Boolean network attractor cycle basin transition state
+> ###   graph
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # get attractors
+> attractors <- getAttractors(cellcycle)
+> 
+> # output LaTeX document
+> attractorsToLaTeX(attractors, file="attractors.tex")
+$`1`
+       Attr1.1
+CycD         0
+Rb           1
+E2F          0
+CycE         0
+CycA         0
+p27          1
+Cdc20        0
+Cdh1         1
+UbcH10       0
+CycB         0
+
+$`7`
+       Attr2.1 Attr2.2 Attr2.3 Attr2.4 Attr2.5 Attr2.6 Attr2.7
+CycD         1       1       1       1       1       1       1
+Rb           0       0       0       0       0       0       0
+E2F          0       0       0       0       1       1       1
+CycE         1       0       0       0       0       1       1
+CycA         1       1       1       0       0       0       1
+p27          0       0       0       0       0       0       0
+Cdc20        0       0       1       1       0       0       0
+Cdh1         0       0       0       1       1       1       1
+UbcH10       0       1       1       1       1       0       0
+CycB         0       1       1       0       0       0       0
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("attractorsToLaTeX", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("binarizeTimeSeries")
+> ### * binarizeTimeSeries
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: binarizeTimeSeries
+> ### Title: Binarize a set of real-valued time series
+> ### Aliases: binarizeTimeSeries
+> ### Keywords: Boolean network binarization binarize k-means edge detector
+> ###   scan statistic
+> 
+> ### ** Examples
+> 
+> # load test data
+> data(yeastTimeSeries)
+> 			
+> # perform binarization with k-means
+> bin <- binarizeTimeSeries(yeastTimeSeries)
+> print(bin)
+$binarizedMeasurements
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
+Fkh2    0    0    0    0    0    1    1    1    1     1     1     1     1     1
+Swi5    0    0    1    0    0    0    1    1    1     1     1     1     1     1
+Sic1    1    0    0    0    0    0    0    0    0     0     1     1     1     1
+Clb1    0    0    0    0    0    1    1    1    1     1     1     1     1     1
+
+$thresholds
+      Fkh2       Swi5       Sic1       Clb1 
+-0.1174444 -0.2058889  0.1454444 -0.3332222 
+
+> 
+> # perform binarization with scan statistic
+> # - will find and remove 2 insignificant genes!
+> bin <- binarizeTimeSeries(yeastTimeSeries, method="scanStatistic",
++                           dropInsignificant=TRUE, sign.level=0.2)
+> print(bin)
+$binarizedMeasurements
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
+Swi5    0    0    1    0    0    0    0    1    1     1     1     1     1     1
+Sic1    1    0    0    0    0    0    0    0    0     0     1     1     1     1
+
+$thresholds
+ Swi5  Sic1 
+0.110 0.105 
+
+$reject
+ Swi5  Sic1 
+FALSE FALSE 
+
+> 
+> # perform binarization with edge detector
+> bin <- binarizeTimeSeries(yeastTimeSeries, method="edgeDetector")
+> print(bin)
+$binarizedMeasurements
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
+Fkh2    0    0    1    1    1    1    1    1    1     1     1     1     1     1
+Swi5    0    1    1    1    1    1    1    1    1     1     1     1     1     1
+Sic1    1    0    1    1    1    1    1    1    1     1     1     1     1     1
+Clb1    0    0    0    0    1    1    1    1    1     1     1     1     1     1
+
+$thresholds
+  Fkh2   Swi5   Sic1   Clb1 
+-0.435 -1.130 -0.590 -1.165 
+
+> 
+> # reconstruct a network from the data
+> reconstructed <- reconstructNetwork(bin$binarizedMeasurements,
++                                     method="bestfit", maxK=4)
+> print(reconstructed)
+Probabilistic Boolean network with 4 genes
+
+Involved genes:
+Fkh2 Swi5 Sic1 Clb1
+
+Transition functions:
+
+Alternative transition functions for gene Fkh2:
+Fkh2 = <f(Swi5){01}> (error: 0)
+
+Alternative transition functions for gene Swi5:
+Swi5 = 1 (error: 0)
+
+Alternative transition functions for gene Sic1:
+Sic1 = <f(Swi5){01}> (error: 0)
+
+Alternative transition functions for gene Clb1:
+Clb1 = <f(Clb1){01}> (error: 1)
+Clb1 = <f(Fkh2){01}> (error: 1)
+
+Knocked-out and over-expressed genes:
+Swi5 = 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("binarizeTimeSeries", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cellcycle")
+> ### * cellcycle
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cellcycle
+> ### Title: Mammalian cell cycle network
+> ### Aliases: cellcycle
+> ### Keywords: datasets cell cycle mammalian Boolean network
+> 
+> ### ** Examples
+> 
+> data(cellcycle)
+> 
+> # the network is stored in a variable called 'cellcycle'
+> print(cellcycle)
+Boolean network with 10 genes
+
+Involved genes:
+CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+Transition functions:
+CycD = CycD
+Rb = (! CycA & ! CycB & ! CycD & ! CycE) | (p27 & ! CycB & ! CycD)
+E2F = (! Rb & ! CycA & ! CycB) | (p27 & ! Rb & ! CycB)
+CycE = (E2F & ! Rb)
+CycA = (E2F & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10)) | (CycA & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10))
+p27 = (! CycD & ! CycE & ! CycA & ! CycB) | (p27 & ! (CycE & CycA) & ! CycB &! CycD)
+Cdc20 = CycB
+Cdh1 = (! CycA & ! CycB) | (Cdc20) | (p27 & ! CycB)
+UbcH10 = ! Cdh1 | (Cdh1 & UbcH10 & (Cdc20 | CycA | CycB))
+CycB = ! Cdc20 & ! Cdh1
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cellcycle", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("chooseNetwork")
+> ### * chooseNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: chooseNetwork
+> ### Title: Extract a single Boolean network from a probabilistic Boolean
+> ###   network
+> ### Aliases: chooseNetwork
+> ### Keywords: Boolean network probabilistic Boolean network PBN conversion
+> ###   reconstruction
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(examplePBN)
+> 
+> # extract a unique network
+> # - always use the first function
+> net <- chooseNetwork(examplePBN, rep(1, length(examplePBN$genes)))
+> 
+> # get attractors from this network
+> print(getAttractors(net))
+Attractor 1 is a simple attractor consisting of 1 state(s) and has a basin of 1 state(s):
+
+ |--<--|
+ V     |
+ 000   |
+ V     |
+ |-->--|
+
+
+Genes are encoded in the following order: x1 x2 x3
+
+Attractor 2 is a simple attractor consisting of 1 state(s) and has a basin of 7 state(s):
+
+ |--<--|
+ V     |
+ 111   |
+ V     |
+ |-->--|
+
+
+Genes are encoded in the following order: x1 x2 x3
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("chooseNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("examplePBN")
+> ### * examplePBN
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: examplePBN
+> ### Title: An artificial probabilistic Boolean network
+> ### Aliases: examplePBN
+> ### Keywords: datasets probabilistic Boolean network PBN
+> 
+> ### ** Examples
+> 
+> data(examplePBN)
+> 
+> # the network is stored in a variable called 'examplePBN'
+> print(examplePBN)
+Probabilistic Boolean network with 3 genes
+
+Involved genes:
+x1 x2 x3
+
+Transition functions:
+
+Alternative transition functions for gene x1:
+x1 =  (x1 | x2 | x3) & (!x1 | x2 | x3) ( probability: 0.6)
+x1 =  (x1 | x2 | x3) & (x1 | !x2 | !x3) & (!x1 | x2 | x3) ( probability: 0.4)
+
+Alternative transition functions for gene x2:
+x2 =  (x1 | x2 | x3) & (x1 | !x2 | !x3) & (!x1 | !x2 | x3) ( probability: 1)
+
+Alternative transition functions for gene x3:
+x3 =  (!x1 & x2 & x3) | (x1 & !x2 & x3) | (x1 & x2 & !x3) | (x1 & x2 & x3) ( probability: 0.5)
+x3 =  (x1 & x2 & x3) ( probability: 0.5)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("examplePBN", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fixGenes")
+> ### * fixGenes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fixGenes
+> ### Title: Simulate knocked-out or over-expressed genes
+> ### Aliases: fixGenes
+> ### Keywords: Boolean network probabilistic Boolean network PBN knock-out
+> ###   over-expression fixed gene fix
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # knock out gene CycD (index 1)
+> net <- fixGenes(cellcycle, 1, 0)
+> # or
+> net <- fixGenes(cellcycle, "CycD", 0)
+> 
+> # get attractors by exhaustive search
+> attractors <- getAttractors(net)
+> 
+> print(attractors)
+Attractor 1 is a simple attractor consisting of 1 state(s) and has a basin of 512 state(s):
+
+ |--<---------|
+ V            |
+ 0100010100   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fixGenes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generateRandomNKNetwork")
+> ### * generateRandomNKNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generateRandomNKNetwork
+> ### Title: Generate a random N-K Boolean network
+> ### Aliases: generateRandomNKNetwork
+> ### Keywords: LaTeX Boolean network attractor cycle random network
+> 
+> ### ** Examples
+> 
+> # generate different random networks
+> net1 <- generateRandomNKNetwork(n=10, k=10, 
++                                 topology="scale_free", 
++                                 linkage="uniform", 
++                                 functionGeneration="uniform",
++                                 noIrrelevantGenes=FALSE, 
++                                 simplify=TRUE)
+>                                 
+> net2 <- generateRandomNKNetwork(n=10, k=3, 
++                                 topology="homogeneous", 
++                                 linkage="lattice", 
++                                 functionGeneration="uniform", 
++                                 d_lattice=1.5, 
++                                 simplify=TRUE)
+>                                 
+> net3 <- generateRandomNKNetwork(n=10, k=2, 
++                                 topology="fixed", 
++                                 linkage="uniform", 
++                                 functionGeneration="biased", 
++                                 noIrrelevantGenes=FALSE,                                
++                                 zeroBias=0.6)
+> 
+> # get attractors
+> print(getAttractors(net1))
+Attractor 1 is a simple attractor consisting of 1 state(s) and has a basin of 128 state(s):
+
+ |--<---------|
+ V            |
+ 1011001010   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: Gene1 Gene2 Gene3 Gene4 Gene5 Gene6 Gene7 Gene8 Gene9 Gene10
+
+> print(getAttractors(net2))
+Attractor 1 is a simple attractor consisting of 2 state(s) and has a basin of 116 state(s):
+
+ |--<---------|
+ V            |
+ 1000101000   |
+ 1000101001   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: Gene1 Gene2 Gene3 Gene4 Gene5 Gene6 Gene7 Gene8 Gene9 Gene10
+
+Attractor 2 is a simple attractor consisting of 11 state(s) and has a basin of 908 state(s):
+
+ |--<---------|
+ V            |
+ 0110110000   |
+ 0000011001   |
+ 1010000110   |
+ 1001101000   |
+ 1100001001   |
+ 0010001000   |
+ 1001100001   |
+ 1101111000   |
+ 0100100011   |
+ 0011011000   |
+ 1111100011   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: Gene1 Gene2 Gene3 Gene4 Gene5 Gene6 Gene7 Gene8 Gene9 Gene10
+
+> print(getAttractors(net3))
+Attractor 1 is a simple attractor consisting of 1 state(s) and has a basin of 400 state(s):
+
+ |--<---------|
+ V            |
+ 0010100010   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: Gene1 Gene2 Gene3 Gene4 Gene5 Gene6 Gene7 Gene8 Gene9 Gene10
+
+Attractor 2 is a simple attractor consisting of 1 state(s) and has a basin of 144 state(s):
+
+ |--<---------|
+ V            |
+ 1100010110   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: Gene1 Gene2 Gene3 Gene4 Gene5 Gene6 Gene7 Gene8 Gene9 Gene10
+
+Attractor 3 is a simple attractor consisting of 2 state(s) and has a basin of 480 state(s):
+
+ |--<---------|
+ V            |
+ 1000010010   |
+ 1100100110   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: Gene1 Gene2 Gene3 Gene4 Gene5 Gene6 Gene7 Gene8 Gene9 Gene10
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generateRandomNKNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generateState")
+> ### * generateState
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generateState
+> ### Title: Generate a state vector from single gene values
+> ### Aliases: generateState
+> ### Keywords: state Boolean network probabilistic Boolean network PBN
+> 
+> ### ** Examples
+> 
+> # load cell cycle network
+> data(cellcycle)
+> 
+> # generate a state in which only CycD and CycA are active
+> state <- generateState(cellcycle, c("CycD"=1, "CycA"=1))
+> print(state)
+  CycD     Rb    E2F   CycE   CycA    p27  Cdc20   Cdh1 UbcH10   CycB 
+     1      0      0      0      1      0      0      0      0      0 
+> 
+> # use the state as a start state for attractor search
+> print(getAttractors(cellcycle, startStates=list(state)))
+Attractor 1 is a simple attractor consisting of 7 state(s) and has a basin of 8 state(s):
+
+ |--<---------|
+ V            |
+ 1001100000   |
+ 1000100011   |
+ 1000101011   |
+ 1000001110   |
+ 1010000110   |
+ 1011000100   |
+ 1011100100   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generateState", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generateTimeSeries")
+> ### * generateTimeSeries
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generateTimeSeries
+> ### Title: Generate time series from a network
+> ### Aliases: generateTimeSeries
+> ### Keywords: time series Boolean network synchronous update asynchronous
+> ###   update
+> 
+> ### ** Examples
+> 
+> # generate noisy time series from the cell cycle network
+> data(cellcycle)
+> ts <- generateTimeSeries(cellcycle, numSeries=50, numMeasurements=10, noiseLevel=0.1)
+> 
+> # binarize the noisy time series
+> bin <- binarizeTimeSeries(ts, method="kmeans")$binarizedMeasurements
+> 
+> # reconstruct the network
+> print(reconstructNetwork(bin, method="bestfit"))
+Probabilistic Boolean network with 10 genes
+
+Involved genes:
+CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+Transition functions:
+
+Alternative transition functions for gene CycD:
+CycD = <f(CycD){01}> (error: 0)
+
+Alternative transition functions for gene Rb:
+Rb = <f(CycD,CycE,p27,CycB){1010001000000000}> (error: 0)
+
+Alternative transition functions for gene E2F:
+E2F = <f(Rb,CycA,p27,CycB){1010001000000000}> (error: 0)
+
+Alternative transition functions for gene CycE:
+CycE = <f(Rb,E2F){0100}> (error: 0)
+
+Alternative transition functions for gene CycA:
+CycA = <f(Rb,E2F,Cdc20,Cdh1,UbcH10){11000000111000000*00*0000*00000*}> (error: 1)
+
+Alternative transition functions for gene p27:
+p27 = <f(CycD,CycE,CycA,p27,CycB){1010*01*0010000000*0*000000000*0}> (error: 0)
+
+Alternative transition functions for gene Cdc20:
+Cdc20 = <f(CycB){01}> (error: 0)
+
+Alternative transition functions for gene Cdh1:
+Cdh1 = <f(CycA,p27,Cdc20,CycB){1011101100111011}> (error: 0)
+
+Alternative transition functions for gene UbcH10:
+UbcH10 = <f(CycA,Cdc20,Cdh1,UbcH10,CycB){11*10001111100111111001111110011}> (error: 0)
+
+Alternative transition functions for gene CycB:
+CycB = <f(Cdc20,Cdh1){1000}> (error: 0)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generateTimeSeries", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generationFunctions")
+> ### * generationFunctions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generationFunctions
+> ### Title: Generation functions for biologically relevant function classes
+> ### Aliases: generateCanalyzing generateNestedCanalyzing
+> ### Keywords: canalyzing function nested canalyzing function, random
+> ###   network
+> 
+> ### ** Examples
+> 
+>   # generate a random network with canalyzing functions
+>   net1 <- generateRandomNKNetwork(n=10, k=5, 
++                                   functionGeneration="generateCanalyzing")
+>   print(net1)
+Boolean network with 10 genes
+
+Involved genes:
+Gene1 Gene2 Gene3 Gene4 Gene5 Gene6 Gene7 Gene8 Gene9 Gene10
+
+Transition functions:
+Gene1 = <f(Gene3,Gene4,Gene5,Gene7,Gene2){11101010101111101010101011101110}>
+Gene2 = <f(Gene9,Gene6,Gene7,Gene4,Gene8){00110111001110110011011101110111}>
+Gene3 = <f(Gene5,Gene7,Gene4,Gene3,Gene10){10000011000000000110001100000000}>
+Gene4 = <f(Gene10,Gene5,Gene4,Gene2,Gene9){00001001000011110000010100001010}>
+Gene5 = <f(Gene3,Gene9,Gene4,Gene6,Gene7){00100000011100001110000010010000}>
+Gene6 = <f(Gene3,Gene2,Gene5,Gene9,Gene7){00001011000010000000000100000111}>
+Gene7 = <f(Gene4,Gene6,Gene8,Gene1,Gene3){00011101000000000110011000000000}>
+Gene8 = <f(Gene1,Gene5,Gene8,Gene3,Gene10){00000010110001101111111111111111}>
+Gene9 = <f(Gene7,Gene3,Gene4,Gene10,Gene6){11111011101011101010101110101010}>
+Gene10 = <f(Gene2,Gene3,Gene7,Gene10,Gene4){01000100000100010100010100010000}>
+>                                   
+>   # generate a random network with nested canalyzing functions
+>   net2 <- generateRandomNKNetwork(n=10, k=5, 
++                                   functionGeneration="generateNestedCanalyzing")
+>   print(net2)                                  
+Boolean network with 10 genes
+
+Involved genes:
+Gene1 Gene2 Gene3 Gene4 Gene5 Gene6 Gene7 Gene8 Gene9 Gene10
+
+Transition functions:
+Gene1 = <f(Gene7,Gene2,Gene8,Gene10,Gene6){11111111001100111111111111111011}>
+Gene2 = <f(Gene6,Gene10,Gene2,Gene3,Gene7){11111111111111111010101010101000}>
+Gene3 = <f(Gene2,Gene3,Gene7,Gene4,Gene9){11001100110011000000010000000000}>
+Gene4 = <f(Gene5,Gene4,Gene10,Gene6,Gene1){11111111110011111110111111001111}>
+Gene5 = <f(Gene7,Gene5,Gene3,Gene9,Gene10){00000001111111111111111111111111}>
+Gene6 = <f(Gene4,Gene2,Gene5,Gene3,Gene6){11001110111111111111111111111111}>
+Gene7 = <f(Gene9,Gene8,Gene6,Gene1,Gene3){10111011101111110011001100110011}>
+Gene8 = <f(Gene9,Gene4,Gene7,Gene1,Gene10){11001100100011001111111111111111}>
+Gene9 = <f(Gene2,Gene8,Gene4,Gene9,Gene1){11000000010000000000000000000000}>
+Gene10 = <f(Gene1,Gene7,Gene3,Gene2,Gene5){00010101000000000000000000000000}>
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generationFunctions", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getAttractorSequence")
+> ### * getAttractorSequence
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getAttractorSequence
+> ### Title: Decode the state sequence of a synchronous attractor
+> ### Aliases: getAttractorSequence
+> ### Keywords: Boolean network attractor cycle sequence state
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # get attractors
+> attractors <- getAttractors(cellcycle)
+> 
+> # print basin of 7-state attractor
+> print(getAttractorSequence(attractors, 2))
+  CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+1    1  0   0    1    1   0     0    0      0    0
+2    1  0   0    0    1   0     0    0      1    1
+3    1  0   0    0    1   0     1    0      1    1
+4    1  0   0    0    0   0     1    1      1    0
+5    1  0   1    0    0   0     0    1      1    0
+6    1  0   1    1    0   0     0    1      0    0
+7    1  0   1    1    1   0     0    1      0    0
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getAttractorSequence", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getAttractors")
+> ### * getAttractors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getAttractors
+> ### Title: Identify attractors in a Boolean network
+> ### Aliases: getAttractors
+> ### Keywords: Boolean network synchronous update asynchronous update
+> ###   symbolic Boolean network attractor cycle basin
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # get all synchronous attractors by exhaustive search
+> attractors <- getAttractors(cellcycle)
+> 
+> # plot attractors side by side
+> par(mfrow=c(2, length(attractors$attractors)))
+> plotAttractors(attractors)
+$`1`
+       Attr1.1
+CycD         0
+Rb           1
+E2F          0
+CycE         0
+CycA         0
+p27          1
+Cdc20        0
+Cdh1         1
+UbcH10       0
+CycB         0
+
+$`7`
+       Attr2.1 Attr2.2 Attr2.3 Attr2.4 Attr2.5 Attr2.6 Attr2.7
+CycD         1       1       1       1       1       1       1
+Rb           0       0       0       0       0       0       0
+E2F          0       0       0       0       1       1       1
+CycE         1       0       0       0       0       1       1
+CycA         1       1       1       0       0       0       1
+p27          0       0       0       0       0       0       0
+Cdc20        0       0       1       1       0       0       0
+Cdh1         0       0       0       1       1       1       1
+UbcH10       0       1       1       1       1       0       0
+CycB         0       1       1       0       0       0       0
+
+> 
+> # finds the synchronous attractor with 7 states
+> attractors <- getAttractors(cellcycle, method="chosen",
++                             startStates=list(rep(1, length(cellcycle$genes))))
+> plotAttractors(attractors)
+$`7`
+       Attr1.1 Attr1.2 Attr1.3 Attr1.4 Attr1.5 Attr1.6 Attr1.7
+CycD         1       1       1       1       1       1       1
+Rb           0       0       0       0       0       0       0
+E2F          0       0       0       0       1       1       1
+CycE         1       0       0       0       0       1       1
+CycA         1       1       1       0       0       0       1
+p27          0       0       0       0       0       0       0
+Cdc20        0       0       1       1       0       0       0
+Cdh1         0       0       0       1       1       1       1
+UbcH10       0       1       1       1       1       0       0
+CycB         0       1       1       0       0       0       0
+
+> 
+> # finds the attractor with 1 state
+> attractors <- getAttractors(cellcycle, method="chosen",
++                             startStates=list(rep(0, length(cellcycle$genes))))
+> plotAttractors(attractors)
+$`1`
+       Attr1.1
+CycD         0
+Rb           1
+E2F          0
+CycE         0
+CycA         0
+p27          1
+Cdc20        0
+Cdh1         1
+UbcH10       0
+CycB         0
+
+> 
+> # also finds the attractor with 1 state by restricting the attractor length
+> attractors <- getAttractors(cellcycle, method="sat.restricted",
++                             maxAttractorLength=1)
+> plotAttractors(attractors)
+$`1`
+       Attr1.1
+CycD         0
+Rb           1
+E2F          0
+CycE         0
+CycA         0
+p27          1
+Cdc20        0
+Cdh1         1
+UbcH10       0
+CycB         0
+
+> 
+> # identifies asynchronous attractors
+> attractors <- getAttractors(cellcycle, type="asynchronous", startStates=100)
+> plotAttractors(attractors, mode="graph")
+[[1]]
+IGRAPH DN-- 1 1 -- 
++ attr: name (v/c)
++ edge (vertex names):
+[1] 0100010100->0100010100
+
+[[2]]
+IGRAPH DN-- 112 338 -- 
++ attr: name (v/c)
++ edges (vertex names):
+ [1] 1011101111->1011101110 1011101111->1011001111 1011101111->1001101111
+ [4] 1001101111->1001101110 1001101111->1001001111 1001101111->1000101111
+ [7] 1010101111->1010101110 1010101111->1010001111 1010101111->1011101111
+[10] 1010101111->1000101111 1000101111->1000101110 1000101111->1000001111
+[13] 1011001111->1011001110 1011001111->1001001111 1001001111->1001001110
+[16] 1001001111->1000001111 1010001111->1010001110 1010001111->1011001111
+[19] 1010001111->1000001111 1000001111->1000001110 1011101011->1011101010
+[22] 1011101011->1011101111 1011101011->1011001011 1011101011->1001101011
++ ... omitted several edges
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getAttractors", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("getBasinOfAttraction")
+> ### * getBasinOfAttraction
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getBasinOfAttraction
+> ### Title: Get states in basin of attraction
+> ### Aliases: getBasinOfAttraction
+> ### Keywords: Boolean network attractor cycle basin
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # get attractors
+> attractors <- getAttractors(cellcycle)
+> 
+> # print basin of first attractor
+> print(getBasinOfAttraction(attractors, 1))
+     State      Next state  Attr. basin  # trans. to attr.
+0000000000 =>   0110010111            1                  4
+0100000000 =>   0100010111            1                  4
+0010000000 =>   0111110111            1                  4
+0110000000 =>   0100010111            1                  4
+0001000000 =>   0010000111            1                  5
+0101000000 =>   0000000111            1                  4
+0011000000 =>   0011100111            1                  5
+0111000000 =>   0000000111            1                  4
+0000100000 =>   0000100011            1                  5
+0100100000 =>   0000000011            1                  5
+0010100000 =>   0001100011            1                  5
+0110100000 =>   0000000011            1                  5
+0001100000 =>   0000100011            1                  5
+0101100000 =>   0000000011            1                  5
+0011100000 =>   0001100011            1                  5
+0111100000 =>   0000000011            1                  5
+0000010000 =>   0110010111            1                  4
+0100010000 =>   0100010111            1                  4
+0010010000 =>   0111110111            1                  4
+0110010000 =>   0100010111            1                  4
+0001010000 =>   0110010111            1                  4
+0101010000 =>   0100010111            1                  4
+0011010000 =>   0111110111            1                  4
+0111010000 =>   0100010111            1                  4
+0000110000 =>   0110110111            1                  4
+0100110000 =>   0100010111            1                  4
+0010110000 =>   0111110111            1                  4
+0110110000 =>   0100010111            1                  4
+0001110000 =>   0110100111            1                  4
+0101110000 =>   0100000111            1                  4
+0011110000 =>   0111100111            1                  4
+0111110000 =>   0100000111            1                  4
+0000001000 =>   0110010110            1                  2
+0100001000 =>   0100010110            1                  2
+0010001000 =>   0111010110            1                  2
+0110001000 =>   0100010110            1                  2
+0001001000 =>   0010000110            1                  3
+0101001000 =>   0000000110            1                  3
+0011001000 =>   0011000110            1                  9
+0111001000 =>   0000000110            1                  3
+0000101000 =>   0000000110            1                  3
+0100101000 =>   0000000110            1                  3
+0010101000 =>   0001000110            1                  5
+0110101000 =>   0000000110            1                  3
+0001101000 =>   0000000110            1                  3
+0101101000 =>   0000000110            1                  3
+0011101000 =>   0001000110            1                  5
+0111101000 =>   0000000110            1                  3
+0000011000 =>   0110010110            1                  2
+0100011000 =>   0100010110            1                  2
+0010011000 =>   0111010110            1                  2
+0110011000 =>   0100010110            1                  2
+0001011000 =>   0110010110            1                  2
+0101011000 =>   0100010110            1                  2
+0011011000 =>   0111010110            1                  2
+0111011000 =>   0100010110            1                  2
+0000111000 =>   0110010110            1                  2
+0100111000 =>   0100010110            1                  2
+0010111000 =>   0111010110            1                  2
+0110111000 =>   0100010110            1                  2
+0001111000 =>   0110000110            1                  2
+0101111000 =>   0100000110            1                  2
+0011111000 =>   0111000110            1                  4
+0111111000 =>   0100000110            1                  2
+0000000100 =>   0110010100            1                  2
+0100000100 =>   0100010100            1                  1
+0010000100 =>   0111110100            1                  3
+0110000100 =>   0100010100            1                  1
+0001000100 =>   0010000100            1                  4
+0101000100 =>   0000000100            1                  3
+0011000100 =>   0011100100            1                  7
+0111000100 =>   0000000100            1                  3
+0000100100 =>   0000100000            1                  6
+0100100100 =>   0000000000            1                  5
+0010100100 =>   0001100000            1                  6
+0110100100 =>   0000000000            1                  5
+0001100100 =>   0000100000            1                  6
+0101100100 =>   0000000000            1                  5
+0011100100 =>   0001100000            1                  6
+0111100100 =>   0000000000            1                  5
+0000010100 =>   0110010100            1                  2
+0100010100 =>   0100010100            1                  0
+0010010100 =>   0111110100            1                  3
+0110010100 =>   0100010100            1                  1
+0001010100 =>   0110010100            1                  2
+0101010100 =>   0100010100            1                  1
+0011010100 =>   0111110100            1                  3
+0111010100 =>   0100010100            1                  1
+0000110100 =>   0110110100            1                  2
+0100110100 =>   0100010100            1                  1
+0010110100 =>   0111110100            1                  3
+0110110100 =>   0100010100            1                  1
+0001110100 =>   0110100100            1                  6
+0101110100 =>   0100000100            1                  2
+0011110100 =>   0111100100            1                  6
+0111110100 =>   0100000100            1                  2
+0000001100 =>   0110010100            1                  2
+0100001100 =>   0100010100            1                  1
+0010001100 =>   0111010100            1                  2
+0110001100 =>   0100010100            1                  1
+0001001100 =>   0010000100            1                  4
+0101001100 =>   0000000100            1                  3
+0011001100 =>   0011000100            1                  8
+0111001100 =>   0000000100            1                  3
+0000101100 =>   0000000100            1                  3
+0100101100 =>   0000000100            1                  3
+0010101100 =>   0001000100            1                  5
+0110101100 =>   0000000100            1                  3
+0001101100 =>   0000000100            1                  3
+0101101100 =>   0000000100            1                  3
+0011101100 =>   0001000100            1                  5
+0111101100 =>   0000000100            1                  3
+0000011100 =>   0110010100            1                  2
+0100011100 =>   0100010100            1                  1
+0010011100 =>   0111010100            1                  2
+0110011100 =>   0100010100            1                  1
+0001011100 =>   0110010100            1                  2
+0101011100 =>   0100010100            1                  1
+0011011100 =>   0111010100            1                  2
+0111011100 =>   0100010100            1                  1
+0000111100 =>   0110010100            1                  2
+0100111100 =>   0100010100            1                  1
+0010111100 =>   0111010100            1                  2
+0110111100 =>   0100010100            1                  1
+0001111100 =>   0110000100            1                  2
+0101111100 =>   0100000100            1                  2
+0011111100 =>   0111000100            1                  4
+0111111100 =>   0100000100            1                  2
+0000000010 =>   0110010111            1                  4
+0100000010 =>   0100010111            1                  4
+0010000010 =>   0111110111            1                  4
+0110000010 =>   0100010111            1                  4
+0001000010 =>   0010000111            1                  5
+0101000010 =>   0000000111            1                  4
+0011000010 =>   0011100111            1                  5
+0111000010 =>   0000000111            1                  4
+0000100010 =>   0000100011            1                  5
+0100100010 =>   0000000011            1                  5
+0010100010 =>   0001100011            1                  5
+0110100010 =>   0000000011            1                  5
+0001100010 =>   0000100011            1                  5
+0101100010 =>   0000000011            1                  5
+0011100010 =>   0001100011            1                  5
+0111100010 =>   0000000011            1                  5
+0000010010 =>   0110010111            1                  4
+0100010010 =>   0100010111            1                  4
+0010010010 =>   0111110111            1                  4
+0110010010 =>   0100010111            1                  4
+0001010010 =>   0110010111            1                  4
+0101010010 =>   0100010111            1                  4
+0011010010 =>   0111110111            1                  4
+0111010010 =>   0100010111            1                  4
+0000110010 =>   0110110111            1                  4
+0100110010 =>   0100010111            1                  4
+0010110010 =>   0111110111            1                  4
+0110110010 =>   0100010111            1                  4
+0001110010 =>   0110100111            1                  4
+0101110010 =>   0100000111            1                  4
+0011110010 =>   0111100111            1                  4
+0111110010 =>   0100000111            1                  4
+0000001010 =>   0110010110            1                  2
+0100001010 =>   0100010110            1                  2
+0010001010 =>   0111010110            1                  2
+0110001010 =>   0100010110            1                  2
+0001001010 =>   0010000110            1                  3
+0101001010 =>   0000000110            1                  3
+0011001010 =>   0011000110            1                  9
+0111001010 =>   0000000110            1                  3
+0000101010 =>   0000000110            1                  3
+0100101010 =>   0000000110            1                  3
+0010101010 =>   0001000110            1                  5
+0110101010 =>   0000000110            1                  3
+0001101010 =>   0000000110            1                  3
+0101101010 =>   0000000110            1                  3
+0011101010 =>   0001000110            1                  5
+0111101010 =>   0000000110            1                  3
+0000011010 =>   0110010110            1                  2
+0100011010 =>   0100010110            1                  2
+0010011010 =>   0111010110            1                  2
+0110011010 =>   0100010110            1                  2
+0001011010 =>   0110010110            1                  2
+0101011010 =>   0100010110            1                  2
+0011011010 =>   0111010110            1                  2
+0111011010 =>   0100010110            1                  2
+0000111010 =>   0110010110            1                  2
+0100111010 =>   0100010110            1                  2
+0010111010 =>   0111010110            1                  2
+0110111010 =>   0100010110            1                  2
+0001111010 =>   0110000110            1                  2
+0101111010 =>   0100000110            1                  2
+0011111010 =>   0111000110            1                  4
+0111111010 =>   0100000110            1                  2
+0000000110 =>   0110010100            1                  2
+0100000110 =>   0100010100            1                  1
+0010000110 =>   0111010100            1                  2
+0110000110 =>   0100010100            1                  1
+0001000110 =>   0010000100            1                  4
+0101000110 =>   0000000100            1                  3
+0011000110 =>   0011000100            1                  8
+0111000110 =>   0000000100            1                  3
+0000100110 =>   0000000010            1                  5
+0100100110 =>   0000000010            1                  5
+0010100110 =>   0001000010            1                  6
+0110100110 =>   0000000010            1                  5
+0001100110 =>   0000000010            1                  5
+0101100110 =>   0000000010            1                  5
+0011100110 =>   0001000010            1                  6
+0111100110 =>   0000000010            1                  5
+0000010110 =>   0110010100            1                  2
+0100010110 =>   0100010100            1                  1
+0010010110 =>   0111010100            1                  2
+0110010110 =>   0100010100            1                  1
+0001010110 =>   0110010100            1                  2
+0101010110 =>   0100010100            1                  1
+0011010110 =>   0111010100            1                  2
+0111010110 =>   0100010100            1                  1
+0000110110 =>   0110010110            1                  2
+0100110110 =>   0100010110            1                  2
+0010110110 =>   0111010110            1                  2
+0110110110 =>   0100010110            1                  2
+0001110110 =>   0110000110            1                  2
+0101110110 =>   0100000110            1                  2
+0011110110 =>   0111000110            1                  4
+0111110110 =>   0100000110            1                  2
+0000001110 =>   0110010110            1                  2
+0100001110 =>   0100010110            1                  2
+0010001110 =>   0111010110            1                  2
+0110001110 =>   0100010110            1                  2
+0001001110 =>   0010000110            1                  3
+0101001110 =>   0000000110            1                  3
+0011001110 =>   0011000110            1                  9
+0111001110 =>   0000000110            1                  3
+0000101110 =>   0000000110            1                  3
+0100101110 =>   0000000110            1                  3
+0010101110 =>   0001000110            1                  5
+0110101110 =>   0000000110            1                  3
+0001101110 =>   0000000110            1                  3
+0101101110 =>   0000000110            1                  3
+0011101110 =>   0001000110            1                  5
+0111101110 =>   0000000110            1                  3
+0000011110 =>   0110010110            1                  2
+0100011110 =>   0100010110            1                  2
+0010011110 =>   0111010110            1                  2
+0110011110 =>   0100010110            1                  2
+0001011110 =>   0110010110            1                  2
+0101011110 =>   0100010110            1                  2
+0011011110 =>   0111010110            1                  2
+0111011110 =>   0100010110            1                  2
+0000111110 =>   0110010110            1                  2
+0100111110 =>   0100010110            1                  2
+0010111110 =>   0111010110            1                  2
+0110111110 =>   0100010110            1                  2
+0001111110 =>   0110000110            1                  2
+0101111110 =>   0100000110            1                  2
+0011111110 =>   0111000110            1                  4
+0111111110 =>   0100000110            1                  2
+0000000001 =>   0000001011            1                  4
+0100000001 =>   0000001011            1                  4
+0010000001 =>   0001101011            1                  4
+0110000001 =>   0000001011            1                  4
+0001000001 =>   0000001011            1                  4
+0101000001 =>   0000001011            1                  4
+0011000001 =>   0001101011            1                  4
+0111000001 =>   0000001011            1                  4
+0000100001 =>   0000101011            1                  4
+0100100001 =>   0000001011            1                  4
+0010100001 =>   0001101011            1                  4
+0110100001 =>   0000001011            1                  4
+0001100001 =>   0000101011            1                  4
+0101100001 =>   0000001011            1                  4
+0011100001 =>   0001101011            1                  4
+0111100001 =>   0000001011            1                  4
+0000010001 =>   0000001011            1                  4
+0100010001 =>   0000001011            1                  4
+0010010001 =>   0001101011            1                  4
+0110010001 =>   0000001011            1                  4
+0001010001 =>   0000001011            1                  4
+0101010001 =>   0000001011            1                  4
+0011010001 =>   0001101011            1                  4
+0111010001 =>   0000001011            1                  4
+0000110001 =>   0000101011            1                  4
+0100110001 =>   0000001011            1                  4
+0010110001 =>   0001101011            1                  4
+0110110001 =>   0000001011            1                  4
+0001110001 =>   0000101011            1                  4
+0101110001 =>   0000001011            1                  4
+0011110001 =>   0001101011            1                  4
+0111110001 =>   0000001011            1                  4
+0000001001 =>   0000001110            1                  3
+0100001001 =>   0000001110            1                  3
+0010001001 =>   0001001110            1                  4
+0110001001 =>   0000001110            1                  3
+0001001001 =>   0000001110            1                  3
+0101001001 =>   0000001110            1                  3
+0011001001 =>   0001001110            1                  4
+0111001001 =>   0000001110            1                  3
+0000101001 =>   0000001110            1                  3
+0100101001 =>   0000001110            1                  3
+0010101001 =>   0001001110            1                  4
+0110101001 =>   0000001110            1                  3
+0001101001 =>   0000001110            1                  3
+0101101001 =>   0000001110            1                  3
+0011101001 =>   0001001110            1                  4
+0111101001 =>   0000001110            1                  3
+0000011001 =>   0000001110            1                  3
+0100011001 =>   0000001110            1                  3
+0010011001 =>   0001001110            1                  4
+0110011001 =>   0000001110            1                  3
+0001011001 =>   0000001110            1                  3
+0101011001 =>   0000001110            1                  3
+0011011001 =>   0001001110            1                  4
+0111011001 =>   0000001110            1                  3
+0000111001 =>   0000001110            1                  3
+0100111001 =>   0000001110            1                  3
+0010111001 =>   0001001110            1                  4
+0110111001 =>   0000001110            1                  3
+0001111001 =>   0000001110            1                  3
+0101111001 =>   0000001110            1                  3
+0011111001 =>   0001001110            1                  4
+0111111001 =>   0000001110            1                  3
+0000000101 =>   0000001000            1                  3
+0100000101 =>   0000001000            1                  3
+0010000101 =>   0001101000            1                  4
+0110000101 =>   0000001000            1                  3
+0001000101 =>   0000001000            1                  3
+0101000101 =>   0000001000            1                  3
+0011000101 =>   0001101000            1                  4
+0111000101 =>   0000001000            1                  3
+0000100101 =>   0000101000            1                  4
+0100100101 =>   0000001000            1                  3
+0010100101 =>   0001101000            1                  4
+0110100101 =>   0000001000            1                  3
+0001100101 =>   0000101000            1                  4
+0101100101 =>   0000001000            1                  3
+0011100101 =>   0001101000            1                  4
+0111100101 =>   0000001000            1                  3
+0000010101 =>   0000001000            1                  3
+0100010101 =>   0000001000            1                  3
+0010010101 =>   0001101000            1                  4
+0110010101 =>   0000001000            1                  3
+0001010101 =>   0000001000            1                  3
+0101010101 =>   0000001000            1                  3
+0011010101 =>   0001101000            1                  4
+0111010101 =>   0000001000            1                  3
+0000110101 =>   0000101000            1                  4
+0100110101 =>   0000001000            1                  3
+0010110101 =>   0001101000            1                  4
+0110110101 =>   0000001000            1                  3
+0001110101 =>   0000101000            1                  4
+0101110101 =>   0000001000            1                  3
+0011110101 =>   0001101000            1                  4
+0111110101 =>   0000001000            1                  3
+0000001101 =>   0000001100            1                  3
+0100001101 =>   0000001100            1                  3
+0010001101 =>   0001001100            1                  5
+0110001101 =>   0000001100            1                  3
+0001001101 =>   0000001100            1                  3
+0101001101 =>   0000001100            1                  3
+0011001101 =>   0001001100            1                  5
+0111001101 =>   0000001100            1                  3
+0000101101 =>   0000001100            1                  3
+0100101101 =>   0000001100            1                  3
+0010101101 =>   0001001100            1                  5
+0110101101 =>   0000001100            1                  3
+0001101101 =>   0000001100            1                  3
+0101101101 =>   0000001100            1                  3
+0011101101 =>   0001001100            1                  5
+0111101101 =>   0000001100            1                  3
+0000011101 =>   0000001100            1                  3
+0100011101 =>   0000001100            1                  3
+0010011101 =>   0001001100            1                  5
+0110011101 =>   0000001100            1                  3
+0001011101 =>   0000001100            1                  3
+0101011101 =>   0000001100            1                  3
+0011011101 =>   0001001100            1                  5
+0111011101 =>   0000001100            1                  3
+0000111101 =>   0000001100            1                  3
+0100111101 =>   0000001100            1                  3
+0010111101 =>   0001001100            1                  5
+0110111101 =>   0000001100            1                  3
+0001111101 =>   0000001100            1                  3
+0101111101 =>   0000001100            1                  3
+0011111101 =>   0001001100            1                  5
+0111111101 =>   0000001100            1                  3
+0000000011 =>   0000001011            1                  4
+0100000011 =>   0000001011            1                  4
+0010000011 =>   0001101011            1                  4
+0110000011 =>   0000001011            1                  4
+0001000011 =>   0000001011            1                  4
+0101000011 =>   0000001011            1                  4
+0011000011 =>   0001101011            1                  4
+0111000011 =>   0000001011            1                  4
+0000100011 =>   0000101011            1                  4
+0100100011 =>   0000001011            1                  4
+0010100011 =>   0001101011            1                  4
+0110100011 =>   0000001011            1                  4
+0001100011 =>   0000101011            1                  4
+0101100011 =>   0000001011            1                  4
+0011100011 =>   0001101011            1                  4
+0111100011 =>   0000001011            1                  4
+0000010011 =>   0000001011            1                  4
+0100010011 =>   0000001011            1                  4
+0010010011 =>   0001101011            1                  4
+0110010011 =>   0000001011            1                  4
+0001010011 =>   0000001011            1                  4
+0101010011 =>   0000001011            1                  4
+0011010011 =>   0001101011            1                  4
+0111010011 =>   0000001011            1                  4
+0000110011 =>   0000101011            1                  4
+0100110011 =>   0000001011            1                  4
+0010110011 =>   0001101011            1                  4
+0110110011 =>   0000001011            1                  4
+0001110011 =>   0000101011            1                  4
+0101110011 =>   0000001011            1                  4
+0011110011 =>   0001101011            1                  4
+0111110011 =>   0000001011            1                  4
+0000001011 =>   0000001110            1                  3
+0100001011 =>   0000001110            1                  3
+0010001011 =>   0001001110            1                  4
+0110001011 =>   0000001110            1                  3
+0001001011 =>   0000001110            1                  3
+0101001011 =>   0000001110            1                  3
+0011001011 =>   0001001110            1                  4
+0111001011 =>   0000001110            1                  3
+0000101011 =>   0000001110            1                  3
+0100101011 =>   0000001110            1                  3
+0010101011 =>   0001001110            1                  4
+0110101011 =>   0000001110            1                  3
+0001101011 =>   0000001110            1                  3
+0101101011 =>   0000001110            1                  3
+0011101011 =>   0001001110            1                  4
+0111101011 =>   0000001110            1                  3
+0000011011 =>   0000001110            1                  3
+0100011011 =>   0000001110            1                  3
+0010011011 =>   0001001110            1                  4
+0110011011 =>   0000001110            1                  3
+0001011011 =>   0000001110            1                  3
+0101011011 =>   0000001110            1                  3
+0011011011 =>   0001001110            1                  4
+0111011011 =>   0000001110            1                  3
+0000111011 =>   0000001110            1                  3
+0100111011 =>   0000001110            1                  3
+0010111011 =>   0001001110            1                  4
+0110111011 =>   0000001110            1                  3
+0001111011 =>   0000001110            1                  3
+0101111011 =>   0000001110            1                  3
+0011111011 =>   0001001110            1                  4
+0111111011 =>   0000001110            1                  3
+0000000111 =>   0000001010            1                  3
+0100000111 =>   0000001010            1                  3
+0010000111 =>   0001001010            1                  4
+0110000111 =>   0000001010            1                  3
+0001000111 =>   0000001010            1                  3
+0101000111 =>   0000001010            1                  3
+0011000111 =>   0001001010            1                  4
+0111000111 =>   0000001010            1                  3
+0000100111 =>   0000001010            1                  3
+0100100111 =>   0000001010            1                  3
+0010100111 =>   0001001010            1                  4
+0110100111 =>   0000001010            1                  3
+0001100111 =>   0000001010            1                  3
+0101100111 =>   0000001010            1                  3
+0011100111 =>   0001001010            1                  4
+0111100111 =>   0000001010            1                  3
+0000010111 =>   0000001010            1                  3
+0100010111 =>   0000001010            1                  3
+0010010111 =>   0001001010            1                  4
+0110010111 =>   0000001010            1                  3
+0001010111 =>   0000001010            1                  3
+0101010111 =>   0000001010            1                  3
+0011010111 =>   0001001010            1                  4
+0111010111 =>   0000001010            1                  3
+0000110111 =>   0000001010            1                  3
+0100110111 =>   0000001010            1                  3
+0010110111 =>   0001001010            1                  4
+0110110111 =>   0000001010            1                  3
+0001110111 =>   0000001010            1                  3
+0101110111 =>   0000001010            1                  3
+0011110111 =>   0001001010            1                  4
+0111110111 =>   0000001010            1                  3
+0000001111 =>   0000001110            1                  3
+0100001111 =>   0000001110            1                  3
+0010001111 =>   0001001110            1                  4
+0110001111 =>   0000001110            1                  3
+0001001111 =>   0000001110            1                  3
+0101001111 =>   0000001110            1                  3
+0011001111 =>   0001001110            1                  4
+0111001111 =>   0000001110            1                  3
+0000101111 =>   0000001110            1                  3
+0100101111 =>   0000001110            1                  3
+0010101111 =>   0001001110            1                  4
+0110101111 =>   0000001110            1                  3
+0001101111 =>   0000001110            1                  3
+0101101111 =>   0000001110            1                  3
+0011101111 =>   0001001110            1                  4
+0111101111 =>   0000001110            1                  3
+0000011111 =>   0000001110            1                  3
+0100011111 =>   0000001110            1                  3
+0010011111 =>   0001001110            1                  4
+0110011111 =>   0000001110            1                  3
+0001011111 =>   0000001110            1                  3
+0101011111 =>   0000001110            1                  3
+0011011111 =>   0001001110            1                  4
+0111011111 =>   0000001110            1                  3
+0000111111 =>   0000001110            1                  3
+0100111111 =>   0000001110            1                  3
+0010111111 =>   0001001110            1                  4
+0110111111 =>   0000001110            1                  3
+0001111111 =>   0000001110            1                  3
+0101111111 =>   0000001110            1                  3
+0011111111 =>   0001001110            1                  4
+0111111111 =>   0000001110            1                  3
+
+Genes are encoded in the following order: CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getBasinOfAttraction", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getPathToAttractor")
+> ### * getPathToAttractor
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getPathToAttractor
+> ### Title: Get state transitions between a state and its attractor
+> ### Aliases: getPathToAttractor
+> ### Keywords: Boolean network sequence path basin attractor
+> 
+> ### ** Examples
+> 
+> # load example network
+> data(cellcycle)
+> 
+> # get path from a state to its attractor
+> # include all attractor states
+> path <- getPathToAttractor(cellcycle, rep(1,10), 
++                            includeAttractorStates="all")
+> print(path)
+  CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+1    1  1   1    1    1   1     1    1      1    1
+2    1  0   0    0    0   0     1    1      1    0
+3    1  0   1    0    0   0     0    1      1    0
+4    1  0   1    1    0   0     0    1      0    0
+5    1  0   1    1    1   0     0    1      0    0
+6    1  0   0    1    1   0     0    0      0    0
+7    1  0   0    0    1   0     0    0      1    1
+8    1  0   0    0    1   0     1    0      1    1
+> 
+> # include only the first attractor state
+> path <- getPathToAttractor(cellcycle, rep(1,10), 
++                            includeAttractorStates="first")
+> print(path)
+  CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+1    1  1   1    1    1   1     1    1      1    1
+2    1  0   0    0    0   0     1    1      1    0
+> 
+> # exclude attractor states
+> path <- getPathToAttractor(cellcycle, rep(1,10), 
++                            includeAttractorStates="none")
+> print(path)
+  CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+1    1  1   1    1    1   1     1    1      1    1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getPathToAttractor", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getStateSummary")
+> ### * getStateSummary
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getStateSummary
+> ### Title: Retrieve summary information on a state
+> ### Aliases: getStateSummary
+> ### Keywords: Boolean network transition state
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # get attractors
+> attractors <- getAttractors(cellcycle)
+> 
+> # print information for an arbitrary state
+> print(getStateSummary(attractors, c(1,1,1,1,1,1,1,1,1,1)))
+     State      Next state  Attr. basin  # trans. to attr.
+1111111111 =>   1000001110            2                  1
+
+Genes are encoded in the following order: CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getStateSummary", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getTransitionProbabilities")
+> ### * getTransitionProbabilities
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getTransitionProbabilities
+> ### Title: Get a matrix of transitions and their probabilities in
+> ###   probabilistic Boolean networks
+> ### Aliases: getTransitionProbabilities
+> ### Keywords: Boolean network probabilistic Boolean network PBN transition
+> ###   probability
+> 
+> ### ** Examples
+> 
+> # load example network
+> data(examplePBN)
+> 
+> # perform a Markov chain simulation
+> sim <- markovSimulation(examplePBN)
+> 
+> # print out the probability table
+> print(getTransitionProbabilities(sim))
+   initialState.x1 initialState.x2 initialState.x3 nextState.x1 nextState.x2
+1                0               0               0            0            0
+2                0               0               1            1            1
+3                0               1               0            1            1
+4                0               1               1            0            0
+5                0               1               1            1            0
+6                0               1               1            0            0
+7                0               1               1            1            0
+8                1               0               0            0            1
+9                1               0               1            1            1
+10               1               0               1            1            1
+11               1               1               0            1            0
+12               1               1               0            1            0
+13               1               1               1            1            1
+   nextState.x3 probability
+1             0         1.0
+2             0         1.0
+3             0         1.0
+4             0         0.2
+5             0         0.3
+6             1         0.2
+7             1         0.3
+8             0         1.0
+9             0         0.5
+10            1         0.5
+11            0         0.5
+12            1         0.5
+13            1         1.0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getTransitionProbabilities", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getTransitionTable")
+> ### * getTransitionTable
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getTransitionTable
+> ### Title: Retrieve the transition table of a network
+> ### Aliases: getTransitionTable
+> ### Keywords: Boolean network transition transition table state
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # get attractors
+> attractors <- getAttractors(cellcycle)
+> 
+> # print the transition table
+> print(getTransitionTable(attractors))
+     State      Next state  Attr. basin  # trans. to attr.
+0000000000 =>   0110010111            1                  4
+1000000000 =>   1010000111            2                  3
+0100000000 =>   0100010111            1                  4
+1100000000 =>   1000000111            2                  3
+0010000000 =>   0111110111            1                  4
+1010000000 =>   1011100111            2                  3
+0110000000 =>   0100010111            1                  4
+1110000000 =>   1000000111            2                  3
+0001000000 =>   0010000111            1                  5
+1001000000 =>   1010000111            2                  3
+0101000000 =>   0000000111            1                  4
+1101000000 =>   1000000111            2                  3
+0011000000 =>   0011100111            1                  5
+1011000000 =>   1011100111            2                  3
+0111000000 =>   0000000111            1                  4
+1111000000 =>   1000000111            2                  3
+0000100000 =>   0000100011            1                  5
+1000100000 =>   1000100011            2                  1
+0100100000 =>   0000000011            1                  5
+1100100000 =>   1000000011            2                  3
+0010100000 =>   0001100011            1                  5
+1010100000 =>   1001100011            2                  2
+0110100000 =>   0000000011            1                  5
+1110100000 =>   1000000011            2                  3
+0001100000 =>   0000100011            1                  5
+1001100000 =>   1000100011            2                  0
+0101100000 =>   0000000011            1                  5
+1101100000 =>   1000000011            2                  3
+0011100000 =>   0001100011            1                  5
+1011100000 =>   1001100011            2                  2
+0111100000 =>   0000000011            1                  5
+1111100000 =>   1000000011            2                  3
+0000010000 =>   0110010111            1                  4
+1000010000 =>   1010000111            2                  3
+0100010000 =>   0100010111            1                  4
+1100010000 =>   1000000111            2                  3
+0010010000 =>   0111110111            1                  4
+1010010000 =>   1011100111            2                  3
+0110010000 =>   0100010111            1                  4
+1110010000 =>   1000000111            2                  3
+0001010000 =>   0110010111            1                  4
+1001010000 =>   1010000111            2                  3
+0101010000 =>   0100010111            1                  4
+1101010000 =>   1000000111            2                  3
+0011010000 =>   0111110111            1                  4
+1011010000 =>   1011100111            2                  3
+0111010000 =>   0100010111            1                  4
+1111010000 =>   1000000111            2                  3
+0000110000 =>   0110110111            1                  4
+1000110000 =>   1010100111            2                  3
+0100110000 =>   0100010111            1                  4
+1100110000 =>   1000000111            2                  3
+0010110000 =>   0111110111            1                  4
+1010110000 =>   1011100111            2                  3
+0110110000 =>   0100010111            1                  4
+1110110000 =>   1000000111            2                  3
+0001110000 =>   0110100111            1                  4
+1001110000 =>   1010100111            2                  3
+0101110000 =>   0100000111            1                  4
+1101110000 =>   1000000111            2                  3
+0011110000 =>   0111100111            1                  4
+1011110000 =>   1011100111            2                  3
+0111110000 =>   0100000111            1                  4
+1111110000 =>   1000000111            2                  3
+0000001000 =>   0110010110            1                  2
+1000001000 =>   1010000110            2                  1
+0100001000 =>   0100010110            1                  2
+1100001000 =>   1000000110            2                  3
+0010001000 =>   0111010110            1                  2
+1010001000 =>   1011000110            2                  2
+0110001000 =>   0100010110            1                  2
+1110001000 =>   1000000110            2                  3
+0001001000 =>   0010000110            1                  3
+1001001000 =>   1010000110            2                  1
+0101001000 =>   0000000110            1                  3
+1101001000 =>   1000000110            2                  3
+0011001000 =>   0011000110            1                  9
+1011001000 =>   1011000110            2                  2
+0111001000 =>   0000000110            1                  3
+1111001000 =>   1000000110            2                  3
+0000101000 =>   0000000110            1                  3
+1000101000 =>   1000000110            2                  3
+0100101000 =>   0000000110            1                  3
+1100101000 =>   1000000110            2                  3
+0010101000 =>   0001000110            1                  5
+1010101000 =>   1001000110            2                  3
+0110101000 =>   0000000110            1                  3
+1110101000 =>   1000000110            2                  3
+0001101000 =>   0000000110            1                  3
+1001101000 =>   1000000110            2                  3
+0101101000 =>   0000000110            1                  3
+1101101000 =>   1000000110            2                  3
+0011101000 =>   0001000110            1                  5
+1011101000 =>   1001000110            2                  3
+0111101000 =>   0000000110            1                  3
+1111101000 =>   1000000110            2                  3
+0000011000 =>   0110010110            1                  2
+1000011000 =>   1010000110            2                  1
+0100011000 =>   0100010110            1                  2
+1100011000 =>   1000000110            2                  3
+0010011000 =>   0111010110            1                  2
+1010011000 =>   1011000110            2                  2
+0110011000 =>   0100010110            1                  2
+1110011000 =>   1000000110            2                  3
+0001011000 =>   0110010110            1                  2
+1001011000 =>   1010000110            2                  1
+0101011000 =>   0100010110            1                  2
+1101011000 =>   1000000110            2                  3
+0011011000 =>   0111010110            1                  2
+1011011000 =>   1011000110            2                  2
+0111011000 =>   0100010110            1                  2
+1111011000 =>   1000000110            2                  3
+0000111000 =>   0110010110            1                  2
+1000111000 =>   1010000110            2                  1
+0100111000 =>   0100010110            1                  2
+1100111000 =>   1000000110            2                  3
+0010111000 =>   0111010110            1                  2
+1010111000 =>   1011000110            2                  2
+0110111000 =>   0100010110            1                  2
+1110111000 =>   1000000110            2                  3
+0001111000 =>   0110000110            1                  2
+1001111000 =>   1010000110            2                  1
+0101111000 =>   0100000110            1                  2
+1101111000 =>   1000000110            2                  3
+0011111000 =>   0111000110            1                  4
+1011111000 =>   1011000110            2                  2
+0111111000 =>   0100000110            1                  2
+1111111000 =>   1000000110            2                  3
+0000000100 =>   0110010100            1                  2
+1000000100 =>   1010000100            2                  2
+0100000100 =>   0100010100            1                  1
+1100000100 =>   1000000100            2                  3
+0010000100 =>   0111110100            1                  3
+1010000100 =>   1011100100            2                  1
+0110000100 =>   0100010100            1                  1
+1110000100 =>   1000000100            2                  3
+0001000100 =>   0010000100            1                  4
+1001000100 =>   1010000100            2                  2
+0101000100 =>   0000000100            1                  3
+1101000100 =>   1000000100            2                  3
+0011000100 =>   0011100100            1                  7
+1011000100 =>   1011100100            2                  0
+0111000100 =>   0000000100            1                  3
+1111000100 =>   1000000100            2                  3
+0000100100 =>   0000100000            1                  6
+1000100100 =>   1000100000            2                  2
+0100100100 =>   0000000000            1                  5
+1100100100 =>   1000000000            2                  4
+0010100100 =>   0001100000            1                  6
+1010100100 =>   1001100000            2                  1
+0110100100 =>   0000000000            1                  5
+1110100100 =>   1000000000            2                  4
+0001100100 =>   0000100000            1                  6
+1001100100 =>   1000100000            2                  2
+0101100100 =>   0000000000            1                  5
+1101100100 =>   1000000000            2                  4
+0011100100 =>   0001100000            1                  6
+1011100100 =>   1001100000            2                  0
+0111100100 =>   0000000000            1                  5
+1111100100 =>   1000000000            2                  4
+0000010100 =>   0110010100            1                  2
+1000010100 =>   1010000100            2                  2
+0100010100 =>   0100010100            1                  0
+1100010100 =>   1000000100            2                  3
+0010010100 =>   0111110100            1                  3
+1010010100 =>   1011100100            2                  1
+0110010100 =>   0100010100            1                  1
+1110010100 =>   1000000100            2                  3
+0001010100 =>   0110010100            1                  2
+1001010100 =>   1010000100            2                  2
+0101010100 =>   0100010100            1                  1
+1101010100 =>   1000000100            2                  3
+0011010100 =>   0111110100            1                  3
+1011010100 =>   1011100100            2                  1
+0111010100 =>   0100010100            1                  1
+1111010100 =>   1000000100            2                  3
+0000110100 =>   0110110100            1                  2
+1000110100 =>   1010100100            2                  2
+0100110100 =>   0100010100            1                  1
+1100110100 =>   1000000100            2                  3
+0010110100 =>   0111110100            1                  3
+1010110100 =>   1011100100            2                  1
+0110110100 =>   0100010100            1                  1
+1110110100 =>   1000000100            2                  3
+0001110100 =>   0110100100            1                  6
+1001110100 =>   1010100100            2                  2
+0101110100 =>   0100000100            1                  2
+1101110100 =>   1000000100            2                  3
+0011110100 =>   0111100100            1                  6
+1011110100 =>   1011100100            2                  1
+0111110100 =>   0100000100            1                  2
+1111110100 =>   1000000100            2                  3
+0000001100 =>   0110010100            1                  2
+1000001100 =>   1010000100            2                  2
+0100001100 =>   0100010100            1                  1
+1100001100 =>   1000000100            2                  3
+0010001100 =>   0111010100            1                  2
+1010001100 =>   1011000100            2                  1
+0110001100 =>   0100010100            1                  1
+1110001100 =>   1000000100            2                  3
+0001001100 =>   0010000100            1                  4
+1001001100 =>   1010000100            2                  2
+0101001100 =>   0000000100            1                  3
+1101001100 =>   1000000100            2                  3
+0011001100 =>   0011000100            1                  8
+1011001100 =>   1011000100            2                  1
+0111001100 =>   0000000100            1                  3
+1111001100 =>   1000000100            2                  3
+0000101100 =>   0000000100            1                  3
+1000101100 =>   1000000100            2                  3
+0100101100 =>   0000000100            1                  3
+1100101100 =>   1000000100            2                  3
+0010101100 =>   0001000100            1                  5
+1010101100 =>   1001000100            2                  3
+0110101100 =>   0000000100            1                  3
+1110101100 =>   1000000100            2                  3
+0001101100 =>   0000000100            1                  3
+1001101100 =>   1000000100            2                  3
+0101101100 =>   0000000100            1                  3
+1101101100 =>   1000000100            2                  3
+0011101100 =>   0001000100            1                  5
+1011101100 =>   1001000100            2                  3
+0111101100 =>   0000000100            1                  3
+1111101100 =>   1000000100            2                  3
+0000011100 =>   0110010100            1                  2
+1000011100 =>   1010000100            2                  2
+0100011100 =>   0100010100            1                  1
+1100011100 =>   1000000100            2                  3
+0010011100 =>   0111010100            1                  2
+1010011100 =>   1011000100            2                  1
+0110011100 =>   0100010100            1                  1
+1110011100 =>   1000000100            2                  3
+0001011100 =>   0110010100            1                  2
+1001011100 =>   1010000100            2                  2
+0101011100 =>   0100010100            1                  1
+1101011100 =>   1000000100            2                  3
+0011011100 =>   0111010100            1                  2
+1011011100 =>   1011000100            2                  1
+0111011100 =>   0100010100            1                  1
+1111011100 =>   1000000100            2                  3
+0000111100 =>   0110010100            1                  2
+1000111100 =>   1010000100            2                  2
+0100111100 =>   0100010100            1                  1
+1100111100 =>   1000000100            2                  3
+0010111100 =>   0111010100            1                  2
+1010111100 =>   1011000100            2                  1
+0110111100 =>   0100010100            1                  1
+1110111100 =>   1000000100            2                  3
+0001111100 =>   0110000100            1                  2
+1001111100 =>   1010000100            2                  2
+0101111100 =>   0100000100            1                  2
+1101111100 =>   1000000100            2                  3
+0011111100 =>   0111000100            1                  4
+1011111100 =>   1011000100            2                  1
+0111111100 =>   0100000100            1                  2
+1111111100 =>   1000000100            2                  3
+0000000010 =>   0110010111            1                  4
+1000000010 =>   1010000111            2                  3
+0100000010 =>   0100010111            1                  4
+1100000010 =>   1000000111            2                  3
+0010000010 =>   0111110111            1                  4
+1010000010 =>   1011100111            2                  3
+0110000010 =>   0100010111            1                  4
+1110000010 =>   1000000111            2                  3
+0001000010 =>   0010000111            1                  5
+1001000010 =>   1010000111            2                  3
+0101000010 =>   0000000111            1                  4
+1101000010 =>   1000000111            2                  3
+0011000010 =>   0011100111            1                  5
+1011000010 =>   1011100111            2                  3
+0111000010 =>   0000000111            1                  4
+1111000010 =>   1000000111            2                  3
+0000100010 =>   0000100011            1                  5
+1000100010 =>   1000100011            2                  1
+0100100010 =>   0000000011            1                  5
+1100100010 =>   1000000011            2                  3
+0010100010 =>   0001100011            1                  5
+1010100010 =>   1001100011            2                  2
+0110100010 =>   0000000011            1                  5
+1110100010 =>   1000000011            2                  3
+0001100010 =>   0000100011            1                  5
+1001100010 =>   1000100011            2                  1
+0101100010 =>   0000000011            1                  5
+1101100010 =>   1000000011            2                  3
+0011100010 =>   0001100011            1                  5
+1011100010 =>   1001100011            2                  2
+0111100010 =>   0000000011            1                  5
+1111100010 =>   1000000011            2                  3
+0000010010 =>   0110010111            1                  4
+1000010010 =>   1010000111            2                  3
+0100010010 =>   0100010111            1                  4
+1100010010 =>   1000000111            2                  3
+0010010010 =>   0111110111            1                  4
+1010010010 =>   1011100111            2                  3
+0110010010 =>   0100010111            1                  4
+1110010010 =>   1000000111            2                  3
+0001010010 =>   0110010111            1                  4
+1001010010 =>   1010000111            2                  3
+0101010010 =>   0100010111            1                  4
+1101010010 =>   1000000111            2                  3
+0011010010 =>   0111110111            1                  4
+1011010010 =>   1011100111            2                  3
+0111010010 =>   0100010111            1                  4
+1111010010 =>   1000000111            2                  3
+0000110010 =>   0110110111            1                  4
+1000110010 =>   1010100111            2                  3
+0100110010 =>   0100010111            1                  4
+1100110010 =>   1000000111            2                  3
+0010110010 =>   0111110111            1                  4
+1010110010 =>   1011100111            2                  3
+0110110010 =>   0100010111            1                  4
+1110110010 =>   1000000111            2                  3
+0001110010 =>   0110100111            1                  4
+1001110010 =>   1010100111            2                  3
+0101110010 =>   0100000111            1                  4
+1101110010 =>   1000000111            2                  3
+0011110010 =>   0111100111            1                  4
+1011110010 =>   1011100111            2                  3
+0111110010 =>   0100000111            1                  4
+1111110010 =>   1000000111            2                  3
+0000001010 =>   0110010110            1                  2
+1000001010 =>   1010000110            2                  1
+0100001010 =>   0100010110            1                  2
+1100001010 =>   1000000110            2                  3
+0010001010 =>   0111010110            1                  2
+1010001010 =>   1011000110            2                  2
+0110001010 =>   0100010110            1                  2
+1110001010 =>   1000000110            2                  3
+0001001010 =>   0010000110            1                  3
+1001001010 =>   1010000110            2                  1
+0101001010 =>   0000000110            1                  3
+1101001010 =>   1000000110            2                  3
+0011001010 =>   0011000110            1                  9
+1011001010 =>   1011000110            2                  2
+0111001010 =>   0000000110            1                  3
+1111001010 =>   1000000110            2                  3
+0000101010 =>   0000000110            1                  3
+1000101010 =>   1000000110            2                  3
+0100101010 =>   0000000110            1                  3
+1100101010 =>   1000000110            2                  3
+0010101010 =>   0001000110            1                  5
+1010101010 =>   1001000110            2                  3
+0110101010 =>   0000000110            1                  3
+1110101010 =>   1000000110            2                  3
+0001101010 =>   0000000110            1                  3
+1001101010 =>   1000000110            2                  3
+0101101010 =>   0000000110            1                  3
+1101101010 =>   1000000110            2                  3
+0011101010 =>   0001000110            1                  5
+1011101010 =>   1001000110            2                  3
+0111101010 =>   0000000110            1                  3
+1111101010 =>   1000000110            2                  3
+0000011010 =>   0110010110            1                  2
+1000011010 =>   1010000110            2                  1
+0100011010 =>   0100010110            1                  2
+1100011010 =>   1000000110            2                  3
+0010011010 =>   0111010110            1                  2
+1010011010 =>   1011000110            2                  2
+0110011010 =>   0100010110            1                  2
+1110011010 =>   1000000110            2                  3
+0001011010 =>   0110010110            1                  2
+1001011010 =>   1010000110            2                  1
+0101011010 =>   0100010110            1                  2
+1101011010 =>   1000000110            2                  3
+0011011010 =>   0111010110            1                  2
+1011011010 =>   1011000110            2                  2
+0111011010 =>   0100010110            1                  2
+1111011010 =>   1000000110            2                  3
+0000111010 =>   0110010110            1                  2
+1000111010 =>   1010000110            2                  1
+0100111010 =>   0100010110            1                  2
+1100111010 =>   1000000110            2                  3
+0010111010 =>   0111010110            1                  2
+1010111010 =>   1011000110            2                  2
+0110111010 =>   0100010110            1                  2
+1110111010 =>   1000000110            2                  3
+0001111010 =>   0110000110            1                  2
+1001111010 =>   1010000110            2                  1
+0101111010 =>   0100000110            1                  2
+1101111010 =>   1000000110            2                  3
+0011111010 =>   0111000110            1                  4
+1011111010 =>   1011000110            2                  2
+0111111010 =>   0100000110            1                  2
+1111111010 =>   1000000110            2                  3
+0000000110 =>   0110010100            1                  2
+1000000110 =>   1010000100            2                  2
+0100000110 =>   0100010100            1                  1
+1100000110 =>   1000000100            2                  3
+0010000110 =>   0111010100            1                  2
+1010000110 =>   1011000100            2                  0
+0110000110 =>   0100010100            1                  1
+1110000110 =>   1000000100            2                  3
+0001000110 =>   0010000100            1                  4
+1001000110 =>   1010000100            2                  2
+0101000110 =>   0000000100            1                  3
+1101000110 =>   1000000100            2                  3
+0011000110 =>   0011000100            1                  8
+1011000110 =>   1011000100            2                  1
+0111000110 =>   0000000100            1                  3
+1111000110 =>   1000000100            2                  3
+0000100110 =>   0000000010            1                  5
+1000100110 =>   1000000010            2                  4
+0100100110 =>   0000000010            1                  5
+1100100110 =>   1000000010            2                  4
+0010100110 =>   0001000010            1                  6
+1010100110 =>   1001000010            2                  4
+0110100110 =>   0000000010            1                  5
+1110100110 =>   1000000010            2                  4
+0001100110 =>   0000000010            1                  5
+1001100110 =>   1000000010            2                  4
+0101100110 =>   0000000010            1                  5
+1101100110 =>   1000000010            2                  4
+0011100110 =>   0001000010            1                  6
+1011100110 =>   1001000010            2                  4
+0111100110 =>   0000000010            1                  5
+1111100110 =>   1000000010            2                  4
+0000010110 =>   0110010100            1                  2
+1000010110 =>   1010000100            2                  2
+0100010110 =>   0100010100            1                  1
+1100010110 =>   1000000100            2                  3
+0010010110 =>   0111010100            1                  2
+1010010110 =>   1011000100            2                  1
+0110010110 =>   0100010100            1                  1
+1110010110 =>   1000000100            2                  3
+0001010110 =>   0110010100            1                  2
+1001010110 =>   1010000100            2                  2
+0101010110 =>   0100010100            1                  1
+1101010110 =>   1000000100            2                  3
+0011010110 =>   0111010100            1                  2
+1011010110 =>   1011000100            2                  1
+0111010110 =>   0100010100            1                  1
+1111010110 =>   1000000100            2                  3
+0000110110 =>   0110010110            1                  2
+1000110110 =>   1010000110            2                  1
+0100110110 =>   0100010110            1                  2
+1100110110 =>   1000000110            2                  3
+0010110110 =>   0111010110            1                  2
+1010110110 =>   1011000110            2                  2
+0110110110 =>   0100010110            1                  2
+1110110110 =>   1000000110            2                  3
+0001110110 =>   0110000110            1                  2
+1001110110 =>   1010000110            2                  1
+0101110110 =>   0100000110            1                  2
+1101110110 =>   1000000110            2                  3
+0011110110 =>   0111000110            1                  4
+1011110110 =>   1011000110            2                  2
+0111110110 =>   0100000110            1                  2
+1111110110 =>   1000000110            2                  3
+0000001110 =>   0110010110            1                  2
+1000001110 =>   1010000110            2                  0
+0100001110 =>   0100010110            1                  2
+1100001110 =>   1000000110            2                  3
+0010001110 =>   0111010110            1                  2
+1010001110 =>   1011000110            2                  2
+0110001110 =>   0100010110            1                  2
+1110001110 =>   1000000110            2                  3
+0001001110 =>   0010000110            1                  3
+1001001110 =>   1010000110            2                  1
+0101001110 =>   0000000110            1                  3
+1101001110 =>   1000000110            2                  3
+0011001110 =>   0011000110            1                  9
+1011001110 =>   1011000110            2                  2
+0111001110 =>   0000000110            1                  3
+1111001110 =>   1000000110            2                  3
+0000101110 =>   0000000110            1                  3
+1000101110 =>   1000000110            2                  3
+0100101110 =>   0000000110            1                  3
+1100101110 =>   1000000110            2                  3
+0010101110 =>   0001000110            1                  5
+1010101110 =>   1001000110            2                  3
+0110101110 =>   0000000110            1                  3
+1110101110 =>   1000000110            2                  3
+0001101110 =>   0000000110            1                  3
+1001101110 =>   1000000110            2                  3
+0101101110 =>   0000000110            1                  3
+1101101110 =>   1000000110            2                  3
+0011101110 =>   0001000110            1                  5
+1011101110 =>   1001000110            2                  3
+0111101110 =>   0000000110            1                  3
+1111101110 =>   1000000110            2                  3
+0000011110 =>   0110010110            1                  2
+1000011110 =>   1010000110            2                  1
+0100011110 =>   0100010110            1                  2
+1100011110 =>   1000000110            2                  3
+0010011110 =>   0111010110            1                  2
+1010011110 =>   1011000110            2                  2
+0110011110 =>   0100010110            1                  2
+1110011110 =>   1000000110            2                  3
+0001011110 =>   0110010110            1                  2
+1001011110 =>   1010000110            2                  1
+0101011110 =>   0100010110            1                  2
+1101011110 =>   1000000110            2                  3
+0011011110 =>   0111010110            1                  2
+1011011110 =>   1011000110            2                  2
+0111011110 =>   0100010110            1                  2
+1111011110 =>   1000000110            2                  3
+0000111110 =>   0110010110            1                  2
+1000111110 =>   1010000110            2                  1
+0100111110 =>   0100010110            1                  2
+1100111110 =>   1000000110            2                  3
+0010111110 =>   0111010110            1                  2
+1010111110 =>   1011000110            2                  2
+0110111110 =>   0100010110            1                  2
+1110111110 =>   1000000110            2                  3
+0001111110 =>   0110000110            1                  2
+1001111110 =>   1010000110            2                  1
+0101111110 =>   0100000110            1                  2
+1101111110 =>   1000000110            2                  3
+0011111110 =>   0111000110            1                  4
+1011111110 =>   1011000110            2                  2
+0111111110 =>   0100000110            1                  2
+1111111110 =>   1000000110            2                  3
+0000000001 =>   0000001011            1                  4
+1000000001 =>   1000001011            2                  2
+0100000001 =>   0000001011            1                  4
+1100000001 =>   1000001011            2                  2
+0010000001 =>   0001101011            1                  4
+1010000001 =>   1001101011            2                  2
+0110000001 =>   0000001011            1                  4
+1110000001 =>   1000001011            2                  2
+0001000001 =>   0000001011            1                  4
+1001000001 =>   1000001011            2                  2
+0101000001 =>   0000001011            1                  4
+1101000001 =>   1000001011            2                  2
+0011000001 =>   0001101011            1                  4
+1011000001 =>   1001101011            2                  2
+0111000001 =>   0000001011            1                  4
+1111000001 =>   1000001011            2                  2
+0000100001 =>   0000101011            1                  4
+1000100001 =>   1000101011            2                  1
+0100100001 =>   0000001011            1                  4
+1100100001 =>   1000001011            2                  2
+0010100001 =>   0001101011            1                  4
+1010100001 =>   1001101011            2                  2
+0110100001 =>   0000001011            1                  4
+1110100001 =>   1000001011            2                  2
+0001100001 =>   0000101011            1                  4
+1001100001 =>   1000101011            2                  1
+0101100001 =>   0000001011            1                  4
+1101100001 =>   1000001011            2                  2
+0011100001 =>   0001101011            1                  4
+1011100001 =>   1001101011            2                  2
+0111100001 =>   0000001011            1                  4
+1111100001 =>   1000001011            2                  2
+0000010001 =>   0000001011            1                  4
+1000010001 =>   1000001011            2                  2
+0100010001 =>   0000001011            1                  4
+1100010001 =>   1000001011            2                  2
+0010010001 =>   0001101011            1                  4
+1010010001 =>   1001101011            2                  2
+0110010001 =>   0000001011            1                  4
+1110010001 =>   1000001011            2                  2
+0001010001 =>   0000001011            1                  4
+1001010001 =>   1000001011            2                  2
+0101010001 =>   0000001011            1                  4
+1101010001 =>   1000001011            2                  2
+0011010001 =>   0001101011            1                  4
+1011010001 =>   1001101011            2                  2
+0111010001 =>   0000001011            1                  4
+1111010001 =>   1000001011            2                  2
+0000110001 =>   0000101011            1                  4
+1000110001 =>   1000101011            2                  1
+0100110001 =>   0000001011            1                  4
+1100110001 =>   1000001011            2                  2
+0010110001 =>   0001101011            1                  4
+1010110001 =>   1001101011            2                  2
+0110110001 =>   0000001011            1                  4
+1110110001 =>   1000001011            2                  2
+0001110001 =>   0000101011            1                  4
+1001110001 =>   1000101011            2                  1
+0101110001 =>   0000001011            1                  4
+1101110001 =>   1000001011            2                  2
+0011110001 =>   0001101011            1                  4
+1011110001 =>   1001101011            2                  2
+0111110001 =>   0000001011            1                  4
+1111110001 =>   1000001011            2                  2
+0000001001 =>   0000001110            1                  3
+1000001001 =>   1000001110            2                  1
+0100001001 =>   0000001110            1                  3
+1100001001 =>   1000001110            2                  1
+0010001001 =>   0001001110            1                  4
+1010001001 =>   1001001110            2                  2
+0110001001 =>   0000001110            1                  3
+1110001001 =>   1000001110            2                  1
+0001001001 =>   0000001110            1                  3
+1001001001 =>   1000001110            2                  1
+0101001001 =>   0000001110            1                  3
+1101001001 =>   1000001110            2                  1
+0011001001 =>   0001001110            1                  4
+1011001001 =>   1001001110            2                  2
+0111001001 =>   0000001110            1                  3
+1111001001 =>   1000001110            2                  1
+0000101001 =>   0000001110            1                  3
+1000101001 =>   1000001110            2                  1
+0100101001 =>   0000001110            1                  3
+1100101001 =>   1000001110            2                  1
+0010101001 =>   0001001110            1                  4
+1010101001 =>   1001001110            2                  2
+0110101001 =>   0000001110            1                  3
+1110101001 =>   1000001110            2                  1
+0001101001 =>   0000001110            1                  3
+1001101001 =>   1000001110            2                  1
+0101101001 =>   0000001110            1                  3
+1101101001 =>   1000001110            2                  1
+0011101001 =>   0001001110            1                  4
+1011101001 =>   1001001110            2                  2
+0111101001 =>   0000001110            1                  3
+1111101001 =>   1000001110            2                  1
+0000011001 =>   0000001110            1                  3
+1000011001 =>   1000001110            2                  1
+0100011001 =>   0000001110            1                  3
+1100011001 =>   1000001110            2                  1
+0010011001 =>   0001001110            1                  4
+1010011001 =>   1001001110            2                  2
+0110011001 =>   0000001110            1                  3
+1110011001 =>   1000001110            2                  1
+0001011001 =>   0000001110            1                  3
+1001011001 =>   1000001110            2                  1
+0101011001 =>   0000001110            1                  3
+1101011001 =>   1000001110            2                  1
+0011011001 =>   0001001110            1                  4
+1011011001 =>   1001001110            2                  2
+0111011001 =>   0000001110            1                  3
+1111011001 =>   1000001110            2                  1
+0000111001 =>   0000001110            1                  3
+1000111001 =>   1000001110            2                  1
+0100111001 =>   0000001110            1                  3
+1100111001 =>   1000001110            2                  1
+0010111001 =>   0001001110            1                  4
+1010111001 =>   1001001110            2                  2
+0110111001 =>   0000001110            1                  3
+1110111001 =>   1000001110            2                  1
+0001111001 =>   0000001110            1                  3
+1001111001 =>   1000001110            2                  1
+0101111001 =>   0000001110            1                  3
+1101111001 =>   1000001110            2                  1
+0011111001 =>   0001001110            1                  4
+1011111001 =>   1001001110            2                  2
+0111111001 =>   0000001110            1                  3
+1111111001 =>   1000001110            2                  1
+0000000101 =>   0000001000            1                  3
+1000000101 =>   1000001000            2                  2
+0100000101 =>   0000001000            1                  3
+1100000101 =>   1000001000            2                  2
+0010000101 =>   0001101000            1                  4
+1010000101 =>   1001101000            2                  4
+0110000101 =>   0000001000            1                  3
+1110000101 =>   1000001000            2                  2
+0001000101 =>   0000001000            1                  3
+1001000101 =>   1000001000            2                  2
+0101000101 =>   0000001000            1                  3
+1101000101 =>   1000001000            2                  2
+0011000101 =>   0001101000            1                  4
+1011000101 =>   1001101000            2                  4
+0111000101 =>   0000001000            1                  3
+1111000101 =>   1000001000            2                  2
+0000100101 =>   0000101000            1                  4
+1000100101 =>   1000101000            2                  4
+0100100101 =>   0000001000            1                  3
+1100100101 =>   1000001000            2                  2
+0010100101 =>   0001101000            1                  4
+1010100101 =>   1001101000            2                  4
+0110100101 =>   0000001000            1                  3
+1110100101 =>   1000001000            2                  2
+0001100101 =>   0000101000            1                  4
+1001100101 =>   1000101000            2                  4
+0101100101 =>   0000001000            1                  3
+1101100101 =>   1000001000            2                  2
+0011100101 =>   0001101000            1                  4
+1011100101 =>   1001101000            2                  4
+0111100101 =>   0000001000            1                  3
+1111100101 =>   1000001000            2                  2
+0000010101 =>   0000001000            1                  3
+1000010101 =>   1000001000            2                  2
+0100010101 =>   0000001000            1                  3
+1100010101 =>   1000001000            2                  2
+0010010101 =>   0001101000            1                  4
+1010010101 =>   1001101000            2                  4
+0110010101 =>   0000001000            1                  3
+1110010101 =>   1000001000            2                  2
+0001010101 =>   0000001000            1                  3
+1001010101 =>   1000001000            2                  2
+0101010101 =>   0000001000            1                  3
+1101010101 =>   1000001000            2                  2
+0011010101 =>   0001101000            1                  4
+1011010101 =>   1001101000            2                  4
+0111010101 =>   0000001000            1                  3
+1111010101 =>   1000001000            2                  2
+0000110101 =>   0000101000            1                  4
+1000110101 =>   1000101000            2                  4
+0100110101 =>   0000001000            1                  3
+1100110101 =>   1000001000            2                  2
+0010110101 =>   0001101000            1                  4
+1010110101 =>   1001101000            2                  4
+0110110101 =>   0000001000            1                  3
+1110110101 =>   1000001000            2                  2
+0001110101 =>   0000101000            1                  4
+1001110101 =>   1000101000            2                  4
+0101110101 =>   0000001000            1                  3
+1101110101 =>   1000001000            2                  2
+0011110101 =>   0001101000            1                  4
+1011110101 =>   1001101000            2                  4
+0111110101 =>   0000001000            1                  3
+1111110101 =>   1000001000            2                  2
+0000001101 =>   0000001100            1                  3
+1000001101 =>   1000001100            2                  3
+0100001101 =>   0000001100            1                  3
+1100001101 =>   1000001100            2                  3
+0010001101 =>   0001001100            1                  5
+1010001101 =>   1001001100            2                  3
+0110001101 =>   0000001100            1                  3
+1110001101 =>   1000001100            2                  3
+0001001101 =>   0000001100            1                  3
+1001001101 =>   1000001100            2                  3
+0101001101 =>   0000001100            1                  3
+1101001101 =>   1000001100            2                  3
+0011001101 =>   0001001100            1                  5
+1011001101 =>   1001001100            2                  3
+0111001101 =>   0000001100            1                  3
+1111001101 =>   1000001100            2                  3
+0000101101 =>   0000001100            1                  3
+1000101101 =>   1000001100            2                  3
+0100101101 =>   0000001100            1                  3
+1100101101 =>   1000001100            2                  3
+0010101101 =>   0001001100            1                  5
+1010101101 =>   1001001100            2                  3
+0110101101 =>   0000001100            1                  3
+1110101101 =>   1000001100            2                  3
+0001101101 =>   0000001100            1                  3
+1001101101 =>   1000001100            2                  3
+0101101101 =>   0000001100            1                  3
+1101101101 =>   1000001100            2                  3
+0011101101 =>   0001001100            1                  5
+1011101101 =>   1001001100            2                  3
+0111101101 =>   0000001100            1                  3
+1111101101 =>   1000001100            2                  3
+0000011101 =>   0000001100            1                  3
+1000011101 =>   1000001100            2                  3
+0100011101 =>   0000001100            1                  3
+1100011101 =>   1000001100            2                  3
+0010011101 =>   0001001100            1                  5
+1010011101 =>   1001001100            2                  3
+0110011101 =>   0000001100            1                  3
+1110011101 =>   1000001100            2                  3
+0001011101 =>   0000001100            1                  3
+1001011101 =>   1000001100            2                  3
+0101011101 =>   0000001100            1                  3
+1101011101 =>   1000001100            2                  3
+0011011101 =>   0001001100            1                  5
+1011011101 =>   1001001100            2                  3
+0111011101 =>   0000001100            1                  3
+1111011101 =>   1000001100            2                  3
+0000111101 =>   0000001100            1                  3
+1000111101 =>   1000001100            2                  3
+0100111101 =>   0000001100            1                  3
+1100111101 =>   1000001100            2                  3
+0010111101 =>   0001001100            1                  5
+1010111101 =>   1001001100            2                  3
+0110111101 =>   0000001100            1                  3
+1110111101 =>   1000001100            2                  3
+0001111101 =>   0000001100            1                  3
+1001111101 =>   1000001100            2                  3
+0101111101 =>   0000001100            1                  3
+1101111101 =>   1000001100            2                  3
+0011111101 =>   0001001100            1                  5
+1011111101 =>   1001001100            2                  3
+0111111101 =>   0000001100            1                  3
+1111111101 =>   1000001100            2                  3
+0000000011 =>   0000001011            1                  4
+1000000011 =>   1000001011            2                  2
+0100000011 =>   0000001011            1                  4
+1100000011 =>   1000001011            2                  2
+0010000011 =>   0001101011            1                  4
+1010000011 =>   1001101011            2                  2
+0110000011 =>   0000001011            1                  4
+1110000011 =>   1000001011            2                  2
+0001000011 =>   0000001011            1                  4
+1001000011 =>   1000001011            2                  2
+0101000011 =>   0000001011            1                  4
+1101000011 =>   1000001011            2                  2
+0011000011 =>   0001101011            1                  4
+1011000011 =>   1001101011            2                  2
+0111000011 =>   0000001011            1                  4
+1111000011 =>   1000001011            2                  2
+0000100011 =>   0000101011            1                  4
+1000100011 =>   1000101011            2                  0
+0100100011 =>   0000001011            1                  4
+1100100011 =>   1000001011            2                  2
+0010100011 =>   0001101011            1                  4
+1010100011 =>   1001101011            2                  2
+0110100011 =>   0000001011            1                  4
+1110100011 =>   1000001011            2                  2
+0001100011 =>   0000101011            1                  4
+1001100011 =>   1000101011            2                  1
+0101100011 =>   0000001011            1                  4
+1101100011 =>   1000001011            2                  2
+0011100011 =>   0001101011            1                  4
+1011100011 =>   1001101011            2                  2
+0111100011 =>   0000001011            1                  4
+1111100011 =>   1000001011            2                  2
+0000010011 =>   0000001011            1                  4
+1000010011 =>   1000001011            2                  2
+0100010011 =>   0000001011            1                  4
+1100010011 =>   1000001011            2                  2
+0010010011 =>   0001101011            1                  4
+1010010011 =>   1001101011            2                  2
+0110010011 =>   0000001011            1                  4
+1110010011 =>   1000001011            2                  2
+0001010011 =>   0000001011            1                  4
+1001010011 =>   1000001011            2                  2
+0101010011 =>   0000001011            1                  4
+1101010011 =>   1000001011            2                  2
+0011010011 =>   0001101011            1                  4
+1011010011 =>   1001101011            2                  2
+0111010011 =>   0000001011            1                  4
+1111010011 =>   1000001011            2                  2
+0000110011 =>   0000101011            1                  4
+1000110011 =>   1000101011            2                  1
+0100110011 =>   0000001011            1                  4
+1100110011 =>   1000001011            2                  2
+0010110011 =>   0001101011            1                  4
+1010110011 =>   1001101011            2                  2
+0110110011 =>   0000001011            1                  4
+1110110011 =>   1000001011            2                  2
+0001110011 =>   0000101011            1                  4
+1001110011 =>   1000101011            2                  1
+0101110011 =>   0000001011            1                  4
+1101110011 =>   1000001011            2                  2
+0011110011 =>   0001101011            1                  4
+1011110011 =>   1001101011            2                  2
+0111110011 =>   0000001011            1                  4
+1111110011 =>   1000001011            2                  2
+0000001011 =>   0000001110            1                  3
+1000001011 =>   1000001110            2                  1
+0100001011 =>   0000001110            1                  3
+1100001011 =>   1000001110            2                  1
+0010001011 =>   0001001110            1                  4
+1010001011 =>   1001001110            2                  2
+0110001011 =>   0000001110            1                  3
+1110001011 =>   1000001110            2                  1
+0001001011 =>   0000001110            1                  3
+1001001011 =>   1000001110            2                  1
+0101001011 =>   0000001110            1                  3
+1101001011 =>   1000001110            2                  1
+0011001011 =>   0001001110            1                  4
+1011001011 =>   1001001110            2                  2
+0111001011 =>   0000001110            1                  3
+1111001011 =>   1000001110            2                  1
+0000101011 =>   0000001110            1                  3
+1000101011 =>   1000001110            2                  0
+0100101011 =>   0000001110            1                  3
+1100101011 =>   1000001110            2                  1
+0010101011 =>   0001001110            1                  4
+1010101011 =>   1001001110            2                  2
+0110101011 =>   0000001110            1                  3
+1110101011 =>   1000001110            2                  1
+0001101011 =>   0000001110            1                  3
+1001101011 =>   1000001110            2                  1
+0101101011 =>   0000001110            1                  3
+1101101011 =>   1000001110            2                  1
+0011101011 =>   0001001110            1                  4
+1011101011 =>   1001001110            2                  2
+0111101011 =>   0000001110            1                  3
+1111101011 =>   1000001110            2                  1
+0000011011 =>   0000001110            1                  3
+1000011011 =>   1000001110            2                  1
+0100011011 =>   0000001110            1                  3
+1100011011 =>   1000001110            2                  1
+0010011011 =>   0001001110            1                  4
+1010011011 =>   1001001110            2                  2
+0110011011 =>   0000001110            1                  3
+1110011011 =>   1000001110            2                  1
+0001011011 =>   0000001110            1                  3
+1001011011 =>   1000001110            2                  1
+0101011011 =>   0000001110            1                  3
+1101011011 =>   1000001110            2                  1
+0011011011 =>   0001001110            1                  4
+1011011011 =>   1001001110            2                  2
+0111011011 =>   0000001110            1                  3
+1111011011 =>   1000001110            2                  1
+0000111011 =>   0000001110            1                  3
+1000111011 =>   1000001110            2                  1
+0100111011 =>   0000001110            1                  3
+1100111011 =>   1000001110            2                  1
+0010111011 =>   0001001110            1                  4
+1010111011 =>   1001001110            2                  2
+0110111011 =>   0000001110            1                  3
+1110111011 =>   1000001110            2                  1
+0001111011 =>   0000001110            1                  3
+1001111011 =>   1000001110            2                  1
+0101111011 =>   0000001110            1                  3
+1101111011 =>   1000001110            2                  1
+0011111011 =>   0001001110            1                  4
+1011111011 =>   1001001110            2                  2
+0111111011 =>   0000001110            1                  3
+1111111011 =>   1000001110            2                  1
+0000000111 =>   0000001010            1                  3
+1000000111 =>   1000001010            2                  2
+0100000111 =>   0000001010            1                  3
+1100000111 =>   1000001010            2                  2
+0010000111 =>   0001001010            1                  4
+1010000111 =>   1001001010            2                  2
+0110000111 =>   0000001010            1                  3
+1110000111 =>   1000001010            2                  2
+0001000111 =>   0000001010            1                  3
+1001000111 =>   1000001010            2                  2
+0101000111 =>   0000001010            1                  3
+1101000111 =>   1000001010            2                  2
+0011000111 =>   0001001010            1                  4
+1011000111 =>   1001001010            2                  2
+0111000111 =>   0000001010            1                  3
+1111000111 =>   1000001010            2                  2
+0000100111 =>   0000001010            1                  3
+1000100111 =>   1000001010            2                  2
+0100100111 =>   0000001010            1                  3
+1100100111 =>   1000001010            2                  2
+0010100111 =>   0001001010            1                  4
+1010100111 =>   1001001010            2                  2
+0110100111 =>   0000001010            1                  3
+1110100111 =>   1000001010            2                  2
+0001100111 =>   0000001010            1                  3
+1001100111 =>   1000001010            2                  2
+0101100111 =>   0000001010            1                  3
+1101100111 =>   1000001010            2                  2
+0011100111 =>   0001001010            1                  4
+1011100111 =>   1001001010            2                  2
+0111100111 =>   0000001010            1                  3
+1111100111 =>   1000001010            2                  2
+0000010111 =>   0000001010            1                  3
+1000010111 =>   1000001010            2                  2
+0100010111 =>   0000001010            1                  3
+1100010111 =>   1000001010            2                  2
+0010010111 =>   0001001010            1                  4
+1010010111 =>   1001001010            2                  2
+0110010111 =>   0000001010            1                  3
+1110010111 =>   1000001010            2                  2
+0001010111 =>   0000001010            1                  3
+1001010111 =>   1000001010            2                  2
+0101010111 =>   0000001010            1                  3
+1101010111 =>   1000001010            2                  2
+0011010111 =>   0001001010            1                  4
+1011010111 =>   1001001010            2                  2
+0111010111 =>   0000001010            1                  3
+1111010111 =>   1000001010            2                  2
+0000110111 =>   0000001010            1                  3
+1000110111 =>   1000001010            2                  2
+0100110111 =>   0000001010            1                  3
+1100110111 =>   1000001010            2                  2
+0010110111 =>   0001001010            1                  4
+1010110111 =>   1001001010            2                  2
+0110110111 =>   0000001010            1                  3
+1110110111 =>   1000001010            2                  2
+0001110111 =>   0000001010            1                  3
+1001110111 =>   1000001010            2                  2
+0101110111 =>   0000001010            1                  3
+1101110111 =>   1000001010            2                  2
+0011110111 =>   0001001010            1                  4
+1011110111 =>   1001001010            2                  2
+0111110111 =>   0000001010            1                  3
+1111110111 =>   1000001010            2                  2
+0000001111 =>   0000001110            1                  3
+1000001111 =>   1000001110            2                  1
+0100001111 =>   0000001110            1                  3
+1100001111 =>   1000001110            2                  1
+0010001111 =>   0001001110            1                  4
+1010001111 =>   1001001110            2                  2
+0110001111 =>   0000001110            1                  3
+1110001111 =>   1000001110            2                  1
+0001001111 =>   0000001110            1                  3
+1001001111 =>   1000001110            2                  1
+0101001111 =>   0000001110            1                  3
+1101001111 =>   1000001110            2                  1
+0011001111 =>   0001001110            1                  4
+1011001111 =>   1001001110            2                  2
+0111001111 =>   0000001110            1                  3
+1111001111 =>   1000001110            2                  1
+0000101111 =>   0000001110            1                  3
+1000101111 =>   1000001110            2                  1
+0100101111 =>   0000001110            1                  3
+1100101111 =>   1000001110            2                  1
+0010101111 =>   0001001110            1                  4
+1010101111 =>   1001001110            2                  2
+0110101111 =>   0000001110            1                  3
+1110101111 =>   1000001110            2                  1
+0001101111 =>   0000001110            1                  3
+1001101111 =>   1000001110            2                  1
+0101101111 =>   0000001110            1                  3
+1101101111 =>   1000001110            2                  1
+0011101111 =>   0001001110            1                  4
+1011101111 =>   1001001110            2                  2
+0111101111 =>   0000001110            1                  3
+1111101111 =>   1000001110            2                  1
+0000011111 =>   0000001110            1                  3
+1000011111 =>   1000001110            2                  1
+0100011111 =>   0000001110            1                  3
+1100011111 =>   1000001110            2                  1
+0010011111 =>   0001001110            1                  4
+1010011111 =>   1001001110            2                  2
+0110011111 =>   0000001110            1                  3
+1110011111 =>   1000001110            2                  1
+0001011111 =>   0000001110            1                  3
+1001011111 =>   1000001110            2                  1
+0101011111 =>   0000001110            1                  3
+1101011111 =>   1000001110            2                  1
+0011011111 =>   0001001110            1                  4
+1011011111 =>   1001001110            2                  2
+0111011111 =>   0000001110            1                  3
+1111011111 =>   1000001110            2                  1
+0000111111 =>   0000001110            1                  3
+1000111111 =>   1000001110            2                  1
+0100111111 =>   0000001110            1                  3
+1100111111 =>   1000001110            2                  1
+0010111111 =>   0001001110            1                  4
+1010111111 =>   1001001110            2                  2
+0110111111 =>   0000001110            1                  3
+1110111111 =>   1000001110            2                  1
+0001111111 =>   0000001110            1                  3
+1001111111 =>   1000001110            2                  1
+0101111111 =>   0000001110            1                  3
+1101111111 =>   1000001110            2                  1
+0011111111 =>   0001001110            1                  4
+1011111111 =>   1001001110            2                  2
+0111111111 =>   0000001110            1                  3
+1111111111 =>   1000001110            2                  1
+
+Genes are encoded in the following order: CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getTransitionTable", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("igf")
+> ### * igf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: igf
+> ### Title: Boolean model of the IGF pathway
+> ### Aliases: igf
+> ### Keywords: datasets IGF pathway symbolic Boolean network time delays
+> 
+> ### ** Examples
+> 
+> data(igf)
+> 
+> sim <- simulateSymbolicModel(igf)
+> plotAttractors(sim)
+$`1`
+       Attr1.1
+IGF          0
+IRS          0
+PI3K         0
+Akt          0
+mTORC1       0
+mTORC2       0
+
+$`14`
+       Attr2.1 Attr2.2 Attr2.3 Attr2.4 Attr2.5 Attr2.6 Attr2.7 Attr2.8 Attr2.9
+IGF          1       1       1       1       1       1       1       1       1
+IRS          0       1       1       1       1       1       1       1       0
+PI3K         0       0       1       1       1       1       1       1       1
+Akt          0       0       0       1       1       1       1       1       1
+mTORC1       0       0       0       0       0       0       1       1       1
+mTORC2       0       0       0       1       1       0       0       0       0
+       Attr2.10 Attr2.11 Attr2.12 Attr2.13 Attr2.14
+IGF           1        1        1        1        1
+IRS           0        0        0        0        0
+PI3K          0        0        0        0        0
+Akt           1        0        0        0        0
+mTORC1        1        1        1        0        0
+mTORC2        0        0        0        0        0
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("igf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("loadBioTapestry")
+> ### * loadBioTapestry
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: loadBioTapestry
+> ### Title: Import a network from BioTapestry
+> ### Aliases: loadBioTapestry
+> ### Keywords: BioTapestry import
+> 
+> ### ** Examples
+> 
+> # import the example BioTapestry file
+> # included in the package vignette
+> exampleFile <- system.file("doc/example.btp",
++                            package="BoolNet")
+> net <- loadBioTapestry(exampleFile)
+> 
+> # print the imported network
+> print(net)
+Boolean network with 5 genes
+
+Involved genes:
+Input_1 Input_2 Gene_1 Gene_2 Gene_3
+
+Transition functions:
+Input_1 = 1
+Input_2 = Input_2
+Gene_1 = (!Gene_1 & !Input_1 & Input_2) | (!Gene_1 & Input_1 & !Input_2) | (Gene_1 & !Input_1 & !Input_2) | (Gene_1 & Input_1 & Input_2)
+Gene_2 = Gene_1 & Gene_3 & !Input_2
+Gene_3 = Gene_1 | Gene_2
+
+Knocked-out and over-expressed genes:
+Input_1 = 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("loadBioTapestry", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("loadNetwork")
+> ### * loadNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: loadNetwork
+> ### Title: Load a Boolean network from a file
+> ### Aliases: loadNetwork
+> ### Keywords: Boolean network probabilistic Boolean network PBN file logic
+> ###   parse
+> 
+> ### ** Examples
+> 
+> # write example network to file
+> sink("testNet.bn")
+> cat("targets, factors\n")
+> cat("Gene1, !Gene2 | !Gene3\n")
+> cat("Gene2, Gene3 & Gene4\n")
+> cat("Gene3, Gene2 & !Gene1\n")
+> cat("Gene4, 1\n")
+> sink()
+> 
+> # read file
+> net <- loadNetwork("testNet.bn")
+> print(net)
+Boolean network with 4 genes
+
+Involved genes:
+Gene1 Gene2 Gene3 Gene4
+
+Transition functions:
+Gene1 = !Gene2 | !Gene3
+Gene2 = Gene3 & Gene4
+Gene3 = Gene2 & !Gene1
+Gene4 = 1
+
+Knocked-out and over-expressed genes:
+Gene4 = 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("loadNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("loadSBML")
+> ### * loadSBML
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: loadSBML
+> ### Title: Load an SBML document
+> ### Aliases: loadSBML
+> ### Keywords: SBML Boolean network file import
+> 
+> ### ** Examples
+> 
+> # load the cell cycle network
+> data(cellcycle)
+> 
+> # export the network to SBML
+> toSBML(cellcycle, "cellcycle.sbml")
+> 
+> # reimport the model
+> print(loadSBML("cellcycle.sbml"))
+Boolean network with 10 genes
+
+Involved genes:
+CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+Transition functions:
+CycD = CycD
+Rb = ((!CycA & !CycB & !CycD & !CycE) | (p27 & !CycB & !CycD))
+E2F = ((!Rb & !CycA & !CycB) | (p27 & !Rb & !CycB))
+CycE = (E2F & !Rb)
+CycA = ((E2F & !Rb & !Cdc20 & !(Cdh1 & UbcH10)) | (CycA & !Rb & !Cdc20 & !(Cdh1 & UbcH10)))
+p27 = ((!CycD & !CycE & !CycA & !CycB) | (p27 & !(CycE & CycA) & !CycB & !CycD))
+Cdc20 = CycB
+Cdh1 = ((!CycA & !CycB) | Cdc20 | (p27 & !CycB))
+UbcH10 = (!Cdh1 | (Cdh1 & UbcH10 & (Cdc20 | CycA | CycB)))
+CycB = (!Cdc20 & !Cdh1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("loadSBML", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("markovSimulation")
+> ### * markovSimulation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: markovSimulation
+> ### Title: Identify important states in probabilistic Boolean networks
+> ### Aliases: markovSimulation
+> ### Keywords: probabilistic Boolean network PBN Markov chain
+> 
+> ### ** Examples
+> 
+> # load example network
+> data(examplePBN)
+> 
+> # perform a Markov chain simulation
+> sim <- markovSimulation(examplePBN)
+> 
+> # print the relevant states and transition probabilities
+> print(sim)
+States reached at the end of the simulation:
+  x1 x2 x3 Probability
+1  0  0  0        0.15
+2  1  1  1        0.85
+
+Probabilities of state transitions in the network:
+  State     Next state  Probability
+    000 =>         000          1.0
+    001 =>         110          1.0
+    010 =>         110          1.0
+    011 =>         000          0.2
+    011 =>         100          0.3
+    011 =>         001          0.2
+    011 =>         101          0.3
+    100 =>         010          1.0
+    101 =>         110          0.5
+    101 =>         111          0.5
+    110 =>         100          0.5
+    110 =>         101          0.5
+    111 =>         111          1.0
+> 
+> # plot the transitions and their probabilities
+> plotPBNTransitions(sim)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("markovSimulation", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("perturbNetwork")
+> ### * perturbNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: perturbNetwork
+> ### Title: Perturb a Boolean network randomly
+> ### Aliases: perturbNetwork
+> ### Keywords: Boolean network probabilistic Boolean network PBN state
+> ###   perturb perturbation noise robustness
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # perturb the network
+> perturbedNet1 <- perturbNetwork(cellcycle, perturb="functions", method="shuffle")
+> perturbedNet2 <- perturbNetwork(cellcycle, perturb="transitions", method="bitflip")
+> 
+> # get attractors
+> print(getAttractors(perturbedNet1))
+Attractor 1 is a simple attractor consisting of 1 state(s) and has a basin of 512 state(s):
+
+ |--<---------|
+ V            |
+ 0100010100   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+Attractor 2 is a simple attractor consisting of 1 state(s) and has a basin of 512 state(s):
+
+ |--<---------|
+ V            |
+ 1000000100   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+> print(getAttractors(perturbedNet2))
+Attractor 1 is a simple attractor consisting of 1 state(s) and has a basin of 512 state(s):
+
+ |--<---------|
+ V            |
+ 0100010100   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+Attractor 2 is a simple attractor consisting of 7 state(s) and has a basin of 512 state(s):
+
+ |--<---------|
+ V            |
+ 1001100000   |
+ 1000100011   |
+ 1000101011   |
+ 1000001110   |
+ 1010000110   |
+ 1011000100   |
+ 1011100100   |
+ V            |
+ |-->---------|
+
+
+Genes are encoded in the following order: CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("perturbNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("perturbTrajectories")
+> ### * perturbTrajectories
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: perturbTrajectories
+> ### Title: Perturb the state trajectories and calculate robustness measures
+> ### Aliases: perturbTrajectories
+> ### Keywords: Boolean network probabilistic Boolean network, PBN,
+> ###   perturbation perturb trajectory noise robustness
+> 
+> ### ** Examples
+> 
+> data(cellcycle)
+> 
+> # calculate average normalized Hamming distance of successor states
+> hamming <- perturbTrajectories(cellcycle, measure="hamming", numSamples=100)
+> print(hamming$value)
+[1] 0.112
+> 
+> # calculate average sensitivity of transition function for gene "Cdh1"
+> sensitivity <- perturbTrajectories(cellcycle, measure="sensitivity", numSamples=100, gene="Cdh1")
+> print(sensitivity$value)
+[1] 0.08
+> 
+> # calculate percentage of equal attractors for state pairs
+> attrEqual <- perturbTrajectories(cellcycle, measure="attractor", numSamples=100)
+> print(attrEqual$value)
+[1] 0.88
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("perturbTrajectories", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotAttractors")
+> ### * plotAttractors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotAttractors
+> ### Title: Plot state tables or transition graphs of attractors
+> ### Aliases: plotAttractors
+> ### Keywords: Boolean network attractor cycle basin transition state graph
+> ###   plot
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # get attractors
+> attractors <- getAttractors(cellcycle)
+> 
+> # calculate number of different attractor lengths, 
+> # and plot attractors side by side in "table" mode
+> par(mfrow=c(1, length(table(sapply(attractors$attractors,
++                           function(attractor)
++                           {
++                             length(attractor$involvedStates)
++                           })))))
+> plotAttractors(attractors)
+$`1`
+       Attr1.1
+CycD         0
+Rb           1
+E2F          0
+CycE         0
+CycA         0
+p27          1
+Cdc20        0
+Cdh1         1
+UbcH10       0
+CycB         0
+
+$`7`
+       Attr2.1 Attr2.2 Attr2.3 Attr2.4 Attr2.5 Attr2.6 Attr2.7
+CycD         1       1       1       1       1       1       1
+Rb           0       0       0       0       0       0       0
+E2F          0       0       0       0       1       1       1
+CycE         1       0       0       0       0       1       1
+CycA         1       1       1       0       0       0       1
+p27          0       0       0       0       0       0       0
+Cdc20        0       0       1       1       0       0       0
+Cdh1         0       0       0       1       1       1       1
+UbcH10       0       1       1       1       1       0       0
+CycB         0       1       1       0       0       0       0
+
+> 
+> # plot attractors in "graph" mode
+> par(mfrow=c(1, length(attractors$attractors)))
+> plotAttractors(attractors, mode="graph")
+[[1]]
+IGRAPH DN-- 1 1 -- 
++ attr: name (v/c)
++ edge (vertex names):
+[1] 0100010100->0100010100
+
+[[2]]
+IGRAPH DN-- 7 7 -- 
++ attr: name (v/c)
++ edges (vertex names):
+[1] 1001100000->1000100011 1000100011->1000101011 1000101011->1000001110
+[4] 1000001110->1010000110 1010000110->1011000100 1011000100->1011100100
+[7] 1011100100->1001100000
+
+> 
+> # identify asynchronous attractors
+> attractors <- getAttractors(cellcycle, type="asynchronous")
+> 
+> # plot attractors in "graph" mode
+> par(mfrow=c(1, length(attractors$attractors)))
+> plotAttractors(attractors, mode="graph")
+[[1]]
+IGRAPH DN-- 1 1 -- 
++ attr: name (v/c)
++ edge (vertex names):
+[1] 0100010100->0100010100
+
+[[2]]
+IGRAPH DN-- 112 338 -- 
++ attr: name (v/c)
++ edges (vertex names):
+ [1] 1011101111->1011101110 1011101111->1011001111 1011101111->1001101111
+ [4] 1001101111->1001101110 1001101111->1001001111 1001101111->1000101111
+ [7] 1010101111->1010101110 1010101111->1010001111 1010101111->1011101111
+[10] 1010101111->1000101111 1000101111->1000101110 1000101111->1000001111
+[13] 1011001111->1011001110 1011001111->1001001111 1001001111->1001001110
+[16] 1001001111->1000001111 1010001111->1010001110 1010001111->1011001111
+[19] 1010001111->1000001111 1000001111->1000001110 1011101011->1011101010
+[22] 1011101011->1011101111 1011101011->1011001011 1011101011->1001101011
++ ... omitted several edges
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotAttractors", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("plotNetworkWiring")
+> ### * plotNetworkWiring
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotNetworkWiring
+> ### Title: Plot the wiring of a Boolean network
+> ### Aliases: plotNetworkWiring
+> ### Keywords: wiring graph plot Boolean network dependencies
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # plot wiring graph
+> plotNetworkWiring(cellcycle)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotNetworkWiring", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotPBNTransitions")
+> ### * plotPBNTransitions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotPBNTransitions
+> ### Title: Visualize the transitions in a probabilistic Boolean network
+> ### Aliases: plotPBNTransitions
+> ### Keywords: probabilistic Boolean network PBN Boolean network plot
+> ###   transition graph
+> 
+> ### ** Examples
+> 
+> # load example network
+> data(examplePBN)
+> 
+> # perform a Markov chain simulation
+> sim <- markovSimulation(examplePBN)
+> 
+> # plot the transitions and their probabilities
+> plotPBNTransitions(sim)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotPBNTransitions", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotSequence")
+> ### * plotSequence
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotSequence
+> ### Title: Plot a sequence of states
+> ### Aliases: plotSequence
+> ### Keywords: Boolean network state path sequence plot
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # alternative 1: supply network and start state
+> # and plot sequence as a table
+> plotSequence(network=cellcycle, 
++              startState=rep(1,10), 
++              includeAttractorStates="all")
+       1 2 3 4 5 6 7 8
+CycD   1 1 1 1 1 1 1 1
+Rb     1 0 0 0 0 0 0 0
+E2F    1 0 1 1 1 0 0 0
+CycE   1 0 0 1 1 1 0 0
+CycA   1 0 0 0 1 1 1 1
+p27    1 0 0 0 0 0 0 0
+Cdc20  1 1 0 0 0 0 0 1
+Cdh1   1 1 1 1 1 0 0 0
+UbcH10 1 1 1 0 0 0 1 1
+CycB   1 0 0 0 0 0 1 1
+> 
+> # alternative 2: calculate sequence in advance
+> sequence <- getPathToAttractor(cellcycle, 
++                                state=rep(1,10), 
++                                includeAttractorStates="all")
+> 
+> # plot sequence as a graph
+> plotSequence(sequence=sequence, 
++              mode="graph")
+IGRAPH DN-- 8 8 -- 
++ attr: name (v/c), width (e/n), curved (e/n)
++ edges (vertex names):
+[1] 1->2 2->3 3->4 4->5 5->6 6->7 7->8 8->2
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotSequence", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotStateGraph")
+> ### * plotStateGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotStateGraph
+> ### Title: Visualize state transitions and attractor basins
+> ### Aliases: plotStateGraph
+> ### Keywords: Boolean network attractor cycle basin transition state graph
+> ###   plot
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # get attractors
+> attractors <- getAttractors(cellcycle)
+> 
+> # plot state graph
+> ## Not run: 
+> ##D plotStateGraph(attractors, main="Cell cycle network")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotStateGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("reconstructNetwork")
+> ### * reconstructNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: reconstructNetwork
+> ### Title: Reconstruct a Boolean network from time series of measurements
+> ### Aliases: reconstructNetwork
+> ### Keywords: probabilistic Boolean network PBN reconstruction REVEAL
+> ###   best-fit extension
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(yeastTimeSeries)
+> 
+> # perform binarization with k-means
+> bin <- binarizeTimeSeries(yeastTimeSeries)
+> 
+> # reconstruct networks from binarized measurements
+> net <- reconstructNetwork(bin$binarizedMeasurements, method="bestfit", maxK=3, returnPBN=TRUE)
+> 
+> # print reconstructed net
+> print(net)
+Probabilistic Boolean network with 4 genes
+
+Involved genes:
+Fkh2 Swi5 Sic1 Clb1
+
+Transition functions:
+
+Alternative transition functions for gene Fkh2:
+Fkh2 = <f(Clb1){01}> ( probability: 0.5, error: 1)
+Fkh2 = <f(Fkh2){01}> ( probability: 0.5, error: 1)
+
+Alternative transition functions for gene Swi5:
+Swi5 = <f(Clb1){01}> ( probability: 0.5, error: 1)
+Swi5 = <f(Fkh2){01}> ( probability: 0.5, error: 1)
+
+Alternative transition functions for gene Sic1:
+Sic1 = <f(Sic1,Clb1){0001}> ( probability: 0.3333333, error: 1)
+Sic1 = <f(Swi5,Sic1){0001}> ( probability: 0.3333333, error: 1)
+Sic1 = <f(Fkh2,Sic1){0001}> ( probability: 0.3333333, error: 1)
+
+Alternative transition functions for gene Clb1:
+Clb1 = <f(Clb1){01}> ( probability: 0.5, error: 1)
+Clb1 = <f(Fkh2){01}> ( probability: 0.5, error: 1)
+> 
+> # plot reconstructed net
+> plotNetworkWiring(net)
+Warning in res[ord[idx]] <- r :
+  number of items to replace is not a multiple of replacement length
+Warning in res[ord[idx]] <- r :
+  number of items to replace is not a multiple of replacement length
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("reconstructNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("saveNetwork")
+> ### * saveNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: saveNetwork
+> ### Title: Save a network
+> ### Aliases: saveNetwork
+> ### Keywords: Boolean network probabilistic Boolean network PBN file export
+> 
+> ### ** Examples
+> 
+> # load the cell cycle network
+> data(cellcycle)
+> 
+> # save it to a file
+> saveNetwork(cellcycle, file="cellcycle.txt")
+> 
+> # reload the model
+> print(loadNetwork("cellcycle.txt"))
+Boolean network with 10 genes
+
+Involved genes:
+CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+Transition functions:
+CycD = CycD
+Rb = (! CycA & ! CycB & ! CycD & ! CycE) | (p27 & ! CycB & ! CycD)
+E2F = (! Rb & ! CycA & ! CycB) | (p27 & ! Rb & ! CycB)
+CycE = (E2F & ! Rb)
+CycA = (E2F & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10)) | (CycA & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10))
+p27 = (! CycD & ! CycE & ! CycA & ! CycB) | (p27 & ! (CycE & CycA) & ! CycB &! CycD)
+Cdc20 = CycB
+Cdh1 = (! CycA & ! CycB) | (Cdc20) | (p27 & ! CycB)
+UbcH10 = ! Cdh1 | (Cdh1 & UbcH10 & (Cdc20 | CycA | CycB))
+CycB = ! Cdc20 & ! Cdh1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("saveNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sequenceToLaTeX")
+> ### * sequenceToLaTeX
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sequenceToLaTeX
+> ### Title: Create LaTeX table of state sequences
+> ### Aliases: sequenceToLaTeX sequenceToLaTeX.BooleanNetwork
+> ###   sequenceToLaTeX.data.frame
+> ### Keywords: Boolean network state path sequence LaTeX
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # alternative 1: supply network and start state
+> # and export sequence to LaTeX
+> sequenceToLaTeX(network=cellcycle, 
++                 startState=rep(1,10), 
++                 includeAttractorStates="all",
++                 file="sequence.txt")
+       1 2 3 4 5 6 7 8
+CycD   1 1 1 1 1 1 1 1
+Rb     1 0 0 0 0 0 0 0
+E2F    1 0 1 1 1 0 0 0
+CycE   1 0 0 1 1 1 0 0
+CycA   1 0 0 0 1 1 1 1
+p27    1 0 0 0 0 0 0 0
+Cdc20  1 1 0 0 0 0 0 1
+Cdh1   1 1 1 1 1 0 0 0
+UbcH10 1 1 1 0 0 0 1 1
+CycB   1 0 0 0 0 0 1 1
+> 
+> # alternative 2: calculate sequence in advance
+> sequence <- getPathToAttractor(cellcycle, 
++                                state=rep(1,10), 
++                                includeAttractorStates="all")
+> 
+> sequenceToLaTeX(sequence=sequence, 
++                 file="sequence.txt")
+       1 2 3 4 5 6 7 8
+CycD   1 1 1 1 1 1 1 1
+Rb     1 0 0 0 0 0 0 0
+E2F    1 0 1 1 1 0 0 0
+CycE   1 0 0 1 1 1 0 0
+CycA   1 0 0 0 1 1 1 1
+p27    1 0 0 0 0 0 0 0
+Cdc20  1 1 0 0 0 0 0 1
+Cdh1   1 1 1 1 1 0 0 0
+UbcH10 1 1 1 0 0 0 1 1
+CycB   1 0 0 0 0 0 1 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sequenceToLaTeX", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simplifyNetwork")
+> ### * simplifyNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simplifyNetwork
+> ### Title: Simplify the functions of a synchronous, asynchronous, or
+> ###   probabilistic Boolean network
+> ### Aliases: simplifyNetwork
+> ### Keywords: Boolean network probabilistic Boolean network PBN logic
+> ###   simplify simplification
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # perturb the network
+> perturbedNet <- perturbNetwork(cellcycle, perturb="functions", method="shuffle")
+> print(perturbedNet$interactions)
+$CycD
+$CycD$input
+[1] 1
+
+$CycD$func
+[1] 0 1
+
+$CycD$expression
+[1] "CycD"
+
+
+$Rb
+$Rb$input
+[1]  1  4  5  6 10
+
+$Rb$func
+ [1] 1 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+$Rb$expression
+[1] "(! CycA & ! CycB & ! CycD & ! CycE) | (p27 & ! CycB & ! CycD)"
+
+
+$E2F
+$E2F$input
+[1]  2  5  6 10
+
+$E2F$func
+ [1] 0 0 0 1 0 0 1 0 1 0 0 0 0 0 0 0
+
+$E2F$expression
+[1] "<f(Rb,CycA,p27,CycB){0001001010000000}>"
+
+
+$CycE
+$CycE$input
+[1] 2 3
+
+$CycE$func
+[1] 0 1 0 0
+
+$CycE$expression
+[1] "(E2F & ! Rb)"
+
+
+$CycA
+$CycA$input
+[1] 2 3 5 7 8 9
+
+$CycA$func
+ [1] 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 1 1 1 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0
+[39] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+$CycA$expression
+[1] "(E2F & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10)) | (CycA & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10))"
+
+
+$p27
+$p27$input
+[1]  1  4  5  6 10
+
+$p27$func
+ [1] 1 0 1 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+$p27$expression
+[1] "(! CycD & ! CycE & ! CycA & ! CycB) | (p27 & ! (CycE & CycA) & ! CycB &! CycD)"
+
+
+$Cdc20
+$Cdc20$input
+[1] 10
+
+$Cdc20$func
+[1] 0 1
+
+$Cdc20$expression
+[1] "CycB"
+
+
+$Cdh1
+$Cdh1$input
+[1]  5  6  7 10
+
+$Cdh1$func
+ [1] 1 0 1 1 1 0 1 1 0 0 1 1 1 0 1 1
+
+$Cdh1$expression
+[1] "(! CycA & ! CycB) | (Cdc20) | (p27 & ! CycB)"
+
+
+$UbcH10
+$UbcH10$input
+[1]  5  7  8  9 10
+
+$UbcH10$func
+ [1] 1 1 1 1 0 0 0 1 1 1 1 1 0 0 1 1 1 1 1 1 0 0 1 1 1 1 1 1 0 0 1 1
+
+$UbcH10$expression
+[1] "! Cdh1 | (Cdh1 & UbcH10 & (Cdc20 | CycA | CycB))"
+
+
+$CycB
+$CycB$input
+[1] 7 8
+
+$CycB$func
+[1] 1 0 0 0
+
+$CycB$expression
+[1] "! Cdc20 & ! Cdh1"
+
+
+> 
+> # simplify the network
+> perturbedNet <- simplifyNetwork(perturbedNet)
+> print(perturbedNet$interactions)
+$CycD
+$CycD$input
+[1] 1
+
+$CycD$func
+[1] 0 1
+
+$CycD$expression
+[1] "CycD"
+
+
+$Rb
+$Rb$input
+[1]  1  4  5  6 10
+
+$Rb$func
+ [1] 1 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+$Rb$expression
+[1] "(! CycA & ! CycB & ! CycD & ! CycE) | (p27 & ! CycB & ! CycD)"
+
+
+$E2F
+$E2F$input
+[1]  2  5  6 10
+
+$E2F$func
+ [1] 0 0 0 1 0 0 1 0 1 0 0 0 0 0 0 0
+
+$E2F$expression
+[1] "<f(Rb,CycA,p27,CycB){0001001010000000}>"
+
+
+$CycE
+$CycE$input
+[1] 2 3
+
+$CycE$func
+[1] 0 1 0 0
+
+$CycE$expression
+[1] "(E2F & ! Rb)"
+
+
+$CycA
+$CycA$input
+[1] 2 3 5 7 8 9
+
+$CycA$func
+ [1] 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 1 1 1 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0
+[39] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+$CycA$expression
+[1] "(E2F & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10)) | (CycA & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10))"
+
+
+$p27
+$p27$input
+[1]  1  4  5  6 10
+
+$p27$func
+ [1] 1 0 1 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+$p27$expression
+[1] "(! CycD & ! CycE & ! CycA & ! CycB) | (p27 & ! (CycE & CycA) & ! CycB &! CycD)"
+
+
+$Cdc20
+$Cdc20$input
+[1] 10
+
+$Cdc20$func
+[1] 0 1
+
+$Cdc20$expression
+[1] "CycB"
+
+
+$Cdh1
+$Cdh1$input
+[1]  5  6  7 10
+
+$Cdh1$func
+ [1] 1 0 1 1 1 0 1 1 0 0 1 1 1 0 1 1
+
+$Cdh1$expression
+[1] "(! CycA & ! CycB) | (Cdc20) | (p27 & ! CycB)"
+
+
+$UbcH10
+$UbcH10$input
+[1]  5  7  8  9 10
+
+$UbcH10$func
+ [1] 1 1 1 1 0 0 0 1 1 1 1 1 0 0 1 1 1 1 1 1 0 0 1 1 1 1 1 1 0 0 1 1
+
+$UbcH10$expression
+[1] "! Cdh1 | (Cdh1 & UbcH10 & (Cdc20 | CycA | CycB))"
+
+
+$CycB
+$CycB$input
+[1] 7 8
+
+$CycB$func
+[1] 1 0 0 0
+
+$CycB$expression
+[1] "! Cdc20 & ! Cdh1"
+
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simplifyNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simulateSymbolicModel")
+> ### * simulateSymbolicModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simulateSymbolicModel
+> ### Title: Simulate a symbolic Boolean network
+> ### Aliases: simulateSymbolicModel
+> ### Keywords: simulation symbolic Boolean network temporal predicates
+> 
+> ### ** Examples
+> 
+> data(igf)
+> 
+> # exhaustive state space simulation
+> sim <- simulateSymbolicModel(igf)
+> plotAttractors(sim)
+$`1`
+       Attr1.1
+IGF          0
+IRS          0
+PI3K         0
+Akt          0
+mTORC1       0
+mTORC2       0
+
+$`14`
+       Attr2.1 Attr2.2 Attr2.3 Attr2.4 Attr2.5 Attr2.6 Attr2.7 Attr2.8 Attr2.9
+IGF          1       1       1       1       1       1       1       1       1
+IRS          0       1       1       1       1       1       1       1       0
+PI3K         0       0       1       1       1       1       1       1       1
+Akt          0       0       0       1       1       1       1       1       1
+mTORC1       0       0       0       0       0       0       1       1       1
+mTORC2       0       0       0       1       1       0       0       0       0
+       Attr2.10 Attr2.11 Attr2.12 Attr2.13 Attr2.14
+IGF           1        1        1        1        1
+IRS           0        0        0        0        0
+PI3K          0        0        0        0        0
+Akt           1        0        0        0        0
+mTORC1        1        1        1        0        0
+mTORC2        0        0        0        0        0
+
+> 
+> # exhaustive attractor search using SAT solver
+> sim <- simulateSymbolicModel(igf, method="sat.exhaustive")
+> plotAttractors(sim)
+$`1`
+       Attr2.1
+IGF          0
+IRS          0
+PI3K         0
+Akt          0
+mTORC1       0
+mTORC2       0
+
+$`14`
+       Attr1.1 Attr1.2 Attr1.3 Attr1.4 Attr1.5 Attr1.6 Attr1.7 Attr1.8 Attr1.9
+IGF          1       1       1       1       1       1       1       1       1
+IRS          0       1       1       1       1       1       1       1       0
+PI3K         0       0       1       1       1       1       1       1       1
+Akt          0       0       0       1       1       1       1       1       1
+mTORC1       0       0       0       0       0       0       1       1       1
+mTORC2       0       0       0       1       1       0       0       0       0
+       Attr1.10 Attr1.11 Attr1.12 Attr1.13 Attr1.14
+IGF           1        1        1        1        1
+IRS           0        0        0        0        0
+PI3K          0        0        0        0        0
+Akt           1        0        0        0        0
+mTORC1        1        1        1        0        0
+mTORC2        0        0        0        0        0
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simulateSymbolicModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("stateTransition")
+> ### * stateTransition
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: stateTransition
+> ### Title: Perform a transition to the next state
+> ### Aliases: stateTransition
+> ### Keywords: state transition Boolean network synchronous update
+> ###   asynchronous update probabilistic Boolean network PBN transition
+> ###   state
+> 
+> ### ** Examples
+> 
+> # load example network
+> data(cellcycle)
+> 
+> # calculate a synchronous state transition
+> print(stateTransition(cellcycle, c(1,1,1,1,1,1,1,1,1,1)))
+  CycD     Rb    E2F   CycE   CycA    p27  Cdc20   Cdh1 UbcH10   CycB 
+     1      0      0      0      0      0      1      1      1      0 
+> 
+> # calculate an asynchronous state transition of gene CycA
+> print(stateTransition(cellcycle, c(1,1,1,1,1,1,1,1,1,1),
++                       type="asynchronous", chosenGene="CycA"))
+  CycD     Rb    E2F   CycE   CycA    p27  Cdc20   Cdh1 UbcH10   CycB 
+     1      1      1      1      0      1      1      1      1      1 
+>                       
+> # load probabilistic network
+> data(examplePBN)
+> 
+> # perform a probabilistic state transition
+> print(stateTransition(examplePBN, c(0,1,1),
++                       type="probabilistic"))       
+x1 x2 x3 
+ 1  0  0 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("stateTransition", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("symbolicToTruthTable")
+> ### * symbolicToTruthTable
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: symbolicToTruthTable
+> ### Title: Convert a symbolic network into a truth table representation
+> ### Aliases: symbolicToTruthTable
+> ### Keywords: Boolean network symbolic Boolean network conversion
+> 
+> ### ** Examples
+> 
+> # Convert a truth table representation into a 
+> # symbolic representation and back
+> data(cellcycle)
+> 
+> symbolicNet <- truthTableToSymbolic(cellcycle)
+> print(symbolicNet)
+Symbolic representation of a Boolean network
+
+Transition functions:
+CycD = CycD
+Rb = ((!CycA & !CycB & !CycD & !CycE) | (p27 & !CycB & !CycD))
+E2F = ((!Rb & !CycA & !CycB) | (p27 & !Rb & !CycB))
+CycE = (E2F & !Rb)
+CycA = ((E2F & !Rb & !Cdc20 & !(Cdh1 & UbcH10)) | (CycA & !Rb & !Cdc20 & !(Cdh1 & UbcH10)))
+p27 = ((!CycD & !CycE & !CycA & !CycB) | (p27 & !(CycE & CycA) & !CycB & !CycD))
+Cdc20 = CycB
+Cdh1 = ((!CycA & !CycB) | Cdc20 | (p27 & !CycB))
+UbcH10 = (!Cdh1 | (Cdh1 & UbcH10 & (Cdc20 | CycA | CycB)))
+CycB = (!Cdc20 & !Cdh1)
+> 
+> ttNet <- symbolicToTruthTable(symbolicNet)
+> print(cellcycle)
+Boolean network with 10 genes
+
+Involved genes:
+CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+Transition functions:
+CycD = CycD
+Rb = (! CycA & ! CycB & ! CycD & ! CycE) | (p27 & ! CycB & ! CycD)
+E2F = (! Rb & ! CycA & ! CycB) | (p27 & ! Rb & ! CycB)
+CycE = (E2F & ! Rb)
+CycA = (E2F & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10)) | (CycA & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10))
+p27 = (! CycD & ! CycE & ! CycA & ! CycB) | (p27 & ! (CycE & CycA) & ! CycB &! CycD)
+Cdc20 = CycB
+Cdh1 = (! CycA & ! CycB) | (Cdc20) | (p27 & ! CycB)
+UbcH10 = ! Cdh1 | (Cdh1 & UbcH10 & (Cdc20 | CycA | CycB))
+CycB = ! Cdc20 & ! Cdh1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("symbolicToTruthTable", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("testNetworkProperties")
+> ### * testNetworkProperties
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: testNetworkProperties
+> ### Title: Test properties of networks by comparing them to random networks
+> ### Aliases: testNetworkProperties testIndegree testAttractorRobustness
+> ###   testTransitionRobustness
+> ### Keywords: robustness analysis perturbation in-degree
+> 
+> ### ** Examples
+> 
+> # load mammalian cell cycle network
+> data(cellcycle)
+> 
+> if (interactive())
++ # do not run these examples in the package check, as they take some time
++ {
++   # compare the in-degrees of the states in the
++   # cell cycle network to random networks
++   testNetworkProperties(cellcycle, testFunction="testIndegree", alternative="greater")
++ 
++   # compare the in-degrees of the states in the
++   # cell cycle network to random networks,
++   # and plot the Kullback-Leibler distances of the 100 experiments
++   testNetworkProperties(cellcycle, testFunction="testIndegree",
++                         accumulation = "kullback_leibler")
++ 
++   # compare the robustness of attractors in the cell cycle network
++   # to random networks by perturbing the networks
++   testNetworkProperties(cellcycle, testFunction="testAttractorRobustness",
++                         testFunctionParams=list(perturb="functions", numSamples=10),
++                         alternative="greater")
++ 
++   # compare the robustness of attractors in the cell cycle network
++   # to random networks by perturbing the state trajectories
++   testNetworkProperties(cellcycle, testFunction="testAttractorRobustness",
++                         testFunctionParams=list(perturb="trajectories", numSamples=10),
++                         alternative="greater")
++                       
++   # compare the robustness of single state transitions in the cell cycle network
++   testNetworkProperties(cellcycle, testFunction="testTransitionRobustness",
++                         testFunctionParams=list(numSamples=10),
++                         alternative="less")
++ }                     
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("testNetworkProperties", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("toPajek")
+> ### * toPajek
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: toPajek
+> ### Title: Export a network to the Pajek file format
+> ### Aliases: toPajek
+> ### Keywords: Pajek Boolean network attractor cycle basin transition state
+> ###   graph
+> 
+> ### ** Examples
+> 
+> # load example data
+> data(cellcycle)
+> 
+> # get attractors
+> attractors <- getAttractors(cellcycle)
+> 
+> # export to Pajek
+> toPajek(attractors, file="pajek_export.net")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("toPajek", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("toSBML")
+> ### * toSBML
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: toSBML
+> ### Title: Export a network to SBML
+> ### Aliases: toSBML
+> ### Keywords: SBML Boolean network file export
+> 
+> ### ** Examples
+> 
+> # load the cell cycle network
+> data(cellcycle)
+> 
+> # export the network to SBML
+> toSBML(cellcycle, file="cellcycle.sbml")
+> 
+> # reimport the model
+> print(loadSBML("cellcycle.sbml"))
+Boolean network with 10 genes
+
+Involved genes:
+CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+Transition functions:
+CycD = CycD
+Rb = ((!CycA & !CycB & !CycD & !CycE) | (p27 & !CycB & !CycD))
+E2F = ((!Rb & !CycA & !CycB) | (p27 & !Rb & !CycB))
+CycE = (E2F & !Rb)
+CycA = ((E2F & !Rb & !Cdc20 & !(Cdh1 & UbcH10)) | (CycA & !Rb & !Cdc20 & !(Cdh1 & UbcH10)))
+p27 = ((!CycD & !CycE & !CycA & !CycB) | (p27 & !(CycE & CycA) & !CycB & !CycD))
+Cdc20 = CycB
+Cdh1 = ((!CycA & !CycB) | Cdc20 | (p27 & !CycB))
+UbcH10 = (!Cdh1 | (Cdh1 & UbcH10 & (Cdc20 | CycA | CycB)))
+CycB = (!Cdc20 & !Cdh1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("toSBML", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("truthTableToSymbolic")
+> ### * truthTableToSymbolic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: truthTableToSymbolic
+> ### Title: Convert a network in truth table representation into a symbolic
+> ###   representation
+> ### Aliases: truthTableToSymbolic
+> ### Keywords: Boolean network symbolic Boolean network conversion
+> 
+> ### ** Examples
+> 
+> # Convert a truth table representation into a 
+> # symbolic representation and back
+> data(cellcycle)
+> 
+> symbolicNet <- truthTableToSymbolic(cellcycle)
+> print(symbolicNet)
+Symbolic representation of a Boolean network
+
+Transition functions:
+CycD = CycD
+Rb = ((!CycA & !CycB & !CycD & !CycE) | (p27 & !CycB & !CycD))
+E2F = ((!Rb & !CycA & !CycB) | (p27 & !Rb & !CycB))
+CycE = (E2F & !Rb)
+CycA = ((E2F & !Rb & !Cdc20 & !(Cdh1 & UbcH10)) | (CycA & !Rb & !Cdc20 & !(Cdh1 & UbcH10)))
+p27 = ((!CycD & !CycE & !CycA & !CycB) | (p27 & !(CycE & CycA) & !CycB & !CycD))
+Cdc20 = CycB
+Cdh1 = ((!CycA & !CycB) | Cdc20 | (p27 & !CycB))
+UbcH10 = (!Cdh1 | (Cdh1 & UbcH10 & (Cdc20 | CycA | CycB)))
+CycB = (!Cdc20 & !Cdh1)
+> 
+> ttNet <- symbolicToTruthTable(symbolicNet)
+> print(cellcycle)
+Boolean network with 10 genes
+
+Involved genes:
+CycD Rb E2F CycE CycA p27 Cdc20 Cdh1 UbcH10 CycB
+
+Transition functions:
+CycD = CycD
+Rb = (! CycA & ! CycB & ! CycD & ! CycE) | (p27 & ! CycB & ! CycD)
+E2F = (! Rb & ! CycA & ! CycB) | (p27 & ! Rb & ! CycB)
+CycE = (E2F & ! Rb)
+CycA = (E2F & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10)) | (CycA & ! Rb & ! Cdc20 & ! (Cdh1 & UbcH10))
+p27 = (! CycD & ! CycE & ! CycA & ! CycB) | (p27 & ! (CycE & CycA) & ! CycB &! CycD)
+Cdc20 = CycB
+Cdh1 = (! CycA & ! CycB) | (Cdc20) | (p27 & ! CycB)
+UbcH10 = ! Cdh1 | (Cdh1 & UbcH10 & (Cdc20 | CycA | CycB))
+CycB = ! Cdc20 & ! Cdh1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("truthTableToSymbolic", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("yeastTimeSeries")
+> ### * yeastTimeSeries
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: yeastTimeSeries
+> ### Title: Yeast cell cycle time series data
+> ### Aliases: yeastTimeSeries
+> ### Keywords: datasets yeast cell cycle time series binarization binarize
+> 
+> ### ** Examples
+> 
+> data(yeastTimeSeries)
+> 
+> # the data set is stored in a variable called 'yeastTimeSeries'
+> print(yeastTimeSeries)
+      [,1]  [,2]  [,3]  [,4]  [,5]  [,6]  [,7]  [,8]  [,9] [,10] [,11] [,12]
+Fkh2 -0.53 -0.53 -0.34 -0.29 -0.29  0.05 -0.01  0.06  0.48  0.23  0.00  0.05
+Swi5 -1.33 -0.93  0.83 -0.73 -0.78 -0.85 -0.07  0.51  0.64  0.60  0.58  0.62
+Sic1  0.62 -0.68 -0.21 -0.26 -0.36 -0.50 -0.45 -0.34 -0.17 -0.28  0.38  0.65
+Clb1 -1.78 -1.63 -1.70 -1.70 -0.70 -0.03  0.56  0.92  1.02  1.08  1.45  1.00
+     [,13] [,14]
+Fkh2  0.48  0.11
+Swi5  0.61  0.29
+Sic1  0.96  0.65
+Clb1  0.99  0.53
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("yeastTimeSeries", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  3.322 0.087 3.421 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

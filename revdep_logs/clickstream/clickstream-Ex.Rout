@@ -1,0 +1,769 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "clickstream"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "clickstream-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('clickstream')
+Warning: replacing previous import by ‘igraph::union’ when loading ‘clickstream’
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("MarkovChain-class")
+> ### * MarkovChain-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MarkovChain-class
+> ### Title: Class '"MarkovChain"'
+> ### Aliases: MarkovChain-class MarkovChain-class,MarkovChain-method
+> ###   plot,MarkovChain-method show,MarkovChain-method
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> # show MarkovChain definition
+> showClass("MarkovChain")
+Class "MarkovChain" [package "clickstream"]
+
+Slots:
+                                                                           
+Name:                  states                  order            transitions
+Class:              character                numeric                   list
+                                                                           
+Name:                  lambda          logLikelihood           observations
+Class:                numeric                numeric                numeric
+                                                                           
+Name:                   start                    end        transientStates
+Class:                  table                  table              character
+                                                    
+Name:         absorbingStates absorbingProbabilities
+Class:              character             data.frame
+> 
+> # fit a simple Markov chain from a list of click streams
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> mc <- fitMarkovChain(cls)
+> show(mc)
+First-Order Markov Chain
+
+Transition Probabilities:
+
+Lag:  1 
+lambda:  1 
+     c d   h         i o          p
+c 0.32 0 0.8 0.5714286 0 0.47058824
+d 0.12 0 0.0 0.1428571 0 0.00000000
+h 0.04 0 0.0 0.1428571 0 0.00000000
+i 0.12 0 0.2 0.0000000 0 0.05882353
+o 0.00 0 0.0 0.0000000 0 0.11764706
+p 0.40 0 0.0 0.1428571 0 0.35294118
+
+Start Probabilities:
+
+        c         h         i 
+0.1666667 0.5000000 0.3333333 
+
+End Probabilities:
+
+        d         o 
+0.6666667 0.3333333 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("MarkovChain-class", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Pattern-class")
+> ### * Pattern-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Pattern-class
+> ### Title: Class '"Pattern"'
+> ### Aliases: +,Pattern,Pattern-method Pattern-class
+> ###   Pattern-class,Pattern-method initialize,Pattern-method show
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> # show Pattern definition
+> showClass("Pattern")
+Class "Pattern" [package "clickstream"]
+
+Slots:
+                                                                           
+Name:                sequence            probability absorbingProbabilities
+Class:              character                numeric             data.frame
+> 
+> # create simple Pattern objects
+> pattern1 <- new("Pattern", sequence = c("h", "c", "p"))
+> pattern2 <- new("Pattern", sequence = c("c", "p", "p"), probability = 0.2)
+> pattern3 <- new("Pattern", sequence = c("h", "p", "p"), probability = 0.35,
++         absorbingProbabilities = data.frame(d = 0.6, o = 0.4))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Pattern-class", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("as.transactions")
+> ### * as.transactions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as.transactions
+> ### Title: Coerces a Clickstream Object to a Transactions Object
+> ### Aliases: as.transactions
+> 
+> ### ** Examples
+> 
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> trans <- as.transactions(cls)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("as.transactions", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("clickstream-package")
+> ### * clickstream-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clickstream-package
+> ### Title: Analyzes Clickstreams Based on Markov Chains
+> ### Aliases: clickstream clickstream-package
+> ### Keywords: Markov chain click stream
+> 
+> ### ** Examples
+> 
+> # fitting a simple Markov chain and predicting the next click
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> mc <- fitMarkovChain(cls)
+> startPattern <- new("Pattern", sequence = c("h", "c"))
+> predict(mc, startPattern)
+Sequence: p
+Probability: 0.4
+Absorbing Probabilities: 
+  None
+1    0
+
+
+> plot(mc)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("clickstream-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("clusterClickstreams")
+> ### * clusterClickstreams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clusterClickstreams
+> ### Title: Performs K-Means Clustering on a List of Clickstreams
+> ### Aliases: clusterClickstreams
+> 
+> ### ** Examples
+> 
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> clusters <- clusterClickstreams(cls, order = 0, centers = 2)
+> print(clusters)
+[[1]]
+Clickstreams
+
+User2: i c i c c c d
+User3: h i c i c p c c p c c i d
+User4: c c p c d
+
+[[2]]
+Clickstreams
+
+User1: h c c p c h c p p c p p o
+User5: h c c p p c p p p i p o
+User6: i h c c p p c p c d
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("clusterClickstreams", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fitMarkovChain")
+> ### * fitMarkovChain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fitMarkovChain
+> ### Title: Fits a List of Clickstreams to a Markov Chain
+> ### Aliases: fitMarkovChain
+> 
+> ### ** Examples
+> 
+> # fitting a simple Markov chain
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> mc <- fitMarkovChain(cls)
+> show(mc)
+First-Order Markov Chain
+
+Transition Probabilities:
+
+Lag:  1 
+lambda:  1 
+     c d   h         i o          p
+c 0.32 0 0.8 0.5714286 0 0.47058824
+d 0.12 0 0.0 0.1428571 0 0.00000000
+h 0.04 0 0.0 0.1428571 0 0.00000000
+i 0.12 0 0.2 0.0000000 0 0.05882353
+o 0.00 0 0.0 0.0000000 0 0.11764706
+p 0.40 0 0.0 0.1428571 0 0.35294118
+
+Start Probabilities:
+
+        c         h         i 
+0.1666667 0.5000000 0.3333333 
+
+End Probabilities:
+
+        d         o 
+0.6666667 0.3333333 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fitMarkovChain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("frequencies")
+> ### * frequencies
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: frequencies
+> ### Title: Generates a Data Frame of State Frequencies for All Clickstreams
+> ###   in a List of Clickstreams
+> ### Aliases: frequencies
+> 
+> ### ** Examples
+> 
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> frequencyDF <- frequencies(cls)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("frequencies", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("predict-methods")
+> ### * predict-methods
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: predict-methods
+> ### Title: Predicts the Next Click(s) of a User
+> ### Aliases: predict,MarkovChain-method predict-methods
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> # fitting a simple Markov chain and predicting the next click
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> mc <- fitMarkovChain(cls)
+> startPattern <- new("Pattern", sequence = c("h", "c"))
+> predict(mc, startPattern)
+Sequence: p
+Probability: 0.4
+Absorbing Probabilities: 
+  None
+1    0
+
+
+> #
+> # predict with predefined absorbing probabilities
+> #
+> startPattern <- new("Pattern", sequence = c("h", "c"),
++         absorbingProbabilities = data.frame(d = 0.2, o = 0.8))
+> predict(mc, startPattern)
+Sequence: p
+Probability: 0.5350197
+Absorbing Probabilities: 
+          d         o
+1 0.2117242 0.7882758
+
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("predict-methods", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("predict.ClickstreamClusters")
+> ### * predict.ClickstreamClusters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: predict.ClickstreamClusters
+> ### Title: Predicts the Cluster for a Given Pattern Object
+> ### Aliases: predict.ClickstreamClusters
+> 
+> ### ** Examples
+> 
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> clusters <- clusterClickstreams(cls, order = 0, centers = 2)
+> pattern <- new("Pattern", sequence = c("h", "c"))
+> predict(clusters, pattern)
+[1] 2
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("predict.ClickstreamClusters", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print.ClickstreamClusters")
+> ### * print.ClickstreamClusters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.ClickstreamClusters
+> ### Title: Prints a ClickstreamClusters Object
+> ### Aliases: print.ClickstreamClusters
+> 
+> ### ** Examples
+> 
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> clusters <- clusterClickstreams(cls, order = 0, centers = 2)
+> print(clusters)
+[[1]]
+Clickstreams
+
+User2: i c i c c c d
+User3: h i c i c p c c p c c i d
+User4: c c p c d
+
+[[2]]
+Clickstreams
+
+User1: h c c p c h c p p c p p o
+User5: h c c p p c p p p i p o
+User6: i h c c p p c p c d
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.ClickstreamClusters", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print.Clickstreams")
+> ### * print.Clickstreams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.Clickstreams
+> ### Title: Prints a Clickstreams Object
+> ### Aliases: print.Clickstreams
+> 
+> ### ** Examples
+> 
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> print(cls)
+Clickstreams
+
+User1: h c c p c h c p p c p p o
+User2: i c i c c c d
+User3: h i c i c p c c p c c i d
+User4: c c p c d
+User5: h c c p p c p p p i p o
+User6: i h c c p p c p c d
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.Clickstreams", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print.MarkovChainSummary")
+> ### * print.MarkovChainSummary
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.MarkovChainSummary
+> ### Title: Prints the Summary of a MarkovChain Object
+> ### Aliases: print.MarkovChainSummary
+> 
+> ### ** Examples
+> 
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> mc <- fitMarkovChain(cls)
+> print(summary(mc))
+First-Order Markov Chain with 6 states.
+ The Markov Chain has absorbing states.
+
+Observations: 60
+LogLikelihood: -64.18929
+AIC: 142.3786
+BIC: 157.039
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.MarkovChainSummary", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("randomClicks-methods")
+> ### * randomClicks-methods
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: randomClicks-methods
+> ### Title: Generates a Sequence of Clicks
+> ### Aliases: randomClicks randomClicks,MarkovChain-method
+> ###   randomClicks-methods
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> # fitting a simple Markov chain and predicting the next click
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> mc <- fitMarkovChain(cls)
+> startPattern <- new("Pattern", sequence = c("h", "c"))
+> predict(mc, startPattern)
+Sequence: p
+Probability: 0.4
+Absorbing Probabilities: 
+  None
+1    0
+
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("randomClicks-methods", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("randomClickstreams")
+> ### * randomClickstreams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: randomClickstreams
+> ### Title: Generates a List of Clickstreams
+> ### Aliases: randomClickstreams
+> 
+> ### ** Examples
+> 
+> # generate a simple list of click streams
+> states <- c("a", "b", "c")
+> startProbabilities <- c(0.2, 0.5, 0.3)
+> transitionMatrix <- matrix(c(0, 0.4, 0.6, 0.3, 0.1, 0.6, 0.2, 0.8, 0), nrow = 3)
+> cls <- randomClickstreams(states, startProbabilities, transitionMatrix, meanLength = 5, n = 10)
+> print(cls)
+Clickstreams
+
+1: b c b a
+2: c b c a b a c b
+3: b c b b c b a
+4: a b b a b c
+5: b c b a
+6: b c a c b c b
+7: b c b a c b c
+8: c b a b a
+9: b c b c
+10: b b c b
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("randomClickstreams", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("readClickstreams")
+> ### * readClickstreams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: readClickstreams
+> ### Title: Reads a List of Clickstreams from File
+> ### Aliases: readClickstreams
+> 
+> ### ** Examples
+> 
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> print(cls)
+Clickstreams
+
+User1: h c c p c h c p p c p p o
+User2: i c i c c c d
+User3: h i c i c p c c p c c i d
+User4: c c p c d
+User5: h c c p p c p p p i p o
+User6: i h c c p p c p c d
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("readClickstreams", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.ClickstreamClusters")
+> ### * summary.ClickstreamClusters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.ClickstreamClusters
+> ### Title: Prints a Summary of a ClickstreamCluster Object
+> ### Aliases: summary.ClickstreamClusters
+> 
+> ### ** Examples
+> 
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> clusters <- clusterClickstreams(cls, order = 0, centers = 2)
+> summary(clusters)
+Centers:
+Cluster 1:
+           h         c         p o         i         d
+1 0.02564103 0.5443223 0.1179487 0 0.1721612 0.1399267
+
+
+Cluster 2:
+          h         c         p         o          i          d
+1 0.1123932 0.3448718 0.3948718 0.0534188 0.06111111 0.03333333
+
+
+
+Total SS: 0.369134 
+Within SS: 0.09012116 0.05320184 
+Total Within SS: 0.143323 
+Between SS: 0.225811 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.ClickstreamClusters", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.Clickstreams")
+> ### * summary.Clickstreams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.Clickstreams
+> ### Title: Prints a Summary of a Clickstreams Object
+> ### Aliases: summary.Clickstreams
+> 
+> ### ** Examples
+> 
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> summary(cls)
+Observations: 6
+
+Click Frequencies:
+ c  d  h  i  o  p 
+25  4  5  7  2 17 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.Clickstreams", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("writeClickstreams")
+> ### * writeClickstreams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: writeClickstreams
+> ### Title: Writes a List of Clickstreams to File
+> ### Aliases: writeClickstreams
+> 
+> ### ** Examples
+> 
+> clickstreams <- c("User1,h,c,c,p,c,h,c,p,p,c,p,p,o",
++                "User2,i,c,i,c,c,c,d",
++                "User3,h,i,c,i,c,p,c,c,p,c,c,i,d",
++                "User4,c,c,p,c,d",
++                "User5,h,c,c,p,p,c,p,p,p,i,p,o",
++                "User6,i,h,c,c,p,p,c,p,c,d")
+> csf <- tempfile()
+> writeLines(clickstreams, csf)
+> cls <- readClickstreams(csf, header = TRUE)
+> clusters <- clusterClickstreams(cls, order = 0, centers = 2)
+> writeClickstreams(cls, file = "clickstreams.csv", header = TRUE, sep = ",")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("writeClickstreams", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  2.227 0.064 2.297 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

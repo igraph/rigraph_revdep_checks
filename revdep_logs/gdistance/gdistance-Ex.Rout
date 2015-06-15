@@ -1,0 +1,1163 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "gdistance"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "gdistance-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('gdistance')
+Loading required package: raster
+Loading required package: sp
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:raster’:
+
+    union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: Matrix
+
+Attaching package: ‘gdistance’
+
+The following object is masked from ‘package:igraph’:
+
+    normalize
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("Arith-methods")
+> ### * Arith-methods
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ArithMath-methods
+> ### Title: Arithmetic and mathematical operations with objects of
+> ###   Transition* classes
+> ### Aliases: Arith-methods Arith,ANY,TransitionLayer-method
+> ###   Arith,TransitionLayer,ANY-method
+> ###   Arith,TransitionLayer,TransitionLayer-method
+> ###   Arith,TransitionLayer,TransitionStack-method
+> ###   Arith,TransitionStack,TransitionLayer-method
+> ###   Arith,TransitionStack,ANY-method Arith,ANY,TransitionStack-method
+> ###   Arith,TransitionLayer,TransitionStack-method Math-methods
+> ###   Math,TransitionLayer-method Math,TransitionStack-method
+> ### Keywords: methods math spatial
+> 
+> ### ** Examples
+> 
+>   #create a new raster and set all its values to unity.
+>   raster <- raster(nrows=18, ncols=36) 
+>   raster <- setValues(raster,rep(1,ncell(raster)))
+> 
+>   #create TransitionLayer objects
+>   tr1 <- transition(raster,mean,4)
+>   tr2 <- tr1
+> 
+>   #arithmetic operations
+>   tr3 <- tr1 * tr2
+>   tr4 <- tr3 * 4
+>   
+>   #mathematical operations
+>   tr5 <- sqrt(tr4)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Arith-methods", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Coords")
+> ### * Coords
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Coords class
+> ### Title: Coords class
+> ### Aliases: Coords-class
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> showClass("Coords")
+Virtual Class "Coords" [package "gdistance"]
+
+No Slots, prototype of class "numeric"
+
+Known Subclasses: 
+Class "numeric", directly
+Class "matrix", directly
+Class "SpatialPoints", directly
+Class "integer", by class "numeric", distance 2
+Class "mts", by class "matrix", distance 2
+Class "SpatialPointsDataFrame", by class "SpatialPoints", distance 2
+Class "SpatialPixels", by class "SpatialPoints", distance 2
+Class "factor", by class "numeric", distance 3
+Class "SpatialPixelsDataFrame", by class "SpatialPoints", distance 3
+Class "ordered", by class "numeric", distance 4
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Coords", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Transition-class")
+> ### * Transition-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Transition* classes
+> ### Title: Transition* classes
+> ### Aliases: TransitionLayer-class TransitionStack-class
+> ###   TransitionData-class Transition-class
+> ###   coerce,TransitionLayer,sparseMatrix-method
+> ###   coerce,TransitionLayer,RasterLayer-method
+> ###   coerce,TransitionLayer,TransitionStack-method
+> ###   coerce,TransitionLayer,TransitionData-method
+> ###   coerce,RasterLayer,TransitionLayer-method
+> ###   coerce,TransitionData,sparseMatrix-method show,TransitionLayer-method
+> ###   show,TransitionStack-method ==,TransitionLayer,TransitionLayer-method
+> ###   ==,TransitionStack,TransitionStack-method
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> showClass("TransitionLayer")
+Class "TransitionLayer" [package "gdistance"]
+
+Slots:
+                                                                          
+Name:             title           extent          rotated         rotation
+Class:        character           Extent          logical        .Rotation
+                                                                          
+Name:             ncols            nrows              crs          history
+Class:          integer          integer              CRS             list
+                                                                          
+Name:                 z transitionMatrix  transitionCells     matrixValues
+Class:             list     sparseMatrix          numeric        character
+
+Extends: 
+Class "BasicRaster", directly
+Class "TransitionData", directly, with explicit coerce
+Class "Transition", directly
+> 
+> tr <- new("TransitionLayer", nrows=as.integer(36), ncols=as.integer(18),
++ 		extent=extent(c(xmin=-180,xmax=180, ymin=-90,ymax=90)),
++ 		crs=CRS("+proj=longlat +datum=WGS84"))
+> 
+> tr <- new("TransitionLayer",nrows=as.integer(36),ncols=as.integer(18),
++         extent=extent(c(xmin=-180, xmax=180, ymin=-90,ymax=90)),
++ 		crs=CRS(""))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Transition-class", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Transition-extract-replace")
+> ### * Transition-extract-replace
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Transition* methods
+> ### Title: Extracting and replacing: class Transition
+> ### Aliases: [,TransitionLayer,numeric,numeric,missing-method
+> ###   [,TransitionLayer,matrix,missing,missing-method
+> ###   [<-,TransitionLayer,matrix,missing,ANY-method
+> ###   [<-,TransitionLayer,numeric,numeric,ANY-method
+> ###   [[,TransitionStack,numeric,missing-method
+> ###   [[<-,TransitionStack,numeric,missing,TransitionData-method
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+>   #Create a new raster and set all its values to unity.
+>   r <- raster(nrows=18, ncols=36) 
+>   r <- setValues(r,rep(1,ncell(r)))
+> 
+>   #Create TransitionLayer objects
+>   tr1 <- transition(r,mean,4)
+>   tr2 <- tr1
+> 
+>   #Extracting and replacing
+>   tr1[cbind(1:9,1:9)] <- tr2[cbind(1:9,1:9)]
+>   tr1[1:9,1:9] <- tr2[1:9,1:9]
+>   tr1[1:5,1:5]
+5 x 5 sparse Matrix of class "dsCMatrix"
+              
+[1,] . 1 . . .
+[2,] 1 . 1 . .
+[3,] . 1 . 1 .
+[4,] . . 1 . 1
+[5,] . . . 1 .
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Transition-extract-replace", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("accCost")
+> ### * accCost
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: accCost
+> ### Title: Accumulated Cost Surface
+> ### Aliases: accCost accCost,TransitionLayer,RasterLayer-method
+> ###   accCost,TransitionLayer,Coords-method
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> #example equivalent to that in the documentation on r.cost in GRASS
+> r <- raster(nrows=6, ncols=7, xmn=0, xmx=7, ymn=0, ymx=6, crs="+proj=utm +units=m")
+>  
+> r[] <- c(2, 2, 1, 1, 5, 5, 5,
++          2, 2, 8, 8, 5, 2, 1,
++          7, 1, 1, 8, 2, 2, 2,
++          8, 7, 8, 8, 8, 8, 5,
++          8, 8, 1, 1, 5, 3, 9,
++          8, 1, 1, 2, 5, 3, 9)
+> 
+> T <- transition(r, function(x) 1/mean(x), 8) 
+> # 1/mean: reciprocal to get permeability
+> T <- geoCorrection(T)
+> 
+> c1 <- c(5.5,1.5) 
+> c2 <- c(1.5,5.5)
+> 
+> A <- accCost(T, c1)
+> plot(A)
+> text(A)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("accCost", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("adjacency")
+> ### * adjacency
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: adjacencyFromTransition
+> ### Title: Adjacent cells
+> ### Aliases: adjacencyFromTransition
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> r <- raster(nrows=6, ncols=7, xmn=0, xmx=7, ymn=0, ymx=6, crs="+proj=utm +units=m")
+> r[] <- runif(6*7)
+> T <- transition(r, function(x) 1/mean(x), 8) 
+> adjacencyFromTransition(T)
+       [,1] [,2]
+  [1,]    2    1
+  [2,]    8    1
+  [3,]    9    1
+  [4,]    1    2
+  [5,]    3    2
+  [6,]    8    2
+  [7,]    9    2
+  [8,]   10    2
+  [9,]    2    3
+ [10,]    4    3
+ [11,]    9    3
+ [12,]   10    3
+ [13,]   11    3
+ [14,]    3    4
+ [15,]    5    4
+ [16,]   10    4
+ [17,]   11    4
+ [18,]   12    4
+ [19,]    4    5
+ [20,]    6    5
+ [21,]   11    5
+ [22,]   12    5
+ [23,]   13    5
+ [24,]    5    6
+ [25,]    7    6
+ [26,]   12    6
+ [27,]   13    6
+ [28,]   14    6
+ [29,]    6    7
+ [30,]   13    7
+ [31,]   14    7
+ [32,]    1    8
+ [33,]    2    8
+ [34,]    9    8
+ [35,]   15    8
+ [36,]   16    8
+ [37,]    1    9
+ [38,]    2    9
+ [39,]    3    9
+ [40,]    8    9
+ [41,]   10    9
+ [42,]   15    9
+ [43,]   16    9
+ [44,]   17    9
+ [45,]    2   10
+ [46,]    3   10
+ [47,]    4   10
+ [48,]    9   10
+ [49,]   11   10
+ [50,]   16   10
+ [51,]   17   10
+ [52,]   18   10
+ [53,]    3   11
+ [54,]    4   11
+ [55,]    5   11
+ [56,]   10   11
+ [57,]   12   11
+ [58,]   17   11
+ [59,]   18   11
+ [60,]   19   11
+ [61,]    4   12
+ [62,]    5   12
+ [63,]    6   12
+ [64,]   11   12
+ [65,]   13   12
+ [66,]   18   12
+ [67,]   19   12
+ [68,]   20   12
+ [69,]    5   13
+ [70,]    6   13
+ [71,]    7   13
+ [72,]   12   13
+ [73,]   14   13
+ [74,]   19   13
+ [75,]   20   13
+ [76,]   21   13
+ [77,]    6   14
+ [78,]    7   14
+ [79,]   13   14
+ [80,]   20   14
+ [81,]   21   14
+ [82,]    8   15
+ [83,]    9   15
+ [84,]   16   15
+ [85,]   22   15
+ [86,]   23   15
+ [87,]    8   16
+ [88,]    9   16
+ [89,]   10   16
+ [90,]   15   16
+ [91,]   17   16
+ [92,]   22   16
+ [93,]   23   16
+ [94,]   24   16
+ [95,]    9   17
+ [96,]   10   17
+ [97,]   11   17
+ [98,]   16   17
+ [99,]   18   17
+[100,]   23   17
+[101,]   24   17
+[102,]   25   17
+[103,]   10   18
+[104,]   11   18
+[105,]   12   18
+[106,]   17   18
+[107,]   19   18
+[108,]   24   18
+[109,]   25   18
+[110,]   26   18
+[111,]   11   19
+[112,]   12   19
+[113,]   13   19
+[114,]   18   19
+[115,]   20   19
+[116,]   25   19
+[117,]   26   19
+[118,]   27   19
+[119,]   12   20
+[120,]   13   20
+[121,]   14   20
+[122,]   19   20
+[123,]   21   20
+[124,]   26   20
+[125,]   27   20
+[126,]   28   20
+[127,]   13   21
+[128,]   14   21
+[129,]   20   21
+[130,]   27   21
+[131,]   28   21
+[132,]   15   22
+[133,]   16   22
+[134,]   23   22
+[135,]   29   22
+[136,]   30   22
+[137,]   15   23
+[138,]   16   23
+[139,]   17   23
+[140,]   22   23
+[141,]   24   23
+[142,]   29   23
+[143,]   30   23
+[144,]   31   23
+[145,]   16   24
+[146,]   17   24
+[147,]   18   24
+[148,]   23   24
+[149,]   25   24
+[150,]   30   24
+[151,]   31   24
+[152,]   32   24
+[153,]   17   25
+[154,]   18   25
+[155,]   19   25
+[156,]   24   25
+[157,]   26   25
+[158,]   31   25
+[159,]   32   25
+[160,]   33   25
+[161,]   18   26
+[162,]   19   26
+[163,]   20   26
+[164,]   25   26
+[165,]   27   26
+[166,]   32   26
+[167,]   33   26
+[168,]   34   26
+[169,]   19   27
+[170,]   20   27
+[171,]   21   27
+[172,]   26   27
+[173,]   28   27
+[174,]   33   27
+[175,]   34   27
+[176,]   35   27
+[177,]   20   28
+[178,]   21   28
+[179,]   27   28
+[180,]   34   28
+[181,]   35   28
+[182,]   22   29
+[183,]   23   29
+[184,]   30   29
+[185,]   36   29
+[186,]   37   29
+[187,]   22   30
+[188,]   23   30
+[189,]   24   30
+[190,]   29   30
+[191,]   31   30
+[192,]   36   30
+[193,]   37   30
+[194,]   38   30
+[195,]   23   31
+[196,]   24   31
+[197,]   25   31
+[198,]   30   31
+[199,]   32   31
+[200,]   37   31
+[201,]   38   31
+[202,]   39   31
+[203,]   24   32
+[204,]   25   32
+[205,]   26   32
+[206,]   31   32
+[207,]   33   32
+[208,]   38   32
+[209,]   39   32
+[210,]   40   32
+[211,]   25   33
+[212,]   26   33
+[213,]   27   33
+[214,]   32   33
+[215,]   34   33
+[216,]   39   33
+[217,]   40   33
+[218,]   41   33
+[219,]   26   34
+[220,]   27   34
+[221,]   28   34
+[222,]   33   34
+[223,]   35   34
+[224,]   40   34
+[225,]   41   34
+[226,]   42   34
+[227,]   27   35
+[228,]   28   35
+[229,]   34   35
+[230,]   41   35
+[231,]   42   35
+[232,]   29   36
+[233,]   30   36
+[234,]   37   36
+[235,]   29   37
+[236,]   30   37
+[237,]   31   37
+[238,]   36   37
+[239,]   38   37
+[240,]   30   38
+[241,]   31   38
+[242,]   32   38
+[243,]   37   38
+[244,]   39   38
+[245,]   31   39
+[246,]   32   39
+[247,]   33   39
+[248,]   38   39
+[249,]   40   39
+[250,]   32   40
+[251,]   33   40
+[252,]   34   40
+[253,]   39   40
+[254,]   41   40
+[255,]   33   41
+[256,]   34   41
+[257,]   35   41
+[258,]   40   41
+[259,]   42   41
+[260,]   34   42
+[261,]   35   42
+[262,]   41   42
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("adjacency", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("commuteDistance")
+> ### * commuteDistance
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: commuteDistance
+> ### Title: Commute-time distance
+> ### Aliases: ' commuteDistance '
+> ###   commuteDistance,TransitionLayer,Coords-method
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> #Create a new raster and set all its values to unity.
+> r <- raster(nrows=18, ncols=36) 
+> r <- setValues(r,rep(1,ncell(raster)))
+> 
+> #Create a Transition object from the raster
+> tr <- transition(r,function(x) 1/mean(x),4)
+> 
+> #Create two sets of coordinates
+> sP1 <- SpatialPoints(cbind(c(65,5,-65),c(55,35,-35)))
+> sP2 <- SpatialPoints(cbind(c(50,15,-40),c(80,20,-5)))
+> 
+> #Calculate the resistance distance between the points
+> commuteDistance(tr,sP1)
+         1        2
+2 2882.026         
+3 3704.695 3256.071
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("commuteDistance", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("costDistance")
+> ### * costDistance
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: costDistance
+> ### Title: Cost distance (least-cost distance)
+> ### Aliases: costDistance
+> ###   costDistance,TransitionLayer,Coords,missing-method
+> ###   costDistance,TransitionLayer,Coords,Coords-method
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> #create a new raster and set all its values to unity.
+> r <- raster(nrows=18, ncols=36) 
+> r <- setValues(r,runif(ncell(r),0,1))
+> 
+> #create a Transition object from the raster
+> tr <- transition(r,function(x) 1/mean(x),8)
+> 
+> #asymmetric
+> ncf <- function(x) max(x) - x[1] + x[2]
+> tr2 <- transition(r,ncf,8, symm=FALSE)
+> 
+> #create two sets of coordinates
+> sP1 <- cbind(c(65,5,-65),c(55,35,-35))
+> sP2 <- cbind(c(50,15,-40),c(80,20,-5))
+> 
+> #from and to identical
+> costDistance(tr,sP1)
+         1        2
+2 1.493406         
+3 2.753940 1.894725
+> costDistance(tr2,sP1)
+         [,1]      [,2]     [,3]
+[1,]  0.00000  8.884283 18.70297
+[2,] 33.90437  0.000000 12.34757
+[3,] 46.94110 14.326775  0.00000
+> 
+> #from and to different
+> costDistance(tr,sP1,sP2)
+          [,1]      [,2]     [,3]
+[1,] 0.6764598 1.0991850 2.341838
+[2,] 2.1343256 0.6035754 1.482623
+[3,] 3.3923741 1.6547546 0.837593
+> costDistance(tr2,sP1,sP2)
+          [,1]     [,2]      [,3]
+[1,]  3.099433 15.07805 14.413322
+[2,]  6.999606 10.11410  6.259541
+[3,] 20.794114 19.06716  7.389272
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("costDistance", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("geoCorrection")
+> ### * geoCorrection
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: geoCorrection
+> ### Title: Geographic Correction
+> ### Aliases: geoCorrection geoCorrection,TransitionLayer,character-method
+> ###   geoCorrection,TransitionLayer,missing-method
+> ### Keywords: methods spatial
+> 
+> ### ** Examples
+> 
+> r <- raster(ncol=36,nrow=18)
+> r <- setValues(r,rep(1,times=ncell(r)))
+> tr <- transition(r, mean, directions=8)
+> 
+> #directly
+> tr1 <- geoCorrection(tr, type="c", multpl=FALSE)
+> 
+> #the same, but with a separate correction matrix
+> trCorr <- geoCorrection(tr, type="c", multpl=TRUE)
+> tr2 <- tr * trCorr
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("geoCorrection", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("normalize")
+> ### * normalize
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: normalize
+> ### Title: normalize
+> ### Aliases: normalize normalize,TransitionLayer-method
+> ### Keywords: methods spatial
+> 
+> ### ** Examples
+> 
+> r <- raster(ncol=36,nrow=18)
+> r <- setValues(r,rep(1,times=ncell(r)))
+> tr <- transition(r, mean, directions=8)
+> 
+> tr1 <- normalize(tr)
+> tr2 <- normalize(tr, method="symm")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("normalize", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pathInc")
+> ### * pathInc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pathInc
+> ### Title: Incidence of paths from a common origin: overlap and non-overlap
+> ### Aliases: pathInc
+> ###   pathInc,TransitionLayer,Coords,Coords,missing,missing,missing-method
+> ###   pathInc,TransitionLayer,Coords,Coords,missing,numeric,missing-method
+> ###   pathInc,TransitionLayer,Coords,Coords,missing,missing,Transition-method
+> ###   pathInc,TransitionLayer,Coords,Coords,missing,numeric,Transition-method
+> ###   pathInc,TransitionLayer,Coords,Coords,Coords,missing,missing-method
+> ###   pathInc,TransitionLayer,Coords,Coords,Coords,numeric,missing-method
+> ###   pathInc,TransitionLayer,Coords,Coords,Coords,missing,Transition-method
+> ###   pathInc,TransitionLayer,Coords,Coords,Coords,numeric,Transition-method
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> #Create TransitionLayer
+> r <- raster(ncol=36,nrow=18)
+> r <- setValues(r,rep(1,times=ncell(r)))
+> tr <- transition(r,mean,directions=4)
+> 
+> #Two different types of correction are required
+> trR <- geoCorrection(tr, type="r", multpl=FALSE)
+> trC <- geoCorrection(tr, type="c", multpl=FALSE)
+> 
+> #Create TransitionStack
+> ts <- stack(trR, trR)
+> 
+> #Points for origin and coordinates between which to calculate path (non)overlaps
+> sP0 <- SpatialPoints(cbind(0,0))
+> sP1 <- SpatialPoints(cbind(c(65,5,-65),c(-55,35,-35)))
+> 
+> #Randomised shortest paths
+> #rescaling is needed: exp(-theta * trC) should give reasonable values
+> trC <- trC / median(transitionMatrix(trC)@x) #divide by median of the non-zero values
+> pathInc(trC, origin=sP0, from=sP1, theta=2)
+$function1layer1
+            1           2
+2 0.009245079            
+3 0.692744167 0.008985212
+
+$function2layer1
+         1        2
+2 13.38326         
+3 16.91624 13.33889
+
+> 
+> #Random walk
+> pathInc(trR, origin=sP0, from=sP1)
+$function1layer1
+         1        2
+2 19924924         
+3 27890915 19777767
+
+$function2layer1
+         1        2
+2 36625839         
+3 34118832 34724158
+
+> 
+> #TransitionStack as weights
+> pathInc(trR, origin=sP0, from=sP1, weight=ts)
+$function1layer1
+         1        2
+2 19924924         
+3 27890915 19777767
+
+$function1layer2
+         1        2
+2 19924924         
+3 27890915 19777767
+
+$function2layer1
+         1        2
+2 36625839         
+3 34118832 34724158
+
+$function2layer2
+         1        2
+2 36625839         
+3 34118832 34724158
+
+> 
+> #Demonstrate use of an alternative function
+> #The current default is to take the minimum of each pair of layers
+> 
+> altoverlap <- function(a, b)
++ {
++ 	aV <- as.vector(a[,rep(1:ncol(a), each=ncol(b))])
++ 	bV <- as.vector(b[,rep(1:ncol(b), times=ncol(a))])
++ 	result <- matrix(aV * bV, nrow = nrow(a), ncol=ncol(a)*ncol(b))
++ 	return(result)
++ }
+> 
+> pathInc(trR, origin=sP0, from=sP1, weight=ts, functions=list(altoverlap))
+$function1layer1
+        1       2
+2 1285752        
+3 1551478 1320897
+
+$function1layer2
+        1       2
+2 1285752        
+3 1551478 1320897
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pathInc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("probPassage")
+> ### * probPassage
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: passage
+> ### Title: Probability of passage
+> ### Aliases: passage passage,TransitionLayer,Coords,Coords,missing-method
+> ###   passage,TransitionLayer,Coords,Coords,numeric-method
+> ###   passage,TransitionLayer,RasterLayer,RasterLayer,missing-method
+> ###   passage,TransitionLayer,RasterLayer,RasterLayer,numeric-method
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> #create a new raster and set all its values to unity.
+> raster <- raster(nrows=18, ncols=36) 
+> raster <- setValues(raster,rep(1,ncell(raster)))
+> 
+> #create a Transition object from the raster
+> tr <- transition(raster,mean,4)
+> trC <- geoCorrection(tr, type="c", scl=TRUE)
+> trR <- geoCorrection(tr, type="r", scl=TRUE)
+> 
+> #create two coordinates
+> sP1 <- SpatialPoints(cbind(-105,55))
+> sP2 <- SpatialPoints(cbind(105,-55))
+> 
+> #randomised shortest paths with theta = 2
+> rSPraster <- passage(trC, sP1, sP2, 2)
+> plot(rSPraster)
+> points(sP1)
+> points(sP2)
+> 
+> #randomised shortest paths with theta = 0.05
+> rSPraster <- passage(trC, sP1, sP2, 0.05)
+> plot(rSPraster) 
+> points(sP1)
+> points(sP2)
+> 
+> #randomised shortest paths with theta = 0.05
+> #and total
+> rSPraster <- passage(trC, sP1, sP2, 0.05, totalNet = "total")
+> plot(rSPraster) 
+> points(sP1)
+> points(sP2)
+> 
+> #random walk
+> rwraster <- passage(trR, sP1, sP2)
+> plot(rwraster)
+> points(sP1)
+> points(sP2)
+>   
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("probPassage", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rSPDistance")
+> ### * rSPDistance
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rSPDistance
+> ### Title: Randomized shortest path distance
+> ### Aliases: ' rSPDistance ' rSPDistance,TransitionLayer,Coords-method
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> #Create a new raster and set all its values to unity.
+> r <- raster(nrows=18, ncols=36) 
+> r <- setValues(r,rep(1,ncell(raster)))
+> 
+> #Create a Transition object from the raster
+> tr <- transition(r,mean,4)
+> 
+> #Create two sets of coordinates
+> sP1 <- SpatialPoints(cbind(c(65,5,-65),c(55,35,-35)))
+> sP2 <- SpatialPoints(cbind(c(50,15,-40),c(80,20,-5)))
+> 
+> #Calculate the RSP distance between the points
+> rSPDistance(tr, sP1, sP2, 1)
+          [,1]      [,2]      [,3]
+[1,]  3.054101  9.061349 16.079315
+[2,]  9.082282  3.048942  8.058728
+[3,] 23.095346 13.073405  6.055039
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rSPDistance", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rasterFromTransition")
+> ### * rasterFromTransition
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: raster-methods
+> ### Title: RasterLayer from TransitionLayer object
+> ### Aliases: raster,TransitionLayer-method
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> #create a new raster and set all its values to unity.
+> r <- raster(nrows=18, ncols=36) 
+> r <- setValues(r,runif(ncell(r),0,1))
+> 
+> #create a Transition object from the raster
+> tr1 <- transition(r,mean,8)
+> 
+> #asymmetric
+> asf <- function(x) max(x) - x[1] + x[2]
+> tr2 <- transition(r,asf,8, symm=FALSE)
+> 
+> #create RasterLayer objects
+> r1 <- raster(tr1)
+> r2 <- raster(tr2)
+> r3 <- raster(tr1, "colMeans")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rasterFromTransition", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("shortestPath")
+> ### * shortestPath
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: shortestPath
+> ### Title: Shortest path
+> ### Aliases: shortestPath shortestPath,TransitionLayer,Coords,Coords-method
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> #example equivalent to that in the documentation on r.cost/r.drain in GRASS
+> r <- raster(nrows=6, ncols=7, xmn=0, xmx=7, ymn=0, ymx=6, crs="+proj=utm +units=m")
+>  
+> r[] <- c(2, 2, 1, 1, 5, 5, 5,
++          2, 2, 8, 8, 5, 2, 1,
++          7, 1, 1, 8, 2, 2, 2,
++          8, 7, 8, 8, 8, 8, 5,
++          8, 8, 1, 1, 5, 3, 9,
++          8, 1, 1, 2, 5, 3, 9)
+> 
+> T <- transition(r, function(x) 1/mean(x), 8) 
+> # 1/mean: reciprocal to get permeability
+> T <- geoCorrection(T)
+> 
+> c1 <- c(5.5,1.5) 
+> c2 <- c(1.5,5.5)
+> 
+> #make a SpatialLines object for visualization
+> sPath1 <- shortestPath(T, c1, c2, output="SpatialLines")
+> plot(r)
+> lines(sPath1)
+> 
+> #make a TransitionLayer for further calculations
+> sPath2 <- shortestPath(T, c1, c2)
+> plot(raster(sPath2))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("shortestPath", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sumT")
+> ### * sumT
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sumReciprocal
+> ### Title: Reciprocal of the sum of the reciprocals of conductance values
+> ###   in Transition* objects
+> ### Aliases: sumReciprocal
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+>   #Create a new raster and set all its values to unity.
+>   raster <- raster(nrows=18, ncols=36) 
+>   raster <- setValues(raster,rep(1,ncell(raster)))
+> 
+>   #Create TransitionLayer objects
+>   tr1 <- transition(raster,mean,4)
+>   tr2 <- tr1
+>   matrixValues(tr1)
+[1] "conductance"
+>   
+>   #Set one to resistance
+>   matrixValues(tr2) <- "resistance"
+>   
+>   #Sum the two objects
+>   sumReciprocal(tr1,tr2)
+class       : TransitionLayer 
+dimensions  : 18, 36, 648  (nrow, ncol, ncell)
+resolution  : 10, 10  (x, y)
+extent      : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+coord. ref. : +proj=longlat +datum=WGS84 
+values      : conductance 
+matrix class: dsCMatrix 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sumT", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary-methods")
+> ### * summary-methods
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Summary-methods
+> ### Title: Summary methods
+> ### Aliases: Summary-methods sum,TransitionStack-method
+> ###   mean,TransitionStack-method
+> ### Keywords: methods spatial
+> 
+> ### ** Examples
+> 
+> #Create a new raster and set all its values to unity.
+> raster <- raster(nrows=18, ncols=36) 
+> raster <- setValues(raster,rep(1,ncell(raster)))
+> 
+> #Create a Transition object from the raster
+> tr <- transition(raster,mean,4)
+> 
+> trS <- stack(tr, tr*2)
+> 
+> #Apply a Summary method
+> trSum <- sum(trS)
+> 
+> #plot(raster(trMean))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary-methods", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("transition")
+> ### * transition
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: transition 
+> ### Title: Create an object of the class Transition
+> ### Aliases: transition transition,RasterLayer-method
+> ###   transition,RasterBrick-method
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+>   #Create a new raster and set all its values to unity.
+>   r <- raster(nrows=18, ncols=36) 
+>   r <- setValues(r, runif(ncell(r)))
+> 
+>   #Create a Transition object from the raster
+>   tr <- transition(r, transitionFunction=mean, directions=4)
+>   tr #the sparse matrix is of class dsCMatrix (symmetric)
+class       : TransitionLayer 
+dimensions  : 18, 36, 648  (nrow, ncol, ncell)
+resolution  : 10, 10  (x, y)
+extent      : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+coord. ref. : +proj=longlat +datum=WGS84 
+values      : conductance 
+matrix class: dsCMatrix 
+> 
+>   #Create an asymmetric transition matrix
+>   #first, an arbitrary non-commutative function 
+>   f <- function(x) max(x) - x[1] + x[2] 
+>   tr2 <- transition(r, f, 4, symm=FALSE)
+>   tr2 #the sparse matrix is of class dgCMatrix (=asymmetric)
+class       : TransitionLayer 
+dimensions  : 18, 36, 648  (nrow, ncol, ncell)
+resolution  : 10, 10  (x, y)
+extent      : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+coord. ref. : +proj=longlat +datum=WGS84 
+values      : conductance 
+matrix class: dgCMatrix 
+>   
+>   #Barriers - interval breaks
+>   tr3 <- transition(r, "barriers", 8, intervalBreaks=c(0.25, 0.5, 0.75))
+>   nlayers(tr3)
+[1] 3
+> 
+>   #Barriers - categories
+>   r <- round(r * 2)
+>   r <- asFactor(r)
+>   tr4 <- transition(r, "barriers", 8)
+>   nlayers(tr4)
+[1] 3
+>   plot(raster(tr4[[2]]))
+>   
+>   #Areas
+>   r <- round(r * 2)
+>   r <- asFactor(r)
+>   tr5 <- transition(r, "areas", 8)
+>   nlayers(tr5)
+[1] 3
+>   plot(raster(tr5[[2]]))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("transition", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  5.068 0.123 5.38 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

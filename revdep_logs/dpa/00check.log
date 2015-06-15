@@ -1,0 +1,358 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/dpa.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘dpa/DESCRIPTION’ ... OK
+* this is package ‘dpa’ version ‘1.0-3’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘dpa’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+dpa.analysis.options : OnOK: warning in assign("rbVal", rbVal, env =
+  .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.analysis.options : OnOK : OnSave: warning in assign("time_column",
+  time_column, env = .GlobalEnv): partial argument match of 'env' to
+  'envir'
+dpa.analysis.options : OnOK : OnSave: warning in assign("intervalVal",
+  intervalVal, env = .GlobalEnv): partial argument match of 'env' to
+  'envir'
+dpa.analysis.options : OnOK : OnSave :
+  dpa.analysis.options.ticks.enter: warning in assign("NumTick",
+  NumTick, env = .GlobalEnv): partial argument match of 'env' to
+  'envir'
+dpa.analysis.performDPA : dpa.specifyModel: warning in assign("row",
+  row, env = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.analysis.performDPA : dpa.specifyModel: warning in
+  assign("variables", baseVariables, env = .GlobalEnv): partial
+  argument match of 'env' to 'envir'
+dpa.analysis.performDPA : dpa.analysis.doPerform: warning in
+  assign("sem", sem, env = .GlobalEnv): partial argument match of 'env'
+  to 'envir'
+dpa.analysis.performDPA : dpa.analysis.doPerform: warning in
+  assign("sem.DPA", sem.DPA, env = .GlobalEnv): partial argument match
+  of 'env' to 'envir'
+dpa.analysis.performDPA : dpa.analysis.doPerform: warning in
+  assign("sem.standardized", sem.standardized, env = .GlobalEnv):
+  partial argument match of 'env' to 'envir'
+dpa.analysis.performDPA : dpa.analysis.doPerform: warning in
+  assign("relevantData", relevantData, env = .GlobalEnv): partial
+  argument match of 'env' to 'envir'
+dpa.analysis.performDPA : dpa.analysis.doPerform: warning in
+  assign("sem.results.coefficients", sem.results.coefficients, env =
+  .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.analysis.performDPA : dpa.analysis.doPerform: warning in
+  assign("sem.results.parameters", sem.results.parameters, env =
+  .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.analysis.performDPA : dpa.analysis.doPerform: warning in
+  assign("sem.results.statistics", sem.results.statistics, env =
+  .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.analysis.performDPA : dpa.analysis.doPerform: warning in
+  assign("listOfTicks", listOfTicks, env = .GlobalEnv): partial
+  argument match of 'env' to 'envir'
+dpa.analysis.performDPA: warning in assign("listOfTicks", NULL, env =
+  .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.analysis.performDPA: warning in assign("sem.DPA", NULL, env =
+  .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.analysis.performDPA: warning in assign("sem.standardized", NULL,
+  env = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.analysis.performDPA: warning in assign("sem.results.parameters",
+  NULL, env = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.analysis.performDPA: warning in assign("sem.results.statistics",
+  NULL, env = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.analysis.performDPA: warning in assign("sem.results.coefficients",
+  NULL, env = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.analysis.saveDPA: warning in assign("dpaFileName", dpaFileName, env
+  = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.data.loadData: warning in assign("ak1", ak1, env = .GlobalEnv):
+  partial argument match of 'env' to 'envir'
+dpa.data.loadDataFromDatabase: warning in assign("ak2", ak2, env =
+  .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.data.loadDataFromDatabase: warning in assign("dbServerType",
+  dbServerType, env = .GlobalEnv): partial argument match of 'env' to
+  'envir'
+dpa.data.loadDataFromDatabase: warning in assign("dbServer", dbServer,
+  env = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.data.loadDataFromDatabase: warning in assign("dbName", dbName, env
+  = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.data.loadDataFromDatabase: warning in assign("dbTable", dbTable,
+  env = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.data.loadDataFromDatabase: warning in assign("UserName", UserName,
+  env = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.data.loadDataFromDatabase: warning in assign("Password", Password,
+  env = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.data.loadDataFromDisk: warning in assign("dataFileName",
+  dataFileName, env = .GlobalEnv): partial argument match of 'env' to
+  'envir'
+dpa.data.loadDataFromDisk: warning in assign("e", e, env = .GlobalEnv):
+  partial argument match of 'env' to 'envir'
+dpa.generate.lag: warning in assign("dataframe", dataframe, env =
+  .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.incrementValue: warning in assign("i", i, env = .GlobalEnv):
+  partial argument match of 'env' to 'envir'
+dpa.relations.addRelations: warning in assign("relations", relations,
+  env = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.relations.addRelations: warning in assign("time_column",
+  time_column, env = .GlobalEnv): partial argument match of 'env' to
+  'envir'
+dpa.relations.addRelations: warning in assign("e", e, env =
+  .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.relations.loadRelations: warning in assign("relations", relations,
+  env = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.results.setGraphDir: warning in assign("graphDir", graphDir, env =
+  .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.results.viewNodePlots : dpa.results.plotNodes : dpa.plot.scatter:
+  warning in png(file = paste(graphDir, "/scatter_", xcolumn, "_",
+  ycolumn, "_", ".png", sep = ""), res = 300, width = 3000, height =
+  2000): partial argument match of 'file' to 'filename'
+dpa.results.viewNodePlots : dpa.results.plotNodesWithTime :
+  dpa.plot.scatter: warning in png(file = paste(graphDir, "/scatter_",
+  xcolumn, "_", ycolumn, "_", tick, ".png", sep = ""), res = 300, width
+  = 3000, height = 2000): partial argument match of 'file' to
+  'filename'
+dpa.results.viewRelationsPlots : dpa.plot.graph: warning in png(file =
+  paste(graphDir, "/graph_", "relation", ".png", sep = ""), res = 92,
+  width = 1000, height = 1000): partial argument match of 'file' to
+  'filename'
+dpa.results.viewRelationsPlots : dpa.plot.graph: warning in png(file =
+  paste(graphDir, "/graph_", "relation_", format(tickNumber, width =
+  4), ".png", sep = ""), res = 92, width = 1000, height = 1000):
+  partial argument match of 'file' to 'filename'
+dpa.start: warning in assign("e", e, env = .GlobalEnv): partial
+  argument match of 'env' to 'envir'
+dpa.start: warning in assign("listOfTicks", listOfTicks, env =
+  .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.start: warning in assign("relations", relations, env = .GlobalEnv):
+  partial argument match of 'env' to 'envir'
+dpa.start: warning in assign("row", row, env = .GlobalEnv): partial
+  argument match of 'env' to 'envir'
+dpa.start: warning in assign("sem.DPA", sem.DPA, env = .GlobalEnv):
+  partial argument match of 'env' to 'envir'
+dpa.start: warning in assign("sem.results.coefficients",
+  sem.results.coefficients, env = .GlobalEnv): partial argument match
+  of 'env' to 'envir'
+dpa.start: warning in assign("sem.results.parameters",
+  sem.results.parameters, env = .GlobalEnv): partial argument match of
+  'env' to 'envir'
+dpa.start: warning in assign("sem.results.statistics",
+  sem.results.statistics, env = .GlobalEnv): partial argument match of
+  'env' to 'envir'
+dpa.start: warning in assign("sem.standardized", sem.standardized, env
+  = .GlobalEnv): partial argument match of 'env' to 'envir'
+dpa.start: warning in assign("variables", variables, env = .GlobalEnv):
+  partial argument match of 'env' to 'envir'
+dpa.start: warning in assign("dpa", dpa, env = .GlobalEnv): partial
+  argument match of 'env' to 'envir'
+dpa.analysis.options: no visible binding for global variable ‘e’
+dpa.analysis.options : OnOK : OnSave: no visible binding for global
+  variable ‘e’
+dpa.analysis.performDPA : dpa.analysis.doPerform: no visible binding
+  for global variable ‘rbVal’
+dpa.analysis.performDPA : dpa.analysis.doPerform: no visible binding
+  for global variable ‘variables’
+dpa.analysis.performDPA : dpa.analysis.doPerform: no visible binding
+  for global variable ‘e’
+dpa.analysis.performDPA : dpa.analysis.doPerform: no visible binding
+  for global variable ‘NumTick’
+dpa.analysis.performDPA: no visible binding for global variable ‘rbVal’
+dpa.analysis.performDPA: no visible binding for global variable
+  ‘sem.DPA’
+dpa.analysis.performDPA: no visible binding for global variable ‘e’
+dpa.analysis.saveDPA: no visible binding for global variable
+  ‘dataFileName’
+dpa.analysis.saveDPA: no visible binding for global variable
+  ‘sem.results.coefficients’
+dpa.data.authenticationCancel: no visible binding for global variable
+  ‘ak2’
+dpa.data.authenticationSubmit: no visible binding for global variable
+  ‘dbServerType’
+dpa.data.authenticationSubmit: no visible binding for global variable
+  ‘dbServer’
+dpa.data.authenticationSubmit: no visible binding for global variable
+  ‘dbTable’
+dpa.data.authenticationSubmit: no visible binding for global variable
+  ‘UserName’
+dpa.data.authenticationSubmit: no visible binding for global variable
+  ‘Password’
+dpa.data.authenticationSubmit: no visible global function definition
+  for ‘JDBC’
+dpa.data.authenticationSubmit: no visible global function definition
+  for ‘dbConnect’
+dpa.data.authenticationSubmit: no visible global function definition
+  for ‘dbGetQuery’
+dpa.data.authenticationSubmit: no visible global function definition
+  for ‘dbReadTable’
+dpa.data.checkData : dpa.data.checkData.sort: no visible binding for
+  global variable ‘e’
+dpa.data.checkData : dpa.data.missingRow: no visible binding for global
+  variable ‘e’
+dpa.data.checkData : dpa.data.missingData: no visible binding for
+  global variable ‘e’
+dpa.data.loadCancel: no visible binding for global variable ‘ak1’
+dpa.data.loadDataFromDatabase: no visible binding for global variable
+  ‘dpa.data.authentificationCancel’
+dpa.data.loadDataFromDisk: no visible binding for global variable ‘ak1’
+dpa.data.saveDataToDisk: no visible binding for global variable ‘e’
+dpa.exit: no visible binding for global variable ‘dpa’
+dpa.relations.addRelations: no visible binding for global variable
+  ‘dataframe’
+dpa.relations.editRelations: no visible binding for global variable ‘e’
+dpa.results.generateCoefficientsPlots : dpa.plot.graph: no visible
+  binding for global variable ‘sem.results.coefficients’
+dpa.results.generateCoefficientsPlots : dpa.plot.graph: no visible
+  binding for global variable ‘sem.results.parameters’
+dpa.results.generateCoefficientsPlots : dpa.plot.graph: no visible
+  binding for global variable ‘graphDir’
+dpa.results.generateCoefficientsPlots : dpa.plot.graph: no visible
+  binding for global variable ‘listOfTicks’
+dpa.results.generateCoefficientsPlots : dpa.plot.graph: no visible
+  binding for global variable ‘e’
+dpa.results.generateFitPlots : dpa.plot.graph: no visible binding for
+  global variable ‘sem.results.statistics’
+dpa.results.generateFitPlots : dpa.plot.graph: no visible binding for
+  global variable ‘graphDir’
+dpa.results.generateFitPlots : dpa.plot.graph: no visible binding for
+  global variable ‘listOfTicks’
+dpa.results.generateFitPlots : dpa.plot.graph: no visible binding for
+  global variable ‘e’
+dpa.results.viewNodePlots: no visible binding for global variable ‘e’
+dpa.results.viewNodePlots : dpa.results.plotNodes : dpa.plot.scatter:
+  no visible binding for global variable ‘graphDir’
+dpa.results.viewNodePlots : dpa.results.plotNodes: no visible binding
+  for global variable ‘e’
+dpa.results.viewNodePlots : dpa.results.plotNodesWithTime: no visible
+  binding for global variable ‘e’
+dpa.results.viewNodePlots : dpa.results.plotNodesWithTime :
+  dpa.plot.scatter: no visible binding for global variable ‘graphDir’
+dpa.results.viewRelationsPlots : dpa.plot.graph: no visible binding for
+  global variable ‘rbVal’
+dpa.results.viewRelationsPlots : dpa.plot.graph: no visible binding for
+  global variable ‘graphDir’
+dpa.results.viewRelationsPlots : dpa.plot.graph: no visible binding for
+  global variable ‘sem.standardized’
+dpa.results.viewRelationsPlots : dpa.plot.graph: no visible global
+  function definition for ‘plot.igraph’
+dpa.results.viewRelationsPlots: no visible binding for global variable
+  ‘variables’
+dpa.results.viewRelationsPlots: no visible binding for global variable
+  ‘e’
+
+Found the following assignments to the global environment:
+File ‘dpa/R/dpa.r’:
+  assign("ak1", ak1, env = .GlobalEnv)
+  assign("dataFileName", dataFileName, env = .GlobalEnv)
+  assign("e", e, env = .GlobalEnv)
+  assign("e", e, env = .GlobalEnv)
+  assign("e", e, env = .GlobalEnv)
+  assign("ak2", ak2, env = .GlobalEnv)
+  assign("dbServerType", dbServerType, env = .GlobalEnv)
+  assign("dbServer", dbServer, env = .GlobalEnv)
+  assign("dbName", dbName, env = .GlobalEnv)
+  assign("dbTable", dbTable, env = .GlobalEnv)
+  assign("UserName", UserName, env = .GlobalEnv)
+  assign("Password", Password, env = .GlobalEnv)
+  assign("relations", relations, env = .GlobalEnv)
+  assign("relations", relations, env = .GlobalEnv)
+  assign("dataframe", dataframe, env = .GlobalEnv)
+  assign("relations", relations, env = .GlobalEnv)
+  assign("time_column", time_column, env = .GlobalEnv)
+  assign("e", e, env = .GlobalEnv)
+  assign("i", i, env = .GlobalEnv)
+  assign("rbVal", rbVal, env = .GlobalEnv)
+  assign("time_column", time_column, env = .GlobalEnv)
+  assign("intervalVal", intervalVal, env = .GlobalEnv)
+  assign("NumTick", NumTick, env = .GlobalEnv)
+  assign("dpaFileName", dpaFileName, env = .GlobalEnv)
+  assign("e", e, env = .GlobalEnv)
+  assign("listOfTicks", listOfTicks, env = .GlobalEnv)
+  assign("relations", relations, env = .GlobalEnv)
+  assign("row", row, env = .GlobalEnv)
+  assign("sem.DPA", sem.DPA, env = .GlobalEnv)
+  assign("sem.results.coefficients", sem.results.coefficients, 
+    env = .GlobalEnv)
+  assign("sem.results.parameters", sem.results.parameters, env = .GlobalEnv)
+  assign("sem.results.statistics", sem.results.statistics, env = .GlobalEnv)
+  assign("sem.standardized", sem.standardized, env = .GlobalEnv)
+  assign("variables", variables, env = .GlobalEnv)
+  assign("dpa", dpa, env = .GlobalEnv)
+File ‘dpa/R/plot.r’:
+  assign("graphDir", graphDir, env = .GlobalEnv)
+File ‘dpa/R/sem.r’:
+  assign("row", row, env = .GlobalEnv)
+  assign("variables", baseVariables, env = .GlobalEnv)
+  assign("sem", sem, env = .GlobalEnv)
+  assign("sem.DPA", sem.DPA, env = .GlobalEnv)
+  assign("sem.standardized", sem.standardized, env = .GlobalEnv)
+  assign("relevantData", relevantData, env = .GlobalEnv)
+  assign("sem.DPA", sem.DPA, env = .GlobalEnv)
+  assign("sem.results.coefficients", sem.results.coefficients, 
+    env = .GlobalEnv)
+  assign("sem.results.parameters", sem.results.parameters, env = .GlobalEnv)
+  assign("sem.standardized", sem.standardized, env = .GlobalEnv)
+  assign("sem.results.statistics", sem.results.statistics, env = .GlobalEnv)
+  assign("listOfTicks", listOfTicks, env = .GlobalEnv)
+  assign("listOfTicks", NULL, env = .GlobalEnv)
+  assign("sem.DPA", NULL, env = .GlobalEnv)
+  assign("sem.standardized", NULL, env = .GlobalEnv)
+  assign("sem.results.parameters", NULL, env = .GlobalEnv)
+  assign("sem.results.statistics", NULL, env = .GlobalEnv)
+  assign("sem.results.coefficients", NULL, env = .GlobalEnv)
+
+Found the following calls to attach():
+File ‘dpa/R/dpa.r’:
+  attach(dataframe)
+  attach(dataframe)
+  attach(dataframe)
+  attach(dataframe)
+File ‘dpa/R/plot.r’:
+  attach(dataframe)
+  attach(dataframe)
+  attach(dataframe)
+See section ‘Good practice’ in ‘?attach’.
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... NOTE
+Rd file 'dpa.generate.lag.Rd':
+  \usage lines wider than 90 characters:
+     dpa.generate.lag(dataframe = NULL, tickColumn = NULL, sourceColumn = NULL, minLag=1,maxLag=1)
+
+Rd file 'dpa.relations.addRelations.Rd':
+  \usage lines wider than 90 characters:
+     dpa.relations.addRelations(From_column = NULL, To_column = NULL, Lag_in = NULL, minLag = NULL, maxLag = NULL, Direction = NULL)
+
+These lines will be truncated in the PDF manual.
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking examples ... OK
+* DONE
+Status: 2 NOTEs

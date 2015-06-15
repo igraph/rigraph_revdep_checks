@@ -1,0 +1,77 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> require(FrF2)
+Loading required package: FrF2
+Loading required package: DoE.base
+Loading required package: grid
+Loading required package: conf.design
+
+Attaching package: 'DoE.base'
+
+The following objects are masked from 'package:stats':
+
+    aov, lm
+
+The following object is masked from 'package:graphics':
+
+    plot.design
+
+The following object is masked from 'package:base':
+
+    lengths
+
+> reshuffled <- FrF2(32,9, estimable=c("AC","BC","AB"))
+> basic <- FrF2(32,9, estimable=c("CJ"))
+> FrF2:::generators.from.design(basic)
+[[1]]
+x6 ~ x1 * x2 * x3
+<environment: 0x7fe55521c580>
+
+[[2]]
+x7 ~ x1 * x2 * x4
+<environment: 0x7fe55501f1c8>
+
+[[3]]
+x8 ~ x1 * x2 * x5
+<environment: 0x7fe553691910>
+
+[[4]]
+x9 ~ x1 * x3 * x4 * x5
+<environment: 0x7fe553607cb0>
+
+> FrF2:::generators.from.design(reshuffled)
+[[1]]
+x6 ~ x1 * x3 * x4 * x5
+<environment: 0x7fe553474440>
+
+[[2]]
+x7 ~ x1 * x2 * x3
+<environment: 0x7fe553469ff8>
+
+[[3]]
+x8 ~ x2 * x3 * x4 * x5
+<environment: 0x7fe55345f260>
+
+[[4]]
+x9 ~ x1 * x2 * x4 * x5
+<environment: 0x7fe5534530d8>
+
+> 
+> proc.time()
+   user  system elapsed 
+  1.667   0.068   1.725 

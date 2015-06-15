@@ -1,0 +1,2150 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "degreenet"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "degreenet-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('degreenet')
+degreenet: Models for Skewed Count Distributions Relevant to Networks
+Version 1.3-1 created on 2015-04-03.
+copyright (c) 2013, Mark S. Handcock, University of California - Los Angeles
+ Based on "statnet" project software (statnet.org).
+ For license and citation information see statnet.org/attribution
+ For citation information, type citation("degreenet").
+ Type help("degreenet-package") to get started.
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("acmpmle")
+> ### * acmpmle
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: acmpmle
+> ### Title: Conway Maxwell Poisson Modeling of Discrete Data
+> ### Aliases: acmpmle dcmp llcmpall cmp.mutonatural cmp.naturaltomu
+> ###   dcmp.natural dcmp_mu ldcmp.natural llcmp llcmpall
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> 
+> # Simulate a Conway Maxwell Poisson distribution over 100
+> # observations with mean of 7 and variance of 3
+> # This leads to a mean of 1
+> 
+> set.seed(1)
+> s4 <- simcmp(n=100, v=c(7,3))
+> table(s4)
+s4
+ 2  3  4  5  6  7  8  9 10 11 12 13 15 
+ 5 11  4 13 10 11 18 11  7  5  2  2  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for the parameters
+> #
+> 
+> acmpmle(s4)
+$theta
+CMP mean CMP s.d. 
+6.921826 2.876061 
+
+$asycov
+          CMP mean   CMP s.d.
+CMP mean 0.0805252 0.04825500
+CMP s.d. 0.0482550 0.02936339
+
+$se
+ CMP mean  CMP s.d. 
+0.2837696 0.1713575 
+
+$asycor
+          CMP mean  CMP s.d.
+CMP mean 1.0000000 0.9923694
+CMP s.d. 0.9923694 1.0000000
+
+$natural
+[1] 4.7041935 0.8089463
+
+$conc
+[1] NA
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("acmpmle", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("adqemle")
+> ### * adqemle
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: adqemle
+> ### Title: Discrete version of q-Exponential Modeling of Discrete Data
+> ### Aliases: adqemle lldqe simdqe ddqe lddqe lldqeall
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> 
+> # Simulate a Discrete version of q-Exponential distribution over 100
+> # observations with a PDF exponent of 3.5 and a 
+> # sigma scale of 1
+> 
+> set.seed(1)
+> s4 <- simdqe(n=100, v=c(3.5,1))
+> table(s4)
+s4
+ 1  2  3 
+95  4  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for the parameters
+> #
+> 
+> s4est <- adqemle(s4)
+> s4est
+$theta
+q-Exponential PDF MLE   q-Exponential sigma 
+             5.708289              1.457206 
+
+$asycov
+                      q-Exponential PDF MLE q-Exponential sigma
+q-Exponential PDF MLE              65.42515           21.866781
+q-Exponential sigma                21.86678            7.380109
+
+$se
+q-Exponential PDF MLE   q-Exponential sigma 
+             8.088581              2.716636 
+
+$asycor
+                      q-Exponential PDF MLE q-Exponential sigma
+q-Exponential PDF MLE             1.0000000           0.9951329
+q-Exponential sigma               0.9951329           1.0000000
+
+$conc
+[1] 0
+
+> 
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho under the Yule model
+> #
+> 
+> s4yuleest <- ayulemle(s4)
+> s4yuleest
+$result
+           lower 95%            upper 95%              PDF MLE 
+            4.094374            33.306418            18.700396 
+                  SE #>=cutoff&<=cutabove 
+            7.452052           100.000000 
+
+$theta
+PDF MLE 
+18.7004 
+
+$conc
+[1] NA
+
+$value
+[1] -22.73597
+
+$concCI
+[1] NA NA NA
+
+> 
+> #
+> # Compare the AICC and BIC for the two models
+> #
+> 
+> lldqeall(v=s4est$theta,x=s4)
+       np   log-lik      AICC       BIC 
+  3.00000 -22.68277  51.61554  59.18105 
+> llyuleall(v=s4yuleest$theta,x=s4)
+       np   log-lik      AICC       BIC 
+  3.00000 -22.72379  51.69758  59.26309 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("adqemle", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("aplnmle")
+> ### * aplnmle
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: aplnmle
+> ### Title: Poisson Lognormal Modeling of Discrete Data
+> ### Aliases: aplnmle dpln ldpln llplnall
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> 
+> # Simulate a Poisson Lognormal distribution over 100
+> # observations with lognormal mean of -1 and lognormal variance of 1
+> # This leads to a mean of 1
+> 
+> set.seed(1)
+> s4 <- simpln(n=100, v=c(-1,1))
+> table(s4)
+s4
+ 1  2  3  4  7 
+59 28  9  3  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for the parameters
+> #
+> 
+> s4est <- aplnmle(s4)
+> s4est
+$theta
+Poisson Lognormal mean Poisson Lognormal s.d. 
+             0.8483059              1.0527236 
+
+$asycov
+                       Poisson Lognormal mean Poisson Lognormal s.d.
+Poisson Lognormal mean             0.09782806            -0.06147795
+Poisson Lognormal s.d.            -0.06147795             0.04940130
+
+$se
+Poisson Lognormal mean Poisson Lognormal s.d. 
+             0.3127748              0.2222640 
+
+$asycor
+                       Poisson Lognormal mean Poisson Lognormal s.d.
+Poisson Lognormal mean              1.0000000             -0.8843384
+Poisson Lognormal s.d.             -0.8843384              1.0000000
+
+$conc
+[1] NA
+
+> 
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho under the Yule model
+> #
+> 
+> s4yuleest <- ayulemle(s4)
+> s4yuleest
+$result
+           lower 95%            upper 95%              PDF MLE 
+            2.566833             4.088933             3.327883 
+                  SE #>=cutoff&<=cutabove 
+            0.388291           100.000000 
+
+$theta
+ PDF MLE 
+3.327883 
+
+$conc
+[1] NA
+
+$value
+[1] -113.0856
+
+$concCI
+[1] NA NA NA
+
+> 
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho under the Waring model
+> #
+> 
+> s4warest <- awarmle(s4)
+> s4warest
+$theta
+  Waring PDF MLE Waring prob. new 
+      49.9994193        0.6200002 
+
+$conc
+Waring prob. new 
+       0.7987945 
+
+> 
+> #
+> # Compare the AICC and BIC for the three models
+> #
+> 
+> llplnall(v=s4est$theta,x=s4)
+       np   log-lik      AICC       BIC 
+   3.0000 -161.0801  328.4102  335.9758 
+> llyuleall(v=s4yuleest$theta,x=s4)
+       np   log-lik      AICC       BIC 
+   3.0000 -110.3905  227.0309  234.5964 
+> llwarall(v=s4warest$theta,x=s4)
+       np   log-lik      AICC       BIC 
+   3.0000 -106.9337  220.1175  227.6830 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("aplnmle", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("arplnmle")
+> ### * arplnmle
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rplnmle
+> ### Title: Rounded Poisson Lognormal Modeling of Discrete Data
+> ### Aliases: rplnmle drpln llrplnall bootstraprpln ldrpln llrpln llrplnall
+> ###   rplnmle
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> 
+> # Simulate a Poisson Lognormal distribution over 100
+> # observations with lognormal mean of -1 and lognormal variance of 1
+> # This leads to a mean of 1
+> 
+> set.seed(1)
+> s4 <- simpln(n=100, v=c(-1,1))
+> table(s4)
+s4
+ 1  2  3  4  7 
+59 28  9  3  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for the parameters
+> #
+> 
+> s4est <- rplnmle(s4)
+> s4est
+$theta
+Poisson Lognormal mean Poisson Lognormal s.d. 
+            -0.3187855              0.5554193 
+
+$asycov
+                       Poisson Lognormal mean Poisson Lognormal s.d.
+Poisson Lognormal mean             0.09782773            -0.06146933
+Poisson Lognormal s.d.            -0.06146933             0.04938930
+
+$se
+Poisson Lognormal mean Poisson Lognormal s.d. 
+             0.3127742              0.2222370 
+
+$asycor
+                       Poisson Lognormal mean Poisson Lognormal s.d.
+Poisson Lognormal mean              1.0000000             -0.8843232
+Poisson Lognormal s.d.             -0.8843232              1.0000000
+
+$conc
+[1] NA
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("arplnmle", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("awarmle")
+> ### * awarmle
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: awarmle
+> ### Title: Waring Modeling of Discrete Data
+> ### Aliases: awarmle dwar ldwar llwarall
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> 
+> # Simulate a Waring distribution over 100
+> # observations with a PDf exponent of 3.5 and a 
+> # probability of including a new actor of 0.1
+> 
+> set.seed(1)
+> s4 <- simwar(n=100, v=c(3.5,0.1))
+> table(s4)
+s4
+ 1  2  3  4  5 11 
+68 19  9  2  1  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for the parameters
+> #
+> 
+> s4est <- awarmle(s4)
+> s4est
+$theta
+  Waring PDF MLE Waring prob. new 
+       6.4335861        0.6386776 
+
+$asycov
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE      12.57504552      0.064666753
+Waring prob. new     0.06466675      0.002302401
+
+$se
+  Waring PDF MLE Waring prob. new 
+      3.54613106       0.04798334 
+
+$asycor
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE        1.0000000        0.3800457
+Waring prob. new      0.3800457        1.0000000
+
+$conc
+Waring prob. new 
+       0.6844624 
+
+> 
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho under the Yule model
+> #
+> 
+> s4yuleest <- ayulemle(s4)
+> s4yuleest
+$result
+           lower 95%            upper 95%              PDF MLE 
+           2.7193480            4.4736334            3.5964907 
+                  SE #>=cutoff&<=cutabove 
+           0.4475218          100.0000000 
+
+$theta
+ PDF MLE 
+3.596491 
+
+$conc
+[1] NA
+
+$value
+[1] -101.6414
+
+$concCI
+[1] NA NA NA
+
+> 
+> #
+> # Compare the AICC and BIC for the two models
+> #
+> 
+> llwarall(v=s4est$theta,x=s4)
+       np   log-lik      AICC       BIC 
+   3.0000 -100.5750  207.4000  214.9655 
+> llyuleall(v=s4yuleest$theta,x=s4)
+       np   log-lik      AICC       BIC 
+   3.0000 -101.2154  208.6808  216.2463 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("awarmle", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ayulemle")
+> ### * ayulemle
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ayulemle
+> ### Title: Yule Distribution Modeling of Discrete Data
+> ### Aliases: ayulemle dyule ldyule
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> 
+> # Simulate a Yule distribution over 100
+> # observations with PDf exponent of 3.5
+> 
+> set.seed(1)
+> s4 <- simyule(n=100, rho=3.5)
+> table(s4)
+s4
+ 1  2  3  4  5 10 
+70 20  6  2  1  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for the parameters
+> #
+> 
+> s4est <- ayulemle(s4)
+> s4est
+$result
+           lower 95%            upper 95%              PDF MLE 
+           2.8395334            4.8147266            3.8271300 
+                  SE #>=cutoff&<=cutabove 
+           0.5038758          100.0000000 
+
+$theta
+PDF MLE 
+3.82713 
+
+$conc
+[1] NA
+
+$value
+[1] -95.08164
+
+$concCI
+[1] NA NA NA
+
+> 
+> #
+> # Compute the AICC and BIC for the model
+> #
+> 
+> llyuleall(v=s4est$theta,x=s4)
+       np   log-lik      AICC       BIC 
+  3.00000 -94.70489 195.65979 203.22530 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ayulemle", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bsdp")
+> ### * bsdp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bsdp
+> ### Title: Calculate Bootstrap Estimates and Confidence Intervals for the
+> ###   Discrete Pareto Distribution
+> ### Aliases: bsdp bootstrapdp
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Now, simulate a Discrete Pareto distribution over 100
+> ##D # observations with expected count 1 and probability of another
+> ##D # of 0.2
+> ##D 
+> ##D set.seed(1)
+> ##D s4 <- simdp(n=100, v=3.31)
+> ##D table(s4)
+> ##D 
+> ##D #
+> ##D # Calculate the MLE and an asymptotic confidence
+> ##D # interval for the parameter.
+> ##D #
+> ##D 
+> ##D s4est <- adpmle(s4)
+> ##D s4est
+> ##D 
+> ##D #
+> ##D # Use the bootstrap to compute a confidence interval rather than using the 
+> ##D # asymptotic confidence interval for the parameter.
+> ##D #
+> ##D 
+> ##D bsdp(s4, m=20)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bsdp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bsnb")
+> ### * bsnb
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bsnb
+> ### Title: Calculate Bootstrap Estimates and Confidence Intervals for the
+> ###   Negative Binomial Distribution
+> ### Aliases: bsnb bootstrapnb
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Now, simulate a Negative Binomial distribution over 100
+> # observations with expected count 1 and probability of another
+> # of 0.2
+> 
+> set.seed(1)
+> s4 <- simnb(n=100, v=c(5,0.2))
+> table(s4)
+s4
+ 1  2  3  4  5  6  7  8  9 10 11 13 15 22 
+13 18 19  6 10  7  8  5  3  4  3  2  1  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for the parameter.
+> #
+> 
+> s4est <- anbmle(s4)
+> s4est
+$theta
+expected stop   prob 1 stop 
+    5.4061780     0.2952549 
+
+$asycov
+              expected stop prob 1 stop
+expected stop   0.266020476 0.008618629
+prob 1 stop     0.008618629 0.002361268
+
+$se
+expected stop   prob 1 stop 
+   0.51577173    0.04859288 
+
+$asycor
+              expected stop prob 1 stop
+expected stop     1.0000000   0.3438808
+prob 1 stop       0.3438808   1.0000000
+
+$npar
+gamma mean gamma s.d. 
+  3.809978   3.015635 
+
+$value
+[1] -243.3129
+
+> 
+> #
+> # Use the bootstrap to compute a confidence interval rather than using the 
+> # asymptotic confidence interval for the parameter.
+> #
+> 
+> bsnb(s4, m=20)
+$dist
+       k ecdf       cdf
+ [1,]  1 0.13 0.1426686
+ [2,]  2 0.31 0.3031585
+ [3,]  3 0.50 0.4499795
+ [4,]  4 0.56 0.5740141
+ [5,]  5 0.66 0.6744558
+ [6,]  6 0.73 0.7536821
+ [7,]  7 0.81 0.8150645
+ [8,]  8 0.86 0.8620079
+ [9,]  9 0.89 0.8975565
+[10,] 10 0.93 0.9242688
+[11,] 11 0.96 0.9442166
+[12,] 12 0.96 0.9590366
+[13,] 13 0.98 0.9699999
+[14,] 14 0.98 0.9780805
+[15,] 15 0.99 0.9840179
+[16,] 16 0.99 0.9883685
+[17,] 17 0.99 0.9915488
+[18,] 18 0.99 0.9938687
+[19,] 19 0.99 0.9955578
+[20,] 20 0.99 0.9967855
+[21,] 21 0.99 0.9976766
+[22,] 22 1.00 0.9983223
+
+$obsmle
+expected stop   prob 1 stop 
+    5.4061780     0.2952549 
+
+$bsmles
+   expected count Prob. of a stop     MANDS
+1        5.860282       0.3395968 0.2749075
+2        4.710183       0.3227363 0.5975726
+3        5.011708       0.2197579 0.1101466
+4        5.272830       0.2565647 0.2108935
+5        5.329687       0.2626062 0.4195867
+6        5.138825       0.2780451 0.3595254
+7        5.403790       0.3060229 0.1468062
+8        5.140102       0.2509880 0.2890664
+9        5.296039       0.2541640 0.2794547
+10       5.275147       0.3004926 0.2280862
+11       4.494470       0.2857757 0.5600244
+12       4.826155       0.2540698 0.3693515
+13       5.314602       0.3433304 0.2262835
+14       4.709533       0.2504565 0.3310171
+15       5.956346       0.3081450 0.6170759
+16       5.670075       0.2522076 0.2585707
+17       5.123118       0.3129197 0.4890571
+18       5.500189       0.2690994 0.1866024
+19       5.397523       0.2978063 0.2197814
+20       5.270838       0.3302825 0.3297978
+
+$quantiles
+     2.5%       50%     97.5% 
+0.1275599 0.2842606 0.6078119 
+
+$pvalue
+[1] 0.6190476
+
+$obsmands
+[1] 0.2396298
+
+$meanmles
+ expected count Prob. of a stop           MANDS 
+      5.2350721       0.2847534       0.3251804 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bsnb", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bspln")
+> ### * bspln
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bspln
+> ### Title: Calculate Bootstrap Estimates and Confidence Intervals for the
+> ###   Poisson Lognormal Distribution
+> ### Aliases: bspln bootstrappln bootstrapplnconc
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Now, simulate a Poisson Lognormal distribution over 100
+> # observations with expected count 1 and probability of another
+> # of 0.2
+> 
+> set.seed(1)
+> s4 <- simpln(n=100, v=c(5,0.2))
+> table(s4)
+s4
+ 81  87  93 103 107 108 112 114 115 117 118 121 122 123 124 125 126 127 128 129 
+  1   1   1   1   1   1   2   1   1   3   2   1   1   1   1   2   2   4   1   1 
+131 132 133 134 135 136 137 138 139 141 142 144 145 147 148 150 151 152 153 155 
+  1   3   1   1   1   1   3   3   1   1   1   1   1   1   1   2   4   1   2   2 
+157 158 159 160 161 163 164 165 166 168 171 172 174 175 178 179 180 182 183 189 
+  3   1   3   2   1   1   4   1   1   1   2   1   2   1   1   2   1   1   1   1 
+193 194 197 199 204 209 213 214 
+  1   1   1   1   1   1   1   1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for the parameter.
+> #
+> 
+> s4est <- aplnmle(s4)
+> s4est
+$theta
+Poisson Lognormal mean Poisson Lognormal s.d. 
+             147.80877               27.90549 
+
+$asycov
+                       Poisson Lognormal mean Poisson Lognormal s.d.
+Poisson Lognormal mean           3.545478e-04          -1.334202e-05
+Poisson Lognormal s.d.          -1.334202e-05           2.239694e-04
+
+$se
+Poisson Lognormal mean Poisson Lognormal s.d. 
+            0.01882944             0.01496561 
+
+$asycor
+                       Poisson Lognormal mean Poisson Lognormal s.d.
+Poisson Lognormal mean             1.00000000            -0.04734671
+Poisson Lognormal s.d.            -0.04734671             1.00000000
+
+$conc
+[1] NA
+
+> 
+> #
+> # Use the bootstrap to compute a confidence interval rather than using the 
+> # asymptotic confidence interval for the parameter.
+> #
+> 
+> bspln(s4, m=5)
+$dist
+         k ecdf          cdf
+  [1,]   1 0.00 1.063705e-08
+  [2,]   2 0.00 1.696758e-08
+  [3,]   3 0.00 2.158701e-08
+  [4,]   4 0.00 2.526931e-08
+  [5,]   5 0.00 2.835370e-08
+  [6,]   6 0.00 3.102058e-08
+  [7,]   7 0.00 3.337794e-08
+  [8,]   8 0.00 3.549584e-08
+  [9,]   9 0.00 3.742247e-08
+ [10,]  10 0.00 3.919247e-08
+ [11,]  11 0.00 4.083164e-08
+ [12,]  12 0.00 4.235972e-08
+ [13,]  13 0.00 4.379219e-08
+ [14,]  14 0.00 4.514144e-08
+ [15,]  15 0.00 4.641750e-08
+ [16,]  16 0.00 4.762867e-08
+ [17,]  17 0.00 4.878187e-08
+ [18,]  18 0.00 4.988294e-08
+ [19,]  19 0.00 5.093683e-08
+ [20,]  20 0.00 5.194784e-08
+ [21,]  21 0.00 5.291966e-08
+ [22,]  22 0.00 5.385551e-08
+ [23,]  23 0.00 5.475824e-08
+ [24,]  24 0.00 5.563035e-08
+ [25,]  25 0.00 5.647405e-08
+ [26,]  26 0.00 5.729132e-08
+ [27,]  27 0.00 5.808395e-08
+ [28,]  28 0.00 5.885352e-08
+ [29,]  29 0.00 5.960148e-08
+ [30,]  30 0.00 6.032913e-08
+ [31,]  31 0.00 6.103766e-08
+ [32,]  32 0.00 6.172816e-08
+ [33,]  33 0.00 6.240161e-08
+ [34,]  34 0.00 6.305892e-08
+ [35,]  35 0.00 6.370093e-08
+ [36,]  36 0.00 6.432842e-08
+ [37,]  37 0.00 6.494208e-08
+ [38,]  38 0.00 6.554259e-08
+ [39,]  39 0.00 6.613055e-08
+ [40,]  40 0.00 6.670653e-08
+ [41,]  41 0.00 6.727106e-08
+ [42,]  42 0.00 6.782464e-08
+ [43,]  43 0.00 6.836773e-08
+ [44,]  44 0.00 6.890076e-08
+ [45,]  45 0.00 6.942413e-08
+ [46,]  46 0.00 6.993823e-08
+ [47,]  47 0.00 7.044342e-08
+ [48,]  48 0.00 7.094003e-08
+ [49,]  49 0.00 7.142837e-08
+ [50,]  50 0.00 7.190875e-08
+ [51,]  51 0.00 7.238146e-08
+ [52,]  52 0.00 7.284675e-08
+ [53,]  53 0.00 7.330489e-08
+ [54,]  54 0.00 7.375610e-08
+ [55,]  55 0.00 7.420064e-08
+ [56,]  56 0.00 7.463869e-08
+ [57,]  57 0.00 7.507049e-08
+ [58,]  58 0.00 7.549621e-08
+ [59,]  59 0.00 7.591605e-08
+ [60,]  60 0.00 7.633018e-08
+ [61,]  61 0.00 7.673877e-08
+ [62,]  62 0.00 7.714200e-08
+ [63,]  63 0.00 7.754000e-08
+ [64,]  64 0.00 7.793293e-08
+ [65,]  65 0.00 7.832093e-08
+ [66,]  66 0.00 7.870414e-08
+ [67,]  67 0.00 7.908268e-08
+ [68,]  68 0.00 7.945669e-08
+ [69,]  69 0.00 7.982627e-08
+ [70,]  70 0.00 8.019154e-08
+ [71,]  71 0.00 8.055262e-08
+ [72,]  72 0.00 8.090961e-08
+ [73,]  73 0.00 8.126261e-08
+ [74,]  74 0.00 8.161172e-08
+ [75,]  75 0.00 8.195703e-08
+ [76,]  76 0.00 8.229864e-08
+ [77,]  77 0.00 8.263662e-08
+ [78,]  78 0.00 8.297107e-08
+ [79,]  79 0.00 8.330207e-08
+ [80,]  80 0.00 8.362969e-08
+ [81,]  81 0.01 8.395402e-08
+ [82,]  82 0.01 8.427511e-08
+ [83,]  83 0.01 8.459305e-08
+ [84,]  84 0.01 8.490790e-08
+ [85,]  85 0.01 8.521973e-08
+ [86,]  86 0.01 8.552861e-08
+ [87,]  87 0.02 8.583458e-08
+ [88,]  88 0.02 8.613772e-08
+ [89,]  89 0.02 8.643808e-08
+ [90,]  90 0.02 8.673571e-08
+ [91,]  91 0.02 8.703068e-08
+ [92,]  92 0.02 8.732303e-08
+ [93,]  93 0.03 8.761282e-08
+ [94,]  94 0.03 8.790009e-08
+ [95,]  95 0.03 8.818489e-08
+ [96,]  96 0.03 8.846727e-08
+ [97,]  97 0.03 8.874728e-08
+ [98,]  98 0.03 8.902495e-08
+ [99,]  99 0.03 8.930033e-08
+[100,] 100 0.03 8.957347e-08
+[101,] 101 0.03 8.984440e-08
+[102,] 102 0.03 9.011317e-08
+[103,] 103 0.04 9.037980e-08
+[104,] 104 0.04 9.064434e-08
+[105,] 105 0.04 9.090683e-08
+[106,] 106 0.04 9.116729e-08
+[107,] 107 0.05 9.142577e-08
+[108,] 108 0.06 9.168229e-08
+[109,] 109 0.06 9.193689e-08
+[110,] 110 0.06 9.218961e-08
+[111,] 111 0.06 9.244046e-08
+[112,] 112 0.08 9.268949e-08
+[113,] 113 0.08 9.293672e-08
+[114,] 114 0.09 9.318218e-08
+[115,] 115 0.10 9.342589e-08
+[116,] 116 0.10 9.366789e-08
+[117,] 117 0.13 9.390821e-08
+[118,] 118 0.15 9.414686e-08
+[119,] 119 0.15 9.438387e-08
+[120,] 120 0.15 9.461927e-08
+[121,] 121 0.16 9.485308e-08
+[122,] 122 0.17 9.508533e-08
+[123,] 123 0.18 9.531604e-08
+[124,] 124 0.19 9.554523e-08
+[125,] 125 0.21 9.577292e-08
+[126,] 126 0.23 9.599913e-08
+[127,] 127 0.27 9.622389e-08
+[128,] 128 0.28 9.644722e-08
+[129,] 129 0.29 9.666914e-08
+[130,] 130 0.29 9.688966e-08
+[131,] 131 0.30 9.710880e-08
+[132,] 132 0.33 9.732659e-08
+[133,] 133 0.34 9.754305e-08
+[134,] 134 0.35 9.775818e-08
+[135,] 135 0.36 9.797202e-08
+[136,] 136 0.37 9.818457e-08
+[137,] 137 0.40 9.839585e-08
+[138,] 138 0.43 9.860589e-08
+[139,] 139 0.44 9.881468e-08
+[140,] 140 0.44 9.902227e-08
+[141,] 141 0.45 9.922865e-08
+[142,] 142 0.46 9.943384e-08
+[143,] 143 0.46 9.963786e-08
+[144,] 144 0.47 9.984073e-08
+[145,] 145 0.48 1.000424e-07
+[146,] 146 0.48 1.002430e-07
+[147,] 147 0.49 1.004425e-07
+[148,] 148 0.50 1.006409e-07
+[149,] 149 0.50 1.008382e-07
+[150,] 150 0.52 1.010344e-07
+[151,] 151 0.56 1.012296e-07
+[152,] 152 0.57 1.014237e-07
+[153,] 153 0.59 1.016167e-07
+[154,] 154 0.59 1.018088e-07
+[155,] 155 0.61 1.019998e-07
+[156,] 156 0.61 1.021899e-07
+[157,] 157 0.64 1.023789e-07
+[158,] 158 0.65 1.025670e-07
+[159,] 159 0.68 1.027541e-07
+[160,] 160 0.70 1.029402e-07
+[161,] 161 0.71 1.031254e-07
+[162,] 162 0.71 1.033097e-07
+[163,] 163 0.72 1.034931e-07
+[164,] 164 0.76 1.036755e-07
+[165,] 165 0.77 1.038570e-07
+[166,] 166 0.78 1.040377e-07
+[167,] 167 0.78 1.042174e-07
+[168,] 168 0.79 1.043963e-07
+[169,] 169 0.79 1.045743e-07
+[170,] 170 0.79 1.047515e-07
+[171,] 171 0.81 1.049278e-07
+[172,] 172 0.82 1.051033e-07
+[173,] 173 0.82 1.052779e-07
+[174,] 174 0.84 1.054518e-07
+[175,] 175 0.85 1.056248e-07
+[176,] 176 0.85 1.057970e-07
+[177,] 177 0.85 1.059684e-07
+[178,] 178 0.86 1.061390e-07
+[179,] 179 0.88 1.063089e-07
+[180,] 180 0.89 1.064780e-07
+[181,] 181 0.89 1.066463e-07
+[182,] 182 0.90 1.068139e-07
+[183,] 183 0.91 1.069807e-07
+[184,] 184 0.91 1.071468e-07
+[185,] 185 0.91 1.073121e-07
+[186,] 186 0.91 1.074767e-07
+[187,] 187 0.91 1.076406e-07
+[188,] 188 0.91 1.078038e-07
+[189,] 189 0.92 1.079663e-07
+[190,] 190 0.92 1.081281e-07
+[191,] 191 0.92 1.082892e-07
+[192,] 192 0.92 1.084496e-07
+[193,] 193 0.93 1.086093e-07
+[194,] 194 0.94 1.087684e-07
+[195,] 195 0.94 1.089267e-07
+[196,] 196 0.94 1.090845e-07
+[197,] 197 0.95 1.092415e-07
+[198,] 198 0.95 1.093980e-07
+[199,] 199 0.96 1.095537e-07
+[200,] 200 0.96 1.097089e-07
+[201,] 201 0.96 1.098634e-07
+[202,] 202 0.96 1.100173e-07
+[203,] 203 0.96 1.101706e-07
+[204,] 204 0.97 1.103232e-07
+[205,] 205 0.97 1.104753e-07
+[206,] 206 0.97 1.106267e-07
+[207,] 207 0.97 1.107776e-07
+[208,] 208 0.97 1.109278e-07
+[209,] 209 0.98 1.110775e-07
+[210,] 210 0.98 1.112266e-07
+[211,] 211 0.98 1.113751e-07
+[212,] 212 0.98 1.115230e-07
+[213,] 213 0.99 1.116704e-07
+[214,] 214 1.00 1.118172e-07
+
+$obsmle
+Poisson Lognormal mean Poisson Lognormal s.d. 
+             147.80877               27.90549 
+
+$bsmles
+   LN mean  LN s.d.    MANDS
+1 78.31314 282.6151 30.62452
+2 58.82569 125.0498 29.57302
+3 80.63516 252.2182 28.03012
+4 84.28368 528.4082 37.71379
+5 68.30093 291.0255 36.25341
+
+$quantiles
+    2.5%      50%    97.5% 
+28.18441 30.62452 37.56775 
+
+$pvalue
+[1] 0.8333333
+
+$obsmands
+[1] 8.200446
+
+$meanmles
+  LN mean   LN s.d.     MANDS 
+ 74.07172 295.86337  32.43897 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bspln", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bswar")
+> ### * bswar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bswar
+> ### Title: Calculate Bootstrap Estimates and Confidence Intervals for the
+> ###   Waring Distribution
+> ### Aliases: bswar bootstrapwar
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Now, simulate a Waring distribution over 100
+> # observations with expected count 1 and probability of another
+> # of 0.2
+> 
+> set.seed(1)
+> s4 <- simwar(n=100, v=c(5,0.2))
+> table(s4)
+s4
+ 1  2  3  6 
+75 21  3  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for the parameter.
+> #
+> 
+> s4est <- awarmle(s4)
+> s4est
+$theta
+  Waring PDF MLE Waring prob. new 
+       27.195646         0.757727 
+
+$asycov
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE      3748.894154      0.235296047
+Waring prob. new       0.235296      0.001504893
+
+$se
+  Waring PDF MLE Waring prob. new 
+     61.22821371       0.03879295 
+
+$asycor
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE       1.00000000       0.09906272
+Waring prob. new     0.09906272       1.00000000
+
+$conc
+Waring prob. new 
+        1.501722 
+
+> 
+> #
+> # Use the bootstrap to compute a confidence interval rather than using the 
+> # asymptotic confidence interval for the parameter.
+> #
+> 
+> bswar(s4, m=20)
+$dist
+     k ecdf       cdf
+[1,] 1 0.75 0.9371193
+[2,] 2 0.96 0.9940108
+[3,] 3 0.99 0.9992486
+[4,] 4 0.99 0.9998845
+[5,] 5 0.99 0.9999792
+[6,] 6 1.00 0.9999957
+
+$obsmle
+  Waring PDF MLE Waring prob. new 
+       27.195646         0.757727 
+
+$bsmles
+     PDF MLE prob. new     MANDS
+1  49.999430 0.9514020  0.365313
+2  49.999550 0.9422129  1.262738
+3  49.999902 0.9003288 10.624454
+4  49.999787 0.8988759 14.171654
+5  43.155437 0.9174492  3.135982
+6  49.999550 0.9422129  1.262738
+7   3.604354 0.9207572 39.485592
+8  49.999360 0.9066019 10.452610
+9   4.943763 0.9092819 23.198663
+10 13.396280 0.9344961  4.286846
+11 49.999430 0.9514020  0.365313
+12 13.396280 0.9344961  4.286846
+13 49.999430 0.9514020  0.365313
+14 49.999921 0.9331398  2.713334
+15 49.999550 0.9422129  1.262738
+16 43.155437 0.9174492  3.135982
+17 13.396280 0.9344961  4.286846
+18 49.999725 0.9087627  7.458215
+19 13.396280 0.9344961  4.286846
+20  9.410472 0.9431375 10.600778
+
+$quantiles
+     2.5%       50%     97.5% 
+ 0.365313  4.286846 31.749301 
+
+$pvalue
+[1] 0
+
+$obsmands
+[1] 56.94686
+
+$meanmles
+   PDF MLE  prob. new      MANDS 
+35.3925109  0.9287307  7.3504401 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bswar", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bsyule")
+> ### * bsyule
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bsyule
+> ### Title: Calculate Bootstrap Estimates and Confidence Intervals for the
+> ###   Yule Distribution
+> ### Aliases: bsyule bootstrapyule
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Now, simulate a Yule distribution over 100
+> # observations with rho=4.0
+> 
+> set.seed(1)
+> s4 <- simyule(n=100, rho=4)
+> table(s4)
+s4
+ 1  2  3  4  8 
+73 21  4  1  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho
+> #
+> 
+> s4est <- ayulemle(s4)
+> s4est
+$result
+           lower 95%            upper 95%              PDF MLE 
+           3.1274337            5.7311461            4.4292899 
+                  SE #>=cutoff&<=cutabove 
+           0.6642123          100.0000000 
+
+$theta
+PDF MLE 
+4.42929 
+
+$conc
+[1] NA
+
+$value
+[1] -82.5103
+
+$concCI
+[1] NA NA NA
+
+> 
+> #
+> # Use the bootstrap to compute a confidence interval rather than using the 
+> # asymptotic confidence interval for rho.
+> #
+> 
+> bsyule(s4, m=20)
+$dist
+     k ecdf       cdf
+[1,] 1 0.73 0.7742302
+[2,] 2 0.94 0.9168327
+[3,] 3 0.98 0.9611929
+[4,] 4 0.99 0.9791059
+[5,] 5 0.99 0.9876062
+[6,] 6 0.99 0.9921137
+[7,] 7 0.99 0.9947068
+[8,] 8 1.00 0.9962950
+
+$obsmle
+PDF MLE 
+4.42929 
+
+$bsmles
+    PDF MLE      MANDS
+1  4.687609 0.11773830
+2  5.788941 0.93252626
+3  3.801936 0.09063300
+4  4.110690 0.45297314
+5  4.510850 0.03139564
+6  4.508971 0.41735467
+7  4.916406 0.06506946
+8  4.278764 0.22329860
+9  4.114120 0.29006982
+10 4.839015 0.10316007
+11 5.260732 0.51991114
+12 4.887225 0.11729243
+13 5.236328 0.05047587
+14 4.823591 0.61586092
+15 4.021612 2.24192250
+16 3.922506 0.10394361
+17 5.105078 0.40875980
+18 4.078303 0.08938437
+19 4.449437 0.04287345
+20 4.879492 0.20913083
+
+$quantiles
+     2.5%       50%     97.5% 
+0.0368476 0.1634346 1.6199593 
+
+$pvalue
+[1] 0.04761905
+
+$obsmands
+[1] 1.021677
+
+$meanmles
+  PDF MLE     MANDS 
+4.6110805 0.3561887 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bsyule", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gyulemle")
+> ### * gyulemle
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gyulemle
+> ### Title: Models for Count Distributions
+> ### Aliases: gyulemle gwarmle
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> #
+> # Simulate a Yule distribution over 100
+> # observations with rho=4.0
+> #
+> 
+> set.seed(1)
+> s4 <- simyule(n=100, rho=4)
+> table(s4)
+s4
+ 1  2  3  4  8 
+73 21  4  1  1 
+> 
+> #
+> # Recode it as categorical
+> #
+> 
+> s4[s4 >  4 & s4 < 11] <- 5
+> s4[s4 > 100] <- 8
+> s4[s4 >  20] <- 7
+> s4[s4 >  10] <- 6
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho
+> #
+> 
+> s4est <- gyulemle(s4)
+> s4est
+$result
+           lower 95%            upper 95%              PDF MLE 
+           3.1551643            5.8649437            4.5100540 
+                  SE #>=cutoff&<=cutabove 
+           0.6912703          100.0000000 
+
+$theta
+ PDF MLE 
+4.510054 
+
+$conc
+[1] NA
+
+$concCI
+[1] NA NA NA
+
+$value
+[1] -80.02691
+
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho under the Waring model (i.e., rho=4, p=2/3)
+> #
+> 
+> s4warest <- gwarmle(s4)
+> s4warest
+$theta
+  Waring PDF MLE Waring prob. new 
+      36.9308785        0.7328491 
+
+$asycov
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE     1.989311e+04      0.647964459
+Waring prob. new   6.479645e-01      0.001542771
+
+$se
+  Waring PDF MLE Waring prob. new 
+    141.04293069       0.03927812 
+
+$asycor
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE        1.0000000        0.1169632
+Waring prob. new      0.1169632        1.0000000
+
+$concCI
+                 Waring prob. new Waring prob. new 
+        0.000000         1.332335         2.122446 
+
+$conc
+Waring prob. new 
+        1.332335 
+
+> 
+> #
+> # Compare the AICC and BIC for the two models
+> #
+> 
+> llgyuleall(v=s4est$theta,x=s4)
+       np   log-lik      AICC       BIC 
+  3.00000 -79.38297 165.01594 172.58145 
+> llgwarall(v=s4warest$theta,x=s4)
+     np log-lik    AICC     BIC 
+      4     NaN     NaN     NaN 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gyulemle", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("llgyule")
+> ### * llgyule
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: llgyule
+> ### Title: Calculate the Conditional log-likelihood for Count Distributions
+> ### Aliases: llgyule llgwar llgdp llgpoi
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> #
+> # Simulate a Yule distribution over 100
+> # observations with rho=4.0
+> #
+> 
+> set.seed(1)
+> s4 <- simyule(n=100, rho=4)
+> table(s4)
+s4
+ 1  2  3  4  8 
+73 21  4  1  1 
+> 
+> #
+> # Recode it as categorical
+> #
+> 
+> s4[s4 >  4 & s4 < 11] <- 5
+> s4[s4 > 100] <- 8
+> s4[s4 >  20] <- 7
+> s4[s4 >  10] <- 6
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho
+> #
+> 
+> s4est <- gyulemle(s4)
+> s4est
+$result
+           lower 95%            upper 95%              PDF MLE 
+           3.1551643            5.8649437            4.5100540 
+                  SE #>=cutoff&<=cutabove 
+           0.6912703          100.0000000 
+
+$theta
+ PDF MLE 
+4.510054 
+
+$conc
+[1] NA
+
+$concCI
+[1] NA NA NA
+
+$value
+[1] -80.02691
+
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho under the Waring model (i.e., rho=4, p=2/3)
+> #
+> 
+> s4warest <- gwarmle(s4)
+> s4warest
+$theta
+  Waring PDF MLE Waring prob. new 
+      36.9308785        0.7328491 
+
+$asycov
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE     1.989311e+04      0.647964459
+Waring prob. new   6.479645e-01      0.001542771
+
+$se
+  Waring PDF MLE Waring prob. new 
+    141.04293069       0.03927812 
+
+$asycor
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE        1.0000000        0.1169632
+Waring prob. new      0.1169632        1.0000000
+
+$concCI
+                 Waring prob. new Waring prob. new 
+        0.000000         1.332335         2.122446 
+
+$conc
+Waring prob. new 
+        1.332335 
+
+> 
+> #
+> # Compare the log-likelihoods for the two models
+> #
+> 
+> llgyule(v=s4est$theta,x=s4)
+[1] -80.02691
+> llgwar(v=s4warest$theta,x=s4)
+[1] -78.25259
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("llgyule", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("llgyuleall")
+> ### * llgyuleall
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: llgyuleall
+> ### Title: Calculate the log-likelihood for Count Distributions
+> ### Aliases: llgyuleall llgwarall llgdpall llgnball llgnbwall llgpoiall
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> #
+> # Simulate a Yule distribution over 100
+> # observations with rho=4.0
+> #
+> 
+> set.seed(1)
+> s4 <- simyule(n=100, rho=4)
+> table(s4)
+s4
+ 1  2  3  4  8 
+73 21  4  1  1 
+> 
+> #
+> # Recode it as categorical
+> #
+> 
+> s4[s4 >  4 & s4 < 11] <- 5
+> s4[s4 > 100] <- 8
+> s4[s4 >  20] <- 7
+> s4[s4 >  10] <- 6
+> 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho
+> #
+> 
+> s4est <- gyulemle(s4)
+> s4est
+$result
+           lower 95%            upper 95%              PDF MLE 
+           3.1551643            5.8649437            4.5100540 
+                  SE #>=cutoff&<=cutabove 
+           0.6912703          100.0000000 
+
+$theta
+ PDF MLE 
+4.510054 
+
+$conc
+[1] NA
+
+$concCI
+[1] NA NA NA
+
+$value
+[1] -80.02691
+
+> 
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho under the Waring model (i.e., rho=4, p=2/3)
+> #
+> 
+> s4warest <- gwarmle(s4)
+> s4warest
+$theta
+  Waring PDF MLE Waring prob. new 
+      36.9308785        0.7328491 
+
+$asycov
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE     1.989311e+04      0.647964459
+Waring prob. new   6.479645e-01      0.001542771
+
+$se
+  Waring PDF MLE Waring prob. new 
+    141.04293069       0.03927812 
+
+$asycor
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE        1.0000000        0.1169632
+Waring prob. new      0.1169632        1.0000000
+
+$concCI
+                 Waring prob. new Waring prob. new 
+        0.000000         1.332335         2.122446 
+
+$conc
+Waring prob. new 
+        1.332335 
+
+> 
+> #
+> # Compare the AICC and BIC for the two models
+> #
+> 
+> llgyuleall(v=s4est$theta,x=s4)
+       np   log-lik      AICC       BIC 
+  3.00000 -79.38297 165.01594 172.58145 
+> llgwarall(v=s4warest$theta,x=s4)
+     np log-lik    AICC     BIC 
+      4     NaN     NaN     NaN 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("llgyuleall", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("llpln")
+> ### * llpln
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: llpln
+> ### Title: Calculate the Conditional log-likelihood for the Poisson
+> ###   Lognormal Distributions
+> ### Aliases: llpln
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> 
+> # Simulate a Poisson Lognormal distribution over 100
+> # observations with lognormal mean -1 and logormal standard deviation 1.
+> 
+> set.seed(1)
+> s4 <- simpln(n=100, v=c(-1,1))
+> table(s4)
+s4
+ 1  2  3  4  7 
+59 28  9  3  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho
+> #
+> 
+> s4est <- aplnmle(s4)
+> s4est
+$theta
+Poisson Lognormal mean Poisson Lognormal s.d. 
+             0.8483059              1.0527236 
+
+$asycov
+                       Poisson Lognormal mean Poisson Lognormal s.d.
+Poisson Lognormal mean             0.09782806            -0.06147795
+Poisson Lognormal s.d.            -0.06147795             0.04940130
+
+$se
+Poisson Lognormal mean Poisson Lognormal s.d. 
+             0.3127748              0.2222640 
+
+$asycor
+                       Poisson Lognormal mean Poisson Lognormal s.d.
+Poisson Lognormal mean              1.0000000             -0.8843384
+Poisson Lognormal s.d.             -0.8843384              1.0000000
+
+$conc
+[1] NA
+
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho under the Waring model
+> #
+> 
+> s4warest <- awarmle(s4)
+> s4warest
+$theta
+  Waring PDF MLE Waring prob. new 
+      49.9994193        0.6200002 
+
+$conc
+Waring prob. new 
+       0.7987945 
+
+> 
+> #
+> # Compare the log-likelihoods for the two models
+> #
+> 
+> llpln(v=s4est$theta,x=s4)
+[1] -161.0801
+> llwar(v=s4warest$theta,x=s4)
+[1] -106.9337
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("llpln", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("llyule")
+> ### * llyule
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: llyule
+> ### Title: Calculate the Conditional log-likelihood for Count Distributions
+> ### Aliases: llyule llwar lldp lldp.good llgeo llgp llgp.good llgw llgy
+> ###   llgy0 llnb llnb0 llnbw llnby llnby0 llnbzero llpe llpoi llsgeo
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> 
+> # Simulate a Yule distribution over 100
+> # observations with rho=4.0
+> 
+> set.seed(1)
+> s4 <- simyule(n=100, rho=4)
+> table(s4)
+s4
+ 1  2  3  4  8 
+73 21  4  1  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho
+> #
+> 
+> s4est <- ayulemle(s4)
+> s4est
+$result
+           lower 95%            upper 95%              PDF MLE 
+           3.1274337            5.7311461            4.4292899 
+                  SE #>=cutoff&<=cutabove 
+           0.6642123          100.0000000 
+
+$theta
+PDF MLE 
+4.42929 
+
+$conc
+[1] NA
+
+$value
+[1] -82.5103
+
+$concCI
+[1] NA NA NA
+
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho under the Waring model (i.e., rho=4, p=2/3)
+> #
+> 
+> s4warest <- awarmle(s4)
+> s4warest
+$theta
+  Waring PDF MLE Waring prob. new 
+        9.740875         0.720596 
+
+$asycov
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE      62.62515254      0.089308667
+Waring prob. new     0.08930867      0.001870242
+
+$se
+  Waring PDF MLE Waring prob. new 
+       7.9136055        0.0432463 
+
+$asycor
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE        1.0000000        0.2609578
+Waring prob. new      0.2609578        1.0000000
+
+$conc
+Waring prob. new 
+        1.122937 
+
+> 
+> #
+> # Compare the log-likelihoods for the two models
+> #
+> 
+> llyule(v=s4est$theta,x=s4)
+[1] -82.5103
+> llwar(v=s4warest$theta,x=s4)
+[1] -81.4873
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("llyule", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("llyuleall")
+> ### * llyuleall
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: llyuleall
+> ### Title: Calculate the log-likelihood for Count Distributions
+> ### Aliases: llyuleall lldpall llgeoall llgpall llgwall llgy0all llgyall
+> ###   llnb0all llnball llnbwall llnby0all llnbyall llnbzeroall llpeall
+> ###   llpoiall llsgeoall
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> 
+> # Simulate a Yule distribution over 100
+> # observations with rho=4.0
+> 
+> set.seed(1)
+> s4 <- simyule(n=100, rho=4)
+> table(s4)
+s4
+ 1  2  3  4  8 
+73 21  4  1  1 
+> 
+> #
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho
+> #
+> 
+> s4est <- ayulemle(s4)
+> s4est
+$result
+           lower 95%            upper 95%              PDF MLE 
+           3.1274337            5.7311461            4.4292899 
+                  SE #>=cutoff&<=cutabove 
+           0.6642123          100.0000000 
+
+$theta
+PDF MLE 
+4.42929 
+
+$conc
+[1] NA
+
+$value
+[1] -82.5103
+
+$concCI
+[1] NA NA NA
+
+> 
+> # Calculate the MLE and an asymptotic confidence
+> # interval for rho under the Waring model (i.e., rho=4, p=2/3)
+> #
+> 
+> s4warest <- awarmle(s4)
+> s4warest
+$theta
+  Waring PDF MLE Waring prob. new 
+        9.740875         0.720596 
+
+$asycov
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE      62.62515254      0.089308667
+Waring prob. new     0.08930867      0.001870242
+
+$se
+  Waring PDF MLE Waring prob. new 
+       7.9136055        0.0432463 
+
+$asycor
+                 Waring PDF MLE Waring prob. new
+Waring PDF MLE        1.0000000        0.2609578
+Waring prob. new      0.2609578        1.0000000
+
+$conc
+Waring prob. new 
+        1.122937 
+
+> 
+> #
+> # Compare the AICC and BIC for the two models
+> #
+> 
+> llyuleall(v=s4est$theta,x=s4)
+       np   log-lik      AICC       BIC 
+  3.00000 -81.97404 170.19808 177.76359 
+> llwarall(v=s4warest$theta,x=s4)
+      np  log-lik     AICC      BIC 
+  3.0000 -81.4873 169.2246 176.7901 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("llyuleall", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("reedmolloy")
+> ### * reedmolloy
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: reedmolloy
+> ### Title: Generate a (non-random) network with a given degree sequence
+> ### Aliases: reedmolloy
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Now, simulate a Poisson Lognormal distribution over 100
+> # observations with mean = -1 and s.d. = 1.
+> 
+> set.seed(2)
+> s4 <- simpln(n=100, v=c(-1,1))
+> table(s4)
+s4
+ 1  2  3  4  5  6 
+65 18  7  4  4  2 
+> #
+> simr <- reedmolloy(s4)
+> simr
+ Network attributes:
+  vertices = 100 
+  directed = FALSE 
+  hyper = FALSE 
+  loops = FALSE 
+  multiple = FALSE 
+  bipartite = FALSE 
+  total edges= 85 
+    missing edges= 0 
+    non-missing edges= 85 
+
+ Vertex attribute names: 
+    vertex.names 
+
+No edge attributes
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("reedmolloy", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ryule")
+> ### * ryule
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ryule
+> ### Title: Generate a (non-random) network from a Yule Distribution
+> ### Aliases: ryule
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Now, simulate a Yule network of 30
+> # actors with rho=4.0
+> ryule(n=30, rho=4)
+ Network attributes:
+  vertices = 30 
+  directed = FALSE 
+  hyper = FALSE 
+  loops = FALSE 
+  multiple = FALSE 
+  bipartite = FALSE 
+  total edges= 18 
+    missing edges= 0 
+    non-missing edges= 18 
+
+ Vertex attribute names: 
+    vertex.names 
+
+No edge attributes
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ryule", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simcmp")
+> ### * simcmp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simcmp
+> ### Title: Simulate from a Conway Maxwell Poisson Distribution
+> ### Aliases: simcmp
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Now, simulate a Conway Maxwell Poisson distribution over 100
+> # observations with lognormal mean -1 and lognormal standard deviation 1.
+> 
+> set.seed(1)
+> s4 <- simcmp(n=100, v=c(7,3))
+> table(s4)
+s4
+ 2  3  4  5  6  7  8  9 10 11 12 13 15 
+ 5 11  4 13 10 11 18 11  7  5  2  2  1 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simcmp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simdp")
+> ### * simdp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simdp
+> ### Title: Simulate from a Discrete Pareto Distribution
+> ### Aliases: simdp
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Now, simulate a Discrete Pareto distribution over 100
+> ##D # observations with lognormal mean -1 and lognormal standard deviation 1.
+> ##D 
+> ##D set.seed(1)
+> ##D s4 <- simdp(n=100, v=3.5)
+> ##D table(s4)
+> ## End(Not run)
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simdp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simnb")
+> ### * simnb
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simnb
+> ### Title: Simulate from a Negative Binomial Distribution
+> ### Aliases: simnb
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Now, simulate a Negative Binomial distribution over 100
+> # observations with lognormal mean -1 and lognormal standard deviation 1.
+> 
+> set.seed(1)
+> s4 <- simnb(n=100, v=c(5,0.2))
+> table(s4)
+s4
+ 1  2  3  4  5  6  7  8  9 10 11 13 15 22 
+13 18 19  6 10  7  8  5  3  4  3  2  1  1 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simnb", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simpln")
+> ### * simpln
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simpln
+> ### Title: Simulate from a Poisson Lognormal Distribution
+> ### Aliases: simpln
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Now, simulate a Poisson Lognormal distribution over 100
+> # observations with lognormal mean -1 and lognormal standard deviation 1.
+> 
+> set.seed(1)
+> s4 <- simpln(n=100, v=c(-1,1))
+> table(s4)
+s4
+ 1  2  3  4  7 
+59 28  9  3  1 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simpln", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simwar")
+> ### * simwar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simwar
+> ### Title: Simulate from a Waring Distribution
+> ### Aliases: simwar
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Now, simulate a Waring distribution over 100
+> # observations with Waring with exponent 3.5 and probability of a new
+> # actor 0.1.
+> 
+> set.seed(1)
+> s4 <- simwar(n=100, v=c(3.5, 0.1))
+> table(s4)
+s4
+ 1  2  3  4  5 11 
+68 19  9  2  1  1 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simwar", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simyule")
+> ### * simyule
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simyule
+> ### Title: Simulate from a Yule Distribution
+> ### Aliases: simyule
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> # Now, simulate a Yule distribution over 100
+> # observations with rho=4.0
+> 
+> set.seed(1)
+> s4 <- simyule(n=100, rho=4)
+> table(s4)
+s4
+ 1  2  3  4  8 
+73 21  4  1  1 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simyule", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  7.238 0.063 7.32 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

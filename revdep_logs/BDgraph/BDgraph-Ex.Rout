@@ -1,0 +1,787 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "BDgraph"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "BDgraph-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('BDgraph')
+Loading required package: Matrix
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘BDgraph’
+
+The following object is masked from ‘package:igraph’:
+
+    compare
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("CellSignal")
+> ### * CellSignal
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CellSignal
+> ### Title: A flow cytometry dataset
+> ### Aliases: CellSignal
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+>   data( CellSignal )
+>   head( CellSignal )
+  praf  pmek  plcg  PIP2  PIP3 p44.42 pakts473 PKA   PKC  P38 pjnk
+1 26.4 13.20  8.82 18.30 58.80   6.61     17.0 414 17.00 44.9 40.0
+2 35.9 16.50 12.30 16.80  8.13  18.60     32.5 352  3.37 16.5 61.5
+3 59.4 44.10 14.60 10.20 13.00  14.90     32.5 403 11.40 31.9 19.5
+4 73.0 82.80 23.10 13.50  1.29   5.83     11.8 528 13.70 28.6 23.1
+5 33.7 19.80  5.19  9.73 24.80  21.10     46.1 305  4.66 25.7 81.3
+6 18.8  3.75 17.60 22.10 10.90  11.90     25.7 610 13.70 49.1 57.8
+>   boxplot( CellSignal )
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CellSignal", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bdgraph")
+> ### * bdgraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bdgraph
+> ### Title: Birth-death MCMC sampling algorithm for graphical models
+> ### Aliases: bdgraph
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 20, p = 6, size = 7, vis = TRUE )
+> ##D 
+> ##D output <- bdgraph( data = data.sim, iter = 1000 )
+> ##D 
+> ##D summary(output)
+> ##D 
+> ##D # To compare our result with true graph
+> ##D compare( data.sim, output, colnames = c("True graph", "BDgraph") )
+> ##D 
+> ##D output2 <- bdgraph( data = data.sim, iter = 5000, Gstart = output )
+> ##D 
+> ##D compare( data.sim, output, output2, colnames = c("True graph", "Frist run", "Second run") )
+> ##D 
+> ##D # generating mixed data from a 'scale-free' graph
+> ##D data.sim <- bdgraph.sim( n = 100, p = 6, type = "mixed", graph = "scale-free", vis = TRUE )
+> ##D 
+> ##D output <- bdgraph( data = data.sim, method = "gcgm", iter = 10000 )
+> ##D 
+> ##D summary( output )
+> ##D 
+> ##D compare( data.sim, output )	  
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bdgraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bdgraph.npn")
+> ### * bdgraph.npn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bdgraph.npn
+> ### Title: Nonparametric transfer
+> ### Aliases: bdgraph.npn
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 6, p = 4, size = 4 )
+> ##D data     <- ( data.sim $ data - 3 ) ^ 4
+> ##D data
+> ##D 
+> ##D # transfer the data by truncation 
+> ##D bdgraph.npn( data, npn = "truncation" )
+> ##D 
+> ##D # transfer the data by shrunken 
+> ##D bdgraph.npn( data, npn = "shrunken" )
+> ##D 
+> ##D # transfer the data by skeptic 
+> ##D bdgraph.npn( data, npn = "skeptic" )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bdgraph.npn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bdgraph.sim")
+> ### * bdgraph.sim
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bdgraph.sim
+> ### Title: Synthetic graph data generator
+> ### Aliases: bdgraph.sim
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 50, p = 10, prob = 0.3, vis = TRUE )
+> ##D print(data.sim)
+> ##D 
+> ##D # generating multivariate normal data from a 'hub' graph
+> ##D data.sim <- bdgraph.sim( n = 3, p = 6, graph = "hub", vis = FALSE )
+> ##D data.sim $ data
+> ##D 
+> ##D # generating mixed data from a 'hub' graph 
+> ##D data.sim <- bdgraph.sim( n = 10, p = 8, graph = "hub", type = "mixed" )
+> ##D data.sim $ data
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bdgraph.sim", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("compare")
+> ### * compare
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: compare
+> ### Title: Comparing the result
+> ### Aliases: compare
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 50, p = 6, size = 7, vis = TRUE )
+> ##D 
+> ##D # running sampling algorithm
+> ##D output <- bdgraph( data = data.sim, iter = 10000 )
+> ##D # comparing the result
+> ##D compare( data.sim, output, colnames = c("true", "BDgraph"), vis = TRUE )
+> ##D 
+> ##D # estimate the true graph by 'huge' package
+> ##D require( huge )  
+> ##D huge.g <- huge( data.sim $ data, method = "mb" )
+> ##D huge.g <- huge.select( huge.g )    
+> ##D 
+> ##D # comparing the result
+> ##D compare( data.sim, output, huge.g, colnames = c("true", "BDgraph", "huge") , vis = TRUE )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("compare", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("geneExpression")
+> ### * geneExpression
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: geneExpression
+> ### Title: Human gene expression dataset
+> ### Aliases: geneExpression
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+>   data( geneExpression )
+>   dim( geneExpression )
+[1]  60 100
+>   head( geneExpression )
+        GI_18426974-S GI_41197088-S GI_17981706-S GI_41190507-S GI_33356162-S
+NA06985     14.217386      6.067900      6.112384      6.359560      6.077128
+NA06993      6.045551      6.204508     13.011187      8.572267     12.405055
+NA07022      6.340567      6.451339     13.081270      6.486416     12.442465
+NA07034      6.113300      6.389877     13.360477     15.772347     12.256289
+NA07055     13.830023      6.052565      6.102478     11.916794      6.006354
+NA07056      6.296204     13.910456      5.992261     11.943072      6.072196
+        Hs.449605-S GI_37546026-S Hs.512137-S GI_37546969-S Hs.449584-S
+NA06985    6.235026      6.495667    6.614708      6.002133   15.385354
+NA06993    8.998613     15.878857    9.556195      8.186877    6.155449
+NA07022   14.079870     10.274196    8.559765     12.692369    6.364313
+NA07034   13.304084      6.976274   12.388112      6.259136    6.161601
+NA07055    9.694568     14.619690   15.106250     10.643040   10.609795
+NA07056    7.015711     10.401141    8.430153      6.444004    6.048816
+        Hs.406489-S GI_18641371-S Hs.449609-S hmm3574-S hmm10298-S Hs.449602-S
+NA06985    6.518171      9.452326    6.340986  6.599867   6.277623   15.465953
+NA06993    8.749026      6.054201    6.375260  9.870416   6.281537   15.268148
+NA07022   13.667397      6.126122    6.371988 13.654273   6.267339   14.150072
+NA07034   14.397371      6.045013    6.330585 14.489313   6.295682    9.112474
+NA07055   15.025161     12.298217   10.911179 14.453883  12.366247   13.529457
+NA07056   12.360866     12.828560    6.325901 14.252676   6.258263    7.875596
+        GI_11095446-S Hs.512124-S GI_37542230-S hmm3577-S GI_21389378-S
+NA06985      6.116529    7.666060     11.933090 12.664687      6.715358
+NA06993     10.466807    6.611145      6.931394 10.745470      6.640868
+NA07022     10.636595    8.649914      6.878124  9.180318      6.095078
+NA07034     10.796708   10.153779      6.049451 10.253542      6.212369
+NA07055      6.113972   11.984752     10.514878  9.806055      8.079201
+NA07056      6.136637   10.114414      6.244739  7.270778      6.220278
+        GI_27754767-I GI_13514808-S GI_13027804-S GI_4504410-S GI_11993934-S
+NA06985      6.142264      6.002929      6.449327    11.008185     11.861785
+NA06993      6.142978      9.169234      6.084432     8.933767     10.878089
+NA07022      6.885856      9.691269      7.371567     9.749358     10.410237
+NA07034      9.186080      9.848503      9.548334     9.714124     11.524231
+NA07055      8.260113      6.050607      6.872978    10.037436      9.853503
+NA07056      6.681703      6.149593      6.448442     8.397811     12.291355
+        GI_33356559-S GI_37537697-S hmm10289-S GI_42660576-S GI_34915989-S
+NA06985      6.051431      6.101434   6.033571     11.133182      6.573969
+NA06993      9.806760      6.275033   5.994174     12.178901      8.786541
+NA07022      9.376034      6.481491   6.066404      8.258930      8.244064
+NA07034     10.199684      7.199312   6.038301     11.684013      6.857114
+NA07055      6.053077      9.297223   9.346395     12.390965      9.788898
+NA07056      6.088241      7.029058   6.039342      8.031635      9.992067
+        GI_31377723-S GI_28416938-S GI_42656398-S Hs.449572-S GI_23065546-A
+NA06985     10.331070      6.647075      6.262386    6.038021      8.730239
+NA06993      6.069688      7.258281     10.660984    5.892678     10.650452
+NA07022      7.447466      6.471603      8.881737    6.050346      6.363275
+NA07034     11.166733      6.572627      6.275375    5.958535      8.947312
+NA07055      6.258016      8.863421      7.946390    5.992064      9.273321
+NA07056      9.010151      9.742337      6.718003    5.939967      6.262009
+        GI_42662536-S GI_41190543-S GI_23510363-A GI_7661757-S GI_27482629-S
+NA06985      10.68080      6.286885     10.323044     7.903430      9.625078
+NA06993      12.39562      6.191921      7.336168     6.389131     10.454333
+NA07022      11.92632      6.197679      9.654852     9.217750      7.362364
+NA07034      11.64127      6.195456      7.411884     9.454041      6.760575
+NA07055      12.71563      7.086193      8.024540     9.791387      9.682922
+NA07056      12.41214      6.247441     12.555376    10.672171     11.140415
+        GI_16554578-S GI_34222299-S GI_31652245-I GI_27754767-A GI_8923472-S
+NA06985      6.367575      6.232637     10.718266      6.816593     9.043663
+NA06993      9.088634      6.327694      9.147815      7.233127     8.206693
+NA07022      8.034115      7.000298      9.224722      7.265076     8.110170
+NA07034      7.173589      7.647583      9.904603      8.405899     8.777203
+NA07055      8.928526      8.259142      7.578196      7.991070     9.313564
+NA07056      7.150524      7.179354     10.115077      7.033406    10.490303
+        GI_20070269-S GI_30795192-A GI_31077201-S GI_27894333-A GI_24308084-S
+NA06985      6.838115     10.893900      7.173871     10.971897      8.183257
+NA06993      7.389991      7.352260      8.342420      8.426763      6.424604
+NA07022     11.541104      8.914293      9.454389     10.351850     10.560182
+NA07034      8.095882     10.368165      7.982739      9.180363      9.934667
+NA07055      7.032463     10.057619     10.527335      7.981261      6.467115
+NA07056      6.716313     11.919758      6.461353     10.532137      9.491945
+        GI_19743804-A GI_28610153-S GI_27764881-S GI_4507820-S GI_21464138-A
+NA06985     11.679224      7.820372      7.379566     9.615468      6.636347
+NA06993      9.899477      8.209664     10.915709     8.931372      6.498436
+NA07022     10.567220     12.504921      8.779352     9.520104      6.922206
+NA07034      9.579746      8.470346      8.500027     9.446183      6.787108
+NA07055      6.905711      9.861925      7.828294     9.708509      7.596337
+NA07056     11.644139      6.983909      9.597924     8.392226      7.007652
+        GI_14211892-S GI_27894329-S Hs.185140-S GI_4505888-A GI_34222336-S
+NA06985      5.907242      9.239151   10.270641     6.451152      8.328979
+NA06993      8.596395      9.704446    8.781431     7.094791      9.301214
+NA07022      8.139170     10.064540    9.205168     7.355334      7.937497
+NA07034      9.004705      5.955992   11.550050     6.559314      9.422443
+NA07055      5.778000      7.562999    9.850235     6.495761      7.699838
+NA07056      5.811388      6.542503    9.736456     6.137161      5.996429
+        GI_27477086-S GI_4504436-S GI_21614524-S GI_24497529-I GI_19224662-S
+NA06985     12.206635     8.312894      5.967512      9.209433      8.236927
+NA06993      8.549541    12.560423      5.846592      7.714160      6.756567
+NA07022     10.796929    11.759544      6.017991      9.530968     10.790772
+NA07034     11.192633     8.508227      8.077724      9.493507      7.511250
+NA07055      9.105048    12.495050      6.327879      9.327932      6.951202
+NA07056     11.744588    12.436449      5.915521     11.832736     10.489688
+        GI_22027487-S GI_9961355-S GI_21389558-S GI_24797066-S GI_38569448-S
+NA06985      6.262417     8.659825     10.372786      12.80208      6.588299
+NA06993      6.196549     6.786395      9.532960      13.59983      6.617922
+NA07022      7.048737     6.616977     10.537650      13.32858      9.353859
+NA07034      8.933853     9.567716      8.211047      11.30770      8.154228
+NA07055      8.053883     8.523736      6.995802      12.32670      6.900355
+NA07056      6.739915     8.897417      8.648624      13.35804      6.799522
+        GI_28557780-S GI_20302136-S GI_16159362-S Hs.171273-S Hs.136376-S
+NA06985     10.362205      7.286697     10.435591    7.117648    8.238493
+NA06993      9.144360      5.991826      9.350000    7.853225    8.017228
+NA07022     10.090459      7.215271     10.361170    6.299735    8.678803
+NA07034      7.627324      8.787800     10.197867    7.769253    5.884539
+NA07055      9.681735      8.561113      8.235112    8.662411    7.565770
+NA07056     10.836350      9.442783     10.639858    6.356955    9.958592
+        GI_4502630-S GI_4504700-S GI_7657043-S GI_42476191-S GI_37546229-S
+NA06985     6.224428     7.381016    10.894175      9.113407      8.003986
+NA06993     6.709736     6.807193     9.630456      6.435561      7.480815
+NA07022     7.707781    11.711598    10.029091      9.407614      8.308221
+NA07034     8.316728     8.358010     8.136511     12.006668     10.158762
+NA07055     8.056547     8.233972     8.024185      8.630324     10.015082
+NA07056     8.655022     8.503500    11.746903      8.522385     10.680299
+        GI_7662241-S GI_13325059-S GI_4505948-S GI_41350202-S GI_20373176-S
+NA06985     8.516512      12.41701     9.378154      7.643696      10.34031
+NA06993    10.654860      11.67822     9.111609      6.130718      13.13113
+NA07022     8.443134      13.37379     9.272923      6.899104      13.00057
+NA07034     7.101746      11.81845     8.873637      7.882231      13.17655
+NA07055     9.437461      10.85593     8.645195      7.333776      10.76641
+NA07056    10.189792      10.45810     6.406581      7.287958      10.66117
+        hmm9615-S GI_21389548-S hmm3587-S GI_7019408-S GI_37537705-I
+NA06985  6.607248      6.048586  6.142014     8.723610      8.572791
+NA06993  7.494765      6.094879  7.051650     8.783152      8.628778
+NA07022  8.052012      7.733864  6.335639     9.385829      9.327698
+NA07034  8.695023      6.093883  6.113494     9.990576     10.154575
+NA07055 10.067599      8.184557  7.339119     9.398706      6.704856
+NA07056  6.660767      7.881586  9.288706     7.740208      9.946342
+        GI_31341400-S GI_18641372-S GI_30409981-S GI_5454143-S GI_40354211-S
+NA06985      6.025538     10.650607      8.210023     9.522827      9.848712
+NA06993     10.486811     12.134475      6.288697     6.472885      8.352920
+NA07022      8.762428     12.689859      7.826410     9.727653      8.669844
+NA07034      6.786497     12.278483     10.178358    10.654253     10.854112
+NA07055      9.241983      9.872943      7.494946     6.797961      9.157461
+NA07056      8.775530     13.580592      7.619963     9.426115      9.158745
+        GI_18379361-A GI_20143949-A GI_4507426-S GI_14602456-I
+NA06985      6.228171      7.287604     6.531866      6.751506
+NA06993      6.526821     10.512019     7.908867      6.525898
+NA07022      8.524000      9.381383     7.805227      6.633137
+NA07034      6.738020     10.018635     9.633990      8.116134
+NA07055      7.474101      7.723132     9.114611      7.838307
+NA07056      6.077063     10.972987     8.564225      6.736361
+>   boxplot( geneExpression )
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("geneExpression", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("phat")
+> ### * phat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: phat
+> ### Title: Posterior link probabilities
+> ### Aliases: phat
+> 
+> ### ** Examples
+> 
+> 	## Not run: 
+> ##D 	# generating multivariate normal data from a 'circle' graph
+> ##D 	data.sim <- bdgraph.sim( n = 70, p = 6, graph = "circle", vis = TRUE )
+> ##D 
+> ##D 	output   <- bdgraph( data = data.sim, iter = 10000 )
+> ##D 
+> ##D 	phat( output, round = 2 )
+> ##D 	
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("phat", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.bdgraph")
+> ### * plot.bdgraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.bdgraph
+> ### Title: Plot function for 'S3' class '"bdgraph"'
+> ### Aliases: plot.bdgraph
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 50, p = 6, vis = TRUE )
+> ##D 
+> ##D output   <- bdgraph( data = data.sim )
+> ##D 
+> ##D plot(output)
+> ##D 
+> ##D plot( output, g = 4 )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.bdgraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.simulate")
+> ### * plot.simulate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.simulate
+> ### Title: Plot function for 'S3' class '"simulate"'
+> ### Aliases: plot.simulate
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating synthetic multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 10, p = 15 )
+> ##D 
+> ##D plot( data.sim )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.simulate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotcoda")
+> ### * plotcoda
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotcoda
+> ### Title: Convergence plot
+> ### Aliases: plotcoda
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'circle' graph
+> ##D data.sim <- bdgraph.sim( n = 50, p = 6, graph = "circle", vis = TRUE )
+> ##D 
+> ##D output <- bdgraph( data = data.sim )
+> ##D 
+> ##D plotcoda( output )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotcoda", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotroc")
+> ### * plotroc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotroc
+> ### Title: ROC plot
+> ### Aliases: plotroc
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 50, p = 6, size = 7, vis = TRUE )
+> ##D 
+> ##D # runing sampling algorithm
+> ##D output <- bdgraph( data = data.sim, iter = 10000 )
+> ##D # comparing the result
+> ##D plotroc( data.sim, output )
+> ##D 
+> ##D # To compare the result based on CGGMs approach
+> ##D output2 <- bdgraph( data = data.sim, method = "gcgm", iter = 10000 )
+> ##D # comparing the results
+> ##D plotroc( data.sim, output, output2 )
+> ##D legend( "bottomright", c("Gaussian", "Copula"), lty = c(1,2), col = c(1, 4))   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotroc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print.bdgraph")
+> ### * print.bdgraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.bdgraph
+> ### Title: Print function for 'S3' class '"bdgraph"'
+> ### Aliases: print.bdgraph
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 50, p = 6, vis = TRUE )
+> ##D 
+> ##D output   <- bdgraph( data = data.sim )
+> ##D 
+> ##D print( output )
+> ##D 
+> ##D print( output, Khat = TRUE, phat = TRUE )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.bdgraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print.simulate")
+> ### * print.simulate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.simulate
+> ### Title: Print function for 'S3' class '"simulate"'
+> ### Aliases: print.simulate
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph 
+> ##D data.sim <- bdgraph.sim( n = 20, p = 10, vis = TRUE )
+> ##D 
+> ##D print( data.sim )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.simulate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("prob")
+> ### * prob
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: prob
+> ### Title: Posterior probabilities of the graphs
+> ### Aliases: prob
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 50, p = 6, size = 6, vis = TRUE )
+> ##D 
+> ##D output   <- bdgraph( data = data.sim )
+> ##D 
+> ##D # Estimated posterior probability of the true graph
+> ##D prob( output, G = data.sim )
+> ##D 
+> ##D # Estimated posterior probability of the first and second graphs with highest probabilities
+> ##D prob( output, g = 2 )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("prob", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rgwish")
+> ### * rgwish
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rgwish
+> ### Title: Sampling from G-Wishart distribution
+> ### Aliases: rgwish
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D G <- toeplitz( c( 0, 1, rep( 0, 3 ) ) )
+> ##D G # graph with 5 nodes and 4 links
+> ##D 
+> ##D sample <- rgwish( n = 3, G = G, b = 3, D = diag(5) )
+> ##D sample
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rgwish", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rwish")
+> ### * rwish
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rwish
+> ### Title: Sampling from Wishart distribution
+> ### Aliases: rwish
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D sample <- rwish( n = 3, p = 5, b = 3, D = diag(p) )
+> ##D sample
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rwish", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("select")
+> ### * select
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: select
+> ### Title: Selecting the best graph
+> ### Aliases: select
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 50, p = 6, size = 7, vis = TRUE )
+> ##D 
+> ##D output   <- bdgraph( data = data.sim )
+> ##D 
+> ##D select( output )
+> ##D 
+> ##D select( output, cut = 0.5, vis = TRUE )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("select", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.bdgraph")
+> ### * summary.bdgraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.bdgraph
+> ### Title: Summary function for 'S3' class '"bdgraph"'
+> ### Aliases: summary.bdgraph
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 50, p = 6, vis = TRUE )
+> ##D 
+> ##D output   <- bdgraph( data = data.sim )
+> ##D 
+> ##D summary(output)
+> ##D 
+> ##D summary( output, vis = FALSE )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.bdgraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("surveyData")
+> ### * surveyData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: surveyData
+> ### Title: Labor force survey data
+> ### Aliases: surveyData
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data( surveyData )
+> dim( surveyData )
+[1] 1002    7
+> head( surveyData )
+     income degree children pincome pdegree pchildren age
+[1,]     NA      1        3       3       1         5  59
+[2,]     11      0        3      NA       0         7  59
+[3,]      8      1        1      NA       0         9  25
+[4,]     25      3        2      NA       0         5  55
+[5,]    100      3        2       4       3         2  56
+[6,]     40      4        0      NA       4         5  36
+> boxplot( surveyData )
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("surveyData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("traceplot")
+> ### * traceplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: traceplot
+> ### Title: Trace plot of graph size
+> ### Aliases: traceplot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # generating multivariate normal data from a 'random' graph
+> ##D data.sim <- bdgraph.sim( n = 50, p = 6, size = 7, vis = TRUE )
+> ##D 
+> ##D output   <- bdgraph( data = data.sim, iter = 10000 )
+> ##D 
+> ##D traceplot(output)
+> ##D 
+> ##D traceplot( output, acf = TRUE, pacf = TRUE )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("traceplot", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  1.326 0.044 1.373 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

@@ -1,0 +1,11 @@
+* installing *source* package ‘backShift’ ...
+** package ‘backShift’ successfully unpacked and MD5 sums checked
+** R
+** data
+*** moving datasets to lazyload DB
+** demo
+** preparing package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘graph’
+ERROR: lazy loading failed for package ‘backShift’
+* removing ‘/Users/gaborcsardi/works/igraph/revdep_check/backShift.Rcheck/backShift’

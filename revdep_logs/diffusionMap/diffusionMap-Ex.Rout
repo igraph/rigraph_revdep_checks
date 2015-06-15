@@ -1,0 +1,642 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "diffusionMap"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "diffusionMap-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('diffusionMap')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("adapreg")
+> ### * adapreg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: adapreg
+> ### Title: Adaptive Regression
+> ### Aliases: adapreg
+> ### Keywords: multivariate nonparametric
+> 
+> ### ** Examples
+> 
+> library(scatterplot3d)
+> ## trig function on circle
+> t=seq(-pi,pi,.01)
+> x=cbind(cos(t),sin(t))
+> y = cos(3*t) + rnorm(length(t),0,.1)
+> tcol = topo.colors(32)
+> colvec = floor((y-min(y))/(max(y)-min(y))*32); colvec[colvec==0] = 1
+> scatterplot3d(x[,1],x[,2],y,color=tcol[colvec],pch=20,
++   main="Cosine function supported on circle",angle=55,
++   cex.main=2,col.axis="gray",cex.symbols=2,cex.lab=2,
++   xlab=expression("x"[1]),ylab=expression("x"[2]),zlab="y")
+> 
+> D = as.matrix(dist(x))
+> # do 10-fold cross-validation to optimize (epsilon, m):
+> AR = adapreg(D,y, mmax=5,nfolds=2,nrep=2)
+[1] "Doing 2-fold cross-validation"
+[1] "Finding optimal model for epsilon= 0.0438"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.171 seconds
+[1] "Finding optimal model for epsilon= 0.0709"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.162 seconds
+[1] "Finding optimal model for epsilon= 0.0876"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.161 seconds
+[1] "Finding optimal model for epsilon= 0.0934"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.158 seconds
+[1] "Finding optimal model for epsilon= 0.0944"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.152 seconds
+[1] "Finding optimal model for epsilon= 0.1022"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.16 seconds
+[1] "Finding optimal model for epsilon= 0.1008"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.152 seconds
+[1] "Finding optimal model for epsilon= 0.1023"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.161 seconds
+[1] "Finding optimal model for epsilon= 0.107"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.157 seconds
+[1] "Finding optimal model for epsilon= 0.1041"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.076 seconds
+[1] "Finding optimal model for epsilon= 0.103"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.159 seconds
+[1] "Finding optimal model for epsilon= 0.1034"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.078 seconds
+[1] "Finding optimal model for epsilon= 0.1036"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.084 seconds
+[1] "Finding optimal model for epsilon= 0.1032"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.16 seconds
+[1] "Finding optimal model for epsilon= 0.1035"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.081 seconds
+[1] "Finding optimal model for epsilon= 0.1035"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.085 seconds
+[1] "Finding optimal model for epsilon= 0.1034"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.079 seconds
+[1] "Finding optimal model for epsilon= 0.1035"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.076 seconds
+[1] "Finding optimal model for epsilon= 0.0438"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.154 seconds
+[1] "Finding optimal model for epsilon= 0.0709"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.087 seconds
+[1] "Finding optimal model for epsilon= 0.0876"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.156 seconds
+[1] "Finding optimal model for epsilon= 0.0934"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.08 seconds
+[1] "Finding optimal model for epsilon= 0.0944"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.08 seconds
+[1] "Finding optimal model for epsilon= 0.1022"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.086 seconds
+[1] "Finding optimal model for epsilon= 0.1008"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.157 seconds
+[1] "Finding optimal model for epsilon= 0.1023"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.079 seconds
+[1] "Finding optimal model for epsilon= 0.107"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.161 seconds
+[1] "Finding optimal model for epsilon= 0.1041"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.156 seconds
+[1] "Finding optimal model for epsilon= 0.103"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.08 seconds
+[1] "Finding optimal model for epsilon= 0.1034"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.08 seconds
+[1] "Finding optimal model for epsilon= 0.1036"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.156 seconds
+[1] "Finding optimal model for epsilon= 0.1032"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.084 seconds
+[1] "Finding optimal model for epsilon= 0.1035"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.083 seconds
+[1] "Finding optimal model for epsilon= 0.1035"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.082 seconds
+[1] "Finding optimal model for epsilon= 0.1034"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.234 seconds
+[1] "Finding optimal model for epsilon= 0.1035"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.086 seconds
+[1] "Finding optimal model for epsilon= 0.1035"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.078 seconds
+> print(paste("optimal model size:",AR$mopt,"; optimal epsilon:",
++   round(AR$epsopt,4),"; min. CV risk:",round(AR$mincvrisk,5)))
+[1] "optimal model size: 5 ; optimal epsilon: 0.1035 ; min. CV risk: 0.01035"
+> plot(y,AR$y.hat,ylab=expression(hat("y")),cex.lab=1.5,cex.main=1.5,
++   main="Predictions")
+> abline(0,1,col=2,lwd=2)
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("adapreg", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:scatterplot3d’
+
+> nameEx("adapreg.m")
+> ### * adapreg.m
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: adapreg.m
+> ### Title: Adaptive Regression
+> ### Aliases: adapreg.m
+> ### Keywords: multivariate nonparametric
+> 
+> ### ** Examples
+> 
+> 
+> library(scatterplot3d)
+> ## trig function on circle
+> t=seq(-pi,pi,.01)
+> x=cbind(cos(t),sin(t))
+> y = cos(3*t) + rnorm(length(t),0,.1)
+> tcol = topo.colors(32)
+> colvec = floor((y-min(y))/(max(y)-min(y))*32); colvec[colvec==0] = 1
+> scatterplot3d(x[,1],x[,2],y,color=tcol[colvec],pch=20,
++   main="Cosine function supported on circle",angle=55,
++   cex.main=2,col.axis="gray",cex.symbols=2,cex.lab=2,
++   xlab=expression("x"[1]),ylab=expression("x"[2]),zlab="y")
+> 
+> D = as.matrix(dist(x))
+> # leave-one-out cross-validation:
+> AR = adapreg.m(.01,D,y,fold=1:length(y))
+[1] "Finding optimal model for epsilon= 0.01"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.172 seconds
+> print(paste("optimal model size:",AR$mopt,"; min. CV risk:",
++   round(AR$mincvrisk,4)))
+[1] "optimal model size: 5 ; min. CV risk: 0.0103"
+> par(mfrow=c(2,1),mar=c(5,5,4,1))
+> plot(AR$cvrisks,typ='b',xlab="Model size",ylab="CV risk",
++   cex.lab=1.5,cex.main=1.5,main="CV risk estimates")
+> plot(y,AR$y.hat,ylab=expression(hat("y")),cex.lab=1.5,cex.main=1.5,
++   main="Predictions")
+> abline(0,1,col=2,lwd=2)
+> 
+> 
+> 
+> ## swiss roll data
+> N=2000
+> t = (3*pi/2)*(1+2*runif(N));  height = runif(N);
+> X = cbind(t*cos(t), height, t*sin(t))
+> X = scale(X) + matrix(rnorm(N*3,0,0.05),N,3)
+> tcol = topo.colors(32)
+> colvec = floor((t-min(t))/(max(t)-min(t))*32); colvec[colvec==0] = 1
+> scatterplot3d(X,pch=18,color=tcol[colvec],xlab=expression("x"[1]),
++   ylab=expression("x"[2]),zlab=expression("x"[3]),cex.lab=1.5,
++   main="Swiss Roll, Noise = 0.05",cex.main=1.5,xlim=c(-2,2),
++   ylim=c(-2,2),zlim=c(-2,2),col.axis="gray")
+> 
+> D = as.matrix(dist(X))
+> # 10-fold cross-validation:
+> AR = adapreg.m(.2,D,t,mmax=25,nfolds=5)
+[1] "Finding optimal model for epsilon= 0.2"
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 1.01 seconds
+> print(paste("optimal model size:",AR$mopt,"; min. CV risk:",
++   round(AR$mincvrisk,4)))
+[1] "optimal model size: 24 ; min. CV risk: 0.0229"
+> par(mfrow=c(2,1),mar=c(5,5,4,1))
+> plot(AR$cvrisks,typ='b',xlab="Model size",ylab="CV risk",
++   cex.lab=1.5,cex.main=1.5,main="CV risk estimates")
+> plot(t,AR$y.hat,ylab=expression(hat("t")),cex.lab=1.5,cex.main=1.5,
++   main="Predictions")
+> abline(0,1,col=2,lwd=2)
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("adapreg.m", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+
+detaching ‘package:scatterplot3d’
+
+> nameEx("diffuse")
+> ### * diffuse
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: diffuse
+> ### Title: Compute diffusion map coordinates from pair-wise distances.
+> ### Aliases: diffuse
+> ### Keywords: multivariate nonparametric
+> 
+> ### ** Examples
+> 
+> 
+> ## example with noisy spiral
+> n=2000
+> t=runif(n)^.7*10
+> al=.15;bet=.5;
+> x1=bet*exp(al*t)*cos(t)+rnorm(n,0,.1)
+> y1=bet*exp(al*t)*sin(t)+rnorm(n,0,.1)
+> plot(x1,y1,pch=20,main="Noisy spiral")
+> D = dist(cbind(x1,y1))
+> dmap = diffuse(D,neigen=10) # compute diffusion map
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 2.663 seconds
+> par(mfrow=c(2,1))
+> plot(t,dmap$X[,1],pch=20,axes=FALSE,xlab="spiral parameter",ylab="1st diffusion coefficient")
+> box()
+> plot(1:10,dmap$eigenmult,typ='h',xlab="diffusion map dimension",ylab="eigen-multipliers")
+> 
+> ## example with annulus data set
+> data(annulus)
+> plot(annulus,main="Annulus Data",pch=20,cex=.7)
+> D = dist(annulus) # use Euclidean distance
+> dmap = diffuse(D,eps.val=.1) # compute diffusion map & plot
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Used default value: 8 dimensions
+Elapsed time: 0.345 seconds
+> print(dmap)
+$eigenmult
+[1] 527.19429 296.56208 246.84020  86.82986  79.71913  39.03662  38.28655
+[8]  23.20578
+
+$epsilon
+[1] 0.1
+
+> plot(dmap)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("diffuse", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("diffusionKmeans")
+> ### * diffusionKmeans
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: diffusionKmeans
+> ### Title: Diffusion K-means
+> ### Aliases: diffusionKmeans
+> ### Keywords: multivariate nonparametric
+> 
+> ### ** Examples
+> 
+> library(scatterplot3d)
+> 
+> ## example with annulus data set
+> data(annulus)
+> par(mfrow=c(2,1))
+> plot(annulus,main="Annulus Data",pch=20,cex=.7)
+> D = dist(annulus) # use Euclidean distance
+> dmap = diffuse(D,eps.val=0.05) # compute diffusion map
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Used default value: 6 dimensions
+Elapsed time: 0.447 seconds
+> k=2  # number of clusters
+> dkmeans = diffusionKmeans(dmap, k)
+[1] "Iteration 1 of 10"
+[1] "Iteration 2 of 10"
+[1] "Iteration 3 of 10"
+[1] "Iteration 4 of 10"
+[1] "Iteration 5 of 10"
+[1] "Iteration 6 of 10"
+[1] "Iteration 7 of 10"
+[1] "Iteration 8 of 10"
+[1] "Iteration 9 of 10"
+[1] "Iteration 10 of 10"
+> plot(annulus,main="Colored by diffusion K-means clustering",pch=20,
++    cex=.7,col=dkmeans$part)
+> table(dkmeans$part,c(rep(1,500),rep(2,500)))
+   
+      1   2
+  1  40 500
+  2 460   0
+> 
+> 
+> ## example with Chainlink data set
+> data(Chainlink)
+> lab.col = c(rep("red",500),rep("blue",500)); n=1000
+> scatterplot3d(Chainlink$C1,Chainlink$C2,Chainlink$C3,color=lab.col,
++    main="Chainlink Data") # plot Chainlink data
+> D = dist(Chainlink) # use Euclidean distance
+> dmap = diffuse(D,neigen=3,eps.val=.01) # compute diffusion map & plot
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.549 seconds
+> plot(dmap)
+> dkmeans = diffusionKmeans(dmap, K=2)
+[1] "Iteration 1 of 10"
+[1] "Iteration 2 of 10"
+[1] "Iteration 3 of 10"
+[1] "Iteration 4 of 10"
+[1] "Iteration 5 of 10"
+[1] "Iteration 6 of 10"
+[1] "Iteration 7 of 10"
+[1] "Iteration 8 of 10"
+[1] "Iteration 9 of 10"
+[1] "Iteration 10 of 10"
+> col.dkmeans=ifelse(dkmeans$part==1,"red","blue")
+> scatterplot3d(Chainlink,color=col.dkmeans,
++    main="Chainlink Data, colored by diff. K-means class")
+> table(dkmeans$part,lab.col)
+   lab.col
+    blue red
+  1  500   0
+  2    0 500
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("diffusionKmeans", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+
+detaching ‘package:scatterplot3d’
+
+> nameEx("distortionMin")
+> ### * distortionMin
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: distortionMin
+> ### Title: Distortion Minimization via K-means
+> ### Aliases: distortionMin
+> ### Keywords: multivariate nonparametric
+> 
+> ### ** Examples
+> 
+> data(annulus)
+> n = dim(annulus)[1]
+> D = dist(annulus) # use Euclidean distance
+> dmap = diffuse(D,0.03) # compute diffusion map 
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Used default value: 9 dimensions
+Elapsed time: 0.568 seconds
+> km = distortionMin(dmap$X,dmap$phi0,2,dmap$X[sample(n,2),])
+> plot(annulus,col=km$S,pch=20)
+> table(km$S,c(rep(1,500),rep(2,500)))
+   
+      1   2
+  1  38 500
+  2 462   0
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("distortionMin", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("epsilonCompute")
+> ### * epsilonCompute
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: epsilonCompute
+> ### Title: Compute default diffusion map epsilon.
+> ### Aliases: epsilonCompute
+> ### Keywords: multivariate nonparametric
+> 
+> ### ** Examples
+> 
+> data(annulus)
+> D = dist(annulus) # use Euclidean distance
+> epsilonCompute(D,.005)
+[1] 0.05670553
+> epsilonCompute(D,.01)
+[1] 0.1223964
+> epsilonCompute(D,.05)
+[1] 1.45663
+> epsilonCompute(D,.1)
+[1] 3.585611
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("epsilonCompute", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("nystrom")
+> ### * nystrom
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nystrom
+> ### Title: Perform Nystrom Extension to estimate diffusion coordinates of
+> ###   data.
+> ### Aliases: nystrom
+> ### Keywords: multivariate nonparametric
+> 
+> ### ** Examples
+> 
+> Norig = 1000
+> Next = 4000
+> t=runif(Norig+Next)^.7*10
+> al=.15;bet=.5;
+> x1=bet*exp(al*t)*cos(t)+rnorm(length(t),0,.1)
+> y1=bet*exp(al*t)*sin(t)+rnorm(length(t),0,.1)
+> 
+> D = as.matrix(dist(cbind(x1,y1)))
+> Dorig = D[1:Norig,1:Norig] # training distance matrix
+> DExt = D[(Norig+1):(Norig+Next),1:Norig] # new data distance matrix
+> # compute original diffusion map
+> dmap = diffuse(Dorig,neigen=2) 
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Elapsed time: 0.832 seconds
+>  # use Nystrom extension
+> dmapExt = nystrom(dmap,DExt)
+> plot(dmapExt[,1:2],pch=8,col=2,
++   main="Diffusion map, black = original, red = new data",
++   xlab="1st diffusion coefficient",ylab="2nd diffusion coefficient")
+> points(dmap$X[,1:2],pch=19,cex=.5)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nystrom", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.dmap")
+> ### * plot.dmap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.dmap
+> ### Title: Plot diffusion map
+> ### Aliases: plot plot.dmap
+> ### Keywords: multivariate nonparametric
+> 
+> ### ** Examples
+> 
+> data(annulus)
+> dmap = diffuse(dist(annulus)) # compute diffusion map
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Used default value: 8 dimensions
+Elapsed time: 0.746 seconds
+> plot(dmap)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.dmap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print.dmap")
+> ### * print.dmap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.dmap
+> ### Title: Extract diffusion map eigen-multipliers and epsilon
+> ### Aliases: print print.dmap
+> ### Keywords: multivariate nonparametric
+> 
+> ### ** Examples
+> 
+> data(annulus)
+> dmap = diffuse(dist(annulus)) # compute diffusion map
+Performing eigendecomposition
+Computing Diffusion Coordinates
+Used default value: 8 dimensions
+Elapsed time: 0.744 seconds
+> print(dmap)
+$eigenmult
+[1] 369.29897 228.96254 189.12627  68.97629  63.67890  31.33050  30.73154
+[8]  18.46068
+
+$epsilon
+[1] 0.1223964
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.dmap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  23.758 1.712 25.534 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

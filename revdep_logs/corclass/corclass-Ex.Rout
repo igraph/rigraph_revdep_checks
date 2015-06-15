@@ -1,0 +1,245 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "corclass"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "corclass-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('corclass')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("cca")
+> ### * cca
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cca
+> ### Title: Main function for CCA.
+> ### Aliases: cca
+> 
+> ### ** Examples
+> 
+>     data(cca.example)
+>     res1 <- cca(cca.example) # with igraph 0.7, this should find 3 classes of sizes 218 391 144.  
+Filtering out correlations for which Pr(|r| != 0) >  0.01 
+CCA found 3 schematic classes. Sizes: 218 391 144  
+>     plot(res1, 1) # plot them 
+>     plot(res1, 2)
+>     plot(res1, 3)
+> 
+>     print (round(res1$modules[[1]]$cormat, 2)) # examine the correlation matrix for the 1st module
+       X1   X2   X3    X4    X5    X6   X7    X8    X9   X10
+X1   1.00 0.46 0.46  0.94 -0.38 -0.38 0.50 -0.39 -0.36 -0.60
+X2   0.46 1.00 0.89  0.46  0.52  0.54 0.87  0.52  0.53  0.32
+X3   0.46 0.89 1.00  0.48  0.52  0.53 0.86  0.51  0.55  0.32
+X4   0.94 0.46 0.48  1.00 -0.40 -0.38 0.50 -0.39 -0.36 -0.61
+X5  -0.38 0.52 0.52 -0.40  1.00  0.96 0.50  0.96  0.96  0.95
+X6  -0.38 0.54 0.53 -0.38  0.96  1.00 0.51  0.95  0.94  0.93
+X7   0.50 0.87 0.86  0.50  0.50  0.51 1.00  0.49  0.50  0.29
+X8  -0.39 0.52 0.51 -0.39  0.96  0.95 0.49  1.00  0.95  0.95
+X9  -0.36 0.53 0.55 -0.36  0.96  0.94 0.50  0.95  1.00  0.94
+X10 -0.60 0.32 0.32 -0.61  0.95  0.93 0.29  0.95  0.94  1.00
+>     print (summary(res1$modules[[1]]$dtf)) # look at its variable ranges
+       X1               X2              X3              X4       
+ Min.   : 3.000   Min.   :4.000   Min.   :4.000   Min.   :2.000  
+ 1st Qu.: 4.000   1st Qu.:5.000   1st Qu.:5.000   1st Qu.:4.000  
+ Median : 5.000   Median :6.000   Median :6.000   Median :5.000  
+ Mean   : 4.963   Mean   :5.917   Mean   :5.913   Mean   :4.959  
+ 3rd Qu.: 6.000   3rd Qu.:7.000   3rd Qu.:7.000   3rd Qu.:6.000  
+ Max.   :10.000   Max.   :8.000   Max.   :8.000   Max.   :9.000  
+       X5               X6              X7              X8        
+ Min.   : 3.000   Min.   : 2.00   Min.   :4.000   Min.   : 3.000  
+ 1st Qu.: 6.000   1st Qu.: 6.00   1st Qu.:5.000   1st Qu.: 6.000  
+ Median : 7.000   Median : 7.00   Median :6.000   Median : 7.000  
+ Mean   : 6.904   Mean   : 6.89   Mean   :5.913   Mean   : 6.881  
+ 3rd Qu.: 8.000   3rd Qu.: 8.00   3rd Qu.:7.000   3rd Qu.: 8.000  
+ Max.   :10.000   Max.   :10.00   Max.   :8.000   Max.   :10.000  
+       X9              X10        
+ Min.   : 3.000   Min.   : 1.000  
+ 1st Qu.: 6.000   1st Qu.: 7.000  
+ Median : 7.000   Median : 9.000  
+ Mean   : 6.885   Mean   : 7.849  
+ 3rd Qu.: 8.000   3rd Qu.:10.000  
+ Max.   :10.000   Max.   :11.000  
+>     plot(res1, 1, bw = TRUE) # Plot it again in a more journal-friendly format.
+>     
+>     # now let's try setting the filter value too high
+>     res2 <- cca(cca.example, filter.value = 0.001) 
+Filtering out correlations for which Pr(|r| != 0) >  0.001 
+Warning in .filter.insignif(cormat, ncol(dtf), pcutoff = filter.value) :
+  Significance filtering left 10 rows with no non-zero ties. The CCA result will contain at least one small degenerate class.
+Warning in cor(curmod$dtf) : the standard deviation is zero
+CCA found 17 schematic classes. Sizes: 216 1 1 371 1 1 1 1 1 1 1 1 11 141 1 1 2 
+NOTE: result contains 13 degenerate class(es): #2 #3 #5 #6 #7 #8 #9 #10 #11 #12 #15 #16 #17. 
+>     # With igraph 0.7, the above now finds 17 classes 
+>     #    of sizes 216 1 1 371 1 1 1 1 1 1 1 1 11 141 1 1 2 
+>     # The small isolate classes can either be dropped manually, or by increasing filter.value 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cca", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cca.example")
+> ### * cca.example
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cca.example
+> ### Title: Sample data for Correlational Class Analysis.
+> ### Aliases: cca.example
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(cca.example)
+> res1 <- cca(cca.example)
+Filtering out correlations for which Pr(|r| != 0) >  0.01 
+CCA found 3 schematic classes. Sizes: 218 391 144  
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cca.example", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("corclass-package")
+> ### * corclass-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: corclass-package
+> ### Title: Correlational Class Analysis package
+> ### Aliases: corclass-package corclass
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+>     data(cca.example)
+>     res1 <- cca(cca.example) 
+Filtering out correlations for which Pr(|r| != 0) >  0.01 
+CCA found 3 schematic classes. Sizes: 218 391 144  
+>     plot(res1, 1) 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("corclass-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.cca")
+> ### * plot.cca
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.cca
+> ### Title: Plotting function for CCA modules.
+> ### Aliases: plot.cca
+> 
+> ### ** Examples
+> 
+>     data(cca.example)
+>     res1 <- cca(cca.example) # with igraph 0.7, this should find 3 classes of sizes 218 391 144.
+Filtering out correlations for which Pr(|r| != 0) >  0.01 
+CCA found 3 schematic classes. Sizes: 218 391 144  
+>     plot(res1, 1) # plot the first module
+>     plot(res1, 2) # plot the second module
+>     plot(res1, 3) # plot the third module
+>     
+>     plot(res1, 1, bw = TRUE) # check out first module in black and white
+>     plot(res1, 1, LAYOUT = layout.fruchterman.reingold) # try a different layout algorithm
+>     
+>     # example of saving a fixed layout
+>     layout1 <- plot(res1, 1) # try out a layout ...
+>     layout1 <- plot(res1, 1) # ... try again
+>     layout1 <- plot(res1, 1) # ... until one looks good
+>     plot(res1, 1, LAYOUT = layout1, file = "module1.pdf") # now save it to a file
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.cca", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:Cairo’
+
+> nameEx("print.cca")
+> ### * print.cca
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.cca
+> ### Title: Print description of CCA results.
+> ### Aliases: print.cca
+> 
+> ### ** Examples
+> 
+>     data(cca.example)
+>     res1 <- cca(cca.example)
+Filtering out correlations for which Pr(|r| != 0) >  0.01 
+CCA found 3 schematic classes. Sizes: 218 391 144  
+>     print(res1)
+CCA found 3 schematic classes. Sizes: 218 391 144 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.cca", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  4.173 0.197 4.439 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

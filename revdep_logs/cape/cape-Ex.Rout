@@ -1,0 +1,729 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "cape"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "cape-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('cape')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("cape-package")
+> ### * cape-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cape-package
+> ### Title: Combinatorial Analysis of Epistasis and Pleiotropy
+> ### Aliases: cape-package cape
+> ### Keywords: package package
+> 
+> ### ** Examples
+> 
+> data(obesity.cross)
+> str(obesity.cross)
+List of 5
+ $ pheno          : num [1:204, 1:4] 58.6 49.9 56 53.7 48.7 41.1 45.4 44.1 40.4 40.1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:4] "body_weight" "glucose" "insulin" "mom"
+ $ geno           : num [1:204, 1:85] 0.5 0.5 0.5 0 0.5 0 0.5 NA 0 0 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:85] "1" "2" "3" "4" ...
+ $ chromosome     : chr [1:85] "1" "1" "1" "1" ...
+ $ marker.names   : chr [1:85] "D1Mit296" "D1Mit211" "D1Mit411" "D1Mit123" ...
+ $ marker.location: num [1:85] 2.08 10.59 12.62 17.67 22.88 ...
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cape-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("consec.pairs")
+> ### * consec.pairs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: consec.pairs
+> ### Title: Generate a matrix of consecutive pairs
+> ### Aliases: consec.pairs
+> ### Keywords: internal
+> 
+> ### ** Examples
+> 
+> V <- 1:5
+> consec.pairs(V)
+     [,1] [,2]
+[1,]    1    2
+[2,]    2    3
+[3,]    3    4
+[4,]    4    5
+> V
+[1] 1 2 3 4 5
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("consec.pairs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("create.covar")
+> ### * create.covar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: create.covar
+> ### Title: Designate a phenotype or treatment as a covariate
+> ### Aliases: create.covar
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> data(obesity.cross)
+> str(obesity.cross)
+List of 5
+ $ pheno          : num [1:204, 1:4] 58.6 49.9 56 53.7 48.7 41.1 45.4 44.1 40.4 40.1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:4] "body_weight" "glucose" "insulin" "mom"
+ $ geno           : num [1:204, 1:85] 0.5 0.5 0.5 0 0.5 0 0.5 NA 0 0 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:85] "1" "2" "3" "4" ...
+ $ chromosome     : chr [1:85] "1" "1" "1" "1" ...
+ $ marker.names   : chr [1:85] "D1Mit296" "D1Mit211" "D1Mit411" "D1Mit123" ...
+ $ marker.location: num [1:85] 2.08 10.59 12.62 17.67 22.88 ...
+> obesity.cross <- create.covar(obesity.cross, pheno.which = "mom")
+> str(obesity.cross)
+List of 5
+ $ pheno          : num [1:204, 1:3] 58.6 49.9 56 53.7 48.7 41.1 45.4 44.1 40.4 40.1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:3] "body_weight" "glucose" "insulin"
+ $ geno           : num [1:204, 1:86] 0.5 0.5 0.5 0 0.5 0 0.5 NA 0 0 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:86] "1" "2" "3" "4" ...
+ $ chromosome     : chr [1:86] "1" "1" "1" "1" ...
+ $ marker.names   : chr [1:86] "D1Mit296" "D1Mit211" "D1Mit411" "D1Mit123" ...
+ $ marker.location: num [1:86] 2.08 10.59 12.62 17.67 22.88 ...
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("create.covar", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("delete.pheno")
+> ### * delete.pheno
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: delete.pheno
+> ### Title: Remove phenotypes from the phenotype matrix
+> ### Aliases: delete.pheno
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> data(obesity.cross)
+> str(obesity.cross)
+List of 5
+ $ pheno          : num [1:204, 1:4] 58.6 49.9 56 53.7 48.7 41.1 45.4 44.1 40.4 40.1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:4] "body_weight" "glucose" "insulin" "mom"
+ $ geno           : num [1:204, 1:85] 0.5 0.5 0.5 0 0.5 0 0.5 NA 0 0 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:85] "1" "2" "3" "4" ...
+ $ chromosome     : chr [1:85] "1" "1" "1" "1" ...
+ $ marker.names   : chr [1:85] "D1Mit296" "D1Mit211" "D1Mit411" "D1Mit123" ...
+ $ marker.location: num [1:85] 2.08 10.59 12.62 17.67 22.88 ...
+> obesity.cross <- delete.pheno(obesity.cross, "insulin")
+> str(obesity.cross)
+List of 5
+ $ pheno          : num [1:204, 1:3] 58.6 49.9 56 53.7 48.7 41.1 45.4 44.1 40.4 40.1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:3] "body_weight" "glucose" "mom"
+ $ geno           : num [1:204, 1:85] 0.5 0.5 0.5 0 0.5 0 0.5 NA 0 0 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:85] "1" "2" "3" "4" ...
+ $ chromosome     : chr [1:85] "1" "1" "1" "1" ...
+ $ marker.names   : chr [1:85] "D1Mit296" "D1Mit211" "D1Mit411" "D1Mit123" ...
+ $ marker.location: num [1:85] 2.08 10.59 12.62 17.67 22.88 ...
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("delete.pheno", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("get.col.num")
+> ### * get.col.num
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get.col.num
+> ### Title: Use column titles to retrieve column numbers
+> ### Aliases: get.col.num
+> ### Keywords: internal
+> 
+> ### ** Examples
+> 
+> 
+> mat <- matrix(rnorm(50), ncol = 5)
+> colnames(mat) <- letters[1:5]
+> print(mat)
+               a           b           c           d          e
+ [1,] -0.6264538  1.51178117  0.91897737  1.35867955 -0.1645236
+ [2,]  0.1836433  0.38984324  0.78213630 -0.10278773 -0.2533617
+ [3,] -0.8356286 -0.62124058  0.07456498  0.38767161  0.6969634
+ [4,]  1.5952808 -2.21469989 -1.98935170 -0.05380504  0.5566632
+ [5,]  0.3295078  1.12493092  0.61982575 -1.37705956 -0.6887557
+ [6,] -0.8204684 -0.04493361 -0.05612874 -0.41499456 -0.7074952
+ [7,]  0.4874291 -0.01619026 -0.15579551 -0.39428995  0.3645820
+ [8,]  0.7383247  0.94383621 -1.47075238 -0.05931340  0.7685329
+ [9,]  0.5757814  0.82122120 -0.47815006  1.10002537 -0.1123462
+[10,] -0.3053884  0.59390132  0.41794156  0.76317575  0.8811077
+> col.num <- get.col.num(mat, c("c", "e"))
+> print(col.num)
+[1] 3 5
+> 
+> col.num <- get.col.num(mat, c("b", "g"))
+The following column headers are not present:
+g
+> print(col.num)
+[1] 2
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get.col.num", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("get.pairs.for.pairscan")
+> ### * get.pairs.for.pairscan
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get.pairs.for.pairscan
+> ### Title: Select marker pairs for pairscan based on filters
+> ### Aliases: get.pairs.for.pairscan
+> ### Keywords: arith internal
+> 
+> ### ** Examples
+> 
+> #This example finds marker pairs to test in a randomly
+> #generated genotype matrix
+> possible.genotypes <- c(0, 0.5, 1)
+> genotype.matrix <- matrix(sample(possible.genotypes, 1000, replace = TRUE), nrow = 100, ncol = 10)
+> colnames(genotype.matrix) <- paste("marker", letters[1:10], sep = "_")
+> pairs.which <- get.pairs.for.pairscan(genotype.matrix, min.per.genotype = 6, verbose = TRUE)
+
+Checking marker pairs for genotype representation...
+> print(pairs.which)
+      marker1    marker2   
+ [1,] "marker_b" "marker_d"
+ [2,] "marker_a" "marker_e"
+ [3,] "marker_b" "marker_e"
+ [4,] "marker_d" "marker_e"
+ [5,] "marker_a" "marker_f"
+ [6,] "marker_b" "marker_f"
+ [7,] "marker_a" "marker_g"
+ [8,] "marker_b" "marker_g"
+ [9,] "marker_c" "marker_g"
+[10,] "marker_d" "marker_g"
+[11,] "marker_e" "marker_g"
+[12,] "marker_a" "marker_h"
+[13,] "marker_b" "marker_h"
+[14,] "marker_c" "marker_h"
+[15,] "marker_d" "marker_h"
+[16,] "marker_e" "marker_h"
+[17,] "marker_g" "marker_h"
+[18,] "marker_b" "marker_i"
+[19,] "marker_d" "marker_i"
+[20,] "marker_e" "marker_i"
+[21,] "marker_g" "marker_i"
+[22,] "marker_h" "marker_i"
+[23,] "marker_e" "marker_j"
+[24,] "marker_h" "marker_j"
+[25,] "marker_i" "marker_j"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get.pairs.for.pairscan", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("norm.pheno")
+> ### * norm.pheno
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: norm.pheno
+> ### Title: Normalize and mean center phenotypes
+> ### Aliases: norm.pheno
+> ### Keywords: arith manip
+> 
+> ### ** Examples
+> 
+> library(cape)
+> data(obesity.cross)
+> hist(obesity.cross$pheno[,"glucose"], main = "Histogram of Glucose", 
++ xlab = "Glucose (mg/dL)")
+> ## be sure to move over any covariates before normalizing the phenotypes
+> obesity.cross <- create.covar(obesity.cross, "mom")
+> obesity.cross <- norm.pheno(obesity.cross)
+> hist(obesity.cross$pheno[,"glucose"], main = "Histogram of Normalized Glucose", 
++ xlab = "Normalized Glucose (mg/dL)")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("norm.pheno", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pair.matrix")
+> ### * pair.matrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pair.matrix
+> ### Title: Given a vector of elements, create a two-column matrix listing
+> ###   all pairs of elements
+> ### Aliases: pair.matrix
+> ### Keywords: internal
+> 
+> ### ** Examples
+> 
+> el <- letters[1:4]
+> letter.pairs <- pair.matrix(el, ordered = FALSE, self.pairs = FALSE)
+> print(letter.pairs)
+     [,1] [,2]
+[1,] "a"  "b" 
+[2,] "a"  "c" 
+[3,] "b"  "c" 
+[4,] "a"  "d" 
+[5,] "b"  "d" 
+[6,] "c"  "d" 
+> 
+> el <- 1:4
+> num.pairs <- pair.matrix(el, ordered = FALSE, self.pairs = TRUE)
+> print(num.pairs)
+      [,1] [,2]
+ [1,]    1    1
+ [2,]    1    2
+ [3,]    2    2
+ [4,]    1    3
+ [5,]    2    3
+ [6,]    3    3
+ [7,]    1    4
+ [8,]    2    4
+ [9,]    3    4
+[10,]    4    4
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pair.matrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pairscan")
+> ### * pairscan
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pairscan
+> ### Title: Perform regressions for all pairs of markers and all phenotypes.
+> ### Aliases: pairscan
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 	obesity.cross <- pairscan(obesity.cross, scan.what = "eigentraits", n.perm = 10, 
+> ##D 	min.per.genotype = 6, use.pairs.threshold = TRUE, verbose = TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pairscan", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotNetwork")
+> ### * plotNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotNetwork
+> ### Title: Plot the final epistatic network
+> ### Aliases: plotNetwork
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 	plotNetwork(obesity.cross, collapsed.net = TRUE)
+> ##D 	plotNetwork(obesity.cross, collapsed.net = FALSE)
+> ##D 	plotNetwork(obesity.cross, collapsed.net = TRUE, trait = "glucose")
+> ##D 	
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotSinglescan")
+> ### * plotSinglescan
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotSinglescan
+> ### Title: Plot the results of singlescan
+> ### Aliases: plotSinglescan
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> # plot all markers and both eigentraits
+> ## Not run: plotSinglescan(obesity.cross)
+> # plot only results from chromosomes 1 through 4
+> ## Not run: plotSinglescan(obesity.cross, chr = c(1:4))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotSinglescan", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("remove.ind.with.missing.pheno")
+> ### * remove.ind.with.missing.pheno
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: remove.ind.with.missing.pheno
+> ### Title: Remove individuals with missing phenotypes
+> ### Aliases: remove.ind.with.missing.pheno
+> ### Keywords: internal manip
+> 
+> ### ** Examples
+> 
+> data(obesity.cross)
+> obesity.cross <- remove.ind.with.missing.pheno(obesity.cross)
+
+There were 14 individuals removed due to missing phenotypes.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("remove.ind.with.missing.pheno", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("report.progress")
+> ### * report.progress
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: report.progress
+> ### Title: Print the progress of a function to the screen
+> ### Aliases: report.progress
+> ### Keywords: arith internal
+> 
+> ### ** Examples
+> 
+> 	
+> #report progress every 10 percent, print dots every 2%
+> all.steps <- 1:100
+> for(i in all.steps){
++ 	report.progress(i, total = length(all.steps), percent.text = 10, percent.dot = 2)
++ }
+0%.....10%.....20%.....30%.....40%.....50%.....60%.....70%.....80%.....90%.....100%.> 
+> #report progress every 25 percent, print dots every 5%
+> all.steps <- 1:100
+> for(i in all.steps){
++ 	report.progress(i, total = length(all.steps), percent.text = 25, percent.dot = 5)
++ }
+0%.....25%.....50%.....75%.....100%.> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("report.progress", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rotate.mat")
+> ### * rotate.mat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rotate.mat
+> ### Title: Rotate a matrix 90 degrees clockwise
+> ### Aliases: rotate.mat
+> ### Keywords: internal manip
+> 
+> ### ** Examples
+> 
+> mat <- matrix(1:10, ncol = 10, nrow = 10)
+> rot.mat <- rotate.mat(mat)
+> rot.mat
+      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+ [1,]   10    9    8    7    6    5    4    3    2     1
+ [2,]   10    9    8    7    6    5    4    3    2     1
+ [3,]   10    9    8    7    6    5    4    3    2     1
+ [4,]   10    9    8    7    6    5    4    3    2     1
+ [5,]   10    9    8    7    6    5    4    3    2     1
+ [6,]   10    9    8    7    6    5    4    3    2     1
+ [7,]   10    9    8    7    6    5    4    3    2     1
+ [8,]   10    9    8    7    6    5    4    3    2     1
+ [9,]   10    9    8    7    6    5    4    3    2     1
+[10,]   10    9    8    7    6    5    4    3    2     1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rotate.mat", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rz.transform")
+> ### * rz.transform
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rz.transform
+> ### Title: Normalize a vector using rank normalization
+> ### Aliases: rz.transform
+> ### Keywords: internal distribution
+> 
+> ### ** Examples
+> 
+> data(obesity.cross)
+> phenotype <- obesity.cross$pheno[,"glucose"]
+> norm.pheno <- rz.transform(phenotype)
+> hist(phenotype, main = "Histogram of Original\nGlucose 
++ Distribution", xlab = "raw glucose")
+> hist(norm.pheno, main = "Histogram of Normalized\nGlucose 
++ Distribution", xlab = "normalized glucose")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rz.transform", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("segment.region")
+> ### * segment.region
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: segment.region
+> ### Title: Divide a region into equal parts.
+> ### Aliases: segment.region
+> ### Keywords: internal
+> 
+> ### ** Examples
+> 
+> num.points <- 5
+> coords.1 <- segment.region(region.min = 5, region.max = 7, 
++ num.points = num.points, alignment = c("ends"))
+> coords.2 <- segment.region(region.min = 5, region.max = 7, 
++ num.points = num.points, alignment = c("center"))
+> plot(x = coords.1, y = rep(0.25, num.points), xlim = c(4,8), 
++ ylim = c(0,1),col = "blue", pch = 16, xlab = "", ylab = "", 
++ axes = FALSE)
+> points(x = coords.2, y = rep(0.75, num.points), xlim = c(4,8), 
++ ylim = c(0,1),col = "purple", pch = 16)
+> abline(v = 5); abline(v = 7); axis(1)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("segment.region", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("select.by.chr")
+> ### * select.by.chr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: select.by.chr
+> ### Title: Subset a cross object to include only specified chromosomes.
+> ### Aliases: select.by.chr
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> data(obesity.cross)
+> obesity.cross <- create.covar(obesity.cross, "mom")
+> # Subset the cross to only include chromosome 6 and the covariates
+> obesity.cross <- select.by.chr(obesity.cross, c(0, 6))
+> str(obesity.cross)
+List of 5
+ $ pheno          : num [1:204, 1:3] 58.6 49.9 56 53.7 48.7 41.1 45.4 44.1 40.4 40.1 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:3] "body_weight" "glucose" "insulin"
+ $ geno           : num [1:204, 1:7] 0 0.5 0 0 0 0 0 NA NA 0.5 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:7] "28" "29" "30" "31" ...
+ $ chromosome     : chr [1:7] "6" "6" "6" "6" ...
+ $ marker.names   : chr [1:7] "D6Mit1" "D6Mit275" "D6Mit123" "D6Mit9" ...
+ $ marker.location: num [1:7] 6.68 24.55 27.76 37.74 53.05 ...
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("select.by.chr", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("select.by.ind")
+> ### * select.by.ind
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: select.by.ind
+> ### Title: Subset a cross object to include specific individuals
+> ### Aliases: select.by.ind
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> data(obesity.cross)
+> hist(obesity.cross$pheno[,"insulin"], main = "original insulin distribution",
++ xlab = "insulin (ng/mL)", xlim = c(0, 30))
+> obesity.cross <- select.by.ind(obesity.cross, "pheno", "insulin < 25")
+78 individuals were removed.
+> hist(obesity.cross$pheno[,"insulin"], main = "subset insulin distribution", 
++ xlab = "insulin (ng/mL)", xlim = c(0, 30))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("select.by.ind", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("select.pheno")
+> ### * select.pheno
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: select.pheno
+> ### Title: Select phenotypes for analysis
+> ### Aliases: select.pheno
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> data(obesity.cross)
+> obesity.cross <- select.pheno(obesity.cross, c("glucose", "body_weight"))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("select.pheno", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("set.covar")
+> ### * set.covar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: set.covar
+> ### Title: Manually set which markers will be used as covariates.
+> ### Aliases: set.covar
+> ### Keywords: arith
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 	obesity.cross <- set.covar(obesity.cross, pheno = "ET1", 
+> ##D 	markers = c("D1Mit213", "D1Mit76", "D1Mit46", "D1Mit200", "D1Mit37", "D2Mit2"), 
+> ##D 	is.covar = TRUE, plot.covar = TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("set.covar", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("writeVariantInfluences")
+> ### * writeVariantInfluences
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: writeVariantInfluences
+> ### Title: Write the final results to a file
+> ### Aliases: writeVariantInfluences
+> ### Keywords: IO
+> 
+> ### ** Examples
+> 
+> 
+> # here the table is written to a file, but nothing is returned.
+> ## Not run: writeVariantInfluences(obesity.cross)
+> 
+> # here the table is written to a file, and returned to the 
+> # object sig.table
+> ## Not run: 
+> ##D 	sig.table <- writeVariantInfluences(obesity.cross)
+> ##D 	print(sig.table)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("writeVariantInfluences", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  1.363 0.049 1.42 0.001 0.001 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

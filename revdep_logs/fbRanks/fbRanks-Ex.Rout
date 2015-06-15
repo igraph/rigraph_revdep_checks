@@ -1,0 +1,429 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "fbRanks"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "fbRanks-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('fbRanks')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("B00_data")
+> ### * B00_data
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: B00data
+> ### Title: Match and Team Data for B00 Youth Soccer Matches
+> ### Aliases: B00.scores B00.teams B00.founders
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> str(B00.scores)
+'data.frame':	2031 obs. of  9 variables:
+ $ date      : Date, format: "2012-05-25" "2012-05-25" ...
+ $ home.team : chr  "PacNW Blue B00" "WA Rush Swoosh B00" "Crossfire Premier B B00" "Normandy Park FC White B00" ...
+ $ home.score: num  0 1 12 4 1 10 0 4 7 5 ...
+ $ away.team : chr  "Normandy Park FC White B00" "PacNW Maroon B00" "WA Rush Swoosh B00" "WA Rush Nike B00" ...
+ $ away.score: num  8 7 0 0 8 1 1 0 1 1 ...
+ $ venue     : chr  "PacNW Memorial Cup 2012" "PacNW Memorial Cup 2012" "PacNW Memorial Cup 2012" "PacNW Memorial Cup 2012" ...
+ $ home.adv  : chr  "neutral" "neutral" "neutral" "neutral" ...
+ $ away.adv  : chr  "neutral" "neutral" "neutral" "neutral" ...
+ $ surface   : chr  "Grass" "Grass" "Turf" "Grass" ...
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("B00_data", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("coef_fbRanks")
+> ### * coef_fbRanks
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: coef.fbRanks
+> ### Title: Return Coefficients from fbRanks Objects
+> ### Aliases: coef coef.fbRanks
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #This will load two dataframes: B00.scores and B00.teams
+> ##D data(B00data)
+> ##D 
+> ##D #fit a model using a particular date range for B00 teams
+> ##D #set the data range to just be the summer games of WA teams
+> ##D x=rank.teams(scores=B00.scores, teams=B00.teams, 
+> ##D              min.date="2012-5-1", max.date="2012-9-8", silent=TRUE)
+> ##D 
+> ##D #there are multiple clusters
+> ##D names(coef(x)$coef.list)
+> ##D 
+> ##D #show the coefficients for cluster 1 as a list
+> ##D #notice that fewer goals are scored on Turf
+> ##D coef(x)$coef.list[[1]]
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("coef_fbRanks", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("construct_team_file")
+> ### * construct_team_file
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: construct.team.file
+> ### Title: Helper Function to Construct a Team File
+> ### Aliases: construct.team.file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # A list of league match files to read in
+> ##D file_list = c(
+> ##D   "RCL D1.csv", "RCL D2.csv", "RCL D3.csv", "RCL D4.csv",
+> ##D   "tournaments.csv")
+> ##D ignore=c()
+> ##D #use the current directory
+> ##D construct.team.file(scores.file=file_list, file="team_template.csv", ignore=ignore)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("construct_team_file", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("create_fbRanks_dataframes")
+> ### * create_fbRanks_dataframes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: create.fbRanks.dataframes
+> ### Title: Helper Function to Construct the Scores and Teams Data Frames
+> ###   from csv files.
+> ### Aliases: create.fbRanks.dataframes
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #This shows how a series of .csv files can be imported to create
+> ##D #a scores and teams data frames
+> ##D 
+> ##D #this is the list of files with the league data
+> ##D match.files = c(
+> ##D   "OPL NPL.csv", "OPL 1st Div.csv",
+> ##D   "OPL 2nd Div.csv", "OPL 3rd Div.csv","OPL 4th Div.csv",
+> ##D )
+> ##D #In this case the team file is a single file, but it could be a list
+> ##D team.file="teams_b00.csv"
+> ##D #This does error-checking and outputs dataframes in the proper format
+> ##D b00_data=create.fbRanks.dataframes(scores.file=match.files, teams.file=team.file, date.format="##D 
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("create_fbRanks_dataframes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("predict_fbRanks")
+> ### * predict_fbRanks
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: predict.fbRanks
+> ### Title: Predict function for fbRanks Objects
+> ### Aliases: predict predict.fbRanks
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #This will load two dataframes: B00.scores and B00.teams
+> ##D data(B00data)
+> ##D 
+> ##D #fit a model using a particular date range for B00 teams
+> ##D #set the data range to just be the summer games of WA teams
+> ##D x=rank.teams(scores=B00.scores, teams=B00.teams, 
+> ##D              min.date="2012-5-1", max.date="2012-9-8", silent=TRUE)
+> ##D 
+> ##D #x is a fbRanks object with the fitted model and ranks, and the scores and teams data.frames
+> ##D #the scores data.frames has all the data, not just the summer data
+> ##D 
+> ##D #Now we can use the summer data to predict the fall RCL D1 games (top B00 league in WA)
+> ##D predict(x, venue="RCL D1")
+> ##D 
+> ##D #We can also predict all the games for a particular team
+> ##D predict(x, name="Seattle United Copa B00")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("predict_fbRanks", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print_fbRanks")
+> ### * print_fbRanks
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.fbRanks
+> ### Title: Printing function for fbRanks Objects
+> ### Aliases: print print.fbRanks
+> 
+> ### ** Examples
+>  
+> #This loads two data frames: B00.scores and B00.teams
+> data(B00data)
+> #rank the teams in the RCL D1 league
+> x=rank.teams(scores=B00.scores, teams=B00.teams, venue="RCL D1")
+
+Team Rankings based on matches 1900-05-01 to 2100-06-01
+  team                    total attack defense n.games
+1 WPFC Black B00           2.02 1.40   2.90    14     
+2 Eastside FC Red B00      1.27 1.55   1.55    14     
+3 Seattle United Copa B00  1.15 1.56   1.42    14     
+4 FC Alliance A B00        0.51 1.20   1.19    14     
+5 SSC Shadow A B00        -0.51 1.37   0.51    14     
+6 WA Rush Nike B00        -0.56 0.93   0.73    14     
+7 Crossfire Premier B B00 -0.77 1.03   0.57    14     
+8 Crossfire Premier A B01 -1.18 1.05   0.42    14     
+> 
+> #Just a printing of the ranks with no extra info shown.
+> #some 2 team clusters are shown.  Those are teams with just 1 game (against each other)
+> print(x)
+
+Team Rankings based on matches 1900-05-01 to 2100-06-01
+  team                    total attack defense n.games
+1 WPFC Black B00           2.02 1.40   2.90    14     
+2 Eastside FC Red B00      1.27 1.55   1.55    14     
+3 Seattle United Copa B00  1.15 1.56   1.42    14     
+4 FC Alliance A B00        0.51 1.20   1.19    14     
+5 SSC Shadow A B00        -0.51 1.37   0.51    14     
+6 WA Rush Nike B00        -0.56 0.93   0.73    14     
+7 Crossfire Premier B B00 -0.77 1.03   0.57    14     
+8 Crossfire Premier A B01 -1.18 1.05   0.42    14     
+> 
+> ## Not run: 
+> ##D #rank all teams
+> ##D x=rank.teams(scores=B00.scores, teams=B00.teams, venue="RCL D1")
+> ##D 
+> ##D #You can also do filtered prints
+> ##D #print the ranks with the regions shown
+> ##D print(x, region="all")
+> ##D 
+> ##D #print ranks for just a region
+> ##D print(x, region="WA")
+> ##D 
+> ##D #print ranks for a league; fall.league is a column in the teams data frame
+> ##D print(x, fall.league=c("RCL D1 U12","RCL D2 U12"))
+> ##D 
+> ##D #print ranks for teams in a tournament; venue is a column in the scores data frame
+> ##D print(x, venue="Baker Blast")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print_fbRanks", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rank_teams")
+> ### * rank_teams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rank.teams
+> ### Title: Team Ranks Via Poission Regression
+> ### Aliases: fbRanks rank.teams
+> 
+> ### ** Examples
+> 
+> #load the example data set
+> data(B00data)
+> 
+> #rank teams in the RCL D1 league using just the league data
+> x=rank.teams(scores=B00.scores, teams=B00.teams, venue="RCL D1")
+
+Team Rankings based on matches 1900-05-01 to 2100-06-01
+  team                    total attack defense n.games
+1 WPFC Black B00           2.02 1.40   2.90    14     
+2 Eastside FC Red B00      1.27 1.55   1.55    14     
+3 Seattle United Copa B00  1.15 1.56   1.42    14     
+4 FC Alliance A B00        0.51 1.20   1.19    14     
+5 SSC Shadow A B00        -0.51 1.37   0.51    14     
+6 WA Rush Nike B00        -0.56 0.93   0.73    14     
+7 Crossfire Premier B B00 -0.77 1.03   0.57    14     
+8 Crossfire Premier A B01 -1.18 1.05   0.42    14     
+> 
+> #repeat with surface (turf, grass) as an explanatory variable
+> ranks2=rank.teams(scores=B00.scores, teams=B00.teams, venue="RCL D1", add=c("surface","adv"))
+
+Team Rankings based on matches 1900-05-01 to 2100-06-01
+  team                    total attack defense n.games
+1 WPFC Black B00           2.02 1.35   3.01    14     
+2 Eastside FC Red B00      1.27 1.50   1.61    14     
+3 Seattle United Copa B00  1.15 1.51   1.47    14     
+4 FC Alliance A B00        0.51 1.16   1.23    14     
+5 SSC Shadow A B00        -0.51 1.31   0.53    14     
+6 WA Rush Nike B00        -0.55 0.89   0.76    14     
+7 Crossfire Premier B B00 -0.77 0.99   0.59    14     
+8 Crossfire Premier A B01 -1.18 1.01   0.44    14     
+> 
+> #Slightly fewer goals per game are scored on turf
+> coef(ranks2)$coef.list$cluster.1$surface.f
+      Grass        Turf 
+ 0.00000000 -0.01087032 
+> 
+> #Slightly more goals per game are scored at home
+> coef(ranks2)$coef.list$cluster.1$adv.f
+     away      home 
+0.0000000 0.1587659 
+> 
+> #get the ranks based on summer data
+> # x=rank.teams(scores=B00.scores, teams=B00.teams, 
+> #              min.date="2012-5-1", max.date="2012-9-8", silent=TRUE)
+> 
+> # See the vignette Basic Team Ranking for more examples
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rank_teams", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("residuals_fbRanks")
+> ### * residuals_fbRanks
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: residuals.fbRanks
+> ### Title: Residuals function for fbRanks Objects
+> ### Aliases: residuals residuals.fbRanks
+> 
+> ### ** Examples
+>  
+> 
+> data(B00data) #load a set of games
+> #fit a model using just the matches from the RCL D1 league
+> x=rank.teams(scores=B00.scores, teams=B00.teams, venue="RCL D1")
+
+Team Rankings based on matches 1900-05-01 to 2100-06-01
+  team                    total attack defense n.games
+1 WPFC Black B00           2.02 1.40   2.90    14     
+2 Eastside FC Red B00      1.27 1.55   1.55    14     
+3 Seattle United Copa B00  1.15 1.56   1.42    14     
+4 FC Alliance A B00        0.51 1.20   1.19    14     
+5 SSC Shadow A B00        -0.51 1.37   0.51    14     
+6 WA Rush Nike B00        -0.56 0.93   0.73    14     
+7 Crossfire Premier B B00 -0.77 1.03   0.57    14     
+8 Crossfire Premier A B01 -1.18 1.05   0.42    14     
+> 
+> #Show the predicted versus actual scores
+> b00.resids=residuals(x)
+> 
+> ## Not run: 
+> ##D #you can compare to the residuals for a model to fit to all the data (including RCL D1)
+> ##D x=rank.teams(scores=B00.scores, teams=B00.teams)
+> ##D 
+> ##D #Just a printing of the ranks with no extra info shown.
+> ##D b00.resids=residuals(x, venue="RCL D1")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("residuals_fbRanks", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simulate_fbRanks")
+> ### * simulate_fbRanks
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simulate.fbRanks
+> ### Title: Simulate function for fbRanks Objects
+> ### Aliases: simulate simulate.fbRanks
+> 
+> ### ** Examples
+> 
+> #When specifying filters such as age, name, or league, these must correspond to column names in the 
+> #scores or team files.
+> data(B00data) #load a set of games
+> #fit a model using a particular date range for B00 teams
+> #add predictors surface and adv (home/away advantage)
+> ## Not run: 
+> ##D x=rank.teams(scores=B00.scores, teams=B00.teams, min.date="2012-5-1", max.date="2012-9-8",
+> ##D     silent=TRUE, add=c("surface","adv"))
+> ##D 
+> ##D #simulate a league
+> ##D #in this case, since newdata is not passed in, simulate tries to construct
+> ##D #newdata from x$scores using the venue information
+> ##D simulate(x, venue="RCL D1", points.rule="league3pt")
+> ## End(Not run)
+> 
+> #simulate a tournament
+> #B00data includes a dataframe B00.founders with the brackets for
+> #the preliminary rounds of the Founders B00 2012 tournament
+> #fit a model with all data up to the start of the Founders Cup
+> ## Not run: 
+> ##D x=rank.teams(scores=B00.scores, teams=B00.teams, min.date="2012-5-1", max.date="2012-12-14",
+> ##D     silent=TRUE, add=c("surface","adv"))
+> ##D simulate(x, newdata=B00.founders, groups.column="venue")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simulate_fbRanks", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.295 0.015 0.313 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

@@ -1,0 +1,1113 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "comato"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "comato-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('comato')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("Hopkins.index")
+> ### * Hopkins.index
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Hopkins.index
+> ### Title: Non-randomness of data
+> ### Aliases: Hopkins.index
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #Random data generation, 10 dimensions, 500 observations, 2 clusters,
+> ##D #Multivariate-Bernoulli distributed
+> ##D require("gtools")
+> ##D data = c()
+> ##D p = 0.0
+> ##D for (i in 1:2)
+> ##D {
+> ##D temp = c()
+> ##D for (j in 1:10)
+> ##D temp = cbind(temp, rbinom(250, 1, p+(i-1)*0.5+(0.025*i)*j))
+> ##D data=rbind(data, temp)
+> ##D }
+> ##D data = data[permute(1:500),]
+> ##D 
+> ##D Hopkins.index(data)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Hopkins.index", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("MBM.cluster")
+> ### * MBM.cluster
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MBM.cluster
+> ### Title: MBMM clustering
+> ### Aliases: MBM.cluster
+> 
+> ### ** Examples
+> 
+> #Random data generation, 100 observations, 5 dimensions, dependencies within the dimensions
+> data = cbind(round(runif(100)), round(runif(100)), round(runif(100)))
+> data = cbind(data, data[,2], 1-data[,3])
+> 
+> #Noisy data:
+> s = round(runif(2, 1, 100))
+> data[s, c(4,5)] = 1 - data[s, c(4,5)]
+> 
+> #MBMM Clustering
+> res = MBM.cluster(data, 1,8)
+Testing model with 1 components
+Testing model with 2 components
+Testing model with 3 components
+Testing model with 4 components
+Testing model with 5 components
+Testing model with 6 components
+Testing model with 7 components
+Testing model with 8 components
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("MBM.cluster", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("PAM.cluster")
+> ### * PAM.cluster
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: PAM.cluster
+> ### Title: Similarity based clustering
+> ### Aliases: PAM.cluster
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #Random data generation, 10 dimensions, 500 observations, 2 clusters
+> ##D require("gtools")
+> ##D data = c()
+> ##D p = 0.0
+> ##D for (i in 1:2)
+> ##D {
+> ##D temp = c()
+> ##D for (j in 1:10)
+> ##D temp = cbind(temp, rbinom(250, 1, p+(i-1)*0.5+(0.025*i)*j))
+> ##D data=rbind(data, temp)
+> ##D }
+> ##D data = data[permute(1:500),]
+> ##D 
+> ##D PAM.cluster(data)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("PAM.cluster", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("analyze.graph.measures.conceptmap")
+> ### * analyze.graph.measures.conceptmap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: analyze.graph.measures.conceptmap
+> ### Title: Analyzing graph measures of a concept map
+> ### Aliases: analyze.graph.measures.conceptmap
+> 
+> ### ** Examples
+> 
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(15, 0.7, type="gnp"), "name", value=1:15)
+> analyze.graph.measures(conceptmap(g1))
+$betweenness
+        1         2         3         4         5         6         7         8 
+0.6949495 2.1869048 2.1528139 0.7858586 1.3465729 1.7080087 2.1778139 1.7104618 
+        9        10        11        12        13        14        15 
+2.0465007 1.0469697 0.8136364 1.1064935 2.0576840 0.6747475 1.4905844 
+
+$connectivitiy
+[1] 9
+
+$diameter
+[1] 2
+
+$degrees
+ 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 
+ 9 12 12 10 11 12 12 12 12 10 10 10 13 10 11 
+
+$communities
+IGRAPH clustering fast greedy, groups: 2, mod: 0.036
++ groups:
+  $`1`
+  [1] "3"  "4"  "6"  "7"  "8"  "10" "11" "14" "15"
+  
+  $`2`
+  [1] "1"  "2"  "5"  "9"  "12" "13"
+  
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("analyze.graph.measures.conceptmap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("analyze.graph.measures.igraph")
+> ### * analyze.graph.measures.igraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: analyze.graph.measures.igraph
+> ### Title: Analyzing graph measures of an igraph object
+> ### Aliases: analyze.graph.measures.igraph
+> 
+> ### ** Examples
+> 
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(15, 0.7, type="gnp"), "name", value=1:15)
+> analyze.graph.measures(g1)
+$betweenness
+        1         2         3         4         5         6         7         8 
+0.6949495 2.1869048 2.1528139 0.7858586 1.3465729 1.7080087 2.1778139 1.7104618 
+        9        10        11        12        13        14        15 
+2.0465007 1.0469697 0.8136364 1.1064935 2.0576840 0.6747475 1.4905844 
+
+$connectivitiy
+[1] 9
+
+$diameter
+[1] 2
+
+$degrees
+ 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 
+ 9 12 12 10 11 12 12 12 12 10 10 10 13 10 11 
+
+$communities
+IGRAPH clustering fast greedy, groups: 2, mod: 0.036
++ groups:
+  $`1`
+  [1] "3"  "4"  "6"  "7"  "8"  "10" "11" "14" "15"
+  
+  $`2`
+  [1] "1"  "2"  "5"  "9"  "12" "13"
+  
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("analyze.graph.measures.igraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("analyze.similarity")
+> ### * analyze.similarity
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: analyze.similarity
+> ### Title: Analyzing graph similarity.
+> ### Aliases: analyze.similarity
+> 
+> ### ** Examples
+> 
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(15, 0.7, type="gnp"), "name", value=1:15)
+> g2 = set.vertex.attribute(erdos.renyi.game(15, 0.7, type="gnp"), "name", value=1:15)
+> analyze.similarity(conceptmap(g1), conceptmap(g2))
+[1] 0.6325064
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("analyze.similarity", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("analyze.subgraphs")
+> ### * analyze.subgraphs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: analyze.subgraphs
+> ### Title: Analyzing small subgraph patterns.
+> ### Aliases: analyze.subgraphs
+> 
+> ### ** Examples
+> 
+> #Create concept maps from three random graphs
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g2 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g3 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> 
+> #Create conceptmaps object from three conceptmap objects
+> simple_cms = conceptmaps(list(conceptmap(g1), conceptmap(g2), conceptmap(g3)))
+> 
+> analyze.subgraphs(simple_cms, c("1", "2", "3"))
+[[1]]
+[1] 0 0 2 0 0 1 0 0
+
+[[2]]
+[[2]][[1]]
+IGRAPH UN-- 3 1 -- 
++ attr: name (v/c)
++ edge (vertex names):
+[1] 1--2
+
+[[2]][[2]]
+IGRAPH UN-- 3 1 -- 
++ attr: name (v/c)
++ edge (vertex names):
+[1] 1--3
+
+[[2]][[3]]
+IGRAPH UN-- 3 2 -- 
++ attr: name (v/c)
++ edges (vertex names):
+[1] 1--2 1--3
+
+[[2]][[4]]
+IGRAPH UN-- 3 1 -- 
++ attr: name (v/c)
++ edge (vertex names):
+[1] 2--3
+
+[[2]][[5]]
+IGRAPH UN-- 3 2 -- 
++ attr: name (v/c)
++ edges (vertex names):
+[1] 1--2 2--3
+
+[[2]][[6]]
+IGRAPH UN-- 3 2 -- 
++ attr: name (v/c)
++ edges (vertex names):
+[1] 1--3 2--3
+
+[[2]][[7]]
+IGRAPH UN-- 3 3 -- 
++ attr: name (v/c)
++ edges (vertex names):
+[1] 1--2 1--3 2--3
+
+[[2]][[8]]
+IGRAPH UN-- 3 0 -- 
++ attr: name (v/c)
++ edges (vertex names):
+
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("analyze.subgraphs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("as.matrix.conceptmaps")
+> ### * as.matrix.conceptmaps
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as.matrix.conceptmaps
+> ### Title: Convert a conceptmaps object to a matrix
+> ### Aliases: as.matrix.conceptmaps
+> 
+> ### ** Examples
+> 
+> data = rbind(
++  cbind("1", "Object", "Class", "is instance of"),
++  cbind("1", "Object", "Attribute", "has"),
++  cbind("2", "Class", "Attribute", "possesses"),
++  cbind("2", "Attribute", "Data-type", "has"),
++  cbind("3", "Object", "Class", "is instance of")
++  )
+>  cms = conceptmaps(data)
+>  as.matrix(cms)
+     first_col                                         
+[1,] "1"       "Object"    "Class"     "is instance of"
+[2,] "1"       "Object"    "Attribute" "has"           
+[3,] "1"       "Class"     "Attribute" "possesses"     
+[4,] "1"       "Attribute" "Data-type" "has"           
+[5,] "1"       "Object"    "Class"     "is instance of"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("as.matrix.conceptmaps", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("clustering")
+> ### * clustering
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clustering
+> ### Title: Clustering maps of a conceptmaps object
+> ### Aliases: clustering
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #Assuming that there are concept maps in folder "~/maps"
+> ##D cms = read.folder.tgf("~/maps")
+> ##D 
+> ##D clustering(cms, method="MBMM")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("clustering", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("comato-package")
+> ### * comato-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: comato-package
+> ### Title: CoMaTo - Analyzing concept maps
+> ### Aliases: comato-package comato
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Assuming that concept map data is stored in TGF files in the folder "~/maps".
+> ##D maps = read.folder.tgf("~/maps")[[1]]
+> ##D 
+> ##D #  Create a Pathfinder network from the aggregated map data
+> ##D pf = pathfinder(maps, threshold=10)   
+> ##D 
+> ##D #  Use cluster analysis on the graph similarity matrix of the aggregated data
+> ##D clusting = clustering(maps, method="PAM")  
+> ##D 
+> ##D #  Plot the first map of the set of concept maps
+> ##D plot(maps$maps[[1]]) 
+> ##D 
+> ##D #  Analyze several basic graph measures of the first concept map
+> ##D analyze.graph.measures(maps$maps[[1]])  
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("comato-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("concept.vector")
+> ### * concept.vector
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: concept.vector
+> ### Title: Forming the concept vector of a conceptmap object
+> ### Aliases: concept.vector
+> 
+> ### ** Examples
+> 
+> #Create concept map from a random graph
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> cm = conceptmap(g1)
+> 
+> concept.vector(cm)
+1 2 3 4 5 
+1 1 1 1 1 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("concept.vector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("conceptmap.default")
+> ### * conceptmap.default
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: conceptmap.default
+> ### Title: Basic creation of a conceptmap object
+> ### Aliases: conceptmap.default
+> 
+> ### ** Examples
+> 
+> empty_cm = conceptmap(NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("conceptmap.default", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("conceptmap.igraph")
+> ### * conceptmap.igraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: conceptmap.igraph
+> ### Title: Creation of a conceptmap object from an existing graph
+> ### Aliases: conceptmap.igraph
+> 
+> ### ** Examples
+> 
+> #Create conceptmap from a complete graph with 5 nodes
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> graph = graph.full(5)
+> graph = set.vertex.attribute(graph, "name", value=1:5)
+> simple_cm = conceptmap(graph)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("conceptmap.igraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("conceptmap.matrix")
+> ### * conceptmap.matrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: conceptmap.matrix
+> ### Title: Creation of a conceptmap object from matrix data
+> ### Aliases: conceptmap.matrix
+> 
+> ### ** Examples
+> 
+> data = rbind(cbind("Object", "Class", "is instance of"), cbind("Class", "Attribute", "has"))
+> cm = conceptmap(data)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("conceptmap.matrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("conceptmaps.default")
+> ### * conceptmaps.default
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: conceptmaps.default
+> ### Title: Basic creation of a conceptmaps object
+> ### Aliases: conceptmaps.default
+> 
+> ### ** Examples
+> 
+> empty_cms = conceptmaps(NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("conceptmaps.default", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("conceptmaps.list")
+> ### * conceptmaps.list
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: conceptmaps.list
+> ### Title: Creation of a conceptmaps object from a list
+> ### Aliases: conceptmaps.list
+> 
+> ### ** Examples
+> 
+> #Create concept maps from three random graphs
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g2 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g3 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> 
+> #Create conceptmaps object from three conceptmap objects
+> simple_cms = conceptmaps(list(conceptmap(g1), conceptmap(g2), conceptmap(g3)))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("conceptmaps.list", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("conceptmaps.matrix")
+> ### * conceptmaps.matrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: conceptmaps.matrix
+> ### Title: Creation of a conceptmaps object from a matrix
+> ### Aliases: conceptmaps.matrix
+> 
+> ### ** Examples
+> 
+> data = rbind(
++  cbind("1", "Object", "Class", "is instance of"),
++  cbind("1", "Object", "Attribute", "has"),
++  cbind("2", "Class", "Attribute", "possesses"),
++  cbind("2", "Attribute", "Data-type", "has"),
++  cbind("3", "Object", "Class", "is instance of")
++  )
+>  cms = conceptmaps(data)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("conceptmaps.matrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("edge.vector")
+> ### * edge.vector
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: edge.vector
+> ### Title: Forming the edge vector of a conceptmap object
+> ### Aliases: edge.vector
+> 
+> ### ** Examples
+> 
+> #Create concept map from a random graph
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> cm = conceptmap(g1)
+> 
+> edge.vector(cm)
+1-1 2-1 3-1 4-1 5-1 1-2 2-2 3-2 4-2 5-2 1-3 2-3 3-3 4-3 5-3 1-4 2-4 3-4 4-4 5-4 
+  0   1   1   0   1   1   0   0   1   1   1   0   0   1   1   0   1   1   0   0 
+1-5 2-5 3-5 4-5 5-5 
+  1   1   1   0   0 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("edge.vector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("landscape")
+> ### * landscape
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: landscape
+> ### Title: Aggregating the maps of a conceptmaps object into a concept
+> ###   landscape
+> ### Aliases: landscape
+> 
+> ### ** Examples
+> 
+> #Create concept maps from three random graphs
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g2 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g3 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> 
+> #Create conceptmaps object from three conceptmap objects
+> cms = conceptmaps(list(conceptmap(g1), conceptmap(g2), conceptmap(g3)))
+> 
+> landscape(cms, result="graph", mode="undirected")
+IGRAPH UNW- 5 10 -- 
++ attr: name (v/c), weight (e/n)
++ edges (vertex names):
+ [1] 1--2 1--3 1--4 1--5 2--3 2--4 2--5 3--4 3--5 4--5
+> 
+> landscape(cms, result="matrix", mode="concept.vector")
+    1 2 3 4 5
+col 1 1 1 1 1
+col 1 1 1 1 1
+col 1 1 1 1 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("landscape", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("merge.conceptmaps")
+> ### * merge.conceptmaps
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: merge.conceptmaps
+> ### Title: Unify sets of conceptmaps
+> ### Aliases: merge.conceptmaps
+> 
+> ### ** Examples
+> 
+> data = rbind(
++  cbind("1", "Object", "Class", "is instance of"),
++  cbind("1", "Object", "Attribute", "has"),
++  cbind("2", "Class", "Attribute", "possesses"),
++  cbind("2", "Attribute", "Data-type", "has"),
++  cbind("3", "Object", "Class", "is instance of")
++  )
+>  cm1 = conceptmaps(data[1:2,])
+>  cm2 = conceptmaps(data[3:5,])
+>  merge(cm1, cm2)
+Collection of concept maps with 3 maps
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("merge.conceptmaps", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("modify.concepts.conceptmap")
+> ### * modify.concepts.conceptmap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: modify.concepts.conceptmap
+> ### Title: Adapt list of concepts of a conceptmap object
+> ### Aliases: modify.concepts.conceptmap
+> 
+> ### ** Examples
+> 
+> data = rbind(cbind("Object", "Class", "is instance of"), cbind("Class", "Attribute", "has"))
+> cm = conceptmap(data)
+> modify.concepts(cm, c("Object", "Class", "Method"))
+Concept map with 3 concepts and 1 edges
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("modify.concepts.conceptmap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("modify.concepts.conceptmaps")
+> ### * modify.concepts.conceptmaps
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: modify.concepts.conceptmaps
+> ### Title: Modifying the concepts of all maps of a conceptmaps object.
+> ### Aliases: modify.concepts.conceptmaps
+> 
+> ### ** Examples
+> 
+> data = rbind(
++  cbind("1", "Object", "Class", "is instance of"),
++  cbind("1", "Object", "Attribute", "has"),
++  cbind("2", "Class", "Attribute", "possesses"),
++  cbind("2", "Attribute", "Data-type", "has"),
++  cbind("3", "Object", "Class", "is instance of")
++  )
+>  cms = conceptmaps(data)
+> 
+>  modify.concepts(cms, c("Object", "Class"), filter=TRUE)
+Collection of concept maps with 2 maps
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("modify.concepts.conceptmaps", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pathfinder.conceptmaps")
+> ### * pathfinder.conceptmaps
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pathfinder.conceptmaps
+> ### Title: Creating a Pathfinder network from a conceptmaps object
+> ### Aliases: pathfinder.conceptmaps
+> 
+> ### ** Examples
+> 
+> #Create concept maps from three random graphs
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g2 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g3 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> 
+> #Create conceptmaps object from three conceptmap objects
+> simple_cms = conceptmaps(list(conceptmap(g1), conceptmap(g2), conceptmap(g3)))
+> 
+> #Create Pathfinder network from data and return a conceptmap object
+> cm = pathfinder(simple_cms, q=1, return.cm=TRUE)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pathfinder.conceptmaps", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("pathfinder.igraph")
+> ### * pathfinder.igraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pathfinder.igraph
+> ### Title: Creating a Pathfinder network from an igraph object
+> ### Aliases: pathfinder.igraph
+> 
+> ### ** Examples
+> 
+> #Create concept maps from three random graphs
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g2 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g3 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> 
+> #Create conceptmaps object from three conceptmap objects
+> simple_cms = conceptmaps(list(conceptmap(g1), conceptmap(g2), conceptmap(g3)))
+> pathfinder(landscape(simple_cms, result="graph", mode="undirected"))
+IGRAPH UNW- 5 10 -- 
++ attr: name (v/c), weight (e/n)
++ edges (vertex names):
+ [1] 1--2 1--3 1--4 1--5 2--3 2--4 2--5 3--4 3--5 4--5
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pathfinder.igraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("pathfinder.matrix")
+> ### * pathfinder.matrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pathfinder.matrix
+> ### Title: Creating a Pathfinder network from a matrix
+> ### Aliases: pathfinder.matrix
+> 
+> ### ** Examples
+> 
+> #Manually create a weighted graph
+> data = matrix(data = 0, nrow = 6, ncol=6)
+> colnames(data) <- c("Object", "Class", "Method", "Attribute", "Visibility", "Algorithm")
+> rownames(data) <- c("Object", "Class", "Method", "Attribute", "Visibility", "Algorithm")
+> data["Object", "Class"] = 3
+> data["Object", "Method"] = 3
+> data["Object", "Attribute"] = 10
+> data["Object", "Visibility"] = Inf
+> data["Object", "Algorithm"] = 9
+> data["Class", "Method"] = 7
+> data["Class", "Attribute"] = 6
+> data["Class", "Visibility"] = 8
+> data["Class", "Algorithm"] = 10
+> data["Method", "Attribute"] = 4
+> data["Method", "Visibility"] = 9
+> data["Method", "Algorithm"] = 3
+> data["Attribute", "Visibility"] = 5
+> data["Attribute", "Algorithm"] = 10
+> data["Visibility", "Algorithm"] = Inf
+> 
+> data = data + t(data)
+> 
+> #Run the Pathfinder algorithm with several different parameters
+> pathfinder(data, 5, 1)
+           Object Class Method Attribute Visibility Algorithm
+Object          0     3      3       Inf        Inf       Inf
+Class           3     0    Inf         6          8       Inf
+Method          3   Inf      0         4          9         3
+Attribute     Inf     6      4         0          5       Inf
+Visibility    Inf     8      9         5          0       Inf
+Algorithm     Inf   Inf      3       Inf        Inf         0
+> pathfinder(data, 2, 1)
+           Object Class Method Attribute Visibility Algorithm
+Object          0     3      3       Inf        Inf       Inf
+Class           3     0    Inf         6          8        10
+Method          3   Inf      0         4          9         3
+Attribute     Inf     6      4         0          5       Inf
+Visibility    Inf     8      9         5          0       Inf
+Algorithm     Inf    10      3       Inf        Inf         0
+> pathfinder(data, 5,Inf)
+           Object Class Method Attribute Visibility Algorithm
+Object          0     3      3       Inf        Inf       Inf
+Class           3     0    Inf       Inf        Inf       Inf
+Method          3   Inf      0         4        Inf         3
+Attribute     Inf   Inf      4         0          5       Inf
+Visibility    Inf   Inf    Inf         5          0       Inf
+Algorithm     Inf   Inf      3       Inf        Inf         0
+> pathfinder(data, 2, Inf)
+           Object Class Method Attribute Visibility Algorithm
+Object          0     3      3       Inf        Inf       Inf
+Class           3     0    Inf         6        Inf       Inf
+Method          3   Inf      0         4        Inf         3
+Attribute     Inf     6      4         0          5       Inf
+Visibility    Inf   Inf    Inf         5          0       Inf
+Algorithm     Inf   Inf      3       Inf        Inf         0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pathfinder.matrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.conceptmap")
+> ### * plot.conceptmap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.conceptmap
+> ### Title: Plotting a conceptmap
+> ### Aliases: plot.conceptmap
+> 
+> ### ** Examples
+> 
+> #Create concept map from a random graph
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> E(g1)$name <- rep("", length(E(g1)))
+> plot(conceptmap(g1), edge.labels=FALSE, layout="kamada.kawai")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.conceptmap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("plot.conceptmaps")
+> ### * plot.conceptmaps
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.conceptmaps
+> ### Title: Plotting a series of concept maps
+> ### Aliases: plot.conceptmaps
+> 
+> ### ** Examples
+> 
+> #Create concept maps from three random graphs
+> require("igraph")
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> g1 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g2 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> g3 = set.vertex.attribute(erdos.renyi.game(5, 0.7, type="gnp"), "name", value=1:5)
+> E(g1)$name <- rep("", length(E(g1)))
+> E(g2)$name <- rep("", length(E(g2)))
+> E(g3)$name <- rep("", length(E(g3)))
+> #Create conceptmaps object from three conceptmap objects
+> simple_cms = conceptmaps(list(conceptmap(g1), conceptmap(g2), conceptmap(g3)))
+> 
+> plot(simple_cms, layout="spring")
+Error in as.vector(y) : argument "y" is missing, with no default
+Calls: plot ... union.default -> <Anonymous> -> unique -> as.vector
+Execution halted

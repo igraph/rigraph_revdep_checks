@@ -1,0 +1,1323 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "CINOEDV"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "CINOEDV-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('CINOEDV')
+Loading required package: R.matlab
+R.matlab v3.2.0 (2015-02-24) successfully loaded. See ?R.matlab for help.
+
+Attaching package: ‘R.matlab’
+
+The following objects are masked from ‘package:base’:
+
+    getOption, isOpen
+
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: ggplot2
+Loading required package: reshape2
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("BatCINOEDV")
+> ### * BatCINOEDV
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BatCINOEDV
+> ### Title: Batch mode for using CINOEDV
+> ### Aliases: BatCINOEDV
+> 
+> ### ** Examples
+> 
+> File1 <- system.file("extdata","test.mat",package="CINOEDV")
+> File2 <- system.file("extdata","test1.mat",package="CINOEDV")
+> File3 <- system.file("extdata","test1_Name.mat",package="CINOEDV")
+> FileName <- c(File1,File2)
+> SNFName <- c(NA,File3)
+> MaxOrder <- 2
+> RThreshold <- c(1, 1)
+> NThreshold <- c(10, 10)
+> measure <- 1
+> Stra <- 1
+> Pop <- 10
+> Iter <- 10
+> BatCINOEDV(FileName, MaxOrder, RThreshold, NThreshold, measure, Stra, Pop, Iter, SNFName)
+    The Maximum order : 2 
+
+   The RatioThreshold : 1 1 
+
+   The NumberThreshold : 10 10 
+
+ The input file is : /Users/gaborcsardi/works/igraph/revdep_check/CINOEDV.Rcheck/CINOEDV/extdata/test.mat 
+    Samples: 4000 
+      Cases: 2000 
+      Controls: 2000 
+    SNPs: 10 
+
+    The SNP Name File : NA 
+
+#### Search Results ####
+
+ Please waiting for the search ...
+    Exhaustive Search !
+
+   1-order effect computing ... 
+elapsed 
+  0.032 
+   2-order effect computing ... 
+elapsed 
+  0.282 
+#### Normalization ####
+#### SNP Name Notation ####
+#### Collect Vertices and Edges ####
+#### Construct Complete Graph ####
+dev.new(): using pdf(file="Rplots1.pdf")
+#### Plot Top Effects ####
+dev.new(): using pdf(file="Rplots2.pdf")
+#### Degree Analysis ####
+dev.new(): using pdf(file="Rplots3.pdf")
+      SNP  Degree
+ [1,] "5"  "4"   
+ [2,] "4"  "3"   
+ [3,] "7"  "3"   
+ [4,] "10" "3"   
+ [5,] "8"  "2"   
+ [6,] "1"  "2"   
+ [7,] "6"  "2"   
+ [8,] "3"  "1"   
+ [9,] "2"  "0"   
+[10,] "9"  "0"   
+#### Split subgraphs ####
+dev.new(): using pdf(file="Rplots4.pdf")
+ The input file is : /Users/gaborcsardi/works/igraph/revdep_check/CINOEDV.Rcheck/CINOEDV/extdata/test1.mat 
+    Samples: 4000 
+      Cases: 2000 
+      Controls: 2000 
+    SNPs: 20 
+
+    The SNP Name File : /Users/gaborcsardi/works/igraph/revdep_check/CINOEDV.Rcheck/CINOEDV/extdata/test1_Name.mat 
+
+#### Search Results ####
+
+ Please waiting for the search ...
+    Exhaustive Search !
+
+   1-order effect computing ... 
+elapsed 
+   0.29 
+   2-order effect computing ... 
+elapsed 
+  3.413 
+#### Normalization ####
+dev.new(): using pdf(file="Rplots5.pdf")
+#### SNP Name Notation ####
+#### Collect Vertices and Edges ####
+#### Construct Complete Graph ####
+dev.new(): using pdf(file="Rplots6.pdf")
+#### Plot Top Effects ####
+dev.new(): using pdf(file="Rplots7.pdf")
+#### Degree Analysis ####
+dev.new(): using pdf(file="Rplots8.pdf")
+      SNP       Degree
+ [1,] "rs00013" "4"   
+ [2,] "rs00005" "3"   
+ [3,] "rs00015" "2"   
+ [4,] "rs00002" "2"   
+ [5,] "rs00019" "2"   
+ [6,] "rs00016" "2"   
+ [7,] "rs00008" "1"   
+ [8,] "rs00011" "1"   
+ [9,] "rs00017" "1"   
+[10,] "rs00020" "1"   
+[11,] "rs00014" "1"   
+[12,] "rs00010" "0"   
+[13,] "rs00006" "0"   
+[14,] "rs00001" "0"   
+[15,] "rs00007" "0"   
+#### Split subgraphs ####
+dev.new(): using pdf(file="Rplots9.pdf")
+############################
+#####      Finish      #####
+############################
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BatCINOEDV", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CINOEDV-package")
+> ### * CINOEDV-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CINOEDV-package
+> ### Title: Co-Information based N-Order Epistasis Detector and Visualizer
+> ### Aliases: CINOEDV-package CINOEDV
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+> 
+> rm(list=ls())
+> 
+> File1 <- system.file("extdata","test.mat",package="CINOEDV")
+> File2 <- system.file("extdata","test1.mat",package="CINOEDV")
+> File3 <- system.file("extdata","test_Name.mat",package="CINOEDV")
+> File4 <- system.file("extdata","test1_Name.mat",package="CINOEDV")
+> 
+> FileName <- c(File1,File2)
+> MaxOrder <- 2
+> RThreshold <- c(1,1)
+> NThreshold <- c(10,10)
+> measure <- 1
+> SNFName <- c(File3,File4)
+> Stra <- 1
+> Pop <- 100
+> Iter <- 10
+> 
+> BatCINOEDV(FileName, MaxOrder, RThreshold, NThreshold, measure, Stra, Pop, Iter, SNFName)
+    The Maximum order : 2 
+
+   The RatioThreshold : 1 1 
+
+   The NumberThreshold : 10 10 
+
+ The input file is : /Users/gaborcsardi/works/igraph/revdep_check/CINOEDV.Rcheck/CINOEDV/extdata/test.mat 
+    Samples: 4000 
+      Cases: 2000 
+      Controls: 2000 
+    SNPs: 10 
+
+    The SNP Name File : /Users/gaborcsardi/works/igraph/revdep_check/CINOEDV.Rcheck/CINOEDV/extdata/test_Name.mat 
+
+#### Search Results ####
+
+ Please waiting for the search ...
+    Exhaustive Search !
+
+   1-order effect computing ... 
+elapsed 
+  0.025 
+   2-order effect computing ... 
+elapsed 
+  0.402 
+#### Normalization ####
+dev.new(): using pdf(file="Rplots10.pdf")
+#### SNP Name Notation ####
+#### Collect Vertices and Edges ####
+#### Construct Complete Graph ####
+dev.new(): using pdf(file="Rplots11.pdf")
+#### Plot Top Effects ####
+dev.new(): using pdf(file="Rplots12.pdf")
+#### Degree Analysis ####
+dev.new(): using pdf(file="Rplots13.pdf")
+      SNP     Degree
+ [1,] "SNP5"  "4"   
+ [2,] "SNP4"  "3"   
+ [3,] "SNP7"  "3"   
+ [4,] "SNP10" "3"   
+ [5,] "SNP8"  "2"   
+ [6,] "SNP1"  "2"   
+ [7,] "SNP6"  "2"   
+ [8,] "SNP3"  "1"   
+ [9,] "SNP2"  "0"   
+[10,] "SNP9"  "0"   
+#### Split subgraphs ####
+dev.new(): using pdf(file="Rplots14.pdf")
+ The input file is : /Users/gaborcsardi/works/igraph/revdep_check/CINOEDV.Rcheck/CINOEDV/extdata/test1.mat 
+    Samples: 4000 
+      Cases: 2000 
+      Controls: 2000 
+    SNPs: 20 
+
+    The SNP Name File : /Users/gaborcsardi/works/igraph/revdep_check/CINOEDV.Rcheck/CINOEDV/extdata/test1_Name.mat 
+
+#### Search Results ####
+
+ Please waiting for the search ...
+    Exhaustive Search !
+
+   1-order effect computing ... 
+elapsed 
+  0.162 
+   2-order effect computing ... 
+elapsed 
+  1.461 
+#### Normalization ####
+dev.new(): using pdf(file="Rplots15.pdf")
+#### SNP Name Notation ####
+#### Collect Vertices and Edges ####
+#### Construct Complete Graph ####
+dev.new(): using pdf(file="Rplots16.pdf")
+#### Plot Top Effects ####
+dev.new(): using pdf(file="Rplots17.pdf")
+#### Degree Analysis ####
+dev.new(): using pdf(file="Rplots18.pdf")
+      SNP       Degree
+ [1,] "rs00013" "4"   
+ [2,] "rs00005" "3"   
+ [3,] "rs00015" "2"   
+ [4,] "rs00002" "2"   
+ [5,] "rs00019" "2"   
+ [6,] "rs00016" "2"   
+ [7,] "rs00008" "1"   
+ [8,] "rs00011" "1"   
+ [9,] "rs00017" "1"   
+[10,] "rs00020" "1"   
+[11,] "rs00014" "1"   
+[12,] "rs00010" "0"   
+[13,] "rs00006" "0"   
+[14,] "rs00001" "0"   
+[15,] "rs00007" "0"   
+#### Split subgraphs ####
+dev.new(): using pdf(file="Rplots19.pdf")
+############################
+#####      Finish      #####
+############################
+> 
+> 
+> ###################
+> ##     Second    ##
+> ###################
+> 
+> # Install Packages
+> # InstallPackage()
+> 
+> # Check SNP data
+> FileName <- system.file("extdata","test.mat",package="CINOEDV")
+> Data <- InputData(FileName)
+ The input file is : /Users/gaborcsardi/works/igraph/revdep_check/CINOEDV.Rcheck/CINOEDV/extdata/test.mat 
+    Samples: 4000 
+      Cases: 2000 
+      Controls: 2000 
+    SNPs: 10 
+
+> pts <- Data$pts
+> class <- Data$class
+> 
+> # Check MaxOrder
+> MaxOrder <- 2
+> TestMaxOrder(as.character(MaxOrder))
+    The Maximum order : 2 
+
+> MaxOrder <- as.numeric(MaxOrder)
+> 
+> # Check RatioThreshold
+> RatioThreshold <- c(1,1)
+> TestRatioThreshold(MaxOrder,as.character(RatioThreshold))
+   The RatioThreshold : 1 1 
+
+> RatioThreshold <- as.numeric(RatioThreshold)
+> 
+> # Check NumberThreshold
+> NumberThreshold <- c(10,10)
+> TestNumberThreshold(MaxOrder,as.character(NumberThreshold))
+   The NumberThreshold : 10 10 
+
+> NumberThreshold <- as.numeric(NumberThreshold)
+> 
+> # Check measure
+> measure <- 1
+> 
+> # Check SNPNameFileName
+> SNPNameFileName <- system.file("extdata","test_Name.mat",package="CINOEDV")
+> SNPNames <- TestSNPNameFile(ncol(pts),as.character(SNPNameFileName))
+    The SNP Name File : /Users/gaborcsardi/works/igraph/revdep_check/CINOEDV.Rcheck/CINOEDV/extdata/test_Name.mat 
+
+> SNPNames <- SNPNames$SNPNames
+> 
+> # Define file name which is used for saving results. 
+> SaveFileName <- "TEST_RESULT_"
+> 
+> # Search Strategies
+> Effect <- ExhaustiveSearch(pts,class,MaxOrder,measure,0)
+    Exhaustive Search !
+
+   1-order effect computing ... 
+elapsed 
+  0.025 
+   2-order effect computing ... 
+elapsed 
+  0.787 
+> SingleEffect <- Effect$SingleEffect
+> TwoEffect <- Effect$TwoEffect
+> ThreeEffect <- Effect$ThreeEffect
+> FourEffect <- Effect$FourEffect
+> FiveEffect <- Effect$FiveEffect
+> 
+> # Normalization
+> Effect <- NormalizationEffect(MaxOrder,SingleEffect,TwoEffect,ThreeEffect,FourEffect
++                                 ,FiveEffect,SaveFileName)
+dev.new(): using pdf(file="Rplots20.pdf")
+>   
+> SingleEffect <- Effect$SingleEffect
+> TwoEffect <- Effect$TwoEffect
+> ThreeEffect <- Effect$ThreeEffect
+> FourEffect <- Effect$FourEffect
+> FiveEffect <- Effect$FiveEffect
+> 
+> # SNP Name Notation
+> Effect <- NotationName(MaxOrder,SingleEffect,TwoEffect,ThreeEffect,FourEffect
++                          ,FiveEffect,SNPNames)
+>   
+> SingleEffect <- Effect$SingleEffect
+> TwoEffect <- Effect$TwoEffect
+> ThreeEffect <- Effect$ThreeEffect
+> FourEffect <- Effect$FourEffect
+> FiveEffect <- Effect$FiveEffect
+> 
+> # Collect Vertices and Edges
+> GraphData <- NetworkData(SingleEffect,TwoEffect,ThreeEffect,FourEffect,
++                            FiveEffect,RatioThreshold,NumberThreshold)
+> Edges <- GraphData$edges
+> Vertices <- GraphData$vertices
+> 
+> # Construct Complete Graph
+> ConstructCompleteGraph(Vertices,Edges,6,SaveFileName)
+dev.new(): using pdf(file="Rplots21.pdf")
+> 
+> # Plot Top Effects
+> TpEffect <- PlotTopEffects(Vertices,20,SaveFileName)
+dev.new(): using pdf(file="Rplots22.pdf")
+> TopEffect <- TpEffect$TopEffect
+> CombinationEffect <- TpEffect$CombinationEffect
+> 
+> # Degree Analysis
+> Degrees <- DegreeAnalysis(Vertices,Edges,SaveFileName)
+dev.new(): using pdf(file="Rplots23.pdf")
+> Degrees <- Degrees$Degrees
+> print(Degrees)
+      SNP     Degree
+ [1,] "SNP5"  "4"   
+ [2,] "SNP4"  "3"   
+ [3,] "SNP7"  "3"   
+ [4,] "SNP10" "3"   
+ [5,] "SNP8"  "2"   
+ [6,] "SNP1"  "2"   
+ [7,] "SNP6"  "2"   
+ [8,] "SNP3"  "1"   
+ [9,] "SNP2"  "0"   
+[10,] "SNP9"  "0"   
+> 
+> # Split subgraphs
+> SubgraphSNPs <- SubgraphSplit(Vertices,Edges)
+> SubgraphSNPs <- SubgraphSNPs$SubgroupSNPs
+> 
+> # heatmap Factor  
+> HeatMapFactors <- HeatMapFactor(pts,class,factor = c(5, 8),SaveFileName,Title ="")
+dev.new(): using pdf(file="Rplots24.pdf")
+> HeatMapFactors <- HeatMapFactors$HeatMapFactors
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CINOEDV-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CINOEDV_Main")
+> ### * CINOEDV_Main
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CINOEDV_Main
+> ### Title: Co-Information based N-Order Epistasis Detector and Visualizer
+> ### Aliases: CINOEDV_Main
+> ### Keywords: Epistasis Co-Information
+> 
+> ### ** Examples
+> 
+> # See details of package CINOEDV
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CINOEDV_Main", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CheckVerticeType")
+> ### * CheckVerticeType
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CheckVerticeType
+> ### Title: Test Vertice Type
+> ### Aliases: CheckVerticeType
+> 
+> ### ** Examples
+> 
+> Vertice <- "rs1366208"
+> Whether <- CheckVerticeType(Vertice)
+> Whether <- Whether$Whether
+> Vertice <- "rs2801008:rs4763023"
+> Whether <- CheckVerticeType(Vertice)
+> Whether <- Whether$Whether
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CheckVerticeType", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CoInformation")
+> ### * CoInformation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CoInformation
+> ### Title: Co-Information Computation
+> ### Aliases: CoInformation
+> 
+> ### ** Examples
+> 
+> data(pts)
+> data(class)
+> factor <- c(2,5)
+> V <- CoInformation(pts, class, factor)
+> Co_Information_Value <- V$Co_Information_Value
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CoInformation", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CombinationEntropy")
+> ### * CombinationEntropy
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CombinationEntropy
+> ### Title: Combination Entropy Computation
+> ### Aliases: CombinationEntropy
+> 
+> ### ** Examples
+> 
+> data(pts)
+> data(class)
+> factor <- c(2, 5)
+> data <- cbind(pts[,factor],t(class))
+> V <- CombinationEntropy(data)
+> Combination_Entropy_Value <- V$Combination_Entropy_Value
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CombinationEntropy", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ConstructCompleteGraph")
+> ### * ConstructCompleteGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ConstructCompleteGraph
+> ### Title: Construct complete graph
+> ### Aliases: ConstructCompleteGraph
+> 
+> ### ** Examples
+> 
+> data(Vertices)
+> data(Edges)
+> ConstructCompleteGraph(Vertices, Edges, BaseSize = 6, SaveFileName = "")
+dev.new(): using pdf(file="Rplots25.pdf")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ConstructCompleteGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("DegreeAnalysis")
+> ### * DegreeAnalysis
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: DegreeAnalysis
+> ### Title: Degree analysis of real vertices
+> ### Aliases: DegreeAnalysis
+> 
+> ### ** Examples
+> 
+> data(Vertices)
+> data(Edges)
+> Degrees <- DegreeAnalysis(Vertices, Edges, SaveFileName = "")
+dev.new(): using pdf(file="Rplots26.pdf")
+> Degrees <- Degrees$Degrees
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("DegreeAnalysis", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Edges")
+> ### * Edges
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Edges
+> ### Title: Edges of constructed graphs
+> ### Aliases: Edges
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(Edges)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Edges", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("EvaluationMeasure")
+> ### * EvaluationMeasure
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: EvaluationMeasure
+> ### Title: Evaluation Measure
+> ### Aliases: EvaluationMeasure
+> 
+> ### ** Examples
+> 
+> factor <- c(2,5)
+> data(pts)
+> data(class)
+> V <- EvaluationMeasure(factor, pts, class, measure = 1)
+> Value <- V$Value
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("EvaluationMeasure", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ExhaustiveSearch")
+> ### * ExhaustiveSearch
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ExhaustiveSearch
+> ### Title: Exhaustive Search
+> ### Aliases: ExhaustiveSearch
+> 
+> ### ** Examples
+> 
+> data(pts)
+> data(class)
+> Effect <- ExhaustiveSearch(pts, class, MaxOrder = 2, measure = 1, alpha = 0)
+    Exhaustive Search !
+
+   1-order effect computing ... 
+elapsed 
+  0.102 
+   2-order effect computing ... 
+elapsed 
+  1.624 
+> SingleEffect <- Effect$SingleEffect
+> TwoEffect <- Effect$TwoEffect
+> ThreeEffect <- Effect$ThreeEffect
+> FourEffect <- Effect$FourEffect
+> FiveEffect <- Effect$FiveEffect
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ExhaustiveSearch", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("FiveEffect")
+> ### * FiveEffect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: FiveEffect
+> ### Title: Interaction Effects of five-SNP combinations
+> ### Aliases: FiveEffect
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(FiveEffect)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("FiveEffect", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("FourEffect")
+> ### * FourEffect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: FourEffect
+> ### Title: Interaction Effects of four-SNP combinations
+> ### Aliases: FourEffect
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(FourEffect)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("FourEffect", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("HeatMapFactor")
+> ### * HeatMapFactor
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: HeatMapFactor
+> ### Title: Heatmap function
+> ### Aliases: HeatMapFactor
+> 
+> ### ** Examples
+> 
+> data(pts)
+> data(class)
+> factor <- c(2,5)
+> H <- HeatMapFactor(pts, class, factor, SaveFileName = "", Title = "")
+dev.new(): using pdf(file="Rplots27.pdf")
+> HeatMapFactors <- H$HeatMapFactors
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("HeatMapFactor", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("InputData")
+> ### * InputData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: InputData
+> ### Title: Input data
+> ### Aliases: InputData
+> 
+> ### ** Examples
+> 
+> 
+> # The files (test.mat) should be downloaded from http://sourceforge.net/projects/cinoedv/files/.
+> 
+> FileName <- system.file("extdata","test.mat",package="CINOEDV")
+> Data <- InputData(FileName)
+ The input file is : /Users/gaborcsardi/works/igraph/revdep_check/CINOEDV.Rcheck/CINOEDV/extdata/test.mat 
+    Samples: 4000 
+      Cases: 2000 
+      Controls: 2000 
+    SNPs: 10 
+
+> pts <- Data$pts
+> class <- Data$class
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("InputData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("InstallPackage")
+> ### * InstallPackage
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: InstallPackage
+> ### Title: Install CINOEDV used packages
+> ### Aliases: InstallPackage
+> 
+> ### ** Examples
+> 
+> InstallPackage()
+    package R.matlab successfully installed.
+    package igraph successfully installed.
+    package ggplot2 successfully installed.
+    package reshape2 successfully installed.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("InstallPackage", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NetworkData")
+> ### * NetworkData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NetworkData
+> ### Title: Collect vertices and edges for network construction
+> ### Aliases: NetworkData
+> 
+> ### ** Examples
+> 
+> data(SingleEffect)
+> data(TwoEffect)
+> data(ThreeEffect)
+> data(FourEffect)
+> data(FiveEffect)
+> RatioThreshold <- c(1,1,1,1,1)
+> NumberThreshold <- c(10,10,10,10,10)
+> Net <- NetworkData(SingleEffect, TwoEffect, ThreeEffect, FourEffect, 
++        FiveEffect, RatioThreshold, NumberThreshold)
+> Vertices <- Net$Vertices
+> Edges <- Net$Edges
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NetworkData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NormalizationEffect")
+> ### * NormalizationEffect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NormalizationEffect
+> ### Title: Normalization Effect
+> ### Aliases: NormalizationEffect
+> 
+> ### ** Examples
+> 
+> 
+> data(pts)
+> data(class)
+> MaxOrder <- 2
+> measure <- 1
+> SaveFileName <- ""
+>  
+> # Search Strategies
+> Effect <- ExhaustiveSearch(pts,class,MaxOrder,measure,0)
+    Exhaustive Search !
+
+   1-order effect computing ... 
+elapsed 
+  0.179 
+   2-order effect computing ... 
+elapsed 
+  1.924 
+> SingleEffect <- Effect$SingleEffect
+> TwoEffect <- Effect$TwoEffect
+> ThreeEffect <- Effect$ThreeEffect
+> FourEffect <- Effect$FourEffect
+> FiveEffect <- Effect$FiveEffect
+> 
+> # Normalization
+> Effect <- NormalizationEffect(MaxOrder,SingleEffect,TwoEffect,ThreeEffect,FourEffect
++                                 ,FiveEffect,SaveFileName)
+dev.new(): using pdf(file="Rplots28.pdf")
+>   
+> SingleEffect <- Effect$SingleEffect
+> TwoEffect <- Effect$TwoEffect
+> ThreeEffect <- Effect$ThreeEffect
+> FourEffect <- Effect$FourEffect
+> FiveEffect <- Effect$FiveEffect
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NormalizationEffect", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NotationName")
+> ### * NotationName
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NotationName
+> ### Title: Notation of real SNP Name
+> ### Aliases: NotationName
+> 
+> ### ** Examples
+> 
+> 
+> data(pts)
+> data(class)
+> MaxOrder <- 2
+> measure <- 1
+> SaveFileName <- ""
+> SNPNames <- c("rs1366208","rs1950123","rs10485136","rs1484673",
++               "rs1484433","rs1795462","rs10501558","rs2018041",
++               "rs10489495","rs3846302","rs2801008","0","rs1773409",
++               "rs4786670","rs2260614","rs1326298","rs9315726",
++               "rs1582545","rs10505084","rs4763023")
+> 
+> # Search Strategies
+> Effect <- ExhaustiveSearch(pts,class,MaxOrder,measure,0)
+    Exhaustive Search !
+
+   1-order effect computing ... 
+elapsed 
+  0.139 
+   2-order effect computing ... 
+elapsed 
+  1.215 
+> SingleEffect <- Effect$SingleEffect
+> TwoEffect <- Effect$TwoEffect
+> ThreeEffect <- Effect$ThreeEffect
+> FourEffect <- Effect$FourEffect
+> FiveEffect <- Effect$FiveEffect
+> 
+> # Normalization
+> Effect <- NormalizationEffect(MaxOrder,SingleEffect,TwoEffect,ThreeEffect,FourEffect
++                                 ,FiveEffect,SaveFileName)
+dev.new(): using pdf(file="Rplots29.pdf")
+>   
+> SingleEffect <- Effect$SingleEffect
+> TwoEffect <- Effect$TwoEffect
+> ThreeEffect <- Effect$ThreeEffect
+> FourEffect <- Effect$FourEffect
+> FiveEffect <- Effect$FiveEffect
+> 
+> # SNP Name Notation
+> Effect <- NotationName(MaxOrder,SingleEffect,TwoEffect,ThreeEffect,FourEffect
++                          ,FiveEffect,SNPNames)
+>   
+> SingleEffect <- Effect$SingleEffect
+> TwoEffect <- Effect$TwoEffect
+> ThreeEffect <- Effect$ThreeEffect
+> FourEffect <- Effect$FourEffect
+> FiveEffect <- Effect$FiveEffect
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NotationName", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("PSOSearch")
+> ### * PSOSearch
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: PSOSearch
+> ### Title: PSO Search
+> ### Aliases: PSOSearch
+> 
+> ### ** Examples
+> 
+> data(pts)
+> data(class)
+> MaxOrder <- 2
+> Pop <- 10
+> Iter <- 10
+> c1 <- 2
+> c2 <- 2
+> TopSNP <- 10
+> measure <- 1
+> alpha <- 0
+> Effect <- PSOSearch(pts, class, MaxOrder, Pop, Iter, c1, c2, TopSNP, measure, alpha)
+  PSO Initialization ...
+  PSO Iteration...
+  Iteration:  1 
+  Iteration:  2 
+  Iteration:  3 
+  Iteration:  4 
+  Iteration:  5 
+  Iteration:  6 
+  Iteration:  7 
+  Iteration:  8 
+  Iteration:  9 
+  Iteration:  10 
+> SingleEffect <- Effect$SingleEffect
+> TwoEffect <- Effect$TwoEffect
+> ThreeEffect <- Effect$ThreeEffect
+> FourEffect <- Effect$FourEffect
+> FiveEffect <- Effect$FiveEffect
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("PSOSearch", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("PlotTopEffects")
+> ### * PlotTopEffects
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: PlotTopEffects
+> ### Title: Plot top n effects with their corresponding SNPs or
+> ###   SNP-combinations
+> ### Aliases: PlotTopEffects
+> 
+> ### ** Examples
+> 
+> data(Vertices)
+> data(Edges)
+> TP <- PlotTopEffects(Vertices, Top = 20, SaveFileName = "")
+dev.new(): using pdf(file="Rplots30.pdf")
+> TopEffect <- TP$TopEffect
+> CombinationEffect <- TP$CombinationEffect
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("PlotTopEffects", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("SingleEffect")
+> ### * SingleEffect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: SingleEffect
+> ### Title: Main Effects of SNPs
+> ### Aliases: SingleEffect
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(SingleEffect)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("SingleEffect", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("SubgraphSplit")
+> ### * SubgraphSplit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: SubgraphSplit
+> ### Title: Split subgraphs
+> ### Aliases: SubgraphSplit
+> 
+> ### ** Examples
+> 
+> data(Vertices)
+> data(Edges)
+> SubgroupSNPs <- SubgraphSplit(Vertices, Edges)
+> SubgroupSNPs <- SubgroupSNPs$SubgroupSNPs
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("SubgraphSplit", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("TestMaxOrder")
+> ### * TestMaxOrder
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: TestMaxOrder
+> ### Title: Test the parameter MaxOrder
+> ### Aliases: TestMaxOrder
+> 
+> ### ** Examples
+> 
+> MaxOrder <- "2"
+> TestMaxOrder(MaxOrder)
+    The Maximum order : 2 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("TestMaxOrder", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("TestNumberThreshold")
+> ### * TestNumberThreshold
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: TestNumberThreshold
+> ### Title: Test the parameter NumberThreshold
+> ### Aliases: TestNumberThreshold
+> 
+> ### ** Examples
+> 
+> MaxOrder <- 3
+> NumberThreshold <- c("5","20","10")
+> TestNumberThreshold(MaxOrder, NumberThreshold)
+   The NumberThreshold : 5 20 10 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("TestNumberThreshold", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("TestPSOParameters")
+> ### * TestPSOParameters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: TestPSOParameters
+> ### Title: Check the PSO parameters
+> ### Aliases: TestPSOParameters
+> 
+> ### ** Examples
+> 
+> Population <- 1000
+> Iteration <- 50
+> TestPSOParameters(Population, Iteration)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("TestPSOParameters", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("TestRatioThreshold")
+> ### * TestRatioThreshold
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: TestRatioThreshold
+> ### Title: Test the parameter RatioThreshold
+> ### Aliases: TestRatioThreshold
+> 
+> ### ** Examples
+> 
+> MaxOrder <- 3
+> RatioThreshold <- c("1.0","0.5","0.2")
+> TestRatioThreshold(MaxOrder, RatioThreshold)
+   The RatioThreshold : 1 0.5 0.2 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("TestRatioThreshold", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("TestSNPNameFile")
+> ### * TestSNPNameFile
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: TestSNPNameFile
+> ### Title: Test the parameter TestSNPNameFile
+> ### Aliases: TestSNPNameFile
+> 
+> ### ** Examples
+> 
+> RowNum <- 10
+> SNPNameFileName <- NA
+> SNPNames <- TestSNPNameFile(RowNum, SNPNameFileName)
+    The SNP Name File : NA 
+
+> SNPNames <- SNPNames$SNPNames
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("TestSNPNameFile", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ThreeEffect")
+> ### * ThreeEffect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ThreeEffect
+> ### Title: Interaction Effects of three-SNP combinations
+> ### Aliases: ThreeEffect
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(ThreeEffect)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ThreeEffect", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("TwoEffect")
+> ### * TwoEffect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: TwoEffect
+> ### Title: Interaction Effects of two-SNP combinations
+> ### Aliases: TwoEffect
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(TwoEffect)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("TwoEffect", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Vertices")
+> ### * Vertices
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Vertices
+> ### Title: Vertices of constructed graphs
+> ### Aliases: Vertices
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(Vertices)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Vertices", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("class")
+> ### * class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: class
+> ### Title: Class labels of samples
+> ### Aliases: class
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(class)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("class", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pts")
+> ### * pts
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pts
+> ### Title: SNP data
+> ### Aliases: pts
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(pts)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pts", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("tic")
+> ### * tic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: tic
+> ### Title: Start stopwatch timer
+> ### Aliases: tic
+> 
+> ### ** Examples
+> 
+> tic()
+> Sys.sleep(2)
+> toc()
+elapsed 
+  2.005 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("tic", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("toc")
+> ### * toc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: toc
+> ### Title: Read elasped time from stopwatch
+> ### Aliases: toc
+> 
+> ### ** Examples
+> 
+> tic()
+> Sys.sleep(2)
+> toc()
+elapsed 
+  2.005 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("toc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  21.997 0.981 29.04 0 0 
+> grDevices::dev.off()
+pdf 
+  2 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

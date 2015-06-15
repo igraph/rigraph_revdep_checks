@@ -1,0 +1,732 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "cooptrees"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "cooptrees-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('cooptrees')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: optrees
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("maBird")
+> ### * maBird
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: maBird
+> ### Title: Bird rule for minimum cost arborescence problems
+> ### Aliases: maBird
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,7, 1,3,6, 1,4,4, 2,3,8, 2,4,6, 3,2,6,
++                  3,4,5, 4,2,5, 4,3,7), ncol = 3, byrow = TRUE)
+> # Bird
+> maBird(nodes, arcs)
+     agent cost
+[1,]     2    5
+[2,]     3    6
+[3,]     4    4
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("maBird", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("maCooperative")
+> ### * maCooperative
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: maCooperative
+> ### Title: Cooperation in minimum cost arborescence problems
+> ### Aliases: maCooperative
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,2, 1,3,3, 1,4,4, 2,3,3, 2,4,4, 3,2,3,
++                  3,4,1, 4,2,1, 4,3,2), ncol = 3, byrow = TRUE)
+> # Cooperation in minimum cost arborescence problems
+> maCooperative(nodes, arcs)
+
+ Minimum cost spanning arborescence 
+ Algorithm: Edmonds 
+ Stages:  2 | Time:  0.002 
+ ------------------------------
+      head     tail    weight 
+         1        3         3
+         3        4         1
+         4        2         1
+ ------------------------------
+                   Total = 5 
+
+ Cooperative games: 
+ ---------------------------
+     1 2 3 1,2 1,3 2,3 1,2,3
+Pes. 2 3 4   5   5   4     5
+Irr. 1 3 2   4   3   4     5
+ ---------------------------
+
+ Allocation rules: 
+ ---------------------------
+  Bird ERO
+2    1 1.0
+3    3 2.5
+4    1 1.5
+ ---------------------------
+   Total cost = 5 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("maCooperative", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("maERO")
+> ### * maERO
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: maERO
+> ### Title: ERO rule for minimum cost arborescence problems
+> ### Aliases: maERO
+> 
+> ### ** Examples
+> 
+> # Graphs
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,7, 1,3,6, 1,4,4, 2,3,8, 2,4,6, 3,2,6,
++                  3,4,5, 4,2,5, 4,3,7), ncol = 3, byrow = TRUE)
+> # ERO
+> maERO(nodes, arcs)
+     agent cost
+[1,]     2    5
+[2,]     3    6
+[3,]     4    4
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("maERO", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("maGames")
+> ### * maGames
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: maGames
+> ### Title: Cooperative game associated with minimum cost arborescences
+> ### Aliases: maGames
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,7, 1,3,6, 1,4,4, 2,3,8, 2,4,6, 3,2,6,
++                  3,4,5, 4,2,5, 4,3,7), ncol = 3, byrow = TRUE)
+> # Cooperative games
+> maGames(nodes, arcs, game = "pessimistic")
+v(S) =  7 6 4 12 9 10 15 
+$coalitions
+[1] "1"     "2"     "3"     "1,2"   "1,3"   "2,3"   "1,2,3"
+
+$values
+[1]  7  6  4 12  9 10 15
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("maGames", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("maIrreducible")
+> ### * maIrreducible
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: maIrreducible
+> ### Title: Irreducible form for a minimum cost arborescence problem
+> ### Aliases: maIrreducible
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,7, 1,3,6, 1,4,4, 2,3,8, 2,4,6, 3,2,6,
++                  3,4,5, 4,2,5, 4,3,7), ncol = 3, byrow = TRUE)
+> # Irreducible form
+> maIrreducible(nodes, arcs)
+      head tail weight
+ [1,]    1    2      5
+ [2,]    1    3      6
+ [3,]    1    4      4
+ [4,]    2    3      6
+ [5,]    2    4      4
+ [6,]    3    2      5
+ [7,]    3    4      4
+ [8,]    4    2      5
+ [9,]    4    3      6
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("maIrreducible", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("maPessimistic")
+> ### * maPessimistic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: maPessimistic
+> ### Title: Pessimistic game associated with minimum cost arborescences
+> ### Aliases: maPessimistic
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,7, 1,3,6, 1,4,4, 2,3,8, 2,4,6, 3,2,6,
++                  3,4,5, 4,2,5, 4,3,7), ncol = 3, byrow = TRUE)
+> # Pessimistic game
+> maPessimistic(nodes, arcs)
+$coalitions
+[1] "1"     "2"     "3"     "1,2"   "1,3"   "2,3"   "1,2,3"
+
+$values
+[1]  7  6  4 12  9 10 15
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("maPessimistic", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("maRules")
+> ### * maRules
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: maRules
+> ### Title: Allocation rules for minimum cost arborescence problems
+> ### Aliases: maRules
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,7, 1,3,6, 1,4,4, 2,3,8, 2,4,6, 3,2,6,
++                  3,4,5, 4,2,5, 4,3,7), ncol = 3, byrow = TRUE)
+> # Allocation rules
+> maRules(nodes, arcs, rule = "Bird")
+
+ Minimum cost arborescence 
+ Rule: Bird 
+ ----------------
+   Agent    Cost 
+       2       5
+       3       6
+       4       4
+ ----------------
+      Total = 15 
+
+> maRules(nodes, arcs, rule = "ERO")
+
+ Minimum cost arborescence 
+ Rule: ERO 
+ ----------------
+   Agent    Cost 
+       2       5
+       3       6
+       4       4
+ ----------------
+      Total = 15 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("maRules", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mstBird")
+> ### * mstBird
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mstBird
+> ### Title: Bird rule for minimum cost spanning tree problems
+> ### Aliases: mstBird
+> 
+> ### ** Examples
+> 
+> # Graphs
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,6, 1,3,10, 1,4,6, 2,3,4, 2,4,6, 3,4,4),
++                byrow = TRUE, ncol = 3)
+> # Bird
+> mstBird(nodes, arcs)
+     agent cost
+[1,]     2    6
+[2,]     3    4
+[3,]     4    4
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mstBird", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mstCooperative")
+> ### * mstCooperative
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mstCooperative
+> ### Title: Cooperation in minimum cost spanning tree problems
+> ### Aliases: mstCooperative
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,6, 1,3,10, 1,4,6, 2,3,4, 2,4,6, 3,4,4),
++                byrow = TRUE, ncol = 3)
+> # Cooperation in minimum cost spanning tree problems
+> mstCooperative(nodes, arcs)
+
+ Minimum Cost Spanning Tree 
+ Algorithm: Prim 
+ Stages:  3 | Time:  0 
+ ------------------------------
+      ept1     ept2    weight 
+         1        2         6
+         2        3         4
+         3        4         4
+ ------------------------------
+                   Total = 14 
+
+ Cooperative games: 
+ ---------------------------
+     1  2 3 1,2 1,3 2,3 1,2,3
+Pes. 6 10 6  10  12  10    14
+Opt. 4  4 4   8   8   8    14
+Irr. 6  6 6  10  10  10    14
+ ---------------------------
+
+ Allocation rules: 
+ ---------------------------
+  Bird D-K  Kar  ERO
+2    6   4 4.33 4.67
+3    4   4 5.33 4.67
+4    4   6 4.33 4.67
+ ---------------------------
+   Total cost = 14 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mstCooperative", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mstDuttaKar")
+> ### * mstDuttaKar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mstDuttaKar
+> ### Title: Dutta-Kar rule for minimum cost spanning tree problems
+> ### Aliases: mstDuttaKar
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,6, 1,3,10, 1,4,6, 2,3,4, 2,4,6, 3,4,4),
++                byrow = TRUE, ncol = 3)
+> # Dutta-Kar
+> mstDuttaKar(nodes, arcs)
+     agent cost
+[1,]     2    4
+[2,]     3    4
+[3,]     4    6
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mstDuttaKar", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mstEROKruskal")
+> ### * mstEROKruskal
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mstEROKruskal
+> ### Title: ERO rule for minimum cost spanning tree problems with Kruskal's
+> ###   algorithm
+> ### Aliases: mstEROKruskal
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,6, 1,3,10, 1,4,6, 2,3,4, 2,4,6, 3,4,4),
++                byrow = TRUE, ncol = 3)
+> # ERO with Kruskal
+> mstEROKruskal(nodes, arcs)
+     agent     cost
+[1,]     2 4.666667
+[2,]     3 4.666667
+[3,]     4 4.666667
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mstEROKruskal", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mstGames")
+> ### * mstGames
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mstGames
+> ### Title: Cooperative games from minimum cost spanning tree problems
+> ### Aliases: mstGames
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,6, 1,3,10, 1,4,6, 2,3,4, 2,4,6, 3,4,4),
++                byrow = TRUE, ncol = 3)
+> # Cooperative games
+> mstGames(nodes, arcs, game = "pessimistic")
+v(S) =  6 10 6 10 12 10 14 
+$coalitions
+[1] "1"     "2"     "3"     "1,2"   "1,3"   "2,3"   "1,2,3"
+
+$values
+[1]  6 10  6 10 12 10 14
+
+> mstGames(nodes, arcs, game = "optimistic")
+v(S) =  4 4 4 8 8 8 14 
+$coalitions
+[1] "1"     "2"     "3"     "1,2"   "1,3"   "2,3"   "1,2,3"
+
+$values
+[1]  4  4  4  8  8  8 14
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mstGames", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mstIrreducible")
+> ### * mstIrreducible
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mstIrreducible
+> ### Title: Irreducible form for a minimum cost spanning tree problem
+> ### Aliases: mstIrreducible
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,6, 1,3,10, 1,4,6, 2,3,4, 2,4,6, 3,4,4),
++                byrow = TRUE, ncol = 3)
+> # Irreducible form
+> mstIrreducible(nodes, arcs)
+     ept1 ept2 weight
+[1,]    1    2      6
+[2,]    1    3      6
+[3,]    1    4      6
+[4,]    2    3      4
+[5,]    2    4      4
+[6,]    3    4      4
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mstIrreducible", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mstKar")
+> ### * mstKar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mstKar
+> ### Title: Kar rule for minimum cost spanning tree problems
+> ### Aliases: mstKar
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,6, 1,3,10, 1,4,6, 2,3,4, 2,4,6, 3,4,4),
++                byrow = TRUE, ncol = 3)
+> # Kar
+> mstKar(nodes, arcs)
+     agent     cost
+[1,]     2 4.333333
+[2,]     3 5.333333
+[3,]     4 4.333333
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mstKar", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mstOptimistic")
+> ### * mstOptimistic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mstOptimistic
+> ### Title: Optimistic game of a minimum cost spanning tree problem
+> ### Aliases: mstOptimistic
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,6, 1,3,10, 1,4,6, 2,3,4, 2,4,6, 3,4,4),
++                byrow = TRUE, ncol = 3)
+> # Optimistic game
+> mstOptimistic(nodes, arcs)
+$coalitions
+[1] "1"     "2"     "3"     "1,2"   "1,3"   "2,3"   "1,2,3"
+
+$values
+[1]  4  4  4  8  8  8 14
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mstOptimistic", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mstPessimistic")
+> ### * mstPessimistic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mstPessimistic
+> ### Title: Pessimistic game from a minimum cost spanning tree problem
+> ### Aliases: mstPessimistic
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,6, 1,3,10, 1,4,6, 2,3,4, 2,4,6, 3,4,4),
++                byrow = TRUE, ncol = 3)
+> # Pessimistic game
+> mstPessimistic(nodes, arcs)
+$coalitions
+[1] "1"     "2"     "3"     "1,2"   "1,3"   "2,3"   "1,2,3"
+
+$values
+[1]  6 10  6 10 12 10 14
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mstPessimistic", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mstRules")
+> ### * mstRules
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mstRules
+> ### Title: Allocation rules for minimum cost spanning tree problem
+> ### Aliases: mstRules
+> 
+> ### ** Examples
+> 
+> # Graph
+> nodes <- 1:4
+> arcs <- matrix(c(1,2,6, 1,3,10, 1,4,6, 2,3,4, 2,4,6, 3,4,4),
++                byrow = TRUE, ncol = 3)
+> # Allocation Rules
+> mstRules(nodes, arcs, rule = "Bird")
+
+ Minimum spanning tree 
+ Rule: Bird 
+ ----------------
+   Agent    Cost 
+       2       6
+       3       4
+       4       4
+ ----------------
+      Total = 14 
+
+     agent cost
+[1,]     2    6
+[2,]     3    4
+[3,]     4    4
+> mstRules(nodes, arcs, rule = "Dutta-Kar")
+
+ Minimum spanning tree 
+ Rule: Dutta-Kar 
+ ----------------
+   Agent    Cost 
+       2       4
+       3       4
+       4       6
+ ----------------
+      Total = 14 
+
+     agent cost
+[1,]     2    4
+[2,]     3    4
+[3,]     4    6
+> mstRules(nodes, arcs, rule = "Kar")
+
+ Minimum spanning tree 
+ Rule: Kar 
+ ----------------
+   Agent    Cost 
+       2    4.33
+       3    5.33
+       4    4.33
+ ----------------
+      Total = 14 
+
+     agent     cost
+[1,]     2 4.333333
+[2,]     3 5.333333
+[3,]     4 4.333333
+> mstRules(nodes, arcs, rule = "ERO", algorithm = "Kruskal")
+
+ Minimum spanning tree 
+ Rule: ERO 
+ ----------------
+   Agent    Cost 
+       2    4.67
+       3    4.67
+       4    4.67
+ ----------------
+      Total = 14 
+
+     agent     cost
+[1,]     2 4.666667
+[2,]     3 4.666667
+[3,]     4 4.666667
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mstRules", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("shapleyValue")
+> ### * shapleyValue
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: shapleyValue
+> ### Title: Shapley value of a cooperative game
+> ### Aliases: shapleyValue
+> 
+> ### ** Examples
+> 
+> # Cooperative game
+> n <- 3  # players
+> v <- c(4, 4, 4, 8, 8, 8, 14)  # characteristic function
+> # Shapley value
+> shapleyValue(n, v = v)
+$contributions
+     [,1] [,2] [,3]
+[1,]    4    4    6
+[2,]    4    6    4
+[3,]    4    4    6
+[4,]    6    4    4
+[5,]    4    6    4
+[6,]    6    4    4
+
+$value
+[1] 4.666667 4.666667 4.666667
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("shapleyValue", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.324 0.012 0.338 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

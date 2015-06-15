@@ -1,0 +1,358 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "Dominance"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "Dominance-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('Dominance')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("ADI")
+> ### * ADI
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ADI
+> ### Title: Average Dominance Index
+> ### Aliases: ADI
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## you can eihter use:
+> data_sheet=data.frame   ("action.from"=c(1,4,2,3,4,3,4,3,4,3,4,3,4,3,4),
++                          "action.to"=c(4,1,1,4,3,4,3,4,3,4,3,4,3,4,3),
++                          "kind.of.action"= c(4,1,1,4,3,4,3,4,3,4,3,4,3,4,3),stringsAsFactors=FALSE)
+> items= data.frame ("Name"=c("item1","item2","item3","item4","item5","item6") ,
++                    "item.number"=c(1:6),stringsAsFactors=FALSE)
+> actions=data.frame("name.of.action"= c("leading","following","approach","bite","threat to bite",
++                    "kick","threat to kick", "chase","retreat"),
++                    "action.number"=c(1:9),
++                    "classification"=c(1,2,1,1,1,1,1,1,2) ,
++                    "weighting"=c(1,-1,1,1,1,1,1,1,-1),stringsAsFactors=FALSE)
+> ## all  encounters  without leading and following
+> bytes= "001111111"  
+> ADI(data_sheet,items=items,actions=actions,bytes)
+$ADI
+      item1 item3 item4 item2 item5 item6 results.ADI id rank
+item1    NA   NaN   1.0   NaN   NaN   NaN        1.00  1    1
+item3   NaN    NA   0.5   NaN   NaN   NaN        0.50  3    2
+item4     0   0.5    NA   NaN   NaN   NaN        0.25  4    3
+item2   NaN   NaN   NaN    NA   NaN   NaN        0.00  2    4
+item5   NaN   NaN   NaN   NaN    NA   NaN        0.00  5    5
+item6   NaN   NaN   NaN   NaN   NaN    NA        0.00  6    6
+
+$Colors
+[1] ""
+
+$ADI_count_matrix
+      item1 item2 item3 item4 item5 item6
+item1    NA     0     0     1     0     0
+item2     0    NA     0     0     0     0
+item3     0     0    NA     6     0     0
+item4     0     0     6    NA     0     0
+item5     0     0     0     0    NA     0
+item6     0     0     0     0     0    NA
+
+> ## or you can use a complete f.e Excel sheet
+> ## you can save this data as basic excel sheet to work with
+> data(data_ADI)
+> bytes= "001111111"  
+> ADI(data_ADI,bytes)
+$ADI
+       Pferd2     Pferd3 Pferd1    Pferd4 Pferd5 Pferd6 results.ADI id rank
+Pferd2     NA        NaN      1       NaN    NaN    NaN  1.00000000  2    1
+Pferd3    NaN         NA    NaN 0.9166667    NaN    NaN  0.91666667  3    2
+Pferd1      0        NaN     NA 1.0000000    NaN    NaN  0.50000000  1    3
+Pferd4    NaN 0.08333333      0        NA    NaN    NaN  0.04166667  4    4
+Pferd5    NaN        NaN    NaN       NaN     NA    NaN  0.00000000  5    5
+Pferd6    NaN        NaN    NaN       NaN    NaN     NA  0.00000000  6    6
+
+$Colors
+[1] ""
+
+$ADI_count_matrix
+       Pferd1 Pferd2 Pferd3 Pferd4 Pferd5 Pferd6
+Pferd1     NA      0      0      2      0      0
+Pferd2      1     NA      0      0      0      0
+Pferd3      0      0     NA     11      0      0
+Pferd4      0      0      1     NA      0      0
+Pferd5      0      0      0      0     NA      0
+Pferd6      0      0      0      0      0     NA
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ADI", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("data_ADI")
+> ### * data_ADI
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: data_ADI
+> ### Title: Demodata for ADI
+> ### Aliases: data_ADI
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(data_ADI)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("data_ADI", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("data_Musicnotation")
+> ### * data_Musicnotation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: data_Musicnotation
+> ### Title: Demodata for Musicnotation
+> ### Aliases: data_Musicnotation
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(data_Musicnotation)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("data_Musicnotation", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("data_Network_1")
+> ### * data_Network_1
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: data_Network_1
+> ### Title: Demodata for Social network Graph
+> ### Aliases: data_Network_1
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(data_Network_1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("data_Network_1", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("data_Network_2")
+> ### * data_Network_2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: data_Network_2
+> ### Title: Demodata for Social network Graph
+> ### Aliases: data_Network_2
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(data_Network_2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("data_Network_2", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("detect_bits-internal")
+> ### * detect_bits-internal
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: detect_bits
+> ### Title: for internal use only
+> ### Aliases: detect_bits
+> 
+> ### ** Examples
+> 
+> 
+> print('for internal use only')
+[1] "for internal use only"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("detect_bits-internal", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("musicnotation")
+> ### * musicnotation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Musicnotation
+> ### Title: Music Notation Graph
+> ### Aliases: Musicnotation
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## you can eihter use:
+> dataM=data.frame  ("action.from"=c(1,2,3,4,5,1,1,1,1,1,1,1,1,3,4),
++                    "action.to"=  c(2,3,4,5,6,2,3,4,5,6,3,4,3,4,3),
++                    "kind.of.action"= c(4,1,1,4,3,4,3,4,3,4,3,4,3,4,3),
++                    "Time"=c("03:15:00","03:17:30","03:20:00","03:20:30","03:21:00","03:21:30",
++                             "03:22:00","03:22:30","03:23:00","03:23:30","03:25:00","03:25:30",
++                             "03:26:00","03:26:30","03:27:00"),stringsAsFactors=FALSE)
+> 
+> items= data.frame ("Name"=c("item1","item2","item3","item4","item5","item6") ,
++                    "item.number"=c(1:6),stringsAsFactors=FALSE)
+> actions=data.frame("name.of.action"= c("leading","following","approach","bite","threat to bite", 
++                    "kick","threat to kick", "chase","retreat"),
++                    "action.number"=c(1:9),
++                    "classification"=c(1,2,1,1,1,1,1,1,2) ,
++                    "weighting"=c(1,-1,1,1,1,1,1,1,-1),stringsAsFactors=FALSE)
+> ## all  encounters  without leading and following
+> bytes= "001111111"  
+> ## set colors for special encounters
+> color= c("green","green","red","red","red","red","red","red")    
+> 
+> Musicnotation(data_sheet=dataM,actions=actions,items=items,sort_dominance=TRUE)
+$ADI
+      item1 item2     item4 item5     item3 item6 results.ADI id rank
+item1    NA     1 1.0000000     1 1.0000000     1   1.0000000  1    1
+item2     0    NA       NaN   NaN 1.0000000   NaN   0.5000000  2    2
+item4     0   NaN        NA     1 0.3333333   NaN   0.4444444  4    3
+item5     0   NaN 0.0000000    NA       NaN     1   0.3333333  5    4
+item3     0     0 0.6666667   NaN        NA   NaN   0.2222222  3    5
+item6     0   NaN       NaN     0       NaN    NA   0.0000000  6    6
+
+$Colors
+[1] ""
+
+$ADI_count_matrix
+      item1 item2 item3 item4 item5 item6
+item1    NA     2     3     2     1     1
+item2     0    NA     1     0     0     0
+item3     0     0    NA     2     0     0
+item4     0     0     1    NA     1     0
+item5     0     0     0     0    NA     1
+item6     0     0     0     0     0    NA
+
+> ## or you can use a complete f.e Excel sheet
+> ## you can save this data as basic excel sheet to work with
+> data(data_Musicnotation)
+> Musicnotation(data_sheet=data_Musicnotation,sort_dominance=TRUE)
+$ADI
+      item1 item2     item4 item5     item3 item6 results.ADI id rank
+item1    NA     1 1.0000000     1 1.0000000     1   1.0000000  1    1
+item2     0    NA       NaN   NaN 1.0000000   NaN   0.5000000  2    2
+item4     0   NaN        NA     1 0.3333333   NaN   0.4444444  4    3
+item5     0   NaN 0.0000000    NA       NaN     1   0.3333333  5    4
+item3     0     0 0.6666667   NaN        NA   NaN   0.2222222  3    5
+item6     0   NaN       NaN     0       NaN    NA   0.0000000  6    6
+
+$Colors
+[1] ""
+
+$ADI_count_matrix
+      item1 item2 item3 item4 item5 item6
+item1    NA     2     3     2     1     1
+item2     0    NA     1     0     0     0
+item3     0     0    NA     2     0     0
+item4     0     0     1    NA     1     0
+item5     0     0     0     0    NA     1
+item6     0     0     0     0     0    NA
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("musicnotation", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("search.win.lose-internal")
+> ### * search.win.lose-internal
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: search.win.lose
+> ### Title: for internal use only
+> ### Aliases: search.win.lose
+> 
+> ### ** Examples
+> 
+> print('for internal use only')
+[1] "for internal use only"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("search.win.lose-internal", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sociogram")
+> ### * sociogram
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Sociogram
+> ### Title: Social Network Graphs
+> ### Aliases: Sociogram
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> 
+> 
+> ## you can eihter use:
+> data_sheet=data.frame   ("action.from"=c(1,4,2,3,4,3,4,3,4,3,4,3,4,3,4),
++                    "action.to"=c(4,1,1,4,3,4,3,4,3,4,3,4,3,4,3),
++                    "kind.of.action"= c(4,1,1,4,3,4,3,4,3,4,3,4,3,4,3),stringsAsFactors=FALSE)
+> items= data.frame ("Name"=c("item1","item2","item3","item4","item5","item6") ,
++                    "item.number"=c(1:6),stringsAsFactors=FALSE)
+> actions=data.frame("name.of.action"= c("leading","following","approach","bite","threat to bite",
++                    "kick","threat to kick", "chase","retreat"),
++                    "action.number"=c(1:9),
++                    "classification"=c(1,2,1,1,1,1,1,1,2) ,
++                    "weighting"=c(1,-1,1,1,1,1,1,1,-1),stringsAsFactors=FALSE)
+> ## all  encounters  without leading and following
+> bytes= "001111111"  
+> Sociogram(data_sheet,items=items,actions=actions,bytes)
+Error in Sociogram(data_sheet, items = items, actions = actions, bytes) : 
+  could not find function "plot.igraph"
+Execution halted

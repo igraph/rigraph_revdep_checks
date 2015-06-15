@@ -1,0 +1,526 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "dpa"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "dpa-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('dpa')
+Loading required package: tcltk
+Loading required package: sem
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("dpa-package")
+> ### * dpa-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa-package
+> ### Title: Dynamic Path Approach for Analyzing time-dependent simulation
+> ###   data
+> ### Aliases: dpa-package dpa
+> 
+> ### ** Examples
+> 
+> #Start the GUI with:
+> dpa.start()
+<Tcl>  
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.analysis.options")
+> ### * dpa.analysis.options
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.analysis.options
+> ### Title: Select the data and interval for analysis
+> ### Aliases: dpa.analysis.options
+> 
+> ### ** Examples
+> 
+> #dpa.analysis.options()
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.analysis.options", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.analysis.performDPA")
+> ### * dpa.analysis.performDPA
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.analysis.performDPA
+> ### Title: Perfrom DPA analysis
+> ### Aliases: dpa.analysis.performDPA
+> 
+> ### ** Examples
+> 
+> #dpa.analysis.performDPA()
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.analysis.performDPA", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.analysis.saveDPA")
+> ### * dpa.analysis.saveDPA
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.analysis.saveDPA
+> ### Title: Save DPA result
+> ### Aliases: dpa.analysis.saveDPA
+> 
+> ### ** Examples
+> 
+> #dpa.analysis.saveDPA(dpaFileName=NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.analysis.saveDPA", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.data.checkData")
+> ### * dpa.data.checkData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.data.checkData
+> ### Title: Check data
+> ### Aliases: dpa.data.checkData
+> 
+> ### ** Examples
+> 
+> #dpa.data.checkData()
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.data.checkData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.data.loadData")
+> ### * dpa.data.loadData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.data.loadData
+> ### Title: Load data
+> ### Aliases: dpa.data.loadData
+> 
+> ### ** Examples
+> 
+> #dpa.data.loadData()
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.data.loadData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.data.loadDataFromDisk")
+> ### * dpa.data.loadDataFromDisk
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.data.loadDataFromDisk
+> ### Title: Load data from database
+> ### Aliases: dpa.data.loadDataFromDisk
+> 
+> ### ** Examples
+> 
+> #dpa.data.loadDataFromDisk(dataFileName=NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.data.loadDataFromDisk", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.data.saveDataToDisk")
+> ### * dpa.data.saveDataToDisk
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.data.saveDataToDisk
+> ### Title: Save data to disk
+> ### Aliases: dpa.data.saveDataToDisk
+> 
+> ### ** Examples
+> 
+> #dpa.saveDataToDisk()
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.data.saveDataToDisk", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.data.setWorkingDirectory")
+> ### * dpa.data.setWorkingDirectory
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.data.setWorkingDirectory
+> ### Title: Set working directory
+> ### Aliases: dpa.data.setWorkingDirectory
+> 
+> ### ** Examples
+> 
+> #dpa.data.setWorkingDirectory()
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.data.setWorkingDirectory", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.data.viewOrEditData")
+> ### * dpa.data.viewOrEditData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.data.viewOrEditData
+> ### Title: View or Edit data
+> ### Aliases: dpa.data.viewOrEditData
+> 
+> ### ** Examples
+> 
+> #dpa.data.viewOrEditData()
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.data.viewOrEditData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.exit")
+> ### * dpa.exit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.exit
+> ### Title: DPA Exit
+> ### Aliases: dpa.exit
+> 
+> ### ** Examples
+> 
+> #dpa.exit()
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.exit", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.find.missingRow")
+> ### * dpa.find.missingRow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.find.missingRow
+> ### Title: Find missing rows in data
+> ### Aliases: dpa.find.missingRow
+> 
+> ### ** Examples
+> 
+> #dpa.find.missingRow(dataframe = NULL, tickColumn = NULL, jobColumn = NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.find.missingRow", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.generate.lag")
+> ### * dpa.generate.lag
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.generate.lag
+> ### Title: Generate lagged parameters in the data
+> ### Aliases: dpa.generate.lag
+> 
+> ### ** Examples
+> 
+> #dpa.generate.lag(dataframe = NULL, tickColumn = NULL, sourceColumn = NULL, minLag=1,maxLag=1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.generate.lag", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.incrementValue")
+> ### * dpa.incrementValue
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.incrementValue
+> ### Title: DPA increment value
+> ### Aliases: dpa.incrementValue
+> 
+> ### ** Examples
+> 
+> #dpa.incrementValue(i)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.incrementValue", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.locate.missing")
+> ### * dpa.locate.missing
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.locate.missing
+> ### Title: Locate missing data
+> ### Aliases: dpa.locate.missing
+> 
+> ### ** Examples
+> 
+> #dpa.locate.missing(dataframe = NULL, tickColumn = NULL, jobColumn = NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.locate.missing", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.relations.addRelations")
+> ### * dpa.relations.addRelations
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.relations.addRelations
+> ### Title: Adding an entry made to the relations
+> ### Aliases: dpa.relations.addRelations
+> 
+> ### ** Examples
+> 
+> #addRelations("a","b","From",0,2,"UniDirectional")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.relations.addRelations", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.relations.editRelations")
+> ### * dpa.relations.editRelations
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.relations.editRelations
+> ### Title: Edit relations
+> ### Aliases: dpa.relations.editRelations
+> 
+> ### ** Examples
+> 
+> #dpa.relations.editRelations()
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.relations.editRelations", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.relations.loadRelations")
+> ### * dpa.relations.loadRelations
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.relations.loadRelations
+> ### Title: Load the saved relations from disk
+> ### Aliases: dpa.relations.loadRelations
+> 
+> ### ** Examples
+> 
+> #dpa.relations.loadRelations(loadRelFileName=NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.relations.loadRelations", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.relations.saveRelations")
+> ### * dpa.relations.saveRelations
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.relations.saveRelations
+> ### Title: Save the relation
+> ### Aliases: dpa.relations.saveRelations
+> 
+> ### ** Examples
+> 
+> #dpa.relations.saveRelations(saveRelFileName=NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.relations.saveRelations", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.results.generateCoefficientsPlots")
+> ### * dpa.results.generateCoefficientsPlots
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.results.generateCoefficientsPlots
+> ### Title: Generate the Coefficients plot
+> ### Aliases: dpa.results.generateCoefficientsPlots
+> 
+> ### ** Examples
+> 
+> #dpa.results.generateCoefficientsPlots(filename=NULL,colors=NULL,indices=NULL,legend=NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.results.generateCoefficientsPlots", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.results.generateFitPlots")
+> ### * dpa.results.generateFitPlots
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.results.generateFitPlots
+> ### Title: Generate the Fit plot
+> ### Aliases: dpa.results.generateFitPlots
+> 
+> ### ** Examples
+> 
+> #dpa.results.generateFitPlots(filename=NULL,colors=NULL,indices=NULL,legend=NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.results.generateFitPlots", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.results.setGraphDir")
+> ### * dpa.results.setGraphDir
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.results.setGraphDir
+> ### Title: Change results directory
+> ### Aliases: dpa.results.setGraphDir
+> 
+> ### ** Examples
+> 
+> #dpa.results.setGraphDir(graphDir=NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.results.setGraphDir", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.sort.data")
+> ### * dpa.sort.data
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.sort.data
+> ### Title: Sort data
+> ### Aliases: dpa.sort.data
+> 
+> ### ** Examples
+> 
+> #dpa.sort.data(dataframe = NULL, tickColumn = NULL, runColumn = NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.sort.data", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dpa.start")
+> ### * dpa.start
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dpa.start
+> ### Title: DPA Start
+> ### Aliases: dpa.start
+> 
+> ### ** Examples
+> 
+> #starts the GUI
+> dpa.start()
+<Tcl>  
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dpa.start", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  2.187 0.188 4.814 0.002 0.002 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

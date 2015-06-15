@@ -1,0 +1,232 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(testthat)
+> library(fanovaGraph)
+Loading required package: sensitivity
+Loading required package: igraph
+
+Attaching package: 'igraph'
+
+The following object is masked from 'package:testthat':
+
+    compare
+
+The following objects are masked from 'package:stats':
+
+    decompose, spectrum
+
+The following object is masked from 'package:base':
+
+    union
+
+Loading required package: DiceKriging
+> 
+> test_check("fanovaGraph")
+
+optimisation start
+------------------
+* estimation method   : MLE 
+* optimisation method : BFGS 
+* analytical gradient : used
+* trend model : ~1
+* covariance model : 
+  - type :  matern5_2 
+  - nugget : NO
+  - parameters lower bounds :  1e-10 1e-10 1e-10 1e-10 1e-10 1e-10 
+  - parameters upper bounds :  3.975224 3.967393 3.977366 3.946013 3.935601 3.983994 
+  - best initial criterion value(s) :  -26.60656 
+
+N = 6, M = 5 machine precision = 2.22045e-16
+At X0, 0 variables are exactly at the bounds
+At iterate     0  f=       26.607  |proj g|=       3.0822
+At iterate     1  f =        20.74  |proj g|=        3.6659
+At iterate     2  f =       14.479  |proj g|=        2.4267
+At iterate     3  f =       12.836  |proj g|=       0.96942
+At iterate     4  f =       12.753  |proj g|=       0.39588
+At iterate     5  f =       12.729  |proj g|=       0.20836
+At iterate     6  f =       12.724  |proj g|=       0.14199
+At iterate     7  f =        12.72  |proj g|=      0.032266
+At iterate     8  f =        12.72  |proj g|=      0.013542
+At iterate     9  f =        12.72  |proj g|=     0.0062952
+At iterate    10  f =        12.72  |proj g|=      0.001052
+At iterate    11  f =        12.72  |proj g|=     0.0003525
+At iterate    12  f =        12.72  |proj g|=    0.00011112
+
+iterations 12
+function evaluations 14
+segments explored during Cauchy searches 16
+BFGS updates skipped 0
+active bounds at final generalized Cauchy point 0
+norm of the final projected gradient 0.000111123
+final function value 12.7196
+
+F = 12.7196
+final  value 12.719557 
+converged
+1. Error: the full example works as before -------------------------------------
+Extra arguments in make_graph
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: estimateGraph(f.mat = krigingMean, d = d, n.tot = 10000, q.arg = list(min = domain[1], 
+       max = domain[2]), method = "FixFast") at test_fullexample.R:60
+5: maximal.cliques(graph(as.vector(t(E)), d, FALSE))
+6: is_igraph(graph)
+7: "igraph" %in% class(graph)
+8: match(x, table, nomatch = 0L)
+9: graph(as.vector(t(E)), d, FALSE)
+10: stop("Extra arguments in make_graph")
+
+2. Error: estimateGraph works for different n.tot and d for all methods --------
+Extra arguments in make_graph
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: expect_equivalent(c(0, 1.02621411114, 0), estimateGraph(f.mat = ishigami.fun, d = 3, 
+       q.arg = list(min = -pi, max = pi), n.tot = 100, method = "LiuOwen")$tii[, 1]) at tests.R:3
+5: expect_that(object, is_equivalent_to(expected, label = expected.label), info = info, 
+       label = label)
+6: condition(object)
+7: equals(expected, check.attributes = FALSE)(actual)
+8: compare(expected, actual, ...)
+9: estimateGraph(f.mat = ishigami.fun, d = 3, q.arg = list(min = -pi, max = pi), n.tot = 100, 
+       method = "LiuOwen")
+10: maximal.cliques(graph(as.vector(t(E)), d, FALSE))
+11: is_igraph(graph)
+12: "igraph" %in% class(graph)
+13: match(x, table, nomatch = 0L)
+14: graph(as.vector(t(E)), d, FALSE)
+15: stop("Extra arguments in make_graph")
+
+3. Error: estimateGraph works for very small values ----------------------------
+Extra arguments in make_graph
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: expect_equivalent(1.02621411114e-06, estimateGraph(f.mat = fun, d = 3, q.arg = list(min = -pi, 
+       max = pi), n.tot = 100, method = "LiuOwen")$tii[2, 1]) at tests.R:37
+5: expect_that(object, is_equivalent_to(expected, label = expected.label), info = info, 
+       label = label)
+6: condition(object)
+7: equals(expected, check.attributes = FALSE)(actual)
+8: compare(expected, actual, ...)
+9: estimateGraph(f.mat = fun, d = 3, q.arg = list(min = -pi, max = pi), n.tot = 100, 
+       method = "LiuOwen")
+10: maximal.cliques(graph(as.vector(t(E)), d, FALSE))
+11: is_igraph(graph)
+12: "igraph" %in% class(graph)
+13: match(x, table, nomatch = 0L)
+14: graph(as.vector(t(E)), d, FALSE)
+15: stop("Extra arguments in make_graph")
+
+4. Error: confint works for estimateGraph --------------------------------------
+Extra arguments in make_graph
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: estimateGraph(f.mat = ishigami.fun, d = 3, q.arg = list(min = -pi, max = pi), n.tot = 1000, 
+       method = "LiuOwen") at tests.R:53
+5: maximal.cliques(graph(as.vector(t(E)), d, FALSE))
+6: is_igraph(graph)
+7: "igraph" %in% class(graph)
+8: match(x, table, nomatch = 0L)
+9: graph(as.vector(t(E)), d, FALSE)
+10: stop("Extra arguments in make_graph")
+
+5. Error: overall variance and standard sobol indices work ---------------------
+Extra arguments in make_graph
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: estimateGraph(f.mat = ishigami.fun, d = 3, q.arg = list(min = -pi, max = pi), n.tot = 100, 
+       method = "LiuOwen") at tests.R:61
+5: maximal.cliques(graph(as.vector(t(E)), d, FALSE))
+6: is_igraph(graph)
+7: "igraph" %in% class(graph)
+8: match(x, table, nomatch = 0L)
+9: graph(as.vector(t(E)), d, FALSE)
+10: stop("Extra arguments in make_graph")
+
+
+optimisation start
+------------------
+* estimation method   : MLE 
+* optimisation method : BFGS 
+* analytical gradient : used
+* trend model : ~1
+* covariance model : 
+  - type :  matern5_2 
+  - nugget : NO
+  - parameters lower bounds :  1e-10 1e-10 1e-10 
+  - parameters upper bounds :  2 2 2 
+  - best initial criterion value(s) :  9.143308 
+
+N = 3, M = 5 machine precision = 2.22045e-16
+At X0, 0 variables are exactly at the bounds
+At iterate     0  f=      -9.1433  |proj g|=       1.3325
+At iterate     1  f =      -9.8646  |proj g|=        1.1083
+At iterate     2  f =      -9.9093  |proj g|=       0.63318
+At iterate     3  f =       -9.938  |proj g|=       0.49174
+At iterate     4  f =      -9.9651  |proj g|=       0.24733
+At iterate     5  f =      -9.9751  |proj g|=      0.051243
+At iterate     6  f =      -9.9754  |proj g|=     0.0021695
+At iterate     7  f =      -9.9754  |proj g|=     0.0001937
+At iterate     8  f =      -9.9754  |proj g|=    0.00022106
+
+iterations 8
+function evaluations 14
+segments explored during Cauchy searches 10
+BFGS updates skipped 0
+active bounds at final generalized Cauchy point 0
+norm of the final projected gradient 0.000221058
+final function value -9.97537
+
+F = -9.97537
+final  value -9.975373 
+converged
+6. Error: thresholdIdentification works ----------------------------------------
+Extra arguments in make_graph
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: thresholdIdentification(g, x, y, n.cand = 1) at tests.R:92
+5: threshold(graphlist = g, delta = delta[i])
+6: maximal.cliques(graph(as.vector(t(E)), d, FALSE))
+7: is_igraph(graph)
+8: "igraph" %in% class(graph)
+9: match(x, table, nomatch = 0L)
+10: graph(as.vector(t(E)), d, FALSE)
+11: stop("Extra arguments in make_graph")
+
+testthat results ================================================================
+OK: 6 SKIPPED: 0 FAILED: 6
+1. Error: the full example works as before 
+2. Error: estimateGraph works for different n.tot and d for all methods 
+3. Error: estimateGraph works for very small values 
+4. Error: confint works for estimateGraph 
+5. Error: overall variance and standard sobol indices work 
+6. Error: thresholdIdentification works 
+
+Error: testthat unit tests failed
+Execution halted

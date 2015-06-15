@@ -1,0 +1,304 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "CausalFX"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "CausalFX-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('CausalFX')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("bindagCausalEffectBackdoor")
+> ### * bindagCausalEffectBackdoor
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bindagCausalEffectBackdoor
+> ### Title: Estimates Average Causal Effects by Covariate Adjustment in
+> ###   Binary Models
+> ### Aliases: bindagCausalEffectBackdoor
+> 
+> ### ** Examples
+> 
+> ## Generate a synthetic problem
+> problem <- simulateWitnessModel(p = 4, q = 4, par_max = 3, M = 1000)
+> 
+> ## Idealized case: suppose we know the true distribution,
+> ## get "exact" ACE estimands for different adjustment sets
+> sol_pop <- covsearch(problem, pop_solve = TRUE)
+> effect_pop <- synthetizeCausalEffect(problem)
+> cat(sprintf(
++   "ACE (true) = %1.2f\nACE (adjusting for all) = %1.2f\nACE (adjusting for nothing) = %1.2f\n",
++    effect_pop$effect_real, effect_pop$effect_naive, effect_pop$effect_naive2))
+ACE (true) = 0.28
+ACE (adjusting for all) = 0.21
+ACE (adjusting for nothing) = 0.29
+> 
+> ## Perform inference and report results
+> covariate_hat <- covsearch(problem, cred_calc = TRUE, M = 1000)
+> if (length(covariate_hat$witness) > 1) {
++   sol_ACE <- bindagCausalEffectBackdoor(problem, prior_table = 10, S = covariate_hat$Z[[1]])
++   cat(sprintf("Estimated ACE = %1.2f\n", sol_ACE))
++ }
+Estimated ACE = 0.23
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bindagCausalEffectBackdoor", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("covsearch")
+> ### * covsearch
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: covsearch
+> ### Title: Search for Causal Effect Covariate Adjustment
+> ### Aliases: covsearch
+> 
+> ### ** Examples
+> 
+> ## Generate a synthetic problem
+> problem <- simulateWitnessModel(p = 4, q = 4, par_max = 3, M = 1000)
+> 
+> ## Idealized case: suppose we know the true distribution,
+> ## get "exact" ACE estimands for different adjustment sets
+> sol_pop <- covsearch(problem, pop_solve = TRUE)
+> effect_pop <- synthetizeCausalEffect(problem)
+> cat(sprintf(
++   "ACE (true) = %1.2f\nACE (adjusting for all) = %1.2f\nACE (adjusting for nothing) = %1.2f\n",
++    effect_pop$effect_real, effect_pop$effect_naive, effect_pop$effect_naive2))
+ACE (true) = 0.28
+ACE (adjusting for all) = 0.21
+ACE (adjusting for nothing) = 0.29
+> 
+> ## Perform inference and report results
+> covariate_hat <- covsearch(problem, cred_calc = TRUE, M = 1000)
+> summary(covariate_hat)
+
+COVARIATE SEARCH BY INDEPENDENCE CONSTRAINTS (Treatment X9, Outcome X10)
+Found 18 pairs of witness/admissible sets.
+
+* All ACEs:
+
+    Witness: ACE
+         X1:  0.23
+         X2:  0.21
+         X2:  0.26
+         X2:  0.26
+         X3:  0.27
+         X5:  0.28
+         X6:  0.27
+         X6:  0.26
+         X6:  0.27
+         X7:  0.29
+         X7:  0.27
+         X7:  0.27
+         X8:  0.28
+         X8:  0.28
+         X8:  0.28
+         X8:  0.27
+         X8:  0.26
+         X8:  0.31
+
+* Highest score model:
+
+         Witness: X2
+  Admissible set: X4
+                  X5
+                  X6
+
+          Estimated ACE:  0.26
+
+  Implied ACE quantiles: ( 0.17,  0.24,  0.26,  0.28,  0.35)
+
+  95 per cent credible ACE interval: [ 0.20,  0.33]
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("covsearch", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("iv")
+> ### * iv
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: iv
+> ### Title: Bayesian Analysis of Binary Instrumental Variables
+> ### Aliases: iv
+> 
+> ### ** Examples
+> 
+> ## Generate synthetic problems until a (conditional) instrumental variable can be found
+> 
+> while (TRUE) {
++   problem <- simulateWitnessModel(p = 4, q = 4, par_max = 3, M = 1000)
++   s <- covsearch(problem, pop_solve = TRUE)
++   if (length(s$witness) > 0) {
++     w <- s$witness[1]
++     Z <- s$Z[[1]]
++     break
++   }
++ }
+> 
+> ## Calculate true effect for evaluation purposes
+> sol_pop <- covsearch(problem, pop_solve = TRUE)
+> effect_pop <- synthetizeCausalEffect(problem)
+> cat(sprintf("ACE (true) = %1.2f\n", effect_pop$effect_real))
+ACE (true) = 0.28
+> 
+> ## Binary IV bounds
+> sol_iv <- iv(problem, w, Z, prior_table = 10, M = 1000)
+> summary(sol_iv)
+
+BINARY INSTRUMENTAL VARIABLE ANALYSIS (Treatment X9, Outcome X10)
+
+             IV: X1
+  Covariate set: X4
+
+             Estimated Interval: [-0.09,  0.23]
+
+          Lower bound quantiles: (-0.15, -0.10, -0.09, -0.07, -0.02)
+          Upper bound quantiles: ( 0.17,  0.22,  0.23,  0.25,  0.30)
+  95 per cent credible interval: [ 0.19,  0.27]
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("iv", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("synthetizeCausalEffect")
+> ### * synthetizeCausalEffect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: synthetizeCausalEffect
+> ### Title: Computes Average Causal Effects by Covariate Adjustment in
+> ###   Binary Models using a Given Causal Model
+> ### Aliases: synthetizeCausalEffect
+> 
+> ### ** Examples
+> 
+> ## Generate a synthetic problem
+> problem <- simulateWitnessModel(p = 4, q = 4, par_max = 3, M = 1000)
+> 
+> ## Idealized case: suppose we know the true distribution,
+> ## get "exact" ACE estimands for different adjustment sets
+> sol_pop <- covsearch(problem, pop_solve = TRUE)
+> effect_pop <- synthetizeCausalEffect(problem)
+> cat(sprintf(
++   "ACE (true) = %1.2f\nACE (adjusting for all) = %1.2f\nACE (adjusting for nothing) = %1.2f\n",
++    effect_pop$effect_real, effect_pop$effect_naive, effect_pop$effect_naive2))
+ACE (true) = 0.28
+ACE (adjusting for all) = 0.21
+ACE (adjusting for nothing) = 0.29
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("synthetizeCausalEffect", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("wpp")
+> ### * wpp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: wpp
+> ### Title: The Witness Protection Program for Causal Effect Estimation
+> ### Aliases: wpp
+> 
+> ### ** Examples
+> 
+> ## Generate a synthetic problem
+> problem <- simulateWitnessModel(p = 4, q = 4, par_max = 3, M = 200)
+> 
+> ## Calculate true effect for evaluation purposes
+> sol_pop <- covsearch(problem, pop_solve = TRUE)
+> effect_pop <- synthetizeCausalEffect(problem)
+> cat(sprintf("ACE (true) = %1.2f\n", effect_pop$effect_real))
+ACE (true) = 0.49
+> 
+> ## WPP search (with a small number of Monte Carlo samples)
+> epsilons <- c(0.2, 0.2, 0.2, 0.2, 0.95, 1.05)
+> sol_wpp <- wpp(problem, epsilons, M = 100)
+> summary(sol_wpp)
+
+Found 6 pairs of witness/admissible sets.
+
+* All bounds:
+
+  Witness: Interval
+       X4: [ 0.16,  0.56]
+       X4: [ 0.16,  0.56]
+       X4: [ 0.15,  0.55]
+       X5: [ 0.16,  0.57]
+       X6: [ 0.16,  0.56]
+       X7: [ 0.16,  0.56]
+
+* Smallest lower bound:  0.15
+   Largest upper bound:  0.57
+    Narrowest interval: [ 0.16,  0.56]
+
+* Highest score model:
+
+         Witness: X5
+  Admissible set: X7
+        Interval: [0.16, 0.57]
+
+          Lower bound quantiles (relaxed): (-0.12,  0.02,  0.07,  0.12,  0.21)
+  95 per cent credible interval (relaxed): [-0.08,  0.20]
+          Upper bound quantiles (relaxed): ( 0.48,  0.60,  0.63,  0.67,  0.73)
+  95 per cent credible interval (relaxed): [ 0.51,  0.72]
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("wpp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  2.838 0.025 2.87 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

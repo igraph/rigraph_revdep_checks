@@ -1,0 +1,423 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "ebdbNet"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "ebdbNet-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('ebdbNet')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("calcAUC")
+> ### * calcAUC
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: calcAUC
+> ### Title: Calculate the Approximate Area Under the Curve (AUC)
+> ### Aliases: calcAUC
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> library(ebdbNet)
+> tmp <- runif(1) ## Initialize random number generator
+> 
+> ## Generate artificial values for sensitivity and complementary specificity.
+> fn <- function(x) {return(-1/(x^7)+1)}
+> set.seed(1459)
+> sens <- c(fn(seq(1, 2.7, length = 100)),1) ## Sensitivity
+> cspec <- seq(0, 1, by = 0.01) ## Complementary specificity
+> 
+> ## Calculate the AUC of the ROC curve
+> AUC <- calcAUC(sens, cspec) ## AUC of this ROC curve is 0.9030868
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("calcAUC", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("calcSensSpec")
+> ### * calcSensSpec
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: calcSensSpec
+> ### Title: Calculate Sensitivity and Specificity of a Network
+> ### Aliases: calcSensSpec
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> library(ebdbNet)
+> tmp <- runif(1) ## Initialize random number generator
+> set.seed(16933) ## Set seed
+> P <- 10 ## 10 genes
+> 
+> ## Create artificial true D matrix
+> Dtrue <- matrix(0, nrow = P, ncol = P)
+> index <- expand.grid(seq(1:P),seq(1:P))
+> selected.index <- sample(seq(1:(P*P)), ceiling(0.25 * P * P))
+> selected.edges <- index[selected.index,]
+> for(edge in 1:ceiling(0.25 * P * P)) {
++ 	tmp <- runif(1)
++ 	if(tmp > 0.5) {
++ 		Dtrue[selected.edges[edge,1], selected.edges[edge,2]] <-
++ 			runif(1, min = 0.2, max = 1)
++ 	}
++ 	else {
++ 		Dtrue[selected.edges[edge,1], selected.edges[edge,2]] <-
++ 			runif(1, min = -1, max = -0.2)
++ 	}
++ }
+> 
+> ## Create artificial estimated D matrix
+> Dest <- matrix(0, nrow = P, ncol = P)
+> index <- expand.grid(seq(1:P),seq(1:P))
+> selected.index <- sample(seq(1:(P*P)), ceiling(0.25 * P * P))
+> selected.edges <- index[selected.index,]
+> for(edge in 1:ceiling(0.25 * P * P)) {
++ 	tmp <- runif(1)
++ 	if(tmp > 0.5) {
++ 		Dest[selected.edges[edge,1], selected.edges[edge,2]] <-
++ 			runif(1, min = 0.2, max = 1)
++ 	}
++ 	else {
++ 		Dest[selected.edges[edge,1], selected.edges[edge,2]] <-
++ 			runif(1, min = -1, max = -0.2)
++ 	}
++ }
+> 
+> check <- calcSensSpec(Dtrue, Dest)
+> check$TP ## 5 True Positives
+[1] 5
+> check$FP ## 20 False Positives
+[1] 20
+> check$TN ## 55 True Negatives
+[1] 55
+> check$FN ## 20 False Negatives
+[1] 20
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("calcSensSpec", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dataFormat")
+> ### * dataFormat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dataFormat
+> ### Title: Change the Format of Longitudinal Data to be Compatible with
+> ###   EBDBN
+> ### Aliases: dataFormat
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> library(ebdbNet)
+> library(GeneNet) ## Load GeneNet package to use T-cell activation data
+Loading required package: corpcor
+Loading required package: longitudinal
+Loading required package: fdrtool
+> 
+> data(tcell)  ## Load T-cell activation data
+> tc44 <- combine.longitudinal(tcell.10, tcell.34)
+> 
+> ## Put data into correct format for algorithm
+> tcell.dat <- dataFormat(tc44)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dataFormat", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:GeneNet’, ‘package:fdrtool’, ‘package:longitudinal’,
+  ‘package:corpcor’
+
+> nameEx("ebdbNet-package")
+> ### * ebdbNet-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ebdbNet-package
+> ### Title: Empirical Bayes Dynamic Bayesian Network (EBDBN) Inference
+> ### Aliases: ebdbNet-package ebdbNet
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+> library(ebdbNet)
+> library(GeneNet)  ## Load GeneNet package to use T-cell activation data
+Loading required package: corpcor
+Loading required package: longitudinal
+Loading required package: fdrtool
+> tmp <- runif(1) ## Initialize random number generator
+> set.seed(4568818) ## Set seed
+> 
+> ## Load T-cell activation data
+> data(tcell) 
+> tc44 <- combine.longitudinal(tcell.10, tcell.34)
+> 
+> ## Put data into correct format for algorithm
+> ## (List, with one matrix per replicate (P rows and T columns)
+> tcell.dat <- dataFormat(tc44)
+> 
+> ## Use only subset of T-cell data for faster example
+> R <- 20 ## 20 replicates
+> P <- 10 ## 10 genes
+> tcell.sub.dat <- vector("list", R)
+> rep.sample <- sample(1:44, R)
+> for(r in 1:R) {
++ 	tcell.sub.dat[[r]] <- tcell.dat[[rep.sample[r]]][sample(1:58, P),]
++ }
+> 
+> ####################################################
+> # Run EBDBN (no hidden states) with feedback loops
+> ####################################################
+> ## Choose alternative value of K using hankel if hidden states to be estimated
+> ## K <- hankel(tcell.sub.dat, lag = 1)$dim
+> 
+> ## Run algorithm (feedback network, no hidden states)
+> net <- ebdbn(y = tcell.sub.dat, K = 0, input = "feedback", conv.1 = 0.01,
++ 	conv.2 = 0.01, conv.3 = 0.001, verbose = TRUE)
+Running EBDBN algorithm ...
+
+EBDBN Algorithm complete! 
+> 
+> ## Visualize results: in this example, mostly feedback loops
+> ## plot(net, sig.level = 0.5)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ebdbNet-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:GeneNet’, ‘package:fdrtool’, ‘package:longitudinal’,
+  ‘package:corpcor’
+
+> nameEx("ebdbn")
+> ### * ebdbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ebdbn
+> ### Title: Empirical Bayes Dynamic Bayesian Network (EBDBN) Estimation
+> ### Aliases: ebdbn
+> ### Keywords: methods models
+> 
+> ### ** Examples
+> 
+> library(ebdbNet)
+> tmp <- runif(1) ## Initialize random number generator
+> set.seed(125214) ## Save seed
+> 
+> ## Simulate data
+> R <- 5
+> T <- 10
+> P <- 10
+> simData <- simulateVAR(R, T, P, v = rep(10, P), perc = 0.10)
+> Dtrue <- simData$Dtrue
+> y <- simData$y
+> 
+> ## Simulate 8 inputs
+> u <- vector("list", R)
+> M <- 8
+> for(r in 1:R) {
++ 	u[[r]] <- matrix(rnorm(M*T), nrow = M, ncol = T)
++ }
+> 
+> ####################################################
+> ## Run EB-DBN without hidden states
+> ####################################################
+> ## Choose alternative value of K using hankel if hidden states are to be estimated
+> ## K <- hankel(y)$dim
+> 
+> ## Run algorithm	
+> net <- ebdbn(y = y, K = 0, input = u, conv.1 = 0.15, conv.2 = 0.10, conv.3 = 0.10,
++ 	verbose = TRUE)
+Running EBDBN algorithm ...
+
+EBDBN Algorithm complete! 
+> 
+> ## Visualize results
+> ## Note: no edges here, which is unsurprising as inputs were randomly simulated
+> ## (in input networks, edges only go from inputs to genes)
+> ## plot(net, sig.level = 0.95)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ebdbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("hankel")
+> ### * hankel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: hankel
+> ### Title: Perform Singular Value Decomposition of Block-Hankel Matrix
+> ### Aliases: hankel
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> library(ebdbNet)
+> tmp <- runif(1) ## Initialize random number generator
+> set.seed(125214) ## Save seed
+> 
+> ## Simulate data
+> y <- simulateVAR(R = 5, T = 10, P = 10, v = rep(10, 10), perc = 0.10)$y
+> 
+> ## Determine the number of hidden states to be estimated (with lag = 1)
+> K <- hankel(y, lag = 1, cutoff = 0.90, type = "median")$dim
+> ## K = 5
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("hankel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.ebdbNet")
+> ### * plot.ebdbNet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.ebdbNet
+> ### Title: Visualize EBDBN network
+> ### Aliases: plot.ebdbNet
+> ### Keywords: methods models
+> 
+> ### ** Examples
+> 
+> library(ebdbNet)
+> tmp <- runif(1) ## Initialize random number generator
+> set.seed(125214) ## Save seed
+> 
+> ## Simulate data
+> R <- 5
+> T <- 10
+> P <- 10
+> simData <- simulateVAR(R, T, P, v = rep(10, P), perc = 0.10)
+> Dtrue <- simData$Dtrue
+> y <- simData$y
+> 
+> ## Simulate 8 inputs
+> u <- vector("list", R)
+> M <- 8
+> for(r in 1:R) {
++ 	u[[r]] <- matrix(rnorm(M*T), nrow = M, ncol = T)
++ }
+> 
+> ####################################################
+> ## Run EB-DBN without hidden states
+> ####################################################
+> ## Choose alternative value of K using hankel if hidden states are to be estimated
+> ## K <- hankel(y)$dim
+> 
+> ## Run algorithm	
+> ## net <- ebdbn(y = y, K = 0, input = u, conv.1 = 0.15, conv.2 = 0.10, conv.3 = 0.10,
+> ##	verbose = TRUE)
+> 
+> ## Visualize results
+> ## plot(net, sig.level = 0.95)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.ebdbNet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simulateVAR")
+> ### * simulateVAR
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simulateVAR
+> ### Title: Simulate Simple Autoregressive Process
+> ### Aliases: simulateVAR
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> library(ebdbNet)
+> tmp <- runif(1) ## Initialize random number generator
+> set.seed(125214) ## Save seed
+> 
+> ## Simulate data
+> simData <- simulateVAR(R = 5, T = 10, P = 10, v = rep(10, 10), perc = 0.10)
+> Dtrue <- simData$Dtrue
+> y <- simData$y
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simulateVAR", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.479 0.023 0.508 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

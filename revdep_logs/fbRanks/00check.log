@@ -1,0 +1,221 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/fbRanks.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘fbRanks/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘fbRanks’ version ‘2.0’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘fbRanks’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... NOTE
+'library' or 'require' calls in package code:
+  ‘RCurl’ ‘RJSONIO’ ‘XML’ ‘glmnet’ ‘httr’ ‘speedglm’ ‘tcltk’ ‘xtable’
+  Please use :: or requireNamespace() instead.
+  See section 'Suggested packages' in the 'Writing R Extensions' manual.
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+print.fbRanks: no visible global function definition for ‘xtable’
+rank.teams: no visible global function definition for ‘speedglm’
+rank.teams: no visible global function definition for ‘sparseMatrix’
+rank.teams: no visible binding for global variable ‘glmnet’
+scrape.custom1: no visible global function definition for ‘htmlParse’
+scrape.custom1: no visible global function definition for ‘getNodeSet’
+scrape.custom1: no visible global function definition for ‘xmlValue’
+scrape.custom2: no visible global function definition for
+  ‘readHTMLTable’
+scrape.custom3: no visible global function definition for
+  ‘readHTMLTable’
+scrape.custom4: no visible global function definition for
+  ‘readHTMLTable’
+scrape.demosphere: no visible global function definition for
+  ‘readHTMLTable’
+scrape.demosphere : getthelink: no visible global function definition
+  for ‘xmlChildren’
+scrape.demosphere : getthelink: no visible global function definition
+  for ‘xmlAttrs’
+scrape.demosphere: no visible global function definition for ‘getURL’
+scrape.demosphere: no visible global function definition for
+  ‘htmlParse’
+scrape.demosphere.main : getthelink: no visible global function
+  definition for ‘xmlChildren’
+scrape.demosphere.main : getthelink: no visible global function
+  definition for ‘xmlAttrs’
+scrape.demosphere.main : getthelink: no visible global function
+  definition for ‘xmlValue’
+scrape.demosphere.main : getthelink3: no visible global function
+  definition for ‘xmlChildren’
+scrape.demosphere.main : getthelink3: no visible global function
+  definition for ‘xmlAttrs’
+scrape.demosphere.main : getthelink3: no visible global function
+  definition for ‘xmlValue’
+scrape.demosphere.main: no visible global function definition for
+  ‘readHTMLTable’
+scrape.gotsport: no visible global function definition for
+  ‘readHTMLTable’
+scrape.gotsport.main : getthelink: no visible global function
+  definition for ‘xmlChildren’
+scrape.gotsport.main : getthelink: no visible global function
+  definition for ‘xmlAttrs’
+scrape.gotsport.main : getthelink: no visible global function
+  definition for ‘xmlValue’
+scrape.gotsport.main: no visible global function definition for ‘GET’
+scrape.gotsport.main: no visible global function definition for
+  ‘user_agent’
+scrape.gotsport.main: no visible global function definition for
+  ‘htmlParse’
+scrape.gotsport.main: no visible global function definition for
+  ‘text_content’
+scrape.gotsport.main: no visible global function definition for
+  ‘readHTMLTable’
+scrape.json1: no visible global function definition for ‘getURL’
+scrape.json1: no visible global function definition for ‘fromJSON’
+scrape.korrio: no visible global function definition for ‘GET’
+scrape.korrio: no visible global function definition for ‘user_agent’
+scrape.korrio: no visible global function definition for
+  ‘readHTMLTable’
+scrape.korrio: no visible global function definition for ‘text_content’
+scrape.korrio: no visible global function definition for ‘htmlParse’
+scrape.korrio: no visible global function definition for ‘getNodeSet’
+scrape.korrio: no visible binding for global variable ‘xmlValue’
+scrape.korrio: no visible global function definition for ‘xmlAttrs’
+scrape.korrio: no visible global function definition for ‘content’
+scrape.korrio: no visible global function definition for ‘xmlValue’
+scrape.scoreboard: no visible global function definition for
+  ‘readHTMLTable’
+scrape.sportaffinity: no visible global function definition for
+  ‘readHTMLTable’
+scrape.sportaffinity: no visible global function definition for
+  ‘htmlParse’
+scrape.sportaffinity: no visible global function definition for
+  ‘getNodeSet’
+scrape.sportaffinity: no visible binding for global variable ‘xmlValue’
+scrape.sportaffinity.brackets: no visible global function definition
+  for ‘GET’
+scrape.sportaffinity.brackets: no visible global function definition
+  for ‘user_agent’
+scrape.sportaffinity.brackets: no visible global function definition
+  for ‘htmlParse’
+scrape.sportaffinity.brackets: no visible global function definition
+  for ‘text_content’
+scrape.sportaffinity.brackets: no visible global function definition
+  for ‘getNodeSet’
+scrape.sportaffinity.brackets : <anonymous>: no visible global function
+  definition for ‘xmlValue’
+scrape.sportaffinity.brackets: no visible global function definition
+  for ‘xmlAttrs’
+scrape.sportaffinity.brackets: no visible global function definition
+  for ‘xmlValue’
+scrape.sportaffinity.main : getthelink3: no visible global function
+  definition for ‘xmlChildren’
+scrape.sportaffinity.main : getthelink3: no visible global function
+  definition for ‘xmlValue’
+scrape.sportaffinity.main : getthelink3: no visible global function
+  definition for ‘xmlAttrs’
+scrape.sportaffinity.main: no visible global function definition for
+  ‘readHTMLTable’
+scrape.usclub: no visible global function definition for
+  ‘readHTMLTable’
+team.name.select : gogetem: no visible global function definition for
+  ‘tclvalue<-’
+team.name.select : gogetem: no visible global function definition for
+  ‘tkcurselection’
+team.name.select : clearteam: no visible global function definition for
+  ‘tclvalue<-’
+team.name.select : clearteam: no visible global function definition for
+  ‘tkselection.clear’
+team.name.select : showteam: no visible global function definition for
+  ‘tclvalue<-’
+team.name.select : showteam: no visible global function definition for
+  ‘tkcurselection’
+team.name.select : showteam: no visible global function definition for
+  ‘tclvalue’
+team.name.select : enterteam: no visible global function definition for
+  ‘tclvalue<-’
+team.name.select : enterteam: no visible global function definition for
+  ‘tclvalue’
+team.name.select : updateteam: no visible global function definition
+  for ‘tclvalue<-’
+team.name.select : updateteam: no visible global function definition
+  for ‘tkcurselection’
+team.name.select : updateteam: no visible global function definition
+  for ‘tclvalue’
+team.name.select : showlist: no visible global function definition for
+  ‘tclvalue<-’
+team.name.select : showlist: no visible global function definition for
+  ‘tclvalue’
+team.name.select : searchteam: no visible global function definition
+  for ‘tclvalue<-’
+team.name.select : searchteam: no visible global function definition
+  for ‘tclvalue’
+team.name.select : skipteam: no visible global function definition for
+  ‘tclvalue<-’
+team.name.select: no visible global function definition for
+  ‘tktoplevel’
+team.name.select: no visible global function definition for
+  ‘tkwm.title’
+team.name.select: no visible global function definition for ‘tkframe’
+team.name.select: no visible global function definition for ‘tclVar’
+team.name.select: no visible global function definition for ‘tclObj<-’
+team.name.select: no visible global function definition for ‘tklistbox’
+team.name.select: no visible global function definition for ‘tkpack’
+team.name.select: no visible global function definition for
+  ‘tkradiobutton’
+team.name.select: no visible global function definition for ‘tklabel’
+team.name.select: no visible global function definition for ‘tkentry’
+team.name.select: no visible global function definition for ‘tkbutton’
+team.name.select: no visible global function definition for ‘tkgrid’
+team.name.select: no visible global function definition for
+  ‘tclvalue<-’
+team.name.select : <anonymous>: no visible global function definition
+  for ‘tkdestroy’
+team.name.select: no visible global function definition for
+  ‘tkwait.window’
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking sizes of PDF files under ‘inst/doc’ ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking running R code from vignettes ... [62s/62s] OK
+* checking re-building of vignette outputs ... [66s/66s] OK
+* DONE
+Status: 2 NOTEs

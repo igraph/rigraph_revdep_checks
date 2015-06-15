@@ -1,0 +1,15 @@
+* installing *source* package ‘CePa’ ...
+** package ‘CePa’ successfully unpacked and MD5 sums checked
+** R
+** data
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+   ‘CePa.Rnw’ 
+   ‘analysis-p53.Rnw’ 
+   ‘parsing-PID-pathway-data.Rnw’ 
+** testing if installed package can be loaded
+* DONE (CePa)

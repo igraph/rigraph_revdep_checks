@@ -1,0 +1,84 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/Dominance.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘Dominance/DESCRIPTION’ ... OK
+* this is package ‘Dominance’ version ‘1.0.0’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘Dominance’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... NOTE
+Malformed Description field: should contain one or more complete sentences.
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+Sociogram: no visible global function definition for ‘plot.igraph’
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... ERROR
+Running examples in ‘Dominance-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Sociogram
+> ### Title: Social Network Graphs
+> ### Aliases: Sociogram
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> 
+> 
+> ## you can eihter use:
+> data_sheet=data.frame   ("action.from"=c(1,4,2,3,4,3,4,3,4,3,4,3,4,3,4),
++                    "action.to"=c(4,1,1,4,3,4,3,4,3,4,3,4,3,4,3),
++                    "kind.of.action"= c(4,1,1,4,3,4,3,4,3,4,3,4,3,4,3),stringsAsFactors=FALSE)
+> items= data.frame ("Name"=c("item1","item2","item3","item4","item5","item6") ,
++                    "item.number"=c(1:6),stringsAsFactors=FALSE)
+> actions=data.frame("name.of.action"= c("leading","following","approach","bite","threat to bite",
++                    "kick","threat to kick", "chase","retreat"),
++                    "action.number"=c(1:9),
++                    "classification"=c(1,2,1,1,1,1,1,1,2) ,
++                    "weighting"=c(1,-1,1,1,1,1,1,1,-1),stringsAsFactors=FALSE)
+> ## all  encounters  without leading and following
+> bytes= "001111111"  
+> Sociogram(data_sheet,items=items,actions=actions,bytes)
+Error in Sociogram(data_sheet, items = items, actions = actions, bytes) : 
+  could not find function "plot.igraph"
+Execution halted
+* DONE
+Status: 1 ERROR, 2 NOTEs

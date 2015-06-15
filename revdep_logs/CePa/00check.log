@@ -1,0 +1,154 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/CePa.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘CePa/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘CePa’ version ‘0.5’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘CePa’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... NOTE
+Packages in Depends field not imported from:
+  ‘igraph’ ‘snow’
+  These packages need to be imported from (in the NAMESPACE file)
+  for when this namespace is loaded but not attached.
+* checking S3 generic/method consistency ... NOTE
+Found the following apparent S3 methods exported but not registered:
+  plot.cepa plot.cepa.all plot.pathway.catalogue print.cepa
+  print.cepa.all print.pathway.catalogue
+See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+manual.
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+centrality: no visible global function definition for ‘vcount’
+centrality: no visible global function definition for ‘degree’
+centrality: no visible global function definition for ‘betweenness’
+cepa.all.parallel.by.snow: no visible global function definition for
+  ‘makeCluster’
+cepa.all.parallel.by.snow: no visible global function definition for
+  ‘clusterCall’
+cepa.all.parallel.by.snow: no visible global function definition for
+  ‘clusterApply’
+cepa.all.parallel.by.snow: no visible global function definition for
+  ‘stopCluster’
+generate.pathway: no visible global function definition for
+  ‘graph.edgelist’
+pathway.nodes: no visible global function definition for ‘vcount’
+pathway.nodes: no visible global function definition for
+  ‘get.vertex.attribute’
+plot.igraph2: no visible binding for global variable ‘layout.random’
+plot.igraph2: no visible global function definition for ‘V’
+plot.igraph2: no visible global function definition for ‘E’
+plot.igraph2: no visible global function definition for ‘get.edgelist’
+plot.igraph2: no visible global function definition for ‘ecount’
+plotGraph: no visible global function definition for ‘V’
+plotGraph: no visible global function definition for ‘V<-’
+plotGraph: no visible global function definition for ‘E’
+plotGraph: no visible global function definition for ‘E<-’
+plotGraph : layout.method: no visible global function definition for
+  ‘layout.reingold.tilford’
+radiality: no visible global function definition for ‘shortest.paths’
+radiality: no visible global function definition for ‘vcount’
+radiality: no visible global function definition for ‘diameter’
+reach: no visible global function definition for ‘E’
+reach: no visible global function definition for ‘shortest.paths’
+report: no visible global function definition for ‘write.graph’
+spread: no visible global function definition for ‘E’
+spread: no visible global function definition for ‘shortest.paths’
+
+Found the following calls to attach():
+File ‘CePa/R/report.R’:
+  attach(replacement, warn.conflicts = FALSE)
+See section ‘Good practice’ in ‘?attach’.
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... NOTE
+Rd file 'cepa.Rd':
+  \usage lines wider than 90 characters:
+     cepa(dif = NULL, bk = NULL, mat = NULL, label = NULL, pc, pathway = NULL, id = NULL, cen = "equal.weight",
+         cen.name = if(is.function(cen)) deparse(substitute(cen)) else if(mode(cen) == "name") deparse(cen) else cen,
+
+Rd file 'cepa.all.Rd':
+  \examples lines wider than 100 characters:
+     label = read.cls("http://mcube.nju.edu.cn/jwang/lab/soft/cepa/P53.cls", treatment="MUT", control="WT")
+
+Rd file 'cepa.all.parallel.Rd':
+  \usage lines wider than 90 characters:
+     cepa.all.parallel(dif = NULL, bk = NULL, mat = NULL, label = NULL, pc, cen = default.centralities,
+  \examples lines wider than 100 characters:
+     label = read.cls("http://mcube.nju.edu.cn/jwang/lab/soft/cepa/P53.cls", treatment="MUT", control="WT")
+
+Rd file 'cepa.ora.Rd':
+  \usage lines wider than 90 characters:
+              cen.name = if(is.function(cen)) deparse(substitute(cen)) else if(mode(cen) == "name") deparse(cen) else cen,
+
+Rd file 'cepa.univariate.Rd':
+  \usage lines wider than 90 characters:
+         cen.name = if(is.function(cen)) deparse(substitute(cen)) else if(mode(cen) == "name") deparse(cen) else cen,
+
+Rd file 'cepa.univariate.all.Rd':
+  \examples lines wider than 100 characters:
+     label = read.cls("http://mcube.nju.edu.cn/jwang/lab/soft/cepa/P53.cls", treatment="MUT", control="WT")
+
+Rd file 'plotGraph.Rd':
+  \usage lines wider than 90 characters:
+         graph.node.max.size = 20, graph.node.min.size = 3, graph.layout.method = NULL, ...)                 
+
+Rd file 'read.cls.Rd':
+  \examples lines wider than 100 characters:
+     label = read.cls("http://mcube.nju.edu.cn/jwang/lab/soft/cepa/P53.cls", treatment="MUT", control="WT")
+
+Rd file 'report.Rd':
+  \usage lines wider than 90 characters:
+            template.file = paste(system.file(package = "CePa"), "/extdata/cepa.template", sep=""),
+
+These lines will be truncated in the PDF manual.
+* checking Rd cross-references ... WARNING
+Missing link or links in documentation object 'plotGraph.Rd':
+  ‘[igraph]{layout}’
+
+See section 'Cross-references' in the 'Writing R Extensions' manual.
+
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking sizes of PDF files under ‘inst/doc’ ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking running R code from vignettes ... OK
+* checking re-building of vignette outputs ... [15s/15s] OK
+* DONE
+Status: 1 WARNING, 4 NOTEs

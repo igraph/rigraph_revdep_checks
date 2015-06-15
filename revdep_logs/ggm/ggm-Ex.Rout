@@ -1,0 +1,3412 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "ggm"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "ggm-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('ggm')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘ggm’
+
+The following object is masked from ‘package:igraph’:
+
+    pa
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("AG")
+> ### * AG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: AG
+> ### Title: Ancestral graph
+> ### Aliases: AG
+> ### Keywords: graphs ancestral graph directed acyclic graph marginalization
+> ###   and conditioning
+> 
+> ### ** Examples
+>                 
+> ##The adjacency matrix of a DAG    
+> ex<-matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
++              0,0,0,0,1,0,1,0,1,1,0,0,0,0,0,0,
++              1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0),16,16,byrow=TRUE)
+> M <- c(3,5,6,15,16)
+> C <- c(4,7)
+> AG(ex, M, C, plot = TRUE)
+Loading required package: tcltk
+     1   2 8  9 10 11  12 13  14
+1    0 100 0  0  0  0   0  0 100
+2  100   0 0  0  0  0   0  0   0
+8    0   0 0  0  0  0   0  0   0
+9    0   0 1  0  0 10   0  0   0
+10   0   0 1  0  0  0   0  0   0
+11   0   1 0 10  1  0   0  0   0
+12   1   0 0  0  0  0   0  0 100
+13   0   0 0  0  1  0   1  0   0
+14 100   0 0  0  0  0 100  0   0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("AG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:tcltk’
+
+> nameEx("DAG")
+> ### * DAG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: DAG
+> ### Title: Directed acyclic graphs (DAGs)
+> ### Aliases: DAG
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## A Markov chain
+> DAG(y ~ x, x ~ z, z ~ u)
+  y x z u
+y 0 0 0 0
+x 1 0 0 0
+z 0 1 0 0
+u 0 0 1 0
+> 
+> ## Another DAG
+> DAG(y ~ x + z + u, x ~ u, z ~ u)
+  y x z u
+y 0 0 0 0
+x 1 0 0 0
+z 1 0 0 0
+u 1 1 1 0
+> 
+> ## A DAG with an isolated node
+> DAG(v ~ v, y ~ x + z, z ~ w + u)
+  v y x z w u
+v 0 0 0 0 0 0
+y 0 0 0 0 0 0
+x 0 1 0 0 0 0
+z 0 1 0 0 0 0
+w 0 0 0 1 0 0
+u 0 0 0 1 0 0
+> 
+> ## There can be repetitions
+> DAG(y ~ x + u + v, y ~ z, u ~ v + z)
+  y x u v z
+y 0 0 0 0 0
+x 1 0 0 0 0
+u 1 0 0 0 0
+v 1 0 1 0 0
+z 1 0 1 0 0
+> 
+> ## Interactions are ignored
+> DAG(y ~ x*z + z*v, x ~ z)
+  y x z v
+y 0 0 0 0
+x 1 0 0 0
+z 1 1 0 0
+v 1 0 0 0
+> 
+> ## A cyclic graph returns an error!
+> ## Not run: DAG(y ~ x, x ~ z, z ~ y)
+> 
+> ## The order can be changed
+> DAG(y ~ z, y ~ x + u + v,  u ~ v + z)
+  y z x u v
+y 0 0 0 0 0
+z 1 0 0 1 0
+x 1 0 0 0 0
+u 1 0 0 0 0
+v 1 0 0 1 0
+> 
+> ## If you want to order the nodes (topological sort of the DAG)
+> DAG(y ~ z, y ~ x + u + v,  u ~ v + z, order=TRUE)
+  v x z u y
+v 0 0 0 1 1
+x 0 0 0 0 1
+z 0 0 0 1 1
+u 0 0 0 0 1
+y 0 0 0 0 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("DAG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("DG")
+> ### * DG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: DG
+> ### Title: Directed graphs
+> ### Aliases: DG
+> ### Keywords: graphs directed graph models multivariate
+> 
+> ### ** Examples
+> 
+> ## A DAG
+> DG(y ~ x, x ~ z, z ~ u)
+  y x z u
+y 0 0 0 0
+x 1 0 0 0
+z 0 1 0 0
+u 0 0 1 0
+> 
+> ## A cyclic directed graph
+> DG(y ~ x, x ~ z, z ~ y)
+  y x z
+y 0 0 1
+x 1 0 0
+z 0 1 0
+> 
+> ## A graph with two arrows between two nodes
+> DG(y ~ x, x ~ y)
+  y x
+y 0 1
+x 1 0
+> 
+> ## There can be isolated nodes
+> DG(y ~ x, x ~ x)
+  y x
+y 0 0
+x 1 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("DG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("In")
+> ### * In
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: In
+> ### Title: Indicator matrix
+> ### Aliases: In
+> ### Keywords: array algebra graphs multivariate
+> 
+> ### ** Examples
+> 
+> ## A simple way to find the overall induced concentration graph
+> ## The DAG on p. 198 of Cox & Wermuth (1996)
+> amat <- DAG(y1 ~ y2 + y3, y3 ~ y5, y4 ~ y5)
+> A <- edgematrix(amat)
+> In(crossprod(A))
+   y1 y2 y3 y5 y4
+y1  1  1  1  0  0
+y2  1  1  1  0  0
+y3  1  1  1  1  0
+y5  0  0  1  1  1
+y4  0  0  0  1  1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("In", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("InducedGraphs")
+> ### * InducedGraphs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: InducedGraphs
+> ### Title: Graphs induced by marginalization or conditioning
+> ### Aliases: inducedCovGraph inducedConGraph inducedRegGraph
+> ###   inducedChainGraph inducedDAG InducedGraphs
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## Define a DAG
+> dag <- DAG(a ~ x, c ~ b+d, d~ x)
+> dag
+  a x c b d
+a 0 0 0 0 0
+x 1 0 0 0 1
+c 0 0 0 0 0
+b 0 0 1 0 0
+d 0 0 1 0 0
+> ## Induced covariance graph of a, b, d given the empty set.
+> inducedCovGraph(dag, sel=c("a", "b", "d"), cond=NULL)
+    a b   d
+a   0 0 100
+b   0 0   0
+d 100 0   0
+> 
+> ## Induced concentration graph of a, b, c given x
+> inducedConGraph(dag, sel=c("a", "b", "c"), cond="x")
+  a  b  c
+a 0  0  0
+b 0  0 10
+c 0 10  0
+> 
+> ## Overall covariance graph
+> inducedCovGraph(dag)
+    a   x   c   b   d
+a   0 100 100   0 100
+x 100   0 100   0 100
+c 100 100   0 100 100
+b   0   0 100   0   0
+d 100 100 100   0   0
+> 
+> ## Overall concentration graph
+> inducedConGraph(dag)
+   a  x  c  b  d
+a  0 10  0  0  0
+x 10  0  0  0 10
+c  0  0  0 10 10
+b  0  0 10  0 10
+d  0 10 10 10  0
+> 
+> ## Induced covariance graph of x, b, d given c, x.
+> inducedCovGraph(dag, sel=c("a", "b", "d"), cond=c("c", "x"))
+  a   b   d
+a 0   0   0
+b 0   0 100
+d 0 100   0
+> 
+> ## Induced concentration graph of a, x, c given d, b.
+> inducedConGraph(dag, sel=c("a", "x", "c"), cond=c("d", "b"))
+   a  x c
+a  0 10 0
+x 10  0 0
+c  0  0 0
+> 
+> ## The DAG on p. 198 of Cox & Wermuth (1996)
+> dag <- DAG(y1~ y2 + y3, y3 ~ y5, y4 ~ y5)
+> 
+> ## Cf. figure 8.7 p. 203 in Cox & Wermuth (1996)
+> inducedCovGraph(dag, sel=c("y2", "y3", "y4", "y5"), cond="y1")
+    y2  y3  y4  y5
+y2   0 100 100 100
+y3 100   0 100 100
+y4 100 100   0 100
+y5 100 100 100   0
+> inducedCovGraph(dag, sel=c("y1", "y2", "y4", "y5"), cond="y3")
+    y1  y2  y4  y5
+y1   0 100   0   0
+y2 100   0   0   0
+y4   0   0   0 100
+y5   0   0 100   0
+> inducedCovGraph(dag, sel=c("y1", "y2", "y3", "y4"), cond="y5")
+    y1  y2  y3 y4
+y1   0 100 100  0
+y2 100   0   0  0
+y3 100   0   0  0
+y4   0   0   0  0
+> 
+> ## Cf. figure 8.8 p. 203 in Cox & Wermuth (1996)
+> inducedConGraph(dag, sel=c("y2", "y3", "y4", "y5"), cond="y1")
+   y2 y3 y4 y5
+y2  0 10  0  0
+y3 10  0  0 10
+y4  0  0  0 10
+y5  0 10 10  0
+> inducedConGraph(dag, sel=c("y1", "y2", "y4", "y5"), cond="y3")
+   y1 y2 y4 y5
+y1  0 10  0  0
+y2 10  0  0  0
+y4  0  0  0 10
+y5  0  0 10  0
+> inducedConGraph(dag, sel=c("y1", "y2", "y3", "y4"), cond="y5")
+   y1 y2 y3 y4
+y1  0 10 10  0
+y2 10  0 10  0
+y3 10 10  0  0
+y4  0  0  0  0
+> 
+> ## Cf. figure 8.9 p. 204 in Cox & Wermuth (1996)
+> inducedCovGraph(dag, sel=c("y2", "y3", "y4", "y5"), cond=NULL)
+   y2  y3  y4  y5
+y2  0   0   0   0
+y3  0   0 100 100
+y4  0 100   0 100
+y5  0 100 100   0
+> inducedCovGraph(dag, sel=c("y1", "y2", "y4", "y5"), cond=NULL)
+    y1  y2  y4  y5
+y1   0 100 100 100
+y2 100   0   0   0
+y4 100   0   0 100
+y5 100   0 100   0
+> inducedCovGraph(dag, sel=c("y1", "y2", "y3", "y4"), cond=NULL)
+    y1  y2  y3  y4
+y1   0 100 100 100
+y2 100   0   0   0
+y3 100   0   0 100
+y4 100   0 100   0
+> 
+> ## Cf. figure 8.10 p. 204 in Cox & Wermuth (1996)
+> inducedConGraph(dag, sel=c("y2", "y3", "y4", "y5"), cond=NULL)
+   y2 y3 y4 y5
+y2  0  0  0  0
+y3  0  0  0 10
+y4  0  0  0 10
+y5  0 10 10  0
+> inducedConGraph(dag, sel=c("y1", "y2", "y4", "y5"), cond=NULL)
+   y1 y2 y4 y5
+y1  0 10  0 10
+y2 10  0  0 10
+y4  0  0  0 10
+y5 10 10 10  0
+> inducedConGraph(dag, sel=c("y1", "y2", "y3", "y4"), cond=NULL)
+   y1 y2 y3 y4
+y1  0 10 10  0
+y2 10  0 10  0
+y3 10 10  0 10
+y4  0  0 10  0
+> 
+> ## An induced regression graph
+> dag2 = DAG(Y ~ X+U, W ~ Z+U)
+> inducedRegGraph(dag2, sel="W",  cond=c("Y", "X", "Z"))
+  W
+Y 1
+X 1
+Z 1
+> 
+> ## An induced DAG
+> inducedDAG(dag2, order=c("X","Y","Z","W"))
+  X Y Z W
+X 0 1 0 1
+Y 0 0 0 1
+Z 0 0 0 1
+W 0 0 0 0
+> 
+> ## An induced multivariate regression graph
+> inducedRegGraph(dag2, sel=c("Y", "W"), cond=c("X", "Z"))
+  Y W
+X 1 0
+Z 0 1
+> 
+> ## An induced chain graph with LWF interpretation
+> dag3 = DAG(X~W, W~Y, U~Y+Z)
+> cc = list(c("W", "U"), c("X", "Y", "Z"))
+> inducedChainGraph(dag3, cc=cc, type="LWF")
+   W  U X  Y  Z
+W  0 10 1  1  0
+U 10  0 0  1  1
+X  0  0 0  0  0
+Y  0  0 0  0 10
+Z  0  0 0 10  0
+> 
+> ## ... with AMP interpretation
+> inducedChainGraph(dag3, cc=cc, type="AMP")
+   W  U X  Y  Z
+W  0 10 1  1  1
+U 10  0 0  1  1
+X  0  0 0  0  0
+Y  0  0 0  0 10
+Z  0  0 0 10  0
+> 
+> ## ... with multivariate regression interpretation
+> cc= list(c("U"), c("Z", "Y"), c("X", "W"))
+> inducedChainGraph(dag3, cc=cc, type="MRG")
+  U   Z   Y   X   W
+U 0   1   1   0   0
+Z 0   0 100   0   0
+Y 0 100   0   1   1
+X 0   0   0   0 100
+W 0   0   0 100   0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("InducedGraphs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("MAG")
+> ### * MAG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MAG
+> ### Title: Maximal ancestral graph
+> ### Aliases: MAG
+> ### Keywords: ancestral graph directed acyclic graph marginalization and
+> ###   conditioning maximality of graphs
+> 
+> ### ** Examples
+> 
+> ex<-matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, ##The adjacency matrix of a DAG
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
++              0,0,0,0,1,0,1,0,1,1,0,0,0,0,0,0,
++              1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0), 16, 16, byrow = TRUE)
+> M <- c(3,5,6,15,16)
+> C <- c(4,7)
+> MAG(ex, M, C, plot=TRUE)
+Loading required package: tcltk
+     1   2 8  9 10 11  12 13  14
+1    0 100 0  0  0  0   0  0 100
+2  100   0 0  0  0  0   0  0   0
+8    0   0 0  0  0  0   0  0   0
+9    0   0 1  0  0 10   0  0   0
+10   0   0 1  0  0  0   0  0   0
+11   0   1 0 10  1  0   0  0   0
+12   1   0 0  0  0  0   0  0 100
+13   0   0 0  0  1  0   1  0   0
+14 100   0 0  0  0  0 100  0   0
+> ###################################################
+> H <- matrix(c(0,100,1,0,100,0,100,0,0,100,0,100,0,1,100,0),4,4)
+> Max(H)
+    1   2   3   4
+1   0 100   0 100
+2 100   0 100   1
+3   1 100   0 100
+4 100   0 100   0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("MAG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:tcltk’
+
+> nameEx("MRG")
+> ### * MRG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MRG
+> ### Title: Maximal ribbonless graph
+> ### Aliases: MRG
+> ### Keywords: graphs directed acyclic graph marginalisation and
+> ###   conditioning maximality of graphs MC graph ribbonless graph
+> 
+> ### ** Examples
+> 
+> ex <- matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, ##The adjacency matrix of a DAG
++                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++                1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++                0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
++                0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
++                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++                0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,
++                0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
++                0,0,0,0,1,0,1,0,1,1,0,0,0,0,0,0,
++                1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++                0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,
++                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++                1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
++                0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0),16,16, byrow = TRUE)
+> M <- c(3,5,6,15,16)
+> C <- c(4,7)
+> MRG(ex, M, C, plot = TRUE)
+Loading required package: tcltk
+     1   2 8  9 10 11  12 13  14
+1    0 100 0  0  0  0   0  0 100
+2  100   0 0  0  0  0   0  0   0
+8    0   0 0  0  0  0   0  0   0
+9    0   0 1  0  0 10   0  0   0
+10   0   0 1  0  0  0   0  0   0
+11   0   1 0 11  1  0   0  0   0
+12   1   0 0  0  0  0   0  0 100
+13   0   0 0  0  1  0   1  0   0
+14 100   0 0  0  0  0 100  0   0
+> ###################################################
+> H <- matrix(c( 0, 100,   1,   0,
++   	         100,   0, 100,   0,
++  	             0, 100,   0, 100,
++ 	             0,   1, 100,   0), 4,4)
+> Max(H)
+    1   2   3   4
+1   0 100   0 100
+2 100   0 100   1
+3   1 100   0 100
+4 100   0 100   0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("MRG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:tcltk’
+
+> nameEx("MSG")
+> ### * MSG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MSG
+> ### Title: Maximal summary graph
+> ### Aliases: MSG
+> ### Keywords: graphs directed acyclic graph marginalisation and
+> ###   conditioning maximality of graphs summary graph
+> 
+> ### ** Examples
+> 
+> ex<-matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, ##The adjacency matrix of a DAG
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
++              0,0,0,0,1,0,1,0,1,1,0,0,0,0,0,0,
++              1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++              1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
++              0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0), 16, 16, byrow=TRUE)
+> M <- c(3,5,6,15,16)
+> C <- c(4,7)
+> MSG(ex,M,C,plot=TRUE)
+Loading required package: tcltk
+     1   2 8  9 10 11  12 13  14
+1    0 100 0  0  0  0   0  0 100
+2  100   0 0  0  0  0   0  0   0
+8    0   0 0  0  0  0   0  0   0
+9    0   0 1  0  0 10   0  0   0
+10   0   0 1  0  0  0   0  0   0
+11   0   1 0 10  1  0   0  0   0
+12   1   0 0  0  0  0   0  0 100
+13   0   0 0  0  1  0   1  0   0
+14 100   0 0  0  0  0 100  0   0
+> ###################################################
+> H<-matrix(c(0,100,1,0,100,0,100,0,0,100,0,100,0,1,100,0),4,4)
+> Max(H)
+    1   2   3   4
+1   0 100   0 100
+2 100   0 100   1
+3   1 100   0 100
+4 100   0 100   0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("MSG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:tcltk’
+
+> nameEx("MarkEqMag")
+> ### * MarkEqMag
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MarkEqMag
+> ### Title: Markov equivalence of maximal ancestral graphs
+> ### Aliases: MarkEqMag
+> ### Keywords: graphs Markov equivalence maximal ancestral graphs
+> ###   multivariate
+> 
+> ### ** Examples
+> 
+> H1<-matrix(  c(0,100,  0,  0,
++ 	         100,  0,100,  0,
++                0,100,  0,100,
++                0,  1,100,  0), 4, 4)
+> H2<-matrix(c(0,0,0,0,1,0,100,0,0,100,0,100,0,1,100,0),4,4)
+> H3<-matrix(c(0,0,0,0,1,0,0,0,0,1,0,100,0,1,100,0),4,4)
+> MarkEqMag(H1,H2)
+[1] TRUE
+> MarkEqMag(H1,H3)
+[1] FALSE
+> MarkEqMag(H2,H3)
+[1] FALSE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("MarkEqMag", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("MarkEqRcg")
+> ### * MarkEqRcg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MarkEqRcg
+> ### Title: Markov equivalence for regression chain graphs.
+> ### Aliases: MarkEqRcg
+> ### Keywords: graphs bidirected graph directed acyclic graph Markov
+> ###   equivalence regression chain graph undirected graph multivariate
+> 
+> ### ** Examples
+> 
+> H1<-matrix(c(0,100,0,0,0,100,0,100,0,0,0,100,0,0,0,1,0,0,0,100,0,0,1,100,0),5,5)
+> H2<-matrix(c(0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,100,0,0,1,100,0),5,5)
+> H3<-matrix(c(0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0),5,5)
+> #MarkEqRcg(H1,H2)
+> #MarkEqRcg(H1,H3)
+> #MarkEqRcg(H2,H3)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("MarkEqRcg", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Max")
+> ### * Max
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Max
+> ### Title: Maximisation for graphs
+> ### Aliases: Max
+> ### Keywords: graphs loopless mixed graph m-separation maximality
+> 
+> ### ** Examples
+> 
+> H <- matrix(c(  0,100,  1,  0,
++ 	          100,  0,100,  0,
++ 	            0,100,  0,100,
++ 	            0,  1,100,  0), 4, 4)
+> Max(H)
+    1   2   3   4
+1   0 100   0 100
+2 100   0 100   1
+3   1 100   0 100
+4 100   0 100   0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Max", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("RG")
+> ### * RG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: RG
+> ### Title: Ribbonless graph
+> ### Aliases: RG
+> ### Keywords: graphs directed acyclic graph marginalisation and
+> ###   conditioning MC graph ribbonless graph
+> 
+> ### ** Examples
+> 
+> 	ex <- matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, ##The adjacency matrix of a DAG
++ 	               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,1,0,1,0,1,1,0,0,0,0,0,0,
++ 	               1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,
++ 	               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
++ 	               0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0),16,16, byrow = TRUE)
+> 
+> M<-c(3,5,6,15,16)
+> C<-c(4,7)
+> RG(ex,M,C,plot=TRUE)
+Loading required package: tcltk
+     1   2 8  9 10 11  12 13  14
+1    0 100 0  0  0  0   0  0 100
+2  100   0 0  0  0  0   0  0   0
+8    0   0 0  0  0  0   0  0   0
+9    0   0 1  0  0 10   0  0   0
+10   0   0 1  0  0  0   0  0   0
+11   0   1 0 11  1  0   0  0   0
+12   1   0 0  0  0  0   0  0 100
+13   0   0 0  0  1  0   1  0   0
+14 100   0 0  0  0  0 100  0   0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("RG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:tcltk’
+
+> nameEx("RepMarBG")
+> ### * RepMarBG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: RepMarBG
+> ### Title: Representational Markov equivalence to bidirected graphs.
+> ### Aliases: RepMarBG
+> ### Keywords: graphs bidirected graph Markov equivalence maximal ancestral
+> ###   graph representational Markov equivalence
+> 
+> ### ** Examples
+> 
+> H<-matrix(c(0,10,0,0,10,0,0,0,0,1,0,100,0,0,100,0),4,4)
+> RepMarBG(H)
+$verify
+[1] FALSE
+
+$amat
+[1] NA
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("RepMarBG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("RepMarDAG")
+> ### * RepMarDAG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: RepMarDAG
+> ### Title: Representational Markov equivalence to directed acyclic graphs.
+> ### Aliases: RepMarDAG
+> ### Keywords: graphs bidirected graph Markov equivalence maximal ancestral
+> ###   graph representational Markov equivalence
+> 
+> ### ** Examples
+> 
+> H<-matrix(c(0,10,0,0,10,0,0,0,0,1,0,100,0,0,100,0),4,4)
+> RepMarBG(H)
+$verify
+[1] FALSE
+
+$amat
+[1] NA
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("RepMarDAG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("RepMarUG")
+> ### * RepMarUG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: RepMarUG
+> ### Title: Representational Markov equivalence to undirected graphs.
+> ### Aliases: RepMarUG
+> ### Keywords: graphs bidirected graph Markov equivalence maximal ancestral
+> ###   graph representational Markov equivalence
+> 
+> ### ** Examples
+> 
+> H<-matrix(c(0,10,0,0,10,0,0,0,0,1,0,100,0,0,100,0),4,4)
+> RepMarUG(H)
+$verify
+[1] FALSE
+
+$amat
+[1] NA
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("RepMarUG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("SG")
+> ### * SG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: SG
+> ### Title: summary graph
+> ### Aliases: SG
+> ### Keywords: graphs directed acyclic graph marginalization and
+> ###   conditioning summary graph
+> 
+> ### ** Examples
+> 
+> 	ex <- matrix(c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, ##The adjacency matrix of a DAG
++ 	               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,1,0,1,0,1,1,0,0,0,0,0,0,
++ 	               1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,
++ 	               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
++ 	               1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
++ 	               0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0),16,16, byrow = TRUE)
+> M <- c(3,5,6,15,16)
+> C <- c(4,7)
+> SG(ex, M, C, plot = TRUE)
+Loading required package: tcltk
+     1   2 8  9 10 11  12 13  14
+1    0 100 0  0  0  0   0  0 100
+2  100   0 0  0  0  0   0  0   0
+8    0   0 0  0  0  0   0  0   0
+9    0   0 1  0  0 10   0  0   0
+10   0   0 1  0  0  0   0  0   0
+11   0   1 0 10  1  0   0  0   0
+12   1   0 0  0  0  0   0  0 100
+13   0   0 0  0  1  0   1  0   0
+14 100   0 0  0  0  0 100  0   0
+> SG(ex, M, C, plot = TRUE, plotfun = drawGraph, adjust = FALSE)
+     1   2 8  9 10 11  12 13  14
+1    0 100 0  0  0  0   0  0 100
+2  100   0 0  0  0  0   0  0   0
+8    0   0 0  0  0  0   0  0   0
+9    0   0 1  0  0 10   0  0   0
+10   0   0 1  0  0  0   0  0   0
+11   0   1 0 10  1  0   0  0   0
+12   1   0 0  0  0  0   0  0 100
+13   0   0 0  0  1  0   1  0   0
+14 100   0 0  0  0  0 100  0   0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("SG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:tcltk’
+
+> nameEx("SimpleGraphOperations")
+> ### * SimpleGraphOperations
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Simple Graph Operations
+> ### Title: Simple graph operations
+> ### Aliases: bd ch pa
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## find boundary of a subset of nodes of a DAG
+> G <- DAG(y ~ x+b+a, b~a, x~a)
+> bd("b", G)
+[1] "y" "a"
+> bd(c("b", "x"), G)
+[1] "y" "a"
+> bd("x", G)
+[1] "y" "a"
+> bd(c("x","b"), G)
+[1] "y" "a"
+> ## find boundary of a subset of nodes of an UG
+> G <- UG(~ y*x*z + z*h*v)
+> bd("z", G)
+[1] "y" "x" "h" "v"
+> bd(c("y", "x"), G)
+[1] "z"
+> bd("v", G)
+[1] "z" "h"
+> bd(c("x","v"), G)
+[1] "y" "z" "h"
+> ## children of a subset of nodes of a DAG
+> G <- DAG(y ~ x+b+a, b~a, x~a)
+> ch("b", G)
+[1] "y"
+> ch(c("b", "x"), G)
+[1] "y"
+> ch("x", G)
+[1] "y"
+> ch(c("a","x"), G)
+[1] "y" "b"
+> ## parents of a subset of nodes of a DAG
+> pa("b", G)
+[1] "a"
+> pa(c("b", "x"), G)
+[1] "a"
+> pa("x", G)
+[1] "a"
+> pa(c("x","b"), G)
+[1] "a"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("SimpleGraphOperations", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("UG")
+> ### * UG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: UG
+> ### Title: Defining an undirected graph (UG)
+> ### Aliases: UG
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## X independent of Y given Z
+> UG(~ X*Z + Y*Z)
+  X Z Y
+X 0 1 0
+Z 1 0 1
+Y 0 1 0
+> 
+> # The saturated model
+> UG(~ X*Y*Z)
+  X Y Z
+X 0 1 1
+Y 1 0 1
+Z 1 1 0
+> 
+> ## The model without three-way interactions has the same graph
+> UG(~ X*Y + Y*Z + Z*X)
+  X Y Z
+X 0 1 1
+Y 1 0 1
+Z 1 1 0
+> UG(~ (X + Y + Z)^2)
+  X Y Z
+X 0 1 1
+Y 1 0 1
+Z 1 1 0
+> 
+> ## Butterfly model defined from the cliques
+> UG(~ mec*vec*alg + alg*ana*sta)
+    mec vec alg ana sta
+mec   0   1   1   0   0
+vec   1   0   1   0   0
+alg   1   1   0   1   1
+ana   0   0   1   0   1
+sta   0   0   1   1   0
+> 
+> ## Some isolated nodes
+> UG(~x*y*z + a + b) 
+  x y z a b
+x 0 1 1 0 0
+y 1 0 1 0 0
+z 1 1 0 0 0
+a 0 0 0 0 0
+b 0 0 0 0 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("UG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("adjMatrix")
+> ### * adjMatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: adjMatrix
+> ### Title: Adjacency matrix of a graph
+> ### Aliases: adjMatrix
+> ### Keywords: array algebra graphs multivariate
+> 
+> ### ** Examples
+> 
+> amat <- DAG(y ~ x+z, z~u+v)
+> E <- edgematrix(amat)
+> adjMatrix(E)
+  y x z u v
+y 0 0 0 0 0
+x 1 0 0 0 0
+z 1 0 0 0 0
+u 0 0 1 0 0
+v 0 0 1 0 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("adjMatrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("allEdges")
+> ### * allEdges
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: allEdges
+> ### Title: All edges of a graph
+> ### Aliases: allEdges
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## A UG graph
+> allEdges(UG(~ y*v*k +v*k*d+y*d))
+    
+ 1 2
+ 1 3
+ 1 4
+ 2 3
+ 2 4
+ 3 4
+> 
+> ## A DAG
+> allEdges(DAG(u~h+o+p, h~o, o~p))
+    
+ 2 1
+ 3 1
+ 3 2
+ 4 1
+ 4 3
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("allEdges", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("anger")
+> ### * anger
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: anger
+> ### Title: Anger data
+> ### Aliases: anger
+> ### Keywords: datasets
+> 
+> ### ** Examples
+>  
+> # Fit a chordless 4-cycle model 
+> data(anger) 
+> G = UG(~ Y*X + X*Z + Z*U + U*Y)
+> fitConGraph(G,anger, 684) 
+$Shat
+         X        Y        Z        U
+X 37.19260 24.93110 21.60560 16.88615
+Y 24.93110 44.84720 17.02192 21.85650
+Z 21.60560 17.02192 32.24620 18.35230
+U 16.88615 21.85650 18.35230 43.11910
+
+$dev
+[1] 2.103265
+
+$df
+[1] 2
+
+$it
+[1] 7
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("anger", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("basiSet")
+> ### * basiSet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: basiSet
+> ### Title: Basis set of a DAG
+> ### Aliases: basiSet
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## See Shipley (2000), Figure 2, p. 213
+> A <- DAG(x5~ x3+x4, x3~ x2, x4~x2, x2~ x1)
+> basiSet(A)
+[[1]]
+[1] "x1" "x4" "x2"
+
+[[2]]
+[1] "x1" "x3" "x2"
+
+[[3]]
+[1] "x1" "x5" "x4" "x3"
+
+[[4]]
+[1] "x2" "x5" "x1" "x4" "x3"
+
+[[5]]
+[1] "x4" "x3" "x2"
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("basiSet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bfsearch")
+> ### * bfsearch
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bfsearch
+> ### Title: Breadth first search
+> ### Aliases: bfsearch
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## Finding a spanning tree of the butterfly graph
+> bfsearch(UG(~ a*b*o + o*u*j))
+$tree
+  a b o u j
+a 0 1 1 0 0
+b 1 0 0 0 0
+o 1 0 0 1 1
+u 0 0 1 0 0
+j 0 0 1 0 0
+
+$branches
+    
+ 1 2
+ 1 3
+ 3 4
+ 3 5
+
+$chords
+    
+ 2 3
+ 4 5
+
+> ## Starting from another node
+> bfsearch(UG(~ a*b*o + o*u*j), v=3)
+$tree
+  a b o u j
+a 0 0 1 0 0
+b 0 0 1 0 0
+o 1 1 0 1 1
+u 0 0 1 0 0
+j 0 0 1 0 0
+
+$branches
+    
+ 3 1
+ 3 2
+ 3 4
+ 3 5
+
+$chords
+    
+ 1 2
+ 4 5
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bfsearch", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("blkdiag")
+> ### * blkdiag
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: blkdiag
+> ### Title: Block diagonal matrix
+> ### Aliases: blkdiag
+> ### Keywords: matrix
+> 
+> ### ** Examples
+> 
+> X <- c(1,1,2,2); Z <- c(10, 20, 30, 40); A <- factor(c(1,2,2,2))
+> blkdiag(model.matrix(~X+Z), model.matrix(~A))
+  (Intercept) X  Z    
+1           1 1 10 0 0
+2           1 1 20 0 0
+3           1 2 30 0 0
+4           1 2 40 0 0
+1           0 0  0 1 0
+2           0 0  0 1 1
+3           0 0  0 1 1
+4           0 0  0 1 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("blkdiag", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("blodiag")
+> ### * blodiag
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: blodiag
+> ### Title: Block diagonal matrix
+> ### Aliases: blodiag
+> ### Keywords: matrix
+> 
+> ### ** Examples
+> 
+> blodiag(1:10, blo = c(2, 3, 5)) 
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+[1,]    1    2    0    0    0    0    0    0    0     0
+[2,]    0    0    3    4    5    0    0    0    0     0
+[3,]    0    0    0    0    0    6    7    8    9    10
+> blodiag(1:10, blo = c(3,4,0,1))
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+[1,]    1    2    3    0    0    0    0    0
+[2,]    0    0    0    4    5    6    7    0
+[3,]    0    0    0    0    0    0    7    8
+[4,]    0    0    0    0    0    0    0    8
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("blodiag", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("checkIdent")
+> ### * checkIdent
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: checkIdent
+> ### Title: Identifiability of a model with one latent variable
+> ### Aliases: checkIdent
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## See DAG in Figure 4 (a) in Stanghellini & Wermuth (2005)
+> d <- DAG(y1 ~ y3, y2 ~ y3 + y5, y3 ~ y4 + y5, y4 ~ y6)
+> checkIdent(d, "y3")  # Identifiable
+ T1.i T1.ii  T2.i T2.ii 
+FALSE  TRUE  TRUE FALSE 
+> checkIdent(d, "y4")  # Not identifiable?
+ T1.i T1.ii  T2.i T2.ii 
+FALSE FALSE FALSE FALSE 
+> 
+> ## See DAG in Figure 5 (a) in Stanghellini & Wermuth (2005)
+> d <- DAG(y1 ~ y5+y4, y2 ~ y5+y4, y3 ~ y5+y4)
+> checkIdent(d, "y4")  # Identifiable
+ T1.i T1.ii  T2.i T2.ii 
+FALSE FALSE FALSE  TRUE 
+> checkIdent(d, "y5")  # Identifiable
+ T1.i T1.ii  T2.i T2.ii 
+FALSE FALSE FALSE  TRUE 
+> 
+> ## A simple function to check identifiability for each node
+> 
+> is.ident <- function(amat){
++ ### Check suff. conditions on each node of a DAG.
++    p <- nrow(amat)
++    ## Degrees of freedom
++      df <- p*(p+1)/2 - p  - sum(amat==1) - p + 1
++    if(df <= 0)
++        warning(paste("The degrees of freedom are ", df))
++     a <- rownames(amat)
++     for(i in a) {
++       b <- checkIdent(amat, latent=i)
++       if(TRUE %in% b)
++         cat("Node", i, names(b)[!is.na(b)], "\n")
++       else
++         cat("Unknown.\n")
++     }
++   }
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("checkIdent", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cmpGraph")
+> ### * cmpGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cmpGraph
+> ### Title: The complementary graph
+> ### Aliases: cmpGraph
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## A chordless four-cycle
+> four <- UG(~ a*b + b*d + d*e + e*a)
+> four
+  a b d e
+a 0 1 0 1
+b 1 0 1 0
+d 0 1 0 1
+e 1 0 1 0
+> cmpGraph(four)
+  a b d e
+a 0 0 1 0
+b 0 0 0 1
+d 1 0 0 0
+e 0 1 0 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cmpGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("conComp")
+> ### * conComp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: conComp
+> ### Title: Connectivity components
+> ### Aliases: conComp
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## three connected components
+> conComp(UG(~a*c+c*d+e+g*o*u))
+[1] 1 1 1 2 3 3 3
+> ## a connected graph
+> conComp(UG(~ a*b+b*c+c*d+d*a))
+[1] 1 1 1 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("conComp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("correlations")
+> ### * correlations
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: correlations
+> ### Title: Marginal and partial correlations
+> ### Aliases: correlations
+> ### Keywords: array graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## See Table 6.1 in Cox & Wermuth (1996)
+> data(glucose)
+> correlations(glucose)
+            Y           X           Z           U            V            W
+Y  1.00000000 -0.24445785  0.09354755 -0.12798823  0.087942794 -0.249825305
+X -0.34075247  1.00000000 -0.33532889 -0.07963908  0.039741792  0.003602872
+Z  0.14979043 -0.49115395  1.00000000  0.40922980 -0.258331690  0.275120429
+U  0.02734320 -0.32472715  0.52054597  1.00000000 -0.085859607 -0.076665692
+V  0.04199025  0.14178114 -0.33278493 -0.22852134  1.000000000  0.158985954
+W -0.12238307 -0.11024991  0.27522852  0.09900332  0.047259359  1.000000000
+A -0.31889444  0.33331537 -0.25667957 -0.19593153 -0.005196467 -0.250207430
+B -0.06634013  0.08617909  0.07599028 -0.06409980 -0.221254867  0.071501311
+             A           B
+Y -0.288992196 -0.05320535
+X  0.174071199  0.13665929
+Z -0.002712233  0.08902947
+U -0.119850983 -0.14027029
+V -0.068351329 -0.22966551
+W -0.248252892  0.03783576
+A  1.000000000 -0.13733490
+B -0.085404874  1.00000000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("correlations", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cycleMatrix")
+> ### * cycleMatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cycleMatrix
+> ### Title: Fundamental cycles
+> ### Aliases: cycleMatrix
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## Three cycles
+> cycleMatrix(UG(~a*b*d+d*e+e*a*f))
+  1 2 1 3 1 4 1 5 2 3 3 4 4 5
+1   1   1   0   0   1   0   0
+2   0   1   1   0   0   1   0
+3   0   0   1   1   0   0   1
+> ## No cycle
+>  cycleMatrix(UG(~a*b))
+NULL
+> ## two cycles: the first is even and the second is odd
+> cm <- cycleMatrix(UG(~a*b+b*c+c*d+d*a+a*u*v))
+> apply(cm, 1, sum)
+1 2 
+4 3 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cycleMatrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dSep")
+> ### * dSep
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dSep
+> ### Title: d-separation
+> ### Aliases: dSep
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## Conditioning on a transition node
+> dSep(DAG(y ~ x, x ~ z), first="y", second="z", cond = "x")
+[1] TRUE
+> ## Conditioning on a collision node (collider)
+> dSep(DAG(y ~ x, y ~ z), first="x", second="z", cond = "y")
+[1] FALSE
+> ## Conditioning on a source node
+> dSep(DAG(y ~ x, z ~ x), first="y", second="z", cond = "x")
+[1] TRUE
+> ## Marginal independence
+> dSep(DAG(y ~ x, y ~ z), first="x", second="z", cond = NULL)
+[1] TRUE
+> ## The DAG defined on p.~47 of Lauritzen (1996)
+> dag <- DAG(g ~ x, h ~ x+f, f ~ b, x ~ l+d, d ~ c, c ~ a, l ~ y, y ~ b)
+> dSep(dag, first="a", second="b", cond=c("x", "y"))
+[1] TRUE
+> dSep(dag, first="a", second=c("b", "d"), cond=c("x", "y"))
+[1] FALSE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dSep", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("derived")
+> ### * derived
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: derived
+> ### Title: Data on blood pressure body mass and age
+> ### Aliases: derived
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> # A DAG model with a latent variable U
+> G = DAG(Y ~ Z + U, X ~ U + W, Z ~ W)
+> 
+> data(derived)
+> 
+> # The model fitted using the derived variables
+> out = fitDagLatent(G, derived$S, n = 44, latent = "U")
+...............................................................................
+...............................................................................
+.......
+> 
+> # An ancestral graph model marginalizing over U
+> H = AG(G, M = "U")
+> 
+> # The ancestral graph model fitted obtaining the 
+> # same result
+> out2 = fitAncestralGraph(H, derived$S, n = 44)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("derived", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("diagv")
+> ### * diagv
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: diagv
+> ### Title: Matrix product with a diagonal matrix
+> ### Aliases: diagv
+> ### Keywords: matrix
+> 
+> ### ** Examples
+> 
+> v <- 1:1000
+> M <- matrix(runif(3000), 1000, 3)
+> dim(diagv(v, M))
+[1] 1000    3
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("diagv", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("drawGraph")
+> ### * drawGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: drawGraph
+> ### Title: Drawing a graph with a simple point and click interface.
+> ### Aliases: drawGraph
+> ### Keywords: graphs hplot iplot
+> 
+> ### ** Examples
+> 
+> ## A directed acyclic graph
+> d <- DAG(y1 ~ y2+y6, y2 ~ y3, y3 ~ y5+y6, y4 ~ y5+y6)
+> ## Not run: drawGraph(d)
+> 
+> ## An undirected graph
+> g <- UG(~giova*anto*armo + anto*arj*sara) 
+> ## Not run: drawGraph(d)
+> 
+> ## An ancestral graph
+> ag <- makeMG(ug=UG(~y0*y1), dg=DAG(y4~y2, y2~y1), bg=UG(~y2*y3+y3*y4))
+> drawGraph(ag, adjust = FALSE)
+> drawGraph(ag, adjust = FALSE)
+> 
+> ## A more complex example with coordinates: the UNIX evolution
+> xy <-
++ structure(c(5, 15, 23, 25, 26, 17, 8, 6, 6, 7, 39, 33, 23, 49, 
++ 19, 34, 13, 29, 50, 68, 70, 86, 89, 64, 81, 45, 64, 49, 64, 87, 
++ 65, 65, 44, 37, 64, 68, 73, 85, 83, 95, 84, 0, 7, 15, 27, 44, 
++ 37, 36, 20, 51, 65, 44, 64, 59, 73, 69, 78, 81, 90, 97, 89, 72, 
++ 85, 74, 62, 68, 59, 52, 48, 43, 50, 34, 21, 18, 5, 1, 10, 2, 
++ 11, 2, 1, 44), .Dim = c(41, 2), .Dimnames = list(NULL, c("x", 
++ "y")))
+> Unix <- DAG(
++                 SystemV.3 ~ SystemV.2,
++                 SystemV.2 ~ SystemV.0,
++                 SystemV.0 ~ TS4.0,
++                 TS4.0 ~ Unix.TS3.0 + Unix.TS.PP + CB.Unix.3,
++                 PDP11.SysV ~ CB.Unix.3,
++                 CB.Unix.3 ~ CB.Unix.2,
++                 CB.Unix.2 ~ CB.Unix.1,
++                 Unix.TS.PP ~ CB.Unix.3,
++                 Unix.TS3.0 ~ Unix.TS1.0 + PWB2.0 + USG3.0 + Interdata,
++                 USG3.0 ~ USG2.0,
++                 PWB2.0 ~ Interdata + PWB1.2,
++                 USG2.0 ~ USG1.0,
++                 CB.Unix.1 ~ USG1.0,
++                 PWB1.2 ~ PWB1.0,
++                 USG1.0 ~ PWB1.0,
++                 PWB1.0 ~ FifthEd,
++                 SixthEd ~ FifthEd,
++                 LSX ~ SixthEd,
++                 MiniUnix ~ SixthEd,
++                 Interdata ~ SixthEd,
++                 Wollongong ~ SixthEd,
++                 SeventhEd ~ Interdata,
++                 BSD1 ~ SixthEd,
++                 Xenix ~ SeventhEd,
++                 V32 ~ SeventhEd,
++                 Uniplus ~ SeventhEd,
++                 BSD3 ~ V32,
++                 BSD2 ~ BSD1,
++                 BSD4 ~ BSD3,
++                 BSD4.1 ~ BSD4,
++                 EigthEd ~ SeventhEd + BSD4.1,
++                 NinethEd ~ EigthEd,
++                 Ultrix32 ~ BSD4.2,
++                 BSD4.2 ~ BSD4.1,
++                 BSD4.3 ~ BSD4.2,
++                 BSD2.8 ~ BSD4.1 + BSD2,
++                 BSD2.9 ~ BSD2.8,
++                 Ultrix11 ~ BSD2.8 + V7M + SeventhEd,
++                 V7M ~ SeventhEd
++                 )
+> drawGraph(Unix, coor=xy, adjust=FALSE)
+> # dev.print(file="unix.fig", device=xfig) # Edit the graph with Xfig
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("drawGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("edgematrix")
+> ### * edgematrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: edgematrix
+> ### Title: Edge matrix of a graph
+> ### Aliases: edgematrix
+> ### Keywords: array algebra graphs multivariate
+> 
+> ### ** Examples
+> 
+> amat <- DAG(y ~ x+z, z~u+v)
+> amat
+  y x z u v
+y 0 0 0 0 0
+x 1 0 0 0 0
+z 1 0 0 0 0
+u 0 0 1 0 0
+v 0 0 1 0 0
+> edgematrix(amat)
+  y x z u v
+y 1 1 1 0 0
+x 0 1 0 0 0
+z 0 0 1 1 1
+u 0 0 0 1 0
+v 0 0 0 0 1
+> edgematrix(amat, inv=TRUE)
+  y x z u v
+y 1 1 1 0 0
+x 0 1 0 0 0
+z 0 0 1 1 1
+u 0 0 0 1 0
+v 0 0 0 0 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("edgematrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("essentialGraph")
+> ### * essentialGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: essentialGraph
+> ### Title: Essential graph
+> ### Aliases: essentialGraph
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> dag = DAG(U ~ Y+Z, Y~X, Z~X)
+> essentialGraph(dag)
+  U Y Z X
+U 0 0 0 0
+Y 1 0 0 1
+Z 1 0 0 1
+X 0 1 1 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("essentialGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("findPath")
+> ### * findPath
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: findPath
+> ### Title: Finding paths
+> ### Aliases: findPath
+> ### Keywords: graphs
+> 
+> ### ** Examples
+> 
+> ## A (single) path on a spanning tree
+> findPath(bfsearch(UG(~ a*b*c + b*d + d*e+ e*c))$tree, st=1, en=5)
+[1] 1 3 5
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("findPath", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fitAncestralGraph")
+> ### * fitAncestralGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fitAncestralGraph
+> ### Title: Fitting of Gaussian Ancestral Graph Models
+> ### Aliases: fitAncestralGraph
+> ### Keywords: graphs models ancestral graph multivariate
+> 
+> ### ** Examples
+> 
+> ## A covariance matrix
+> "S" <- structure(c(2.93, -1.7, 0.76, -0.06,
++                   -1.7, 1.64, -0.78, 0.1,
++                    0.76, -0.78, 1.66, -0.78,
++                   -0.06, 0.1, -0.78, 0.81), .Dim = c(4,4),
++                  .Dimnames = list(c("y", "x", "z", "u"), c("y", "x", "z", "u")))
+> ## The following should give the same fit.   
+> ## Fit an ancestral graph y -> x <-> z <- u
+> fitAncestralGraph(ag1 <- makeMG(dg=DAG(x~y,z~u), bg = UG(~x*z)), S, n=100)
+$Shat
+          y          x          z          u
+y  2.930000 -1.4344254  0.0000000  0.0000000
+x -1.434425  1.3799680 -0.3430373  0.0000000
+z  0.000000 -0.3430373  1.5943070 -0.7442518
+u  0.000000  0.0000000 -0.7442518  0.8100000
+
+$Lhat
+     [,1]       [,2]       [,3] [,4]
+[1,]    0  0.0000000  0.0000000    0
+[2,]    0  0.6777235 -0.3430373    0
+[3,]    0 -0.3430373  0.9104666    0
+[4,]    0  0.0000000  0.0000000    0
+
+$Bhat
+         y x z         u
+y 1.000000 0 0 0.0000000
+x 0.489565 1 0 0.0000000
+z 0.000000 0 1 0.9188294
+u 0.000000 0 0 1.0000000
+
+$Ohat
+  y          x          z u
+y 0  0.0000000  0.0000000 0
+x 0  0.6777235 -0.3430373 0
+z 0 -0.3430373  0.9104666 0
+u 0  0.0000000  0.0000000 0
+
+$dev
+[1] 21.57711
+
+$df
+[1] 3
+
+$it
+[1] 4
+
+> 
+> ## Fit an ancestral graph y <-> x <-> z <-> u
+> fitAncestralGraph(ag2 <- makeMG(bg= UG(~y*x+x*z+z*u)), S, n=100)
+$Shat
+          y          x          z          u
+y  2.930000 -1.4344255  0.0000000  0.0000000
+x -1.434425  1.3799680 -0.3430373  0.0000000
+z  0.000000 -0.3430373  1.5943070 -0.7442518
+u  0.000000  0.0000000 -0.7442518  0.8100000
+
+$Lhat
+     [,1] [,2] [,3] [,4]
+[1,]    0    0    0    0
+[2,]    0    0    0    0
+[3,]    0    0    0    0
+[4,]    0    0    0    0
+
+$Bhat
+  y x z u
+y 1 0 0 0
+x 0 1 0 0
+z 0 0 1 0
+u 0 0 0 1
+
+$Ohat
+          y          x          z          u
+y  2.930000 -1.4344255  0.0000000  0.0000000
+x -1.434425  1.3799680 -0.3430373  0.0000000
+z  0.000000 -0.3430373  1.5943070 -0.7442518
+u  0.000000  0.0000000 -0.7442518  0.8100000
+
+$dev
+[1] 21.57711
+
+$df
+[1] 3
+
+$it
+[1] 14
+
+> 
+> ## Fit the same graph with fitCovGraph
+> fitCovGraph(ag2, S, n=100)    
+$Shat
+          y          x          z          u
+y  2.930000 -1.4344255  0.0000000  0.0000000
+x -1.434425  1.3799680 -0.3430373  0.0000000
+z  0.000000 -0.3430373  1.5943070 -0.7442518
+u  0.000000  0.0000000 -0.7442518  0.8100000
+
+$dev
+[1] 21.57711
+
+$df
+[1] 3
+
+$it
+[1] 14
+
+> 
+> ## Another example for the mathematics marks data
+> 
+> data(marks)
+> S <- var(marks)
+> mag1 <- makeMG(bg=UG(~mechanics*vectors*algebra+algebra*analysis*statistics))
+> fitAncestralGraph(mag1, S, n=88)
+$Shat
+           mechanics   vectors  algebra  analysis statistics
+mechanics  305.68848 127.04336 53.15421   0.00000    0.00000
+vectors    127.04336 172.84222 43.11507   0.00000    0.00000
+algebra     53.15421  43.11507 88.39060  84.78364   92.65154
+analysis     0.00000   0.00000 84.78364 220.38036  155.53553
+statistics   0.00000   0.00000 92.65154 155.53553  297.75536
+
+$Lhat
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    0    0    0    0
+[2,]    0    0    0    0    0
+[3,]    0    0    0    0    0
+[4,]    0    0    0    0    0
+[5,]    0    0    0    0    0
+
+$Bhat
+           mechanics vectors algebra analysis statistics
+mechanics          1       0       0        0          0
+vectors            0       1       0        0          0
+algebra            0       0       1        0          0
+analysis           0       0       0        1          0
+statistics         0       0       0        0          1
+
+$Ohat
+           mechanics   vectors  algebra  analysis statistics
+mechanics  305.68848 127.04336 53.15421   0.00000    0.00000
+vectors    127.04336 172.84222 43.11507   0.00000    0.00000
+algebra     53.15421  43.11507 88.39060  84.78364   92.65154
+analysis     0.00000   0.00000 84.78364 220.38036  155.53553
+statistics   0.00000   0.00000 92.65154 155.53553  297.75536
+
+$dev
+[1] 31.97538
+
+$df
+[1] 4
+
+$it
+[1] 21
+
+> 
+> mag2 <- makeMG(ug=UG(~mechanics*vectors+analysis*statistics),
++                dg=DAG(algebra~mechanics+vectors+analysis+statistics))
+> fitAncestralGraph(mag2, S, n=88) # Same fit as above
+$Shat
+              mechanics      vectors  algebra     analysis   statistics
+mechanics  3.056885e+02 1.270434e+02 53.15421 1.247322e-08 8.803090e-09
+vectors    1.270434e+02 1.728422e+02 43.11507 5.183837e-09 3.658542e-09
+algebra    5.315421e+01 4.311507e+01 88.39060 8.478364e+01 9.265154e+01
+analysis   1.247322e-08 5.183837e-09 84.78364 2.203804e+02 1.555355e+02
+statistics 8.803090e-09 3.658542e-09 92.65154 1.555355e+02 2.977554e+02
+
+$Lhat
+     [,1] [,2]     [,3] [,4] [,5]
+[1,]    0    0  0.00000    0    0
+[2,]    0    0  0.00000    0    0
+[3,]    0    0 37.12009    0    0
+[4,]    0    0  0.00000    0    0
+[5,]    0    0  0.00000    0    0
+
+$Bhat
+            mechanics    vectors algebra   analysis statistics
+mechanics   1.0000000  0.0000000       0  0.0000000  0.0000000
+vectors     0.0000000  1.0000000       0  0.0000000  0.0000000
+algebra    -0.1010961 -0.1751394       1 -0.2615174 -0.1745604
+analysis    0.0000000  0.0000000       0  1.0000000  0.0000000
+statistics  0.0000000  0.0000000       0  0.0000000  1.0000000
+
+$Ohat
+           mechanics vectors  algebra analysis statistics
+mechanics          0       0  0.00000        0          0
+vectors            0       0  0.00000        0          0
+algebra            0       0 37.12009        0          0
+analysis           0       0  0.00000        0          0
+statistics         0       0  0.00000        0          0
+
+$dev
+[1] 31.97538
+
+$df
+[1] 4
+
+$it
+[1] 2
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fitAncestralGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fitConGraph")
+> ### * fitConGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fitConGraph
+> ### Title: Fitting a Gaussian concentration graph model
+> ### Aliases: fitConGraph
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## A model for the mathematics marks (Whittaker, 1990)
+> data(marks)
+> ## A butterfly concentration graph  
+> G <- UG(~ mechanics*vectors*algebra + algebra*analysis*statistics)
+> fitConGraph(G, cov(marks), nrow(marks))   
+$Shat
+           mechanics   vectors   algebra  analysis statistics
+mechanics   305.6885 127.04336 101.46904 100.77459  109.54496
+vectors     127.0434 172.84222  85.15726  84.57444   91.93492
+algebra     101.4690  85.15726 112.88597 112.11338  121.87056
+analysis    100.7746  84.57444 112.11338 220.38036  155.53553
+statistics  109.5450  91.93492 121.87056 155.53553  297.75536
+
+$dev
+[1] 0.9008831
+
+$df
+[1] 4
+
+$it
+[1] 5
+
+> ## Using the cliques
+> 
+> cl = list(c("mechanics", "vectors",   "algebra"), c("algebra", "analysis" ,  "statistics")) 
+> fitConGraph(G, S = cov(marks), n = nrow(marks), cli = cl) 
+$Shat
+           mechanics   vectors   algebra  analysis statistics
+mechanics   305.6885 127.04336 101.46904 100.77459  109.54496
+vectors     127.0434 172.84222  85.15726  84.57444   91.93492
+algebra     101.4690  85.15726 112.88597 112.11338  121.87056
+analysis    100.7746  84.57444 112.11338 220.38036  155.53553
+statistics  109.5450  91.93492 121.87056 155.53553  297.75536
+
+$dev
+[1] 0.9008831
+
+$df
+[1] 4
+
+$it
+[1] 2
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fitConGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fitCovGraph")
+> ### * fitCovGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fitCovGraph
+> ### Title: Fitting of Gaussian covariance graph models
+> ### Aliases: fitCovGraph
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## Correlations among four strategies to cope with stress for 
+> ## 72 students. Cox & Wermuth (1996), p. 73.
+> 
+> data(stress)
+> 
+> ## A chordless 4-cycle covariance graph
+> G <- UG(~ Y*X + X*U + U*V + V*Y)
+> 
+> fitCovGraph(G, S = stress, n=72)
+$Shat
+           Y          V          X          U
+Y  0.9995028 -0.2038079  0.4610985  0.0000000
+V -0.2038079  1.0020514  0.0000000  0.4717660
+X  0.4610985  0.0000000  1.0015117 -0.1536671
+U  0.0000000  0.4717660 -0.1536671  0.9996165
+
+$dev
+[1] 0.007675671
+
+$df
+[1] 2
+
+$it
+[1] 7
+
+> fitCovGraph(G, S = stress, n=72, alg="dual")
+$Shat
+           Y          V          X          U
+Y  0.9994039 -0.2037920  0.4610611  0.0000000
+V -0.2037920  1.0020263  0.0000000  0.4717259
+X  0.4610611  0.0000000  1.0014904 -0.1536580
+U  0.0000000  0.4717259 -0.1536580  0.9995170
+
+$dev
+[1] 0.007676413
+
+$df
+[1] 2
+
+$it
+[1] 4
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fitCovGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fitDag")
+> ### * fitDag
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fitDag
+> ### Title: Fitting of Gaussian DAG models
+> ### Aliases: fitDag
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> dag <- DAG(y ~ x+u, x ~ z, z ~ u)
+> "S" <- structure(c(2.93, -1.7, 0.76, -0.06,
++                    -1.7, 1.64, -0.78, 0.1,
++                     0.76, -0.78, 1.66, -0.78,
++                     -0.06, 0.1, -0.78, 0.81), .Dim = c(4,4),
++          .Dimnames = list(c("y", "x", "z", "u"), c("y", "x", "z", "u")))
+> fitDag(dag, S, 200)
+$Shat
+           y         x          z          u
+y  2.8998982 -1.685527  0.7687591 -0.3371388
+x -1.6855265  1.640000 -0.7800000  0.3665060
+z  0.7687591 -0.780000  1.6600000 -0.7800000
+u -0.3371388  0.366506 -0.7800000  0.8100000
+
+$Ahat
+  y        x         z           u
+y 1 1.039897 0.0000000 -0.05430825
+x 0 1.000000 0.4698795  0.00000000
+z 0 0.000000 1.0000000  0.96296296
+u 0 0.000000 0.0000000  1.00000000
+
+$Dhat
+        y         x         z         u 
+1.1654339 1.2734940 0.9088889 0.8100000 
+
+$dev
+[1] 26.90038
+
+$df
+[1] 2
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fitDag", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fitDagLatent")
+> ### * fitDagLatent
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fitDagLatent
+> ### Title: Fitting Gaussian DAG models with one latent variable
+> ### Aliases: fitDagLatent
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## data from Joreskog and Goldberger (1975)
+> V <- matrix(c(1,     0.36,   0.21,  0.10,  0.156, 0.158,
++               0.36,  1,      0.265, 0.284, 0.192, 0.324,
++               0.210, 0.265,  1,     0.176, 0.136, 0.226,
++               0.1,   0.284,  0.176, 1,     0.304, 0.305, 
++               0.156, 0.192,  0.136, 0.304, 1,     0.344,
++               0.158, 0.324,  0.226, 0.305, 0.344, 1),     6,6)
+> nod <- c("y1", "y2", "y3", "x1", "x2", "x3")
+> dimnames(V) <- list(nod,nod)
+> dag <- DAG(y1 ~ z, y2 ~ z, y3 ~ z, z ~ x1 + x2 + x3, x1~x2+x3, x2~x3) 
+> fitDagLatent(dag, V, n=530, latent="z", seed=4564)
+...............................................................................
+..............................................................
+$Shat
+          y1        y2        y3        x1        x2        x3         z
+y1 1.0000000 0.3424515 0.1870304 0.1692573 0.1315980 0.2038965 0.4656999
+y2 0.3424515 1.0000000 0.2953241 0.2672602 0.2077955 0.3219560 0.7353480
+y3 0.1870304 0.2953241 1.0000000 0.1459645 0.1134878 0.1758367 0.4016114
+x1 0.1692573 0.2672602 0.1459645 1.0000000 0.3040000 0.3050000 0.3634472
+x2 0.1315980 0.2077955 0.1134878 0.3040000 1.0000000 0.3440000 0.2825812
+x3 0.2038965 0.3219560 0.1758367 0.3050000 0.3440000 1.0000000 0.4378280
+z  0.4656999 0.7353480 0.4016114 0.3634472 0.2825812 0.4378280 1.0000000
+
+$Ahat
+   y1 y2 y3         x1          x2         x3          z
+y1  1  0  0  0.0000000  0.00000000  0.0000000 -0.4656999
+y2  0  1  0  0.0000000  0.00000000  0.0000000 -0.7353480
+y3  0  0  1  0.0000000  0.00000000  0.0000000 -0.4016114
+x1  0  0  0  1.0000000 -0.22580030 -0.2273247  0.0000000
+x2  0  0  0  0.0000000  1.00000000 -0.3440000  0.0000000
+x3  0  0  0  0.0000000  0.00000000  1.0000000  0.0000000
+z   0  0  0 -0.2321414 -0.09726341 -0.3335663  1.0000000
+
+$Dhat
+       y1        y2        y3        x1        x2        x3         z 
+0.7831236 0.4592633 0.8387083 0.8620227 0.8816640 1.0000000 0.7420994 
+
+$dev
+[1] 12.52184
+
+$df
+[1] 6
+
+$it
+[1] 142
+
+> fitDagLatent(dag, V, n=530, latent="z", norm=2, seed=145)
+...............................................................................
+........................................................................
+$Shat
+           y1         y2         y3         x1         x2         x3          z
+y1  1.0000000  0.3424514  0.1870305  0.1692574  0.1315981  0.2038965 -0.5405989
+y2  0.3424514  1.0000000  0.2953241  0.2672601  0.2077955  0.3219559 -0.8536145
+y3  0.1870305  0.2953241  1.0000000  0.1459646  0.1134879  0.1758368 -0.4662031
+x1  0.1692574  0.2672601  0.1459646  1.0000000  0.3040000  0.3050000 -0.4219009
+x2  0.1315981  0.2077955  0.1134879  0.3040000  1.0000000  0.3440000 -0.3280291
+x3  0.2038965  0.3219559  0.1758368  0.3050000  0.3440000  1.0000000 -0.5082445
+z  -0.5405989 -0.8536145 -0.4662031 -0.4219009 -0.3280291 -0.5082445  1.3475286
+
+$Ahat
+   y1 y2 y3       x1         x2         x3         z
+y1  1  0  0 0.000000  0.0000000  0.0000000 0.4011781
+y2  0  1  0 0.000000  0.0000000  0.0000000 0.6334667
+y3  0  0  1 0.000000  0.0000000  0.0000000 0.3459690
+x1  0  0  0 1.000000 -0.2258003 -0.2273247 0.0000000
+x2  0  0  0 0.000000  1.0000000 -0.3440000 0.0000000
+x3  0  0  0 0.000000  0.0000000  1.0000000 0.0000000
+z   0  0  0 0.269477  0.1129064  0.3872142 1.0000000
+
+$Dhat
+       y1        y2        y3        x1        x2        x3         z 
+0.7831236 0.4592637 0.8387082 0.8620227 0.8816640 1.0000000 1.0000000 
+
+$dev
+[1] 12.52184
+
+$df
+[1] 6
+
+$it
+[1] 152
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fitDagLatent", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fitmlogit")
+> ### * fitmlogit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fitmlogit
+> ### Title: Multivariate logistic models
+> ### Aliases: fitmlogit
+> ### Keywords: multivariate logistic model
+> 
+> ### ** Examples
+>     
+> data(surdata)                     
+> out1 <- fitmlogit(A ~X, B ~ Z, cbind(A, B) ~ X*Z, data = surdata)     
+Initial probabilities
+1 -5.781145 3.862849e-07 2.476583 
+2 -5.710271 0.1510548 0.6452192 
+3 -5.719747 0.01953917 0.3742708 
+4 -5.712123 0.003175151 0.1829417 
+5 -5.711987 0.0007332553 0.08353252 
+6 -5.712092 0.0002403342 0.04774047 
+7 -5.712112 6.875256e-05 0.02595894 
+8 -5.71212 2.23096e-05 0.01484325 
+9 -5.712122 6.993719e-06 0.008303064 
+10 -5.712123 2.237299e-06 0.004704156 
+11 -5.712123 7.096682e-07 0.002647453 
+12 -5.712123 2.262614e-07 0.001495698 
+13 -5.712123 7.195106e-08 0.0008432126 
+14 -5.712123 2.29148e-08 0.0004759431 
+15 -5.712123 7.292059e-09 0.0002684595 
+16 -5.712123 2.321566e-09 0.0001514848 
+17 -5.712123 7.389274e-10 8.546049e-05 
+> out1$beta
+           [,1]
+[1,]  1.8268230
+[2,] -0.9238400
+[3,]  0.9614407
+[4,]  0.8120415
+[5,] -0.5108758
+[6,] -0.3139028
+[7,]  0.3029662
+[8,] -0.5232140
+> out2 <- fitmlogit(A ~X, B ~ Z, cbind(A, B) ~ 1, data = surdata)        
+Initial probabilities
+1 -5.771855 4.006639e-06 0.7823041 
+2 -5.726873 0.04888596 0.0388441 
+3 -5.728327 6.216107e-05 0.004303584 
+4 -5.728322 5.651629e-07 0.000155462 
+5 -5.728322 1.173841e-09 1.408098e-05 
+> out2$beta
+           [,1]
+[1,]  1.8334483
+[2,] -0.9104662
+[3,]  0.9600246
+[4,]  0.8119839
+[5,] -0.7019575
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fitmlogit", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fundCycles")
+> ### * fundCycles
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fundCycles
+> ### Title: Fundamental cycles
+> ### Aliases: fundCycles
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## Three fundamental cycles
+> fundCycles(UG(~a*b*d + d*e + e*a*f))
+[[1]]
+ [,1] [,2]
+    2    1
+    1    3
+    3    2
+
+[[2]]
+ [,1] [,2]
+    3    1
+    1    4
+    4    3
+
+[[3]]
+ [,1] [,2]
+    4    1
+    1    5
+    5    4
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fundCycles", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("glucose")
+> ### * glucose
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: glucose
+> ### Title: Glucose control
+> ### Aliases: glucose
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(glucose)
+> ## See Cox & Wermuth (1996), Figure 6.3 p. 140
+> coplot(Y ~ W | A, data=glucose)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("glucose", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("grMAT")
+> ### * grMAT
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: grMAT
+> ### Title: Graph to adjacency matrix
+> ### Aliases: grMAT
+> ### Keywords: graphs adjacency matrix mixed graph vector
+> 
+> ### ** Examples
+> 
+> ## Generating the adjacency matrix from an igraph object
+> exdag <- graph.formula(v7+-v8-+v5+-v6, v5-+v1+-v4-+v3, v1+-v2+-v3)
+> grMAT(exdag)
+   v7 v8 v5 v6 v1 v4 v3 v2
+v7  0  0  0  0  0  0  0  0
+v8  1  0  1  0  0  0  0  0
+v5  0  0  0  0  1  0  0  0
+v6  0  0  1  0  0  0  0  0
+v1  0  0  0  0  0  0  0  0
+v4  0  0  0  0  1  0  1  0
+v3  0  0  0  0  0  0  0  1
+v2  0  0  0  0  1  0  0  0
+> 
+> ## Generating the adjacency matrix from a vector
+> exvec <-c ('b',1,2,'b',1,14,'a',9,8,'l',9,11,'a',10,8,
++            'a',11,2,'a',11,10,'a',12,1,'b',12,14,'a',13,10,'a',13,12)
+> grMAT(exvec)
+     1 10 11  12 13  14   2 8  9
+1    0  0  0   0  0 100 100 0  0
+10   0  0  0   0  0   0   0 1  0
+11   0  1  0   0  0   0   1 0 10
+12   1  0  0   0  0 100   0 0  0
+13   0  1  0   1  0   0   0 0  0
+14 100  0  0 100  0   0   0 0  0
+2  100  0  0   0  0   0   0 0  0
+8    0  0  0   0  0   0   0 0  0
+9    0  0 10   0  0   0   0 1  0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("grMAT", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("isADMG")
+> ### * isADMG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isADMG
+> ### Title: Acyclic directed mixed graphs
+> ### Aliases: isADMG
+> ### Keywords: graphs ancestral graph mixed graph models multivariate
+> 
+> ### ** Examples
+> 
+> 	## Examples from Richardson and Spirtes (2002)
+> 	a1 <- makeMG(dg=DAG(a~b, b~d, d~c), bg=UG(~a*c))  
+> 	isADMG(a1)    # Not an AG. (a2) p.969    
+[1] TRUE
+> 	a2 <- makeMG(dg=DAG(b ~ a, d~c), bg=UG(~a*c+c*b+b*d))           # Fig. 3 (b1) p.969  
+> 	isADMG(a2)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isADMG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("isAG")
+> ### * isAG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isAG
+> ### Title: Ancestral graph
+> ### Aliases: isAG
+> ### Keywords: graphs ancestral graph mixed graph models multivariate
+> 
+> ### ** Examples
+> 
+> 	## Examples from Richardson and Spirtes (2002)
+> 	a1 <- makeMG(dg=DAG(a~b, b~d, d~c), bg=UG(~a*c))  
+> 	isAG(a1)    # Not an AG. (a2) p.969    
+Warning in isAG(a1) : Spouses cannot be ancestors.
+[1] FALSE
+> 	a2 <- makeMG(dg=DAG(b ~ a, d~c), bg=UG(~a*c+c*b+b*d))           # Fig. 3 (b1) p.969  
+> 	isAG(a2)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isAG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("isAcyclic")
+> ### * isAcyclic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isAcyclic
+> ### Title: Graph queries
+> ### Aliases: isAcyclic
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## A cyclic graph
+> d <- matrix(0,3,3)
+> rownames(d) <- colnames(d) <- c("x", "y", "z")
+> d["x","y"] <- d["y", "z"] <- d["z", "x"] <- 1
+> ## Test if the graph is acyclic
+> isAcyclic(d)
+[1] FALSE
+> isAcyclic(d, method = 1)
+[1] FALSE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isAcyclic", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("isGident")
+> ### * isGident
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isGident
+> ### Title: G-identifiability of an UG
+> ### Aliases: isGident
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## A not G-identifiable UG
+> G1 <- UG(~ a*b + u*v)
+> isGident(G1)
+[1] FALSE
+> ## G-identifiable UG
+> G2 <- UG(~ a + b + u*v)
+> isGident(G2)
+[1] TRUE
+> ## G-identifiable UG
+> G3 <- cmpGraph(UG(~a*b*c+x*y*z))
+> isGident(G3)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isGident", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("makeMG")
+> ### * makeMG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: makeMG
+> ### Title: Mixed Graphs
+> ### Aliases: makeMG
+> ### Keywords: graphs ancestral graph mixed graph models multivariate
+> 
+> ### ** Examples
+> 
+> ## Examples from Richardson and Spirtes (2002)
+> a1 <- makeMG(dg=DAG(a~b, b~d, d~c), bg=UG(~a*c))  
+> isAG(a1)    # Not an AG. (a2) p.969    
+Warning in isAG(a1) : Spouses cannot be ancestors.
+[1] FALSE
+> a2 <- makeMG(dg=DAG(b ~ a, d~c), bg=UG(~a*c+c*b+b*d))           # Fig. 3 (b1) p.969  
+> isAG(a1)
+Warning in isAG(a1) : Spouses cannot be ancestors.
+[1] FALSE
+> a3 <- makeMG(ug = UG(~ a*c), dg=DAG(b ~ a, d~c), bg=UG(~ b*d)) # Fig. 3 (b2) p.969
+> a5 <- makeMG(bg=UG(~alpha*beta+gamma*delta), dg=DAG(alpha~gamma,
++ delta~beta))  # Fig. 6 p. 973
+> ## Another Example
+> a4 <- makeMG(ug=UG(~y0*y1), dg=DAG(y4~y2, y2~y1), bg=UG(~y2*y3+y3*y4))  
+> ## A mixed graphs with double edges. 
+> mg <- makeMG(dg = DG(Y ~ X, Z~W, W~Z, Q~X), ug = UG(~X*Q), 
++ bg = UG(~ Y*X+X*Q+Q*W + Y*Z) )
+> ## Chronic pain data: a regression graph
+> chronic.pain <- makeMG(dg = DAG(Y ~ Za, Za ~ Zb + A, Xa ~ Xb, 
++ Xb ~ U+V, U ~ A + V, Zb ~ B, A ~ B), bg = UG(~Za*Xa + Zb*Xb))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("makeMG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("marg.param")
+> ### * marg.param
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: marg.param
+> ### Title: Link function of marginal log-linear parameterization
+> ### Aliases: marg.param
+> ### Keywords: logistic models ordinal models
+> 
+> ### ** Examples
+>     
+> marg.param(c(3,3), c("l", "g"))
+$C
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
+[1,]   -1    0    1    0    0    0    0    0    0     0     0     0     0     0
+[2,]    0   -1    0    1    0    0    0    0    0     0     0     0     0     0
+[3,]    0    0    0    0   -1    0    1    0    0     0     0     0     0     0
+[4,]    0    0    0    0    0   -1    0    1    0     0     0     0     0     0
+[5,]    0    0    0    0    0    0    0    0    1     0    -1     0     0     0
+[6,]    0    0    0    0    0    0    0    0    0     1     0    -1     0     0
+[7,]    0    0    0    0    0    0    0    0    0     0     0     0     1     0
+[8,]    0    0    0    0    0    0    0    0    0     0     0     0     0     1
+     [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24]
+[1,]     0     0     0     0     0     0     0     0     0     0
+[2,]     0     0     0     0     0     0     0     0     0     0
+[3,]     0     0     0     0     0     0     0     0     0     0
+[4,]     0     0     0     0     0     0     0     0     0     0
+[5,]     0     0    -1     0     1     0     0     0     0     0
+[6,]     0     0     0    -1     0     1     0     0     0     0
+[7,]    -1     0     0     0     0     0    -1     0     1     0
+[8,]     0    -1     0     0     0     0     0    -1     0     1
+
+$M
+      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9]
+ [1,]    1    0    0    1    0    0    1    0    0
+ [2,]    0    1    0    0    1    0    0    1    0
+ [3,]    0    1    0    0    1    0    0    1    0
+ [4,]    0    0    1    0    0    1    0    0    1
+ [5,]    1    1    1    0    0    0    0    0    0
+ [6,]    1    1    1    1    1    1    0    0    0
+ [7,]    0    0    0    1    1    1    1    1    1
+ [8,]    0    0    0    0    0    0    1    1    1
+ [9,]    1    0    0    0    0    0    0    0    0
+[10,]    0    1    0    0    0    0    0    0    0
+[11,]    0    1    0    0    0    0    0    0    0
+[12,]    0    0    1    0    0    0    0    0    0
+[13,]    1    0    0    1    0    0    0    0    0
+[14,]    0    1    0    0    1    0    0    0    0
+[15,]    0    1    0    0    1    0    0    0    0
+[16,]    0    0    1    0    0    1    0    0    0
+[17,]    0    0    0    1    0    0    1    0    0
+[18,]    0    0    0    0    1    0    0    1    0
+[19,]    0    0    0    0    1    0    0    1    0
+[20,]    0    0    0    0    0    1    0    0    1
+[21,]    0    0    0    0    0    0    1    0    0
+[22,]    0    0    0    0    0    0    0    1    0
+[23,]    0    0    0    0    0    0    0    1    0
+[24,]    0    0    0    0    0    0    0    0    1
+
+$G
+      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+ [1,]    0    0    0    0    0    0    0    0
+ [2,]    1    0    0    0    0    0    0    0
+ [3,]    1    1    0    0    0    0    0    0
+ [4,]    0    0    1    0    0    0    0    0
+ [5,]    1    0    1    0    1    0    0    0
+ [6,]    1    1    1    0    1    1    0    0
+ [7,]    0    0    1    1    0    0    0    0
+ [8,]    1    0    1    1    1    0    1    0
+ [9,]    1    1    1    1    1    1    1    1
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("marg.param", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("marks")
+> ### * marks
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: marks
+> ### Title: Mathematics marks
+> ### Aliases: marks
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(marks)
+> pairs(marks)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("marks", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mat.mlogit")
+> ### * mat.mlogit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mat.mlogit
+> ### Title: Multivariate logistic parametrization
+> ### Aliases: mat.mlogit
+> ### Keywords: logistic model
+> 
+> ### ** Examples
+>  
+> mat.mlogit(2)
+$C
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+[1,]   -1    1    0    0    0    0    0    0
+[2,]    0    0   -1    1    0    0    0    0
+[3,]    0    0    0    0    1   -1   -1    1
+
+$L
+     [,1] [,2] [,3] [,4]
+[1,]    1    0    1    0
+[2,]    0    1    0    1
+[3,]    1    1    0    0
+[4,]    0    0    1    1
+[5,]    1    0    0    0
+[6,]    0    1    0    0
+[7,]    0    0    1    0
+[8,]    0    0    0    1
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mat.mlogit", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("msep")
+> ### * msep
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: msep
+> ### Title: The m-separation criterion
+> ### Aliases: msep
+> ### Keywords: graphs d-separation m-separation mixed graph
+> 
+> ### ** Examples
+> 
+> H <-matrix(c(0,0,0,0,
++ 	         1,0,0,1,
++ 	         0,1,0,0,
++ 	         0,0,0,0),4,4)
+> msep(H,1,4, 2)
+[1] FALSE
+> msep(H,1,4, c())
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("msep", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("null")
+> ### * null
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: null
+> ### Title: Null space of a matrix
+> ### Aliases: null
+> ### Keywords: matrix
+> 
+> ### ** Examples
+> 
+>  null(c(1,1,1))
+           [,1]       [,2]
+[1,] -0.5773503 -0.5773503
+[2,]  0.7886751 -0.2113249
+[3,] -0.2113249  0.7886751
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("null", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("parcor")
+> ### * parcor
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: parcor
+> ### Title: Partial correlations
+> ### Aliases: parcor
+> ### Keywords: array graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ### Partial correlations for the mathematics marks data
+> data(marks)
+> S <- var(marks)
+> parcor(S)
+               mechanics    vectors   algebra      analysis statistics
+mechanics   1.0000000000 0.32846282 0.2292442 -0.0007121818 0.02550897
+vectors     0.3284628169 1.00000000 0.2816015  0.0778303605 0.01996942
+algebra     0.2292441885 0.28160149 1.0000000  0.4317713938 0.35673607
+analysis   -0.0007121818 0.07783036 0.4317714  1.0000000000 0.25277656
+statistics  0.0255089719 0.01996942 0.3567361  0.2527765574 1.00000000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("parcor", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pcor")
+> ### * pcor
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pcor
+> ### Title: Partial correlation
+> ### Aliases: pcor
+> ### Keywords: models multivariate
+> 
+> ### ** Examples
+> 
+> data(marks)
+> ## The correlation between vectors and algebra given analysis and statistics
+>  pcor(c("vectors", "algebra", "analysis", "statistics"), var(marks))
+[1] 0.388203
+> ## The same
+> pcor(c(2,3,4,5), var(marks))
+[1] 0.388203
+> ## The correlation between vectors and algebra given statistics
+>  pcor(c("vectors", "algebra", "statistics"), var(marks))
+[1] 0.4753595
+> ## The marginal correlation between analysis and statistics 
+> pcor(c("analysis","statistics"), var(marks))
+[1] 0.6071743
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pcor", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pcor.test")
+> ### * pcor.test
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pcor.test
+> ### Title: Test for zero partial association
+> ### Aliases: pcor.test
+> ### Keywords: htest multivariate
+> 
+> ### ** Examples
+> 
+> ## Are 2,3 independent given 1?
+> data(marks)
+> pcor.test(pcor(c(2,3,1), var(marks)), 1, n=88)
+$tval
+[1] 4.528232
+
+$df
+[1] 85
+
+$pvalue
+[1] 1.923857e-05
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pcor.test", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotGraph")
+> ### * plotGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotGraph
+> ### Title: Plot of a mixed graph
+> ### Aliases: plotGraph
+> ### Keywords: graphs adjacency matrix mixed graphs plot
+> 
+> ### ** Examples
+> 
+> exvec<-c("b",1,2,"b",1,14,"a",9,8,"l",9,11,
++          "a",10,8,"a",11,2,"a",11,9,"a",11,10,
++          "a",12,1,"b",12,14,"a",13,10,"a",13,12)
+> plotGraph(exvec)
+Loading required package: tcltk
+> ############################################
+> amat<-matrix(c(0,11,0,0,10,0,100,0,0,100,0,1,0,0,1,0),4,4)
+> plotGraph(amat)     
+> plotGraph(makeMG(bg = UG(~a*b*c+ c*d), dg = DAG(a ~ x + z, b ~ z )))
+> plotGraph(makeMG(bg = UG(~a*b*c+ c*d), dg = DAG(a ~ x + z, b ~ z )), dashed = TRUE)    
+> # A graph with double and triple edges
+> G <-
++ structure(c(0, 101, 0, 0, 100, 0, 100, 100, 0, 100, 0, 100, 0, 
++ 111, 100, 0), .Dim = c(4L, 4L), .Dimnames = list(c("X", "Z", 
++ "Y", "W"), c("X", "Z", "Y", "W")))
+> plotGraph(G)      
+> # A regression chain graph with longer labels
+>  plotGraph(makeMG(bg = UG(~Love*Constraints+ Constraints*Reversal+ Abuse*Distress), 
++    dg = DAG(Love ~ Abuse + Distress, Constraints ~ Distress, Reversal ~ Distress, 
++    Abuse ~ Fstatus, Distress ~ Fstatus), 
++    ug = UG(~Fstatus*Schooling+ Schooling*Age)), 
++    dashed = TRUE, noframe = TRUE)    
+> # A graph with 4 edges between two nodes. 
+> G4 = matrix(0, 2, 2); G4[1,2] = 111; G4[2,1] = 111
+> plotGraph(G4)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:tcltk’
+
+> nameEx("powerset")
+> ### * powerset
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: powerset
+> ### Title: Power set
+> ### Aliases: powerset
+> ### Keywords: sets
+> 
+> ### ** Examples
+> 
+> powerset(c("A", "B", "C"), nonempty = FALSE)  
+[[1]]
+character(0)
+
+[[2]]
+[1] "A"
+
+[[3]]
+[1] "B"
+
+[[4]]
+[1] "C"
+
+[[5]]
+[1] "A" "B"
+
+[[6]]
+[1] "A" "C"
+
+[[7]]
+[1] "B" "C"
+
+[[8]]
+[1] "A" "B" "C"
+
+> powerset(1:3, sort = FALSE, nonempty = TRUE)
+[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+
+[[3]]
+[1] 1 2
+
+[[4]]
+[1] 3
+
+[[5]]
+[1] 1 3
+
+[[6]]
+[1] 2 3
+
+[[7]]
+[1] 1 2 3
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("powerset", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rcorr")
+> ### * rcorr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rcorr
+> ### Title: Random correlation matrix
+> ### Aliases: rcorr
+> ### Keywords: distribution multivariate
+> 
+> ### ** Examples
+> 
+> ## A random correlation matrix of order 3
+> rcorr(3)
+           [,1]        [,2]         [,3]
+[1,]  1.0000000 0.521541162 -0.217068990
+[2,]  0.5215412 1.000000000  0.001206383
+[3,] -0.2170690 0.001206383  1.000000000
+> ## A random correlation matrix of order 5
+> rcorr(5)
+          [,1]        [,2]         [,3]         [,4]       [,5]
+[1,] 1.0000000  0.16849139  0.139394244  0.191157141  0.0211976
+[2,] 0.1684914  1.00000000  0.590519025 -0.071782494 -0.7539906
+[3,] 0.1393942  0.59051902  1.000000000 -0.005817047 -0.8421994
+[4,] 0.1911571 -0.07178249 -0.005817047  1.000000000  0.4530449
+[5,] 0.0211976 -0.75399064 -0.842199438  0.453044941  1.0000000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rcorr", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rnormDag")
+> ### * rnormDag
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rnormDag
+> ### Title: Random sample from a decomposable Gaussian model
+> ### Aliases: rnormDag
+> ### Keywords: distribution multivariate
+> 
+> ### ** Examples
+> 
+> ## Generate a sample of 100 observation from a multivariate normal
+> ## The matrix of the path coefficients 
+> A <- matrix(
++ c(1, -2, -3,  0, 0,  0,  0,
++   0,  1,  0, -4, 0,  0,  0,
++   0,  0,  1,  2, 0,  0,  0,
++   0,  0,  0,  1, 1, -5,  0,
++   0,  0,  0,  0, 1,  0,  3,
++   0,  0,  0,  0, 0,  1, -4,
++   0,  0,  0,  0, 0,  0,  1), 7, 7, byrow=TRUE)
+> D <- rep(1, 7)
+> X <- rnormDag(100, A, D)
+> 
+> ## The true covariance matrix
+> solve(A) %*% diag(D) %*% t(solve(A))
+      [,1]  [,2]  [,3]  [,4] [,5] [,6] [,7]
+[1,]  2238  4450 -2221  1112 -140  194   46
+[2,]  4450  8897 -4448  2224 -280  388   92
+[3,] -2221 -4448  2225 -1112  140 -194  -46
+[4,]  1112  2224 -1112   556  -70   97   23
+[5,]  -140  -280   140   -70   10  -12   -3
+[6,]   194   388  -194    97  -12   17    4
+[7,]    46    92   -46    23   -3    4    1
+> 
+> ## Triangular decomposition of the sample covariance matrix
+> triDec(cov(X))$A
+     [,1]      [,2]       [,3]        [,4]        [,5]       [,6]       [,7]
+[1,]    1 -1.983356 -3.0155982 -0.04543888 -0.05244152 -0.1656270 -0.7566530
+[2,]    0  1.000000  0.0465952 -3.83744867 -0.04859890 -0.3316160 -0.3175740
+[3,]    0  0.000000  1.0000000  1.89111947 -0.13189087  0.5756604 -0.1721831
+[4,]    0  0.000000  0.0000000  1.00000000  0.97995432 -4.9036606 -0.3272093
+[5,]    0  0.000000  0.0000000  0.00000000  1.00000000  0.1104357  2.4880929
+[6,]    0  0.000000  0.0000000  0.00000000  0.00000000  1.0000000 -4.0068651
+[7,]    0  0.000000  0.0000000  0.00000000  0.00000000  0.0000000  1.0000000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rnormDag", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rsphere")
+> ### * rsphere
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rsphere
+> ### Title: Random vectors on a sphere
+> ### Aliases: rsphere
+> ### Keywords: distribution multivariate
+> 
+> ### ** Examples
+> 
+> ## 100 points on circle
+> z <- rsphere(100,2)
+> plot(z)
+> 
+> ## 100 points on a sphere
+> z <- rsphere(100, 3)
+> pairs(z)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rsphere", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("shipley.test")
+> ### * shipley.test
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: shipley.test
+> ### Title: Test of all independencies implied by a given DAG
+> ### Aliases: shipley.test
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## A decomposable model for the mathematics marks data
+> data(marks)
+> dag <- DAG(mechanics ~ vectors+algebra, vectors ~ algebra, 
++ statistics ~ algebra+analysis, analysis ~ algebra)
+> shipley.test(dag, cov(marks), n=88)
+$ctest
+[1] 2.850461
+
+$df
+[1] 8
+
+$pvalue
+[1] 0.9433884
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("shipley.test", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("stress")
+> ### * stress
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: stress
+> ### Title: Stress
+> ### Aliases: stress
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(stress)
+> G = UG(~ Y*X + X*V + V*U + U*Y)
+> fitConGraph(G, stress, 100)
+$Shat
+            Y           V           X           U
+Y 1.000000000 0.003887228 0.460000000 0.010000000
+V 0.003887228 1.000000000 0.000000000 0.470000000
+X 0.460000000 0.000000000 1.000000000 0.003759638
+U 0.010000000 0.470000000 0.003759638 1.000000000
+
+$dev
+[1] 13.55716
+
+$df
+[1] 2
+
+$it
+[1] 6
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("stress", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("surdata")
+> ### * surdata
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: surdata
+> ### Title: A simulated data set
+> ### Aliases: surdata
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(surdata)
+> pairs(surdata)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("surdata", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("swp")
+> ### * swp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: swp
+> ### Title: Sweep operator
+> ### Aliases: swp
+> ### Keywords: array algebra models multivariate
+> 
+> ### ** Examples
+> 
+> ## A very simple example
+> V <- matrix(c(10, 1, 1, 2), 2, 2)
+> swp(V, 2)
+     [,1] [,2]
+[1,]  9.5  0.5
+[2,]  0.5 -0.5
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("swp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("topSort")
+> ### * topSort
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: topSort
+> ### Title: Topological sort
+> ### Aliases: topSort topOrder
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## A simple example
+> dag <- DAG(a ~ b, c ~ a + b, d ~ c + b)
+> dag
+  a b c d
+a 0 0 1 0
+b 1 0 1 1
+c 0 0 0 1
+d 0 0 0 0
+> topOrder(dag)
+[1] 2 1 3 4
+> topSort(dag)
+  b a c d
+b 0 1 1 1
+a 0 0 1 0
+c 0 0 0 1
+d 0 0 0 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("topSort", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("transClos")
+> ### * transClos
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: transClos
+> ### Title: Transitive closure of a graph
+> ### Aliases: transClos
+> ### Keywords: graphs models multivariate
+> 
+> ### ** Examples
+> 
+> ## Closure of a DAG
+> d <- DAG(y ~ x, x ~ z)
+> transClos(d)
+  y x z
+y 0 0 0
+x 1 0 0
+z 1 1 0
+> 
+> ## Closure of an UG
+> g <- UG(~ x*y*z+z*u+u*v)
+> transClos(g)
+  x y z u v
+x 0 1 1 1 1
+y 1 0 1 1 1
+z 1 1 0 1 1
+u 1 1 1 0 1
+v 1 1 1 1 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("transClos", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("triDec")
+> ### * triDec
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: triDec
+> ### Title: Triangular decomposition of a covariance matrix
+> ### Aliases: triDec
+> ### Keywords: array algebra models multivariate
+> 
+> ### ** Examples
+> 
+> ## Triangular decomposition of a covariance matrix
+> B <- matrix(c(1,  -2, 0, 1,
++               0,   1, 0, 1,
++               0,   0, 1, 0,
++               0,   0, 0, 1), 4, 4, byrow=TRUE)
+> B
+     [,1] [,2] [,3] [,4]
+[1,]    1   -2    0    1
+[2,]    0    1    0    1
+[3,]    0    0    1    0
+[4,]    0    0    0    1
+> D <- diag(c(3, 1, 2, 1))
+> S <- B %*% D %*% t(B)
+> triDec(S)
+$A
+     [,1] [,2] [,3] [,4]
+[1,]    1    2    0   -3
+[2,]    0    1    0   -1
+[3,]    0    0    1    0
+[4,]    0    0    0    1
+
+$B
+     [,1] [,2] [,3] [,4]
+[1,]    1   -2    0    1
+[2,]    0    1    0    1
+[3,]    0    0    1    0
+[4,]    0    0    0    1
+
+$Delta
+[1] 3 1 2 1
+
+> solve(B)
+     [,1] [,2] [,3] [,4]
+[1,]    1    2    0   -3
+[2,]    0    1    0   -1
+[3,]    0    0    1    0
+[4,]    0    0    0    1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("triDec", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("unmakeMG")
+> ### * unmakeMG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: unmakeMG
+> ### Title: Loopless mixed graphs components
+> ### Aliases: unmakeMG
+> ### Keywords: graphs ancestral graph mixed graph models multivariate
+> 
+> ### ** Examples
+> 
+> ag <- makeMG(ug=UG(~y0*y1), dg=DAG(y4~y2, y2~y1), bg=UG(~y2*y3+y3*y4))  
+> isAG(ag)
+[1] TRUE
+> unmakeMG(ag)
+$dg
+   y4 y2 y1 y0 y3
+y4  0  0  0  0  0
+y2  1  0  0  0  0
+y1  0  1  0  0  0
+y0  0  0  0  0  0
+y3  0  0  0  0  0
+
+$ug
+   y4 y2 y1 y0 y3
+y4  0  0  0  0  0
+y2  0  0  0  0  0
+y1  0  0  0  1  0
+y0  0  0  1  0  0
+y3  0  0  0  0  0
+
+$bg
+   y4 y2 y1 y0 y3
+y4  0  0  0  0  1
+y2  0  0  0  0  1
+y1  0  0  0  0  0
+y0  0  0  0  0  0
+y3  1  1  0  0  0
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("unmakeMG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  8.204 0.754 12.356 0.002 0.01 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

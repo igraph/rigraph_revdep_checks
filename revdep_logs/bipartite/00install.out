@@ -1,0 +1,45 @@
+* installing *source* package ‘bipartite’ ...
+** package ‘bipartite’ successfully unpacked and MD5 sums checked
+** libs
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c bmn5.cc -o bmn5.o
+bmn5.cc:1576:30: warning: variable 'out' is uninitialized when used here [-Wuninitialized]
+        for (i=1;i<=nr;i++) fprintf(out,"%10i",i);
+                                    ^~~
+bmn5.cc:1570:11: note: initialize the variable 'out' to silence this warning
+        FILE *out;
+                 ^
+                  = NULL
+1 warning generated.
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c identifyModules.cc -o identifyModules.o
+In file included from identifyModules.cc:93:
+./dendro.h:1130:7: warning: unused variable 'flag_debug' [-Wunused-variable]
+        bool flag_debug = false;
+             ^
+./dendro.h:1615:8: warning: unused variable 'flag_debug' [-Wunused-variable]
+        bool            flag_debug = true;
+                        ^
+./dendro.h:2215:7: warning: unused variable 'flag_debug' [-Wunused-variable]
+        bool flag_debug = false;
+             ^
+./dendro.h:2280:7: warning: unused variable 'flag_debug' [-Wunused-variable]
+        bool flag_debug = true;
+             ^
+./dendro.h:121:6: warning: private field 'nrOfLegalRandomEdges' is not used [-Wunused-private-field]
+        int     nrOfLegalRandomEdges;   //
+                ^
+./dendro.h:122:7: warning: private field 'legalRandomEdges' is not used [-Wunused-private-field]
+        int*    legalRandomEdges;       //
+                ^
+6 warnings generated.
+clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o bipartite.so bmn5.o identifyModules.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/bipartite.Rcheck/bipartite/libs
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (bipartite)

@@ -1,0 +1,3395 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "editrules"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "editrules-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('editrules')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘editrules’
+
+The following objects are masked from ‘package:igraph’:
+
+    blocks, normalize
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("adjacency")
+> ### * adjacency
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: adjacency
+> ### Title: Derive adjecency matrix from collection of edits
+> ### Aliases: adjacency adjacency.editarray adjacency.editmatrix
+> ###   adjacency.editset as.igraph.editarray as.igraph.editmatrix
+> ###   as.igraph.editset
+> 
+> ### ** Examples
+> 
+> 
+> ## Examples with linear (in)equality edits
+> 
+> # load predefined edits from package
+> data(edits)
+> edits
+  name          edit               description
+1   b1   t == ct + p             total balance
+2   b2 ct == ch + cp              cost balance
+3   s1    p <= 0.6*t             profit sanity
+4   s2   cp <= 0.3*t     personnel cost sanity
+5   s3   ch <= 0.3*t       housing cost sanity
+6   p1          t >0       turnover positivity
+7   p2        ch > 0   housing cost positivity
+8   p3        cp > 0 personnel cost positivity
+9   p4        ct > 0     total cost positivity
+> 
+> # convert to editmatrix
+> E <- editmatrix(edits)
+> 
+> ## Not run:
+> # (Note to reader: the Not run directive only prevents the examle commands from
+> # running when package is built)
+> 
+> # Total edit graph
+> plot(E)
+> 
+> # Graph with dependent edits
+> plot(E, nodetype="rules")
+> 
+> # Graph with dependent variables
+> plot(E, nodetype="vars")
+> 
+> # Total edit graph, but with curved lines (option from igraph package)
+> plot(E, edge.curved=TRUE)
+> 
+> 
+> # graph, plotting just the connections caused by variable 't'
+> plot(E,vars='t')
+> 
+> ## End(Not run) 
+> 
+> # here's an example with a broken record.
+> r <- c(ct = 100, ch = 30, cp = 70, p=30,t=130 ) 
+> violatedEdits(E,r)
+      edit
+record    b1    b2    s1   s2    s3    p1    p2    p3    p4
+     1 FALSE FALSE FALSE TRUE FALSE FALSE FALSE FALSE FALSE
+> errorLocalizer(E,r)$searchBest()$adapt
+   ct    ch    cp     p     t 
+FALSE FALSE FALSE  TRUE  TRUE 
+> 
+> # we color the violated edits and the variables that have to be adapted
+> 
+> ## Not run
+> set.seed(1) # (for reprodicibility)
+> plot(E,
++      adapt=errorLocalizer(E,r)$searchBest()$adapt,   
++      violated=violatedEdits(E,r))
+> ## End(Not run) 
+> 
+> 
+> 
+> # extract total graph (as igraph object)
+> as.igraph(E)
+IGRAPH UNWB 14 16 -- 
++ attr: name (v/c), vars (v/l), type (v/l), weight (e/n)
++ edges (vertex names):
+ [1] b1--ct b1--p  b1--t  b2--ct b2--ch b2--cp s1--p  s1--t  s2--t  s2--cp
+[11] s3--t  s3--ch p1--t  p2--ch p3--cp p4--ct
+> 
+> # extract graph with edges related to variable 't' and 'ch'
+> as.igraph(E,vars=c('t','ch'))
+IGRAPH UNWB 11 8 -- 
++ attr: name (v/c), vars (v/l), type (v/l), weight (e/n)
++ edges (vertex names):
+[1] b1--t  b2--ch s1--t  s2--t  s3--t  s3--ch p1--t  p2--ch
+> 
+> # extract total adjacency matrix
+> adjacency(E)
+   b1 b2 s1 s2 s3 p1 p2 p3 p4 ct p t ch cp
+b1  0  0  0  0  0  0  0  0  0  1 1 1  0  0
+b2  0  0  0  0  0  0  0  0  0  1 0 0  1  1
+s1  0  0  0  0  0  0  0  0  0  0 1 1  0  0
+s2  0  0  0  0  0  0  0  0  0  0 0 1  0  1
+s3  0  0  0  0  0  0  0  0  0  0 0 1  1  0
+p1  0  0  0  0  0  0  0  0  0  0 0 1  0  0
+p2  0  0  0  0  0  0  0  0  0  0 0 0  1  0
+p3  0  0  0  0  0  0  0  0  0  0 0 0  0  1
+p4  0  0  0  0  0  0  0  0  0  1 0 0  0  0
+ct  1  1  0  0  0  0  0  0  1  0 0 0  0  0
+p   1  0  1  0  0  0  0  0  0  0 0 0  0  0
+t   1  0  1  1  1  1  0  0  0  0 0 0  0  0
+ch  0  1  0  0  1  0  1  0  0  0 0 0  0  0
+cp  0  1  0  1  0  0  0  1  0  0 0 0  0  0
+attr(,"vars")
+ [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
+[13]  TRUE  TRUE
+> 
+> # extract adjacency matrix related to variables t and 'ch'
+> adjacency(E,vars=c('t','ch'))
+   b1 b2 s1 s2 s3 p1 p2 p3 p4 t ch
+b1  0  0  0  0  0  0  0  0  0 1  0
+b2  0  0  0  0  0  0  0  0  0 0  1
+s1  0  0  0  0  0  0  0  0  0 1  0
+s2  0  0  0  0  0  0  0  0  0 1  0
+s3  0  0  0  0  0  0  0  0  0 1  1
+p1  0  0  0  0  0  0  0  0  0 1  0
+p2  0  0  0  0  0  0  0  0  0 0  1
+p3  0  0  0  0  0  0  0  0  0 0  0
+p4  0  0  0  0  0  0  0  0  0 0  0
+t   1  0  1  1  1  1  0  0  0 0  0
+ch  0  1  0  0  1  0  1  0  0 0  0
+attr(,"vars")
+ [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+> 
+> ## Examples with categorical edits
+> 
+> # generate an editarray:
+> E <- editarray(expression(
++     age %in% c('<15','16-65','>65'),
++     employment %in% c('unemployed','employed','retired'),
++     salary %in% c('none','low','medium','high'),
++     if (age == '<15') employment=='unemployed',
++     if (salary != 'none') employment != 'unemployed',
++     if (employment == 'unemployed') salary == 'none'))
+> 
+> 
+> ## Not run:
+> # plot total edit graph
+> plot(E)
+> 
+> # plot with a different layout
+> plot(E,layout=layout.circle)
+> 
+> # plot edit graph, just the connections caused by 'salary'
+> plot(E,vars='salary')
+> 
+> ## End(Not run)
+> 
+> # extract edit graph
+> as.igraph(E)
+IGRAPH UNWB 6 6 -- 
++ attr: name (v/c), vars (v/l), type (v/l), weight (e/n)
++ edges (vertex names):
+[1] cat1--age        cat1--employment cat2--employment cat2--salary    
+[5] cat3--employment cat3--salary    
+> 
+> # extract edit graph, just the connections caused by 'salary'
+> as.igraph(E,vars='salary')
+IGRAPH UNWB 4 2 -- 
++ attr: name (v/c), vars (v/l), type (v/l), weight (e/n)
++ edges (vertex names):
+[1] cat2--salary cat3--salary
+> 
+> # extract adjacency matrix
+> adjacency(E)
+           cat1 cat2 cat3 age employment salary
+cat1          0    0    0   1          1      0
+cat2          0    0    0   0          1      1
+cat3          0    0    0   0          1      1
+age           1    0    0   0          0      0
+employment    1    1    1   0          0      0
+salary        0    1    1   0          0      0
+attr(,"vars")
+[1] FALSE FALSE FALSE  TRUE  TRUE  TRUE
+> 
+> # extract adjacency matrix, only caused by 'employment'
+> adjacency(E,vars='employment')
+           cat1 cat2 cat3 employment
+cat1          0    0    0          1
+cat2          0    0    0          1
+cat3          0    0    0          1
+employment    1    1    1          0
+attr(,"vars")
+[1] FALSE FALSE FALSE  TRUE
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("adjacency", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("backtracker")
+> ### * backtracker
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: backtracker
+> ### Title: Backtracker: a flexible and generic binary search program
+> ### Aliases: backtracker choicepoint
+> 
+> ### ** Examples
+> 
+> 
+> bt <- backtracker( isSolution= { 
++                                  if (y == 0) return(TRUE)
++                                  if (x == 0) return(FALSE)
++                                }
++                  , choiceLeft = { x <- x - 1; y <- y}
++                  , choiceRight = { y <- y - 1; x <- x}
++                  # starting values for x and y
++                  , x=2
++                  , y=1
++                  )
+> 
+> bt$searchNext(VERBOSE=TRUE)
+***********************************************************************
+path: l , solution :  
+x :  num 1
+y :  num 1
+***********************************************************************
+path: ll , solution :  FALSE 
+x :  num 0
+y :  num 1
+***********************************************************************
+path: lr , solution :  TRUE 
+x :  num 1
+y :  num 0
+$x
+[1] 1
+
+$y
+[1] 0
+
+$.path
+[1] "l" "r"
+
+$.width
+[1] 1
+
+> bt$searchNext(VERBOSE=TRUE)
+***********************************************************************
+path: r , solution :  TRUE 
+x :  num 2
+y :  num 0
+$x
+[1] 2
+
+$y
+[1] 0
+
+$.path
+[1] "r"
+
+$.width
+[1] 1
+
+> 
+> # next search will return NULL because there is no more solution
+> bt$searchNext()
+NULL
+> 
+> bt$reset()
+<environment: 0x7fbb933ab4a0>
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("backtracker", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("blocks")
+> ### * blocks
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: blocks
+> ### Title: Decompose a matrix or edits into independent blocks
+> ### Aliases: blockIndex blocks
+> 
+> ### ** Examples
+> 
+> # three seperate blocks
+> E <- editmatrix( expression( 
++   x1 + x2 == x3,
++   x3 + x4 == x5,
++   x5 + x6 == x7,
++   y1 + y2 == y3,
++   z1 + z2 == z3
++ ))
+> blocks(E)
+[[1]]
+Edit matrix:
+     x1 x2 x3 x4 x5 x6 x7 Ops CONSTANT
+num1  1  1 -1  0  0  0  0  ==        0
+num2  0  0  1  1 -1  0  0  ==        0
+num3  0  0  0  0  1  1 -1  ==        0
+
+Edit rules:
+num1 : x1 + x2 == x3 
+num2 : x3 + x4 == x5 
+num3 : x5 + x6 == x7  
+
+[[2]]
+Edit matrix:
+     y1 y2 y3 Ops CONSTANT
+num4  1  1 -1  ==        0
+
+Edit rules:
+num4 : y1 + y2 == y3  
+
+[[3]]
+Edit matrix:
+     z1 z2 z3 Ops CONSTANT
+num5  1  1 -1  ==        0
+
+Edit rules:
+num5 : z1 + z2 == z3  
+
+> 
+> # four seperate blocks
+> E <- editmatrix(expression( 
++   x1 + x2 == x3,
++   x3 + x4 == x5,
++   x8 + x6 == x7,
++   y1 + y2 == y3,
++   z1 + z2 == z3
++ ))
+> blocks(E)
+[[1]]
+Edit matrix:
+     x1 x2 x3 x4 x5 Ops CONSTANT
+num1  1  1 -1  0  0  ==        0
+num2  0  0  1  1 -1  ==        0
+
+Edit rules:
+num1 : x1 + x2 == x3 
+num2 : x3 + x4 == x5  
+
+[[2]]
+Edit matrix:
+     x6 x7 x8 Ops CONSTANT
+num3  1 -1  1  ==        0
+
+Edit rules:
+num3 : x6 + x8 == x7  
+
+[[3]]
+Edit matrix:
+     y1 y2 y3 Ops CONSTANT
+num4  1  1 -1  ==        0
+
+Edit rules:
+num4 : y1 + y2 == y3  
+
+[[4]]
+Edit matrix:
+     z1 z2 z3 Ops CONSTANT
+num5  1  1 -1  ==        0
+
+Edit rules:
+num5 : z1 + z2 == z3  
+
+> 
+> # two categorical blocks
+> E <- editarray(expression(
++  x %in% c('a','b','c'),
++  y %in% c('d','e'),
++  z %in% c('f','g'),
++  u %in% c('w','t'),
++  if ( x == 'a') y != 'd',
++  if ( z == 'f') u != 'w'
++ ))
+> blocks(E)
+[[1]]
+      levels
+edits   x:a   x:b   x:c  y:d   y:e
+  cat1 TRUE FALSE FALSE TRUE FALSE
+Edit array:
+
+Edit rules:
+dat1 : x %in% c('a', 'b', 'c') 
+dat2 : y %in% c('d', 'e') 
+cat1 : if( x == 'a' ) y != 'd'  
+
+[[2]]
+      levels
+edits    u:t  u:w  z:f   z:g
+  cat2 FALSE TRUE TRUE FALSE
+Edit array:
+
+Edit rules:
+dat1 : u %in% c('t', 'w') 
+dat2 : z %in% c('f', 'g') 
+cat2 : if( u == 'w' ) z != 'f'  
+
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("blocks", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("datamodel")
+> ### * datamodel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: datamodel
+> ### Title: Summarize data model of an editarray in a data.frame
+> ### Aliases: datamodel
+> 
+> ### ** Examples
+> 
+> 
+> E <- editarray(expression(
++     age %in% c('under aged','adult'),
++     positionInHouseholda  %in% c('marriage partner', 'child', 'other'),
++     maritalStatus %in% c('unmarried','married','widowed','divorced'),
++     if (maritalStatus %in% c('married','widowed','divorced') ) positionInHousehold != 'child',
++     if ( age == 'under aged') maritalStatus == 'unmarried'
++     )
++ )
+> datamodel(E)
+               variable            value
+1                   age            adult
+2                   age       under aged
+3         maritalStatus         divorced
+4         maritalStatus          married
+5         maritalStatus        unmarried
+6         maritalStatus          widowed
+7   positionInHousehold            child
+8  positionInHouseholda            child
+9  positionInHouseholda marriage partner
+10 positionInHouseholda            other
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("datamodel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("disjunct")
+> ### * disjunct
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: disjunct
+> ### Title: Decouple a set of conditional edits
+> ### Aliases: disjunct
+> 
+> ### ** Examples
+> 
+> 
+> 
+> E <- editset(expression(
++     x + y == z,
++     if ( x > 0 ) y > 0,
++     x >= 0,
++     y >= 0,
++     z >= 0,
++     A %in% letters[1:4],
++     B %in% letters[1:4],
++     if (A %in% c('a','b')) y > 0,
++     if (A == 'c' ) B %in% letters[1:3]
++ ))
+> 
+> disjunct(E)
+editsets:
+
+Set 1  conditions:
+0 < y, 0 < x 
+
+Data model:
+dat1 : A %in% c('a', 'b', 'c', 'd')
+dat2 : B %in% c('a', 'b', 'c', 'd') 
+
+Edit set:
+num1 : x + y == z
+num2 : 0 <= x
+num3 : 0 <= y
+num4 : 0 <= z
+cat2 : 0 < y
+cat1 : if( A == 'c' ) B != 'd' 
+
+Set 2  conditions:
+y <= 0, x <= 0 
+
+Data model:
+dat1 : A %in% c('a', 'b', 'c', 'd')
+dat2 : B %in% c('a', 'b', 'c', 'd') 
+
+Edit set:
+num1 : x + y == z
+num2 : 0 <= x
+num3 : 0 <= y
+num4 : 0 <= z
+cat1 : if( A == 'c' ) B != 'd'
+cat2 : if ( A %in% c('a', 'b') ) FALSE 
+
+Set 3  conditions:
+0 < y, x <= 0 
+
+Data model:
+dat1 : A %in% c('a', 'b', 'c', 'd')
+dat2 : B %in% c('a', 'b', 'c', 'd') 
+
+Edit set:
+num1 : x + y == z
+num2 : 0 <= x
+num3 : 0 <= y
+num4 : 0 <= z
+cat1 : if( A == 'c' ) B != 'd' 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("disjunct", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("editarray")
+> ### * editarray
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as.matrix.editarray
+> ### Title: convert to matrix
+> ### Aliases: as.character.editarray as.data.frame.editarray
+> ###   as.expression.editarray as.matrix.editarray c.editarray editarray
+> ###   summary.editarray
+> 
+> ### ** Examples
+> 
+> 
+> # Here is the prototypical categorical edit: men cannot be pregnant.
+> E <- editarray(expression(
++     gender %in% c('male','female'),
++     pregnant %in% c('yes','no'),
++     if( gender == 'male' ) pregnant == 'no'
++     )
++ )
+> E
+      levels
+edits  gndr:feml gndr:male prgn:no prgn:yes
+  cat1     FALSE      TRUE   FALSE     TRUE
+Edit array:
+
+Edit rules:
+dat1 : gender %in% c('female', 'male') 
+dat2 : pregnant %in% c('no', 'yes') 
+cat1 : if( gender == 'male' ) pregnant != 'yes'  
+> 
+> # an editarray has a summary method:
+> summary(E)
+Summary of  editarray 
+     count
+block edits variables
+    1     1         2
+> 
+> # A yes/no variable may also be modeled as a logical:
+> editarray(expression(
++     gender %in% c('male','female'),
++     pregnant %in% c(TRUE, FALSE),
++     if( gender == 'male' ) pregnant == FALSE
++     )
++ )
+      levels
+edits  gndr:feml gndr:male prgn:FALS prgn:TRUE
+  cat1     FALSE      TRUE     FALSE      TRUE
+Edit array:
+
+Edit rules:
+dat1 : gender %in% c('female', 'male') 
+dat2 : pregnant %in% c(FALSE, TRUE) 
+cat1 : if( gender == 'male' ) pregnant == FALSE  
+> 
+> # or, shorter (and using a character vector as input): 
+> editarray(expression(
++     gender %in% c('male','female'),
++     pregnant %in% c(TRUE, FALSE),
++     if( gender == 'male' ) !pregnant
++     )
++ )
+      levels
+edits  gndr:feml gndr:male prgn:FALS prgn:TRUE
+  cat1     FALSE      TRUE     FALSE      TRUE
+Edit array:
+
+Edit rules:
+dat1 : gender %in% c('female', 'male') 
+dat2 : pregnant %in% c(FALSE, TRUE) 
+cat1 : if( gender == 'male' ) pregnant == FALSE  
+> 
+> # the %in% statement may be used at will
+> editarray(expression(
++     gender %in% c('male','female'),
++     pregnant %in% c(TRUE, FALSE),
++     positionInHousehold %in% c('marriage partner', 'child', 'other'),
++     maritalStatus %in% c('unmarried','married','widowed','divorced'),
++     if( gender == 'male' ) !pregnant,
++     if( maritalStatus %in% c(
++           'unmarried',
++           'widowed',
++           'divorced')
++       ) !positionInHousehold %in% c('marriage partner','child')
++     )
++ )
+      levels
+edits  gndr:feml gndr:male mrtS:dvrc mrtS:mrrd mrtS:unmr mrtS:wdwd psIH:chld
+  cat1     FALSE      TRUE      TRUE      TRUE      TRUE      TRUE      TRUE
+  cat2      TRUE      TRUE      TRUE     FALSE      TRUE      TRUE      TRUE
+      levels
+edits  psIH:mrrp psIH:othr prgn:FALS prgn:TRUE
+  cat1      TRUE      TRUE     FALSE      TRUE
+  cat2      TRUE     FALSE      TRUE      TRUE
+Edit array:
+
+Edit rules:
+dat1 : gender %in% c('female', 'male') 
+dat2 : maritalStatus %in% c('divorced', 'married', 'unmarried', 'widowed') 
+dat3 : positionInHousehold %in% c('child', 'marriage partner', 'other') 
+dat4 : pregnant %in% c(FALSE, TRUE) 
+cat1 : if( gender == 'male' ) pregnant == FALSE 
+cat2 : if( maritalStatus %in% c('divorced', 'unmarried', 'widowed') ) !( positionInHousehold %in% c('child', 'marriage partner') )  
+> 
+> 
+> 
+> 
+> 
+> # Here is the prototypical categorical edit: men cannot be pregnant.
+> E <- editarray(expression(
++     gender %in% c('male','female'),
++     pregnant %in% c('yes','no'),
++     if( gender == 'male' ) pregnant == 'no'
++     )
++ )
+> E
+      levels
+edits  gndr:feml gndr:male prgn:no prgn:yes
+  cat1     FALSE      TRUE   FALSE     TRUE
+Edit array:
+
+Edit rules:
+dat1 : gender %in% c('female', 'male') 
+dat2 : pregnant %in% c('no', 'yes') 
+cat1 : if( gender == 'male' ) pregnant != 'yes'  
+> 
+> # an editarray has a summary method:
+> summary(E)
+Summary of  editarray 
+     count
+block edits variables
+    1     1         2
+> 
+> # A yes/no variable may also be modeled as a logical:
+> editarray(expression(
++     gender %in% c('male','female'),
++     pregnant %in% c(TRUE, FALSE),
++     if( gender == 'male' ) pregnant == FALSE
++     )
++ )
+      levels
+edits  gndr:feml gndr:male prgn:FALS prgn:TRUE
+  cat1     FALSE      TRUE     FALSE      TRUE
+Edit array:
+
+Edit rules:
+dat1 : gender %in% c('female', 'male') 
+dat2 : pregnant %in% c(FALSE, TRUE) 
+cat1 : if( gender == 'male' ) pregnant == FALSE  
+> 
+> # or, shorter (and using a character vector as input): 
+> editarray(expression(
++     gender %in% c('male','female'),
++     pregnant %in% c(TRUE, FALSE),
++     if( gender == 'male' ) !pregnant
++     )
++ )
+      levels
+edits  gndr:feml gndr:male prgn:FALS prgn:TRUE
+  cat1     FALSE      TRUE     FALSE      TRUE
+Edit array:
+
+Edit rules:
+dat1 : gender %in% c('female', 'male') 
+dat2 : pregnant %in% c(FALSE, TRUE) 
+cat1 : if( gender == 'male' ) pregnant == FALSE  
+> 
+> # the %in% statement may be used at will
+> editarray(expression(
++     gender %in% c('male','female'),
++     pregnant %in% c(TRUE, FALSE),
++     positionInHousehold %in% c('marriage partner', 'child', 'other'),
++     maritalStatus %in% c('unmarried','married','widowed','divorced'),
++     if( gender == 'male' ) !pregnant,
++     if( maritalStatus %in% c(
++           'unmarried',
++           'widowed',
++           'divorced')
++       ) !positionInHousehold %in% c('marriage partner','child')
++     )
++ )
+      levels
+edits  gndr:feml gndr:male mrtS:dvrc mrtS:mrrd mrtS:unmr mrtS:wdwd psIH:chld
+  cat1     FALSE      TRUE      TRUE      TRUE      TRUE      TRUE      TRUE
+  cat2      TRUE      TRUE      TRUE     FALSE      TRUE      TRUE      TRUE
+      levels
+edits  psIH:mrrp psIH:othr prgn:FALS prgn:TRUE
+  cat1      TRUE      TRUE     FALSE      TRUE
+  cat2      TRUE     FALSE      TRUE      TRUE
+Edit array:
+
+Edit rules:
+dat1 : gender %in% c('female', 'male') 
+dat2 : maritalStatus %in% c('divorced', 'married', 'unmarried', 'widowed') 
+dat3 : positionInHousehold %in% c('child', 'marriage partner', 'other') 
+dat4 : pregnant %in% c(FALSE, TRUE) 
+cat1 : if( gender == 'male' ) pregnant == FALSE 
+cat2 : if( maritalStatus %in% c('divorced', 'unmarried', 'widowed') ) !( positionInHousehold %in% c('child', 'marriage partner') )  
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("editarray", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("editmatrix")
+> ### * editmatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as.matrix.editmatrix
+> ### Title: convert to matrix
+> ### Aliases: as.character.editmatrix as.data.frame.editmatrix
+> ###   as.expression.editmatrix as.matrix.editmatrix c.editmatrix editmatrix
+> ###   str.editmatrix summary.editmatrix
+> 
+> ### ** Examples
+> 
+> # Using a character vector to define contraints
+> E <- editmatrix(c("x+3*y==2*z", "x==z"))
+> print(E)
+Edit matrix:
+     x y  z Ops CONSTANT
+num1 1 3 -2  ==        0
+num2 1 0 -1  ==        0
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : x == z  
+> 
+> # Using a expression vector to define contraints
+> E <- editmatrix(expression(x+3*y==2*z, x==z))
+> print(E)
+Edit matrix:
+     x y  z Ops CONSTANT
+num1 1 3 -2  ==        0
+num2 1 0 -1  ==        0
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : x == z  
+> 
+> # an editmatrix also has a summary method:
+> summary(E)
+Summary of normalized editmatrix 
+     count
+block edits equalities inequalities variables
+    1     2          2            0         3
+> 
+> # select rows from an editmatrix:
+> E <- editmatrix(c("x+3*y==2*z", "x >= z"))
+> E[getOps(E) == "=="]
+Edit matrix:
+     x y  z Ops CONSTANT
+num1 1 3 -2  ==        0
+
+Edit rules:
+num1 : x + 3*y == 2*z  
+> 
+> 
+> #Using data.frame to define constraints
+> E.df <- data.frame(
++     name =c("A","B","C"),
++     edit = c("x == y",    
++             "z + w == y + x",
++             "z == y + 2*w"),
++     description = c(
++             "these variables should be equal","","")
++ 
++ )
+> print(E.df)
+  name           edit                     description
+1    A         x == y these variables should be equal
+2    B z + w == y + x                                
+3    C   z == y + 2*w                                
+> 
+> E <- editmatrix(E.df)
+> print(E)
+Edit matrix:
+   x  y  w z Ops CONSTANT
+A  1 -1  0 0  ==        0
+B -1 -1  1 1  ==        0
+C  0 -1 -2 1  ==        0
+
+Edit rules:
+A : x == y [ these variables should be equal ]
+B : w + z == x + y [  ]
+C : z == y + 2*w [  ] 
+> # Using a character vector to define contraints
+> E <- editmatrix(c("x+3*y==2*z", "x==z"))
+> print(E)
+Edit matrix:
+     x y  z Ops CONSTANT
+num1 1 3 -2  ==        0
+num2 1 0 -1  ==        0
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : x == z  
+> 
+> # Using a expression vector to define contraints
+> E <- editmatrix(expression(x+3*y==2*z, x==z))
+> print(E)
+Edit matrix:
+     x y  z Ops CONSTANT
+num1 1 3 -2  ==        0
+num2 1 0 -1  ==        0
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : x == z  
+> 
+> # an editmatrix also has a summary method:
+> summary(E)
+Summary of normalized editmatrix 
+     count
+block edits equalities inequalities variables
+    1     2          2            0         3
+> 
+> # select rows from an editmatrix:
+> E <- editmatrix(c("x+3*y==2*z", "x >= z"))
+> E[getOps(E) == "=="]
+Edit matrix:
+     x y  z Ops CONSTANT
+num1 1 3 -2  ==        0
+
+Edit rules:
+num1 : x + 3*y == 2*z  
+> 
+> 
+> #Using data.frame to define constraints
+> E.df <- data.frame(
++     name =c("A","B","C"),
++     edit = c("x == y",    
++             "z + w == y + x",
++             "z == y + 2*w"),
++     description = c(
++             "these variables should be equal","","")
++ 
++ )
+> print(E.df)
+  name           edit                     description
+1    A         x == y these variables should be equal
+2    B z + w == y + x                                
+3    C   z == y + 2*w                                
+> 
+> E <- editmatrix(E.df)
+> print(E)
+Edit matrix:
+   x  y  w z Ops CONSTANT
+A  1 -1  0 0  ==        0
+B -1 -1  1 1  ==        0
+C  0 -1 -2 1  ==        0
+
+Edit rules:
+A : x == y [ these variables should be equal ]
+B : w + z == x + y [  ]
+C : z == y + 2*w [  ] 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("editmatrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("editrules.plotting")
+> ### * editrules.plotting
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: editrules.plotting
+> ### Title: Graphical representation of edits
+> ### Aliases: editrules.plotting plot.editarray plot.editmatrix plot.editset
+> 
+> ### ** Examples
+> 
+> 
+> ## Examples with linear (in)equality edits
+> 
+> # load predefined edits from package
+> data(edits)
+> edits
+  name          edit               description
+1   b1   t == ct + p             total balance
+2   b2 ct == ch + cp              cost balance
+3   s1    p <= 0.6*t             profit sanity
+4   s2   cp <= 0.3*t     personnel cost sanity
+5   s3   ch <= 0.3*t       housing cost sanity
+6   p1          t >0       turnover positivity
+7   p2        ch > 0   housing cost positivity
+8   p3        cp > 0 personnel cost positivity
+9   p4        ct > 0     total cost positivity
+> 
+> # convert to editmatrix
+> E <- editmatrix(edits)
+> 
+> ## Not run:
+> # (Note to reader: the Not run directive only prevents the examle commands from
+> # running when package is built)
+> 
+> # Total edit graph
+> plot(E)
+> 
+> # Graph with dependent edits
+> plot(E, nodetype="rules")
+> 
+> # Graph with dependent variables
+> plot(E, nodetype="vars")
+> 
+> # Total edit graph, but with curved lines (option from igraph package)
+> plot(E, edge.curved=TRUE)
+> 
+> 
+> # graph, plotting just the connections caused by variable 't'
+> plot(E,vars='t')
+> 
+> ## End(Not run) 
+> 
+> # here's an example with a broken record.
+> r <- c(ct = 100, ch = 30, cp = 70, p=30,t=130 ) 
+> violatedEdits(E,r)
+      edit
+record    b1    b2    s1   s2    s3    p1    p2    p3    p4
+     1 FALSE FALSE FALSE TRUE FALSE FALSE FALSE FALSE FALSE
+> errorLocalizer(E,r)$searchBest()$adapt
+   ct    ch    cp     p     t 
+FALSE FALSE FALSE  TRUE  TRUE 
+> 
+> # we color the violated edits and the variables that have to be adapted
+> 
+> ## Not run
+> set.seed(1) # (for reprodicibility)
+> plot(E,
++      adapt=errorLocalizer(E,r)$searchBest()$adapt,   
++      violated=violatedEdits(E,r))
+> ## End(Not run) 
+> 
+> 
+> 
+> # extract total graph (as igraph object)
+> as.igraph(E)
+IGRAPH UNWB 14 16 -- 
++ attr: name (v/c), vars (v/l), type (v/l), weight (e/n)
++ edges (vertex names):
+ [1] b1--ct b1--p  b1--t  b2--ct b2--ch b2--cp s1--p  s1--t  s2--t  s2--cp
+[11] s3--t  s3--ch p1--t  p2--ch p3--cp p4--ct
+> 
+> # extract graph with edges related to variable 't' and 'ch'
+> as.igraph(E,vars=c('t','ch'))
+IGRAPH UNWB 11 8 -- 
++ attr: name (v/c), vars (v/l), type (v/l), weight (e/n)
++ edges (vertex names):
+[1] b1--t  b2--ch s1--t  s2--t  s3--t  s3--ch p1--t  p2--ch
+> 
+> # extract total adjacency matrix
+> adjacency(E)
+   b1 b2 s1 s2 s3 p1 p2 p3 p4 ct p t ch cp
+b1  0  0  0  0  0  0  0  0  0  1 1 1  0  0
+b2  0  0  0  0  0  0  0  0  0  1 0 0  1  1
+s1  0  0  0  0  0  0  0  0  0  0 1 1  0  0
+s2  0  0  0  0  0  0  0  0  0  0 0 1  0  1
+s3  0  0  0  0  0  0  0  0  0  0 0 1  1  0
+p1  0  0  0  0  0  0  0  0  0  0 0 1  0  0
+p2  0  0  0  0  0  0  0  0  0  0 0 0  1  0
+p3  0  0  0  0  0  0  0  0  0  0 0 0  0  1
+p4  0  0  0  0  0  0  0  0  0  1 0 0  0  0
+ct  1  1  0  0  0  0  0  0  1  0 0 0  0  0
+p   1  0  1  0  0  0  0  0  0  0 0 0  0  0
+t   1  0  1  1  1  1  0  0  0  0 0 0  0  0
+ch  0  1  0  0  1  0  1  0  0  0 0 0  0  0
+cp  0  1  0  1  0  0  0  1  0  0 0 0  0  0
+attr(,"vars")
+ [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
+[13]  TRUE  TRUE
+> 
+> # extract adjacency matrix related to variables t and 'ch'
+> adjacency(E,vars=c('t','ch'))
+   b1 b2 s1 s2 s3 p1 p2 p3 p4 t ch
+b1  0  0  0  0  0  0  0  0  0 1  0
+b2  0  0  0  0  0  0  0  0  0 0  1
+s1  0  0  0  0  0  0  0  0  0 1  0
+s2  0  0  0  0  0  0  0  0  0 1  0
+s3  0  0  0  0  0  0  0  0  0 1  1
+p1  0  0  0  0  0  0  0  0  0 1  0
+p2  0  0  0  0  0  0  0  0  0 0  1
+p3  0  0  0  0  0  0  0  0  0 0  0
+p4  0  0  0  0  0  0  0  0  0 0  0
+t   1  0  1  1  1  1  0  0  0 0  0
+ch  0  1  0  0  1  0  1  0  0 0  0
+attr(,"vars")
+ [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+> 
+> ## Examples with categorical edits
+> 
+> # generate an editarray:
+> E <- editarray(expression(
++     age %in% c('<15','16-65','>65'),
++     employment %in% c('unemployed','employed','retired'),
++     salary %in% c('none','low','medium','high'),
++     if (age == '<15') employment=='unemployed',
++     if (salary != 'none') employment != 'unemployed',
++     if (employment == 'unemployed') salary == 'none'))
+> 
+> 
+> ## Not run:
+> # plot total edit graph
+> plot(E)
+> 
+> # plot with a different layout
+> plot(E,layout=layout.circle)
+> 
+> # plot edit graph, just the connections caused by 'salary'
+> plot(E,vars='salary')
+> 
+> ## End(Not run)
+> 
+> # extract edit graph
+> as.igraph(E)
+IGRAPH UNWB 6 6 -- 
++ attr: name (v/c), vars (v/l), type (v/l), weight (e/n)
++ edges (vertex names):
+[1] cat1--age        cat1--employment cat2--employment cat2--salary    
+[5] cat3--employment cat3--salary    
+> 
+> # extract edit graph, just the connections caused by 'salary'
+> as.igraph(E,vars='salary')
+IGRAPH UNWB 4 2 -- 
++ attr: name (v/c), vars (v/l), type (v/l), weight (e/n)
++ edges (vertex names):
+[1] cat2--salary cat3--salary
+> 
+> # extract adjacency matrix
+> adjacency(E)
+           cat1 cat2 cat3 age employment salary
+cat1          0    0    0   1          1      0
+cat2          0    0    0   0          1      1
+cat3          0    0    0   0          1      1
+age           1    0    0   0          0      0
+employment    1    1    1   0          0      0
+salary        0    1    1   0          0      0
+attr(,"vars")
+[1] FALSE FALSE FALSE  TRUE  TRUE  TRUE
+> 
+> # extract adjacency matrix, only caused by 'employment'
+> adjacency(E,vars='employment')
+           cat1 cat2 cat3 employment
+cat1          0    0    0          1
+cat2          0    0    0          1
+cat3          0    0    0          1
+employment    1    1    1          0
+attr(,"vars")
+[1] FALSE FALSE FALSE  TRUE
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("editrules.plotting", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("editset")
+> ### * editset
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: c.editset
+> ### Title: Read general edits
+> ### Aliases: as.character.editset as.data.frame.editset c.editset editset
+> ###   summary.editset
+> 
+> ### ** Examples
+> 
+> 
+> # edits can be read from a vector of expressions 
+> E <- editset(expression(
++     if ( x > 0 ) y > 0,
++     x + y == z,
++     A %in% letters[1:2],
++     B %in% letters[2:3],
++     if ( A == 'a') B == 'b',
++     if ( A == 'b') x >= 0,
++     u + v == w,
++     if ( u >= 0 ) w >= 0
++ ))
+> E
+
+Data model:
+dat6 : A %in% c('a', 'b')
+dat7 : B %in% c('b', 'c') 
+
+Edit set:
+num1 : x + y == z
+num2 : u + v == w
+cat3 : if( A == 'a' ) B != 'c'
+mix4 : if( 0 < x ) y > 0
+mix5 : if( x < 0 ) A != 'b'
+mix6 : if( 0 <= u ) w >= 0 
+> summary(E)
+Summary of  editset 
+     count
+block edits num.edits mix.edits variables
+    1     4         1         3         5
+    2     2         1         1         3
+> as.data.frame(E)
+  name                    edit
+1 num1              x + y == z
+2 num2              u + v == w
+3 dat6      A %in% c('a', 'b')
+4 dat7      B %in% c('b', 'c')
+5 cat3 if( A == 'a' ) B != 'c'
+6 mix4       if( 0 < x ) y > 0
+7 mix5    if( x < 0 ) A != 'b'
+8 mix6     if( 0 <= u ) w >= 0
+> getVars(E)
+[1] "x" "y" "z" "u" "v" "w" "A" "B"
+> getVars(E,type='cat')
+[1] "A" "B"
+> getVars(E,type='num')
+[1] "x" "y" "z" "u" "v" "w"
+> 
+> 
+> ## see also editfile
+> E <- editfile(system.file('script/edits/mixedits.R',package='editrules'))
+> E
+
+Data model:
+dat4 : A %in% c('a', 'b', 'c', 'd', 'e', 'f')
+dat5 : B %in% c('g', 'h', 'i', 'j')
+dat6 : C %in% c('k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't') 
+
+Edit set:
+num1 : u + v == w
+num2 : 2*v + 3*s == t
+cat3 : if( A %in% c('a', 'd') ) !( B %in% c('i', 'j') )
+cat4 : if( A == 'b' ) !( C %in% c('k', 's', 't') )
+mix5 : if( x <= 0 ) C != 'k'
+mix6 : if( 0 < y ) x + y >= z 
+> summary(E)
+Summary of  editset 
+     count
+block edits num.edits mix.edits variables
+    1     2         2         0         5
+    2     4         0         4         6
+> as.data.frame(E)
+  name                                                       edit
+1 num1                                                 u + v == w
+2 num2                                             2*v + 3*s == t
+3 dat4                     A %in% c('a', 'b', 'c', 'd', 'e', 'f')
+4 dat5                               B %in% c('g', 'h', 'i', 'j')
+5 dat6 C %in% c('k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't')
+6 cat3           if( A %in% c('a', 'd') ) !( B %in% c('i', 'j') )
+7 cat4                if( A == 'b' ) !( C %in% c('k', 's', 't') )
+8 mix5                                      if( x <= 0 ) C != 'k'
+9 mix6                                     if( 0 < y ) x + y >= z
+> getVars(E)
+ [1] "u" "v" "w" "s" "t" "x" "y" "z" "A" "B" "C"
+> getVars(E,type='cat')
+[1] "A" "B" "C"
+> getVars(E,type='num')
+[1] "u" "v" "w" "s" "t" "x" "y" "z"
+> 
+> 
+> 
+> 
+> # edits can be read from a vector of expressions 
+> E <- editset(expression(
++     if ( x > 0 ) y > 0,
++     x + y == z,
++     A %in% letters[1:2],
++     B %in% letters[2:3],
++     if ( A == 'a') B == 'b',
++     if ( A == 'b') x >= 0,
++     u + v == w,
++     if ( u >= 0 ) w >= 0
++ ))
+> E
+
+Data model:
+dat6 : A %in% c('a', 'b')
+dat7 : B %in% c('b', 'c') 
+
+Edit set:
+num1 : x + y == z
+num2 : u + v == w
+cat3 : if( A == 'a' ) B != 'c'
+mix4 : if( 0 < x ) y > 0
+mix5 : if( x < 0 ) A != 'b'
+mix6 : if( 0 <= u ) w >= 0 
+> summary(E)
+Summary of  editset 
+     count
+block edits num.edits mix.edits variables
+    1     4         1         3         5
+    2     2         1         1         3
+> as.data.frame(E)
+  name                    edit
+1 num1              x + y == z
+2 num2              u + v == w
+3 dat6      A %in% c('a', 'b')
+4 dat7      B %in% c('b', 'c')
+5 cat3 if( A == 'a' ) B != 'c'
+6 mix4       if( 0 < x ) y > 0
+7 mix5    if( x < 0 ) A != 'b'
+8 mix6     if( 0 <= u ) w >= 0
+> getVars(E)
+[1] "x" "y" "z" "u" "v" "w" "A" "B"
+> getVars(E,type='cat')
+[1] "A" "B"
+> getVars(E,type='num')
+[1] "x" "y" "z" "u" "v" "w"
+> 
+> 
+> ## see also editfile
+> E <- editfile(system.file('script/edits/mixedits.R',package='editrules'))
+> E
+
+Data model:
+dat4 : A %in% c('a', 'b', 'c', 'd', 'e', 'f')
+dat5 : B %in% c('g', 'h', 'i', 'j')
+dat6 : C %in% c('k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't') 
+
+Edit set:
+num1 : u + v == w
+num2 : 2*v + 3*s == t
+cat3 : if( A %in% c('a', 'd') ) !( B %in% c('i', 'j') )
+cat4 : if( A == 'b' ) !( C %in% c('k', 's', 't') )
+mix5 : if( x <= 0 ) C != 'k'
+mix6 : if( 0 < y ) x + y >= z 
+> summary(E)
+Summary of  editset 
+     count
+block edits num.edits mix.edits variables
+    1     2         2         0         5
+    2     4         0         4         6
+> as.data.frame(E)
+  name                                                       edit
+1 num1                                                 u + v == w
+2 num2                                             2*v + 3*s == t
+3 dat4                     A %in% c('a', 'b', 'c', 'd', 'e', 'f')
+4 dat5                               B %in% c('g', 'h', 'i', 'j')
+5 dat6 C %in% c('k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't')
+6 cat3           if( A %in% c('a', 'd') ) !( B %in% c('i', 'j') )
+7 cat4                if( A == 'b' ) !( C %in% c('k', 's', 't') )
+8 mix5                                      if( x <= 0 ) C != 'k'
+9 mix6                                     if( 0 < y ) x + y >= z
+> getVars(E)
+ [1] "u" "v" "w" "s" "t" "x" "y" "z" "A" "B" "C"
+> getVars(E,type='cat')
+[1] "A" "B" "C"
+> getVars(E,type='num')
+[1] "u" "v" "w" "s" "t" "x" "y" "z"
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("editset", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("eliminate")
+> ### * eliminate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: eliminate
+> ### Title: Eliminate a variable from a set of edit rules
+> ### Aliases: eliminate eliminate.editarray eliminate.editlist
+> ###   eliminate.editmatrix eliminate.editset
+> 
+> ### ** Examples
+> 
+> 
+> # The following is an example by Williams (1986). Eliminating all variables
+> # except z maximizes -4x1 + 5x2 +3x3:
+> P <- editmatrix(c(
++      "4*x1 - 5*x2 - 3*x3 + z <= 0",
++      "-x1 + x2 -x3 <= 2",
++      "x1 + x2 + 2*x3 <= 3",
++      "-x1 <= 0",
++      "-x2 <= 0",
++      "-x3 <= 0"))
+> # eliminate 1st variable
+> (P1 <- eliminate(P, "x1", fancynames=TRUE))
+Edit matrix:
+     x1    x2    x3    z Ops CONSTANT
+num1  0 -0.25 -1.75 0.25  <=        2
+num2  0 -1.25 -0.75 0.25  <=        0
+num3  0  2.00  1.00 0.00  <=        5
+num4  0  1.00  2.00 0.00  <=        3
+num5  0 -1.00  0.00 0.00  <=        0
+num6  0  0.00 -1.00 0.00  <=        0
+
+Edit rules:
+num1 : 0.25*z <= 0.25*x2 + 1.75*x3 + 2 
+num2 : 0.25*z <= 1.25*x2 + 0.75*x3 
+num3 : 2*x2 + x3 <= 5 
+num4 : x2 + 2*x3 <= 3 
+num5 : 0 <= x2 
+num6 : 0 <= x3  
+> # eliminate 2nd variable. Note that redundant rows have been eliminated
+> (P2 <- eliminate(P1, "x2", fancynames=TRUE))
+Edit matrix:
+     x1 x2   x3   z Ops CONSTANT
+num1  0  0 -6.5 1.0  <=     10.5
+num2  0  0  0.5 0.0  <=      2.5
+num3  0  0  1.4 0.2  <=      3.0
+num4  0  0  2.0 0.0  <=      3.0
+num5  0  0 -1.0 0.0  <=      0.0
+
+Edit rules:
+num1 : z <= 6.5*x3 + 10.5 
+num2 : 0.5*x3 <= 2.5 
+num3 : 1.4*x3 + 0.2*z <= 3 
+num4 : 2*x3 <= 3 
+num5 : 0 <= x3  
+> # finally, the answer:
+> (P3 <- eliminate(P2, "x3", fancynames=TRUE))
+Edit matrix:
+     x1 x2 x3         z Ops CONSTANT
+num1  0  0  0 0.1538462  <= 6.615385
+num2  0  0  0 0.2967033  <= 3.758242
+num3  0  0  0 0.1428571  <= 2.142857
+
+Edit rules:
+num1 : 0.153846153846154*z <= 6.61538461538461 
+num2 : 0.296703296703297*z <= 3.75824175824176 
+num3 : 0.142857142857143*z <= 2.14285714285714  
+> 
+> # check which original edits were used in deriving the new ones
+> getH(P3)
+     num1  num2 num3  num4  num5  num6
+[1,] TRUE  TRUE TRUE FALSE  TRUE FALSE
+[2,] TRUE  TRUE TRUE  TRUE FALSE FALSE
+[3,] TRUE FALSE TRUE  TRUE FALSE  TRUE
+> 
+> # check how many variables were eliminated
+> geth(P3)
+[1] 3
+> 
+> 
+> # An  example with an equality and two inequalities
+> # The only thing to do is solving for x in e1 and substitute in e3.
+> (E <- editmatrix(c(
++     "2*x + y == 1",
++     "y > 0",
++     "x > 0"),normalize=TRUE))
+Edit matrix:
+      x  y Ops CONSTANT
+num1  2  1  ==        1
+num2  0 -1   <        0
+num3 -1  0   <        0
+
+Edit rules:
+num1 : 2*x + y == 1 
+num2 : 0 < y 
+num3 : 0 < x  
+> eliminate(E,"x", fancynames=TRUE)
+Edit matrix:
+     x    y Ops CONSTANT
+num1 0  0.5   <      0.5
+num2 0 -1.0   <      0.0
+
+Edit rules:
+num1 : 0.5*y < 0.5 
+num2 : 0 < y  
+> 
+> 
+> # This example has two equalities, and it's solution 
+> # is the origin (x,y)=(0,0)
+> (E <- editmatrix(c(
++     "y <= 1 - x",
++     "y >= -1 + x",
++     "x == y",
++     "y ==-2*x" ),normalize=TRUE))
+Edit matrix:
+     x  y Ops CONSTANT
+num1 1  1  <=        1
+num2 1 -1  <=        1
+num3 1 -1  ==        0
+num4 2  1  ==        0
+
+Edit rules:
+num1 : x + y <= 1 
+num2 : x <= y + 1 
+num3 : x == y 
+num4 : 2*x + y == 0  
+> eliminate(E,"x", fancynames=TRUE)
+Edit matrix:
+     x    y Ops CONSTANT
+num1 0  2.0  <=        1
+num2 0  0.5  <=        1
+num3 0 -1.5  <=        1
+num4 0  1.5  ==        0
+
+Edit rules:
+num1 : 2*y <= 1 
+num2 : 0.5*y <= 1 
+num3 : -1 <= 1.5*y 
+num4 : 1.5*y == 0  
+> 
+> # this example has no solution, the equalities demand (x,y) = (0,2)
+> # while the inequalities demand y <= 1
+> (E <- editmatrix(c(
++     "y <= 1 - x",
++     "y >= -1 + x",
++     "y == 2 - x",
++     "y == -2 + x" ),normalize=TRUE))
+Edit matrix:
+      x  y Ops CONSTANT
+num1  1  1  <=        1
+num2  1 -1  <=        1
+num3  1  1  ==        2
+num4 -1  1  ==       -2
+
+Edit rules:
+num1 : x + y <= 1 
+num2 : x <= y + 1 
+num3 : x + y == 2 
+num4 : y + 2 == x  
+> # this happens to result in an obviously unfeasable system:
+> isObviouslyInfeasible(eliminate(E,"x"))
+[1] TRUE
+> 
+> 
+> # for categorical data, elimination amounts to logical derivartions. For
+> # example
+> E <- editarray(expression(
++     age %in% c('under aged','adult'),
++     positionInHousehold %in% c('marriage partner', 'child', 'other'),
++     maritalStatus %in% c('unmarried','married','widowed','divorced'),
++     if (maritalStatus %in% c('married','widowed','divorced') ) 
++         positionInHousehold != 'child',
++     if (maritalStatus == 'unmarried') 
++         positionInHousehold != 'marriage partner' ,
++     if ( age == 'under aged') maritalStatus == 'unmarried'
++     )
++ )
+> E
+      levels
+edits  age:adlt age:unda mrtS:dvrc mrtS:mrrd mrtS:unmr mrtS:wdwd psIH:chld
+  cat1     TRUE     TRUE      TRUE      TRUE     FALSE      TRUE      TRUE
+  cat2     TRUE     TRUE     FALSE     FALSE      TRUE     FALSE     FALSE
+  cat3    FALSE     TRUE      TRUE      TRUE     FALSE      TRUE      TRUE
+      levels
+edits  psIH:mrrp psIH:othr
+  cat1     FALSE     FALSE
+  cat2      TRUE     FALSE
+  cat3      TRUE      TRUE
+Edit array:
+
+Edit rules:
+dat1 : age %in% c('adult', 'under aged') 
+dat2 : maritalStatus %in% c('divorced', 'married', 'unmarried', 'widowed') 
+dat3 : positionInHousehold %in% c('child', 'marriage partner', 'other') 
+cat1 : if( maritalStatus %in% c('divorced', 'married', 'widowed') ) positionInHousehold != 'child' 
+cat2 : if( maritalStatus == 'unmarried' ) positionInHousehold != 'marriage partner' 
+cat3 : if( age == 'under aged' ) !( maritalStatus %in% c('divorced', 'married', 'widowed') )  
+> 
+> # by eliminating 'maritalStatus' we can deduce that under aged persones cannot
+> # be partner in marriage.
+> eliminate(E,"maritalStatus")
+      levels
+edits  age:adlt age:unda mrtS:dvrc mrtS:mrrd mrtS:unmr mrtS:wdwd psIH:chld
+  cat1    FALSE     TRUE      TRUE      TRUE      TRUE      TRUE     FALSE
+      levels
+edits  psIH:mrrp psIH:othr
+  cat1      TRUE     FALSE
+Edit array:
+
+Edit rules:
+dat1 : age %in% c('adult', 'under aged') 
+dat2 : maritalStatus %in% c('divorced', 'married', 'unmarried', 'widowed') 
+dat3 : positionInHousehold %in% c('child', 'marriage partner', 'other') 
+cat1 : if( age == 'under aged' ) positionInHousehold != 'marriage partner'  
+> 
+> E <- editarray(expression(
++     age %in% c('under aged','adult'),
++     positionInHousehold %in% c('marriage partner', 'child', 'other'),
++     maritalStatus %in% c('unmarried','married','widowed','divorced'),
++     if (maritalStatus %in% c('married','widowed','divorced') ) 
++         positionInHousehold != 'child',
++     if (maritalStatus == 'unmarried') 
++         positionInHousehold != 'marriage partner' ,
++     if ( age == 'under aged') 
++         maritalStatus == 'unmarried'
++     )
++ )
+> E
+      levels
+edits  age:adlt age:unda mrtS:dvrc mrtS:mrrd mrtS:unmr mrtS:wdwd psIH:chld
+  cat1     TRUE     TRUE      TRUE      TRUE     FALSE      TRUE      TRUE
+  cat2     TRUE     TRUE     FALSE     FALSE      TRUE     FALSE     FALSE
+  cat3    FALSE     TRUE      TRUE      TRUE     FALSE      TRUE      TRUE
+      levels
+edits  psIH:mrrp psIH:othr
+  cat1     FALSE     FALSE
+  cat2      TRUE     FALSE
+  cat3      TRUE      TRUE
+Edit array:
+
+Edit rules:
+dat1 : age %in% c('adult', 'under aged') 
+dat2 : maritalStatus %in% c('divorced', 'married', 'unmarried', 'widowed') 
+dat3 : positionInHousehold %in% c('child', 'marriage partner', 'other') 
+cat1 : if( maritalStatus %in% c('divorced', 'married', 'widowed') ) positionInHousehold != 'child' 
+cat2 : if( maritalStatus == 'unmarried' ) positionInHousehold != 'marriage partner' 
+cat3 : if( age == 'under aged' ) !( maritalStatus %in% c('divorced', 'married', 'widowed') )  
+> 
+> # by eliminating 'maritalStatus' we can deduce that under aged persones cannot
+> # be partner in marriage.
+> eliminate(E,"maritalStatus")
+      levels
+edits  age:adlt age:unda mrtS:dvrc mrtS:mrrd mrtS:unmr mrtS:wdwd psIH:chld
+  cat1    FALSE     TRUE      TRUE      TRUE      TRUE      TRUE     FALSE
+      levels
+edits  psIH:mrrp psIH:othr
+  cat1      TRUE     FALSE
+Edit array:
+
+Edit rules:
+dat1 : age %in% c('adult', 'under aged') 
+dat2 : maritalStatus %in% c('divorced', 'married', 'unmarried', 'widowed') 
+dat3 : positionInHousehold %in% c('child', 'marriage partner', 'other') 
+cat1 : if( age == 'under aged' ) positionInHousehold != 'marriage partner'  
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("eliminate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("errorLocalizer")
+> ### * errorLocalizer
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: errorLocalizer
+> ### Title: Create a backtracker object for error localization
+> ### Aliases: errorLocalizer errorLocalizer.editarray
+> ###   errorLocalizer.editlist errorLocalizer.editmatrix
+> ###   errorLocalizer.editset
+> 
+> ### ** Examples
+> 
+> #### examples with numerical edits
+> # example with a single editrule
+> # p = profit, c = cost, t = turnover
+> E <- editmatrix(c("p + c == t"))
+> cp <- errorLocalizer(E, x=c(p=755, c=125, t=200))
+> # x obviously violates E. With all weights equal, changing any variable will do.
+> # first solution:
+> cp$searchNext()
+$w
+[1] 1
+
+$adapt
+    p     c     t 
+FALSE FALSE  TRUE 
+
+> # second solution:
+> cp$searchNext()
+$w
+[1] 1
+
+$adapt
+    p     c     t 
+FALSE  TRUE FALSE 
+
+> # third solution:
+> cp$searchNext()
+$w
+[1] 1
+
+$adapt
+    p     c     t 
+ TRUE FALSE FALSE 
+
+> # there are no more solution since changing more variables would increase the
+> # weight, so the result of the next statement is NULL:
+> cp$searchNext()
+NULL
+> 
+> # Increasing the reliability weight of turnover, yields 2 solutions:
+> cp <- errorLocalizer(E, x=c(p=755, c=125, t=200), weight=c(1,1,2))
+> # first solution:
+> cp$searchNext()
+$w
+[1] 1
+
+$adapt
+    p     c     t 
+FALSE  TRUE FALSE 
+
+> # second solution:
+> cp$searchNext()
+$w
+[1] 1
+
+$adapt
+    p     c     t 
+ TRUE FALSE FALSE 
+
+> # no more solutions available:
+> cp$searchNext()
+NULL
+> 
+> 
+> # A case with two restrictions. The second restriction demands that
+> # c/t >= 0.6 (cost should be more than 60% of turnover)
+> E <- editmatrix(c(
++         "p + c == t",
++         "c - 0.6*t >= 0"))
+> cp <- errorLocalizer(E,x=c(p=755,c=125,t=200))
+> # Now, there's only one solution, but we need two runs to find it (the 1st one
+> # has higher weight)
+> cp$searchNext()
+$w
+[1] 2
+
+$adapt
+    p     c     t 
+FALSE  TRUE  TRUE 
+
+> cp$searchNext()
+$w
+[1] 1
+
+$adapt
+    p     c     t 
+ TRUE FALSE FALSE 
+
+> 
+> # With the searchBest() function, the lowest weifght solution is found at once:
+> errorLocalizer(E,x=c(p=755,c=125,t=200))$searchBest()
+$w
+[1] 1
+
+$adapt
+    p     c     t 
+ TRUE FALSE FALSE 
+
+> 
+> 
+> # An example with missing data.
+> E <- editmatrix(c(
++     "p + c1 + c2 == t",
++     "c1 - 0.3*t >= 0",
++     "p > 0",
++     "c1 > 0",
++     "c2 > 0",
++     "t > 0"))
+> cp <- errorLocalizer(E,x=c(p=755, c1=50, c2=NA,t=200))
+> # (Note that e2 is violated.)
+> # There are two solutions. Both demand that c2 is adapted:
+> cp$searchNext()
+$w
+[1] 3
+
+$adapt
+    p    c1    c2     t 
+FALSE  TRUE  TRUE  TRUE 
+
+> cp$searchNext()
+$w
+[1] 3
+
+$adapt
+    p    c1    c2     t 
+ TRUE FALSE  TRUE  TRUE 
+
+> 
+> ##### Examples with categorical edits
+> # 
+> # 3 variables, recording age class, position in household, and marital status:
+> # We define the datamodel and the rules
+> E <- editarray(expression(
++     age %in% c('under aged','adult'),
++     maritalStatus %in% c('unmarried','married','widowed','divorced'),
++     positionInHousehold %in% c('marriage partner', 'child', 'other'),
++     if( age == 'under aged' ) 
++         maritalStatus == 'unmarried',
++     if( maritalStatus %in% c('married','widowed','divorced')) 
++         !positionInHousehold %in% c('marriage partner','child')
++     )
++ )
+> E
+      levels
+edits  age:adlt age:unda mrtS:dvrc mrtS:mrrd mrtS:unmr mrtS:wdwd psIH:chld
+  cat1    FALSE     TRUE      TRUE      TRUE     FALSE      TRUE      TRUE
+  cat2     TRUE     TRUE      TRUE      TRUE     FALSE      TRUE      TRUE
+      levels
+edits  psIH:mrrp psIH:othr
+  cat1      TRUE      TRUE
+  cat2      TRUE     FALSE
+Edit array:
+
+Edit rules:
+dat1 : age %in% c('adult', 'under aged') 
+dat2 : maritalStatus %in% c('divorced', 'married', 'unmarried', 'widowed') 
+dat3 : positionInHousehold %in% c('child', 'marriage partner', 'other') 
+cat1 : if( age == 'under aged' ) !( maritalStatus %in% c('divorced', 'married', 'widowed') ) 
+cat2 : if( maritalStatus %in% c('divorced', 'married', 'widowed') ) !( positionInHousehold %in% c('child', 'marriage partner') )  
+> 
+> # Let's define a record with an obvious error:
+> r <- c(
++   age = 'under aged', 
++   maritalStatus='married', 
++   positionInHousehold='child')
+> # The age class and position in household are consistent, while the marital
+> # status conflicts.  Therefore, changing only the marital status (in stead of
+> # both age class and postition in household) seems reasonable. 
+> el <- errorLocalizer(E,r)
+> el$searchNext()
+$w
+[1] 1
+
+$adapt
+                age       maritalStatus positionInHousehold 
+              FALSE                TRUE               FALSE 
+
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("errorLocalizer", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("errorLocation")
+> ### * errorLocation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: errorLocation
+> ### Title: The errorLocation object
+> ### Aliases: errorLocation plot.errorLocation summary.errorLocation
+> 
+> ### ** Examples
+> 
+> 
+> # an editmatrix and some data:
+> E <- editmatrix(c(
++     "x + y == z",
++     "x > 0",
++     "y > 0",
++     "z > 0"))
+> 
+> dat <- data.frame(
++     x = c(1,-1,1),
++     y = c(-1,1,1),
++     z = c(2,0,2))
+> 
+> # localize all errors in the data
+> err <- localizeErrors(E,dat)
+> 
+> summary(err)
+Summary of 'errorLocation' object, generated by gaborcsardi at Sat Jun 13 12:02:48 2015 
+by calling checkDatamodel.editmatrix(E, dat, weight) localizeErrors(E, dat) 
+
+Results:
+       err.per.var err.per.rec weight degeneracy  user system elapsed
+min              1           0      0          1 0.001  0.001   0.001
+median           1           1      1          1 0.003  0.003   0.003
+max              1           2      2          1 0.005  0.005   0.005
+total            3           3      3          3 0.009  0.009   0.009
+0 records exceeded maximum search time (0%)
+0 records did not yield a solution (0%)
+> 
+> # what has to be adapted:
+> err$adapt
+      adapt
+record     x     y     z
+     1 FALSE  TRUE FALSE
+     2  TRUE FALSE  TRUE
+     3 FALSE FALSE FALSE
+> # weight, number of equivalent solutions, timings,
+> err$status
+  weight degeneracy  user system elapsed maxDurationExceeded memfail
+1      1          1 0.003  0.003   0.003               FALSE   FALSE
+2      2          1 0.001  0.001   0.001               FALSE   FALSE
+3      0          1 0.005  0.005   0.005               FALSE   FALSE
+> 
+> 
+> ## Not run
+> 
+> # Demonstration of verbose processing
+> # construct 2-block editmatrix
+> F <- editmatrix(c(
++     "x + y == z",
++     "x > 0",
++     "y > 0",
++     "z > 0",
++     "w > 10"))
+> # Using 'dat' as defined above, generate some extra records
+> dd <- dat
+> for ( i in 1:5 ) dd <- rbind(dd,dd)
+> dd$w <- sample(12,nrow(dd),replace=TRUE)
+> 
+> # localize errors verbosely
+> (err <- localizeErrors(F,dd,verbose=TRUE))
+Processing block 1 of 1, record  1 of 96Processing block 1 of 1, record  2 of 96Processing block 1 of 1, record  3 of 96Processing block 1 of 1, record  4 of 96Processing block 1 of 1, record  5 of 96Processing block 1 of 1, record  6 of 96Processing block 1 of 1, record  7 of 96Processing block 1 of 1, record  8 of 96Processing block 1 of 1, record  9 of 96Processing block 1 of 1, record 10 of 96Processing block 1 of 1, record 11 of 96Processing block 1 of 1, record 12 of 96Processing block 1 of 1, record 13 of 96Processing block 1 of 1, record 14 of 96Processing block 1 of 1, record 15 of 96Processing block 1 of 1, record 16 of 96Processing block 1 of 1, record 17 of 96Processing block 1 of 1, record 18 of 96Processing block 1 of 1, record 19 of 96Processing block 1 of 1, record 20 of 96Processing block 1 of 1, record 21 of 96Processing block 1 of 1, record 22 of 96Processing block 1 of 1, record 23 of 96Processing block 1 of 1, record 24 of 96Processing block 1 of 1, record 25 of 96Processing block 1 of 1, record 26 of 96Processing block 1 of 1, record 27 of 96Processing block 1 of 1, record 28 of 96Processing block 1 of 1, record 29 of 96Processing block 1 of 1, record 30 of 96Processing block 1 of 1, record 31 of 96Processing block 1 of 1, record 32 of 96Processing block 1 of 1, record 33 of 96Processing block 1 of 1, record 34 of 96Processing block 1 of 1, record 35 of 96Processing block 1 of 1, record 36 of 96Processing block 1 of 1, record 37 of 96Processing block 1 of 1, record 38 of 96Processing block 1 of 1, record 39 of 96Processing block 1 of 1, record 40 of 96Processing block 1 of 1, record 41 of 96Processing block 1 of 1, record 42 of 96Processing block 1 of 1, record 43 of 96Processing block 1 of 1, record 44 of 96Processing block 1 of 1, record 45 of 96Processing block 1 of 1, record 46 of 96Processing block 1 of 1, record 47 of 96Processing block 1 of 1, record 48 of 96Processing block 1 of 1, record 49 of 96Processing block 1 of 1, record 50 of 96Processing block 1 of 1, record 51 of 96Processing block 1 of 1, record 52 of 96Processing block 1 of 1, record 53 of 96Processing block 1 of 1, record 54 of 96Processing block 1 of 1, record 55 of 96Processing block 1 of 1, record 56 of 96Processing block 1 of 1, record 57 of 96Processing block 1 of 1, record 58 of 96Processing block 1 of 1, record 59 of 96Processing block 1 of 1, record 60 of 96Processing block 1 of 1, record 61 of 96Processing block 1 of 1, record 62 of 96Processing block 1 of 1, record 63 of 96Processing block 1 of 1, record 64 of 96Processing block 1 of 1, record 65 of 96Processing block 1 of 1, record 66 of 96Processing block 1 of 1, record 67 of 96Processing block 1 of 1, record 68 of 96Processing block 1 of 1, record 69 of 96Processing block 1 of 1, record 70 of 96Processing block 1 of 1, record 71 of 96Processing block 1 of 1, record 72 of 96Processing block 1 of 1, record 73 of 96Processing block 1 of 1, record 74 of 96Processing block 1 of 1, record 75 of 96Processing block 1 of 1, record 76 of 96Processing block 1 of 1, record 77 of 96Processing block 1 of 1, record 78 of 96Processing block 1 of 1, record 79 of 96Processing block 1 of 1, record 80 of 96Processing block 1 of 1, record 81 of 96Processing block 1 of 1, record 82 of 96Processing block 1 of 1, record 83 of 96Processing block 1 of 1, record 84 of 96Processing block 1 of 1, record 85 of 96Processing block 1 of 1, record 86 of 96Processing block 1 of 1, record 87 of 96Processing block 1 of 1, record 88 of 96Processing block 1 of 1, record 89 of 96Processing block 1 of 1, record 90 of 96Processing block 1 of 1, record 91 of 96Processing block 1 of 1, record 92 of 96Processing block 1 of 1, record 93 of 96Processing block 1 of 1, record 94 of 96Processing block 1 of 1, record 95 of 96Processing block 1 of 1, record 96 of 96
+Object of class 'errorLocation' generated at Sat Jun 13 12:02:48 2015 
+call : checkDatamodel.editmatrix(E, dat, weight) localizeErrors(F, dd, verbose = TRUE) 
+method : checkDatamodel bb 
+slots: $adapt $status $call $method $user $timestamp 
+
+Values to adapt:      adapt
+record     x     y     z     w
+    1  FALSE  TRUE FALSE  TRUE
+    2   TRUE FALSE  TRUE  TRUE
+    3  FALSE FALSE FALSE  TRUE
+    4  FALSE  TRUE FALSE FALSE
+    5   TRUE FALSE  TRUE  TRUE
+    6  FALSE FALSE FALSE FALSE
+    7  FALSE  TRUE FALSE FALSE
+    8   TRUE FALSE  TRUE  TRUE
+    9  FALSE FALSE FALSE  TRUE
+    10 FALSE  TRUE FALSE  TRUE
+...print truncated 
+
+
+ Status:
+   weight degeneracy  user system elapsed maxDurationExceeded memfail
+1       2          1 0.002  0.002   0.002               FALSE   FALSE
+2       3          1 0.002  0.002   0.002               FALSE   FALSE
+3       1          1 0.003  0.003   0.003               FALSE   FALSE
+4       1          1 0.002  0.002   0.002               FALSE   FALSE
+5       3          1 0.001  0.001   0.001               FALSE   FALSE
+6       0          1 0.003  0.003   0.003               FALSE   FALSE
+7       1          1 0.002  0.002   0.002               FALSE   FALSE
+8       3          1 0.002  0.002   0.002               FALSE   FALSE
+9       1          1 0.004  0.004   0.004               FALSE   FALSE
+10      2          1 0.002  0.002   0.002               FALSE   FALSE
+...print truncated 
+> 
+> # printing is cut off, use summary for an overview
+> summary(err)
+Summary of 'errorLocation' object, generated by gaborcsardi at Sat Jun 13 12:02:48 2015 
+by calling checkDatamodel.editmatrix(E, dat, weight) localizeErrors(F, dd, verbose = TRUE) 
+
+Results:
+       err.per.var err.per.rec weight degeneracy  user system elapsed
+min             32           0      0          1 0.001  0.001   0.001
+median          32           2      2          1 0.002  0.002   0.002
+max             82           3      3          1 0.006  0.006   0.006
+total          178         178    178         96 0.236  0.236   0.236
+0 records exceeded maximum search time (0%)
+0 records did not yield a solution (0%)
+> 
+> # or plot (not very informative in this artificial example)
+> plot(err)
+> 
+> ## End(Not run)
+> 
+> for ( d in dir("../pkg/R",full.names=TRUE)) dmp <- source(d)
+> # Example with different weights for each record
+> E <- editmatrix('x + y == z')
+> dat <- data.frame(
++     x = c(1,1),
++     y = c(1,1),
++     z = c(1,1))
+> 
+> # At equal weights, both records have three solutions (degeneracy): adapt x, y
+> # or z:
+> localizeErrors(E,dat)$status
+  weight degeneracy  user system elapsed maxDurationExceeded memfail
+1      1          3 0.010  0.010   0.010               FALSE   FALSE
+2      1          3 0.008  0.008   0.008               FALSE   FALSE
+> 
+> # Set different weights per record (lower weight means lower reliability):
+> w <- matrix(c(
++     1,2,2,
++     2,2,1),nrow=2,byrow=TRUE)
+> 
+> localizeErrors(E,dat,weight=w)
+Object of class 'errorLocation' generated at Sat Jun 13 12:02:48 2015 
+call : checkDatamodel.editmatrix(E, dat, weight) localizeErrors(E, dat, weight = w) 
+method : checkDatamodel bb 
+slots: $adapt $status $call $method $user $timestamp 
+
+Values to adapt:
+      x     y     z
+1  TRUE FALSE FALSE
+2 FALSE FALSE  TRUE
+
+ Status:
+  weight degeneracy  user system elapsed maxDurationExceeded memfail
+1      1          1 0.004  0.004   0.004               FALSE   FALSE
+2      1          1 0.003  0.003   0.003               FALSE   FALSE
+> 
+> 
+> # an example with categorical variables
+> E <- editarray(expression(
++     age %in% c('under aged','adult'),
++     maritalStatus %in% c('unmarried','married','widowed','divorced'),
++     positionInHousehold %in% c('marriage partner', 'child', 'other'),
++     if( age == 'under aged' ) maritalStatus == 'unmarried',
++     if( maritalStatus %in% c('married','widowed','divorced')) 
++       !positionInHousehold %in% c('marriage partner','child')
++     )
++ )
+> E
+      levels
+edits  age:adlt age:unda mrtS:dvrc mrtS:mrrd mrtS:unmr mrtS:wdwd psIH:chld
+  cat1    FALSE     TRUE      TRUE      TRUE     FALSE      TRUE      TRUE
+  cat2     TRUE     TRUE      TRUE      TRUE     FALSE      TRUE      TRUE
+      levels
+edits  psIH:mrrp psIH:othr
+  cat1      TRUE      TRUE
+  cat2      TRUE     FALSE
+Edit array:
+
+Edit rules:
+dat1 : age %in% c('adult', 'under aged') 
+dat2 : maritalStatus %in% c('divorced', 'married', 'unmarried', 'widowed') 
+dat3 : positionInHousehold %in% c('child', 'marriage partner', 'other') 
+cat1 : if( age == 'under aged' ) !( maritalStatus %in% c('divorced', 'married', 'widowed') ) 
+cat2 : if( maritalStatus %in% c('divorced', 'married', 'widowed') ) !( positionInHousehold %in% c('child', 'marriage partner') )  
+> 
+> #
+> dat <- data.frame(
++     age = c('under aged','adult','adult' ),
++     maritalStatus=c('married','unmarried','widowed' ), 
++     positionInHousehold=c('child','other','marriage partner')
++ )
+> dat
+         age maritalStatus positionInHousehold
+1 under aged       married               child
+2      adult     unmarried               other
+3      adult       widowed    marriage partner
+> localizeErrors(E,dat)
+Object of class 'errorLocation' generated at Sat Jun 13 12:02:48 2015 
+call : checkDatamodel.editarray(E, dat, weight) localizeErrors(E, dat) 
+method : checkDatamodel bb 
+slots: $adapt $status $call $method $user $timestamp 
+
+Values to adapt:
+    age maritalStatus positionInHousehold
+1 FALSE          TRUE               FALSE
+2 FALSE         FALSE               FALSE
+3 FALSE          TRUE               FALSE
+
+ Status:
+  weight degeneracy  user system elapsed maxDurationExceeded memfail
+1      1          1 0.007  0.007   0.007               FALSE   FALSE
+2      0          1 0.003  0.003   0.003               FALSE   FALSE
+3      1          2 0.008  0.008   0.008               FALSE   FALSE
+> # the last record of dat has 2 degenerate solutions. Running  the last command
+> # a few times demonstrates that one of those solutions is chosen at random.
+> 
+> # Increasing the weight of  'positionInHousehold' for example, makes the best
+> # solution unique again
+> localizeErrors(E,dat,weight=c(1,1,2))
+Object of class 'errorLocation' generated at Sat Jun 13 12:02:48 2015 
+call : checkDatamodel.editarray(E, dat, weight) localizeErrors(E, dat, weight = c(1, 1, 2)) 
+method : checkDatamodel bb 
+slots: $adapt $status $call $method $user $timestamp 
+
+Values to adapt:
+    age maritalStatus positionInHousehold
+1 FALSE          TRUE               FALSE
+2 FALSE         FALSE               FALSE
+3 FALSE          TRUE               FALSE
+
+ Status:
+  weight degeneracy  user system elapsed maxDurationExceeded memfail
+1      1          1 0.005  0.005   0.005               FALSE   FALSE
+2      0          1 0.003  0.003   0.003               FALSE   FALSE
+3      1          1 0.006  0.006   0.006               FALSE   FALSE
+> 
+> 
+> # an example with mixed data:
+> 
+> E <- editset(expression(
++     x + y == z,
++     2*u  + 0.5*v == 3*w,
++     w >= 0,
++     if ( x > 0 ) y > 0,
++     x >= 0,
++     y >= 0,
++     z >= 0,
++     A %in% letters[1:4],
++     B %in% letters[1:4],
++     C %in% c(TRUE,FALSE),
++     D %in% letters[5:8],
++     if ( A %in% c('a','b') ) y > 0,
++     if ( A == 'c' ) B %in% letters[1:3],
++     if ( !C == TRUE) D %in% c('e','f')
++ ))
+> 
+> set.seed(1)
+> dat <- data.frame(
++     x = sample(-1:8),
++     y = sample(-1:8),
++     z = sample(10),
++     u = sample(-1:8),
++     v = sample(-1:8),
++     w = sample(10),
++     A = sample(letters[1:4],10,replace=TRUE),
++     B = sample(letters[1:4],10,replace=TRUE),
++     C = sample(c(TRUE,FALSE),10,replace=TRUE),
++     D = sample(letters[5:9],10,replace=TRUE),
++     stringsAsFactors=FALSE
++ )
+> 
+> (el <-localizeErrors(E,dat,verbose=TRUE))
+Method 'bb' is not available for conditional edits on numerical or mixed data. Switching to 'mip'.
+Processing block 1 of 3, record  1 of 10Processing block 1 of 3, record  2 of 10Processing block 1 of 3, record  3 of 10Processing block 1 of 3, record  4 of 10Processing block 1 of 3, record  5 of 10Processing block 1 of 3, record  6 of 10Processing block 1 of 3, record  7 of 10Processing block 1 of 3, record  8 of 10Processing block 1 of 3, record  9 of 10Processing block 1 of 3, record 10 of 10Processing block 2 of 3, record  1 of 10Processing block 2 of 3, record  2 of 10Processing block 2 of 3, record  3 of 10Processing block 2 of 3, record  4 of 10Processing block 2 of 3, record  5 of 10Processing block 2 of 3, record  6 of 10Processing block 2 of 3, record  7 of 10Processing block 2 of 3, record  8 of 10Processing block 2 of 3, record  9 of 10Processing block 2 of 3, record 10 of 10Processing block 3 of 3, record  1 of 10Processing block 3 of 3, record  2 of 10Processing block 3 of 3, record  3 of 10Processing block 3 of 3, record  4 of 10Processing block 3 of 3, record  5 of 10Processing block 3 of 3, record  6 of 10Processing block 3 of 3, record  7 of 10Processing block 3 of 3, record  8 of 10Processing block 3 of 3, record  9 of 10Processing block 3 of 3, record 10 of 10
+Object of class 'errorLocation' generated at Sat Jun 13 12:02:49 2015 
+call : checkDatamodel.editarray(F, dat, weight) checkDatamodel.editmatrix(G, dat, weight) localizeErrors(E, dat, verbose = TRUE) 
+method : checkDatamodel mip 
+slots: $adapt $status $call $method $user $timestamp 
+
+Values to adapt:
+       x     y     z     u     v     w     A     B     C     D
+1  FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+2   TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+3  FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+4  FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+5  FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+6  FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+7  FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE
+8  FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+9  FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+10  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+
+ Status:
+   weight degeneracy  user system elapsed maxDurationExceeded memfail
+1       2         NA 0.026  0.003   0.038               FALSE   FALSE
+2       3         NA 0.021  0.000   0.021               FALSE   FALSE
+3       2         NA 0.018  0.000   0.019               FALSE   FALSE
+4       3         NA 0.023  0.001   0.024               FALSE   FALSE
+5       3         NA 0.020  0.000   0.021               FALSE   FALSE
+6       2         NA 0.020  0.001   0.020               FALSE   FALSE
+7       3         NA 0.021  0.000   0.020               FALSE   FALSE
+8       2         NA 0.023  0.001   0.020               FALSE   FALSE
+9       4         NA 0.022  0.001   0.021               FALSE   FALSE
+10      3         NA 0.049  0.000   0.049               FALSE   FALSE
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("errorLocation", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fcf.env")
+> ### * fcf.env
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fcf.env
+> ### Title: Field code forest algorithm
+> ### Aliases: fcf.env
+> ### Keywords: internal
+> 
+> ### ** Examples
+> 
+> 
+> 
+> E <- editarray(expression(
++     a %in% letters[1:4],
++     b %in% letters[5:8],
++     if ( a %in% c('a','b') ) b %in% c('e','f'),
++     if ( a %in% c('c','d') ) b %in% c('h')
++ ))
+> 
+> generateEdits(E)
+$edits
+      levels
+edits    a:a   a:b   a:c   a:d   b:e   b:f  b:g   b:h
+  cat1  TRUE  TRUE FALSE FALSE FALSE FALSE TRUE  TRUE
+  cat2 FALSE FALSE  TRUE  TRUE  TRUE  TRUE TRUE FALSE
+  cat1  TRUE  TRUE  TRUE  TRUE FALSE FALSE TRUE FALSE
+Edit array:
+
+Edit rules:
+dat1 : a %in% c('a', 'b', 'c', 'd') 
+dat2 : b %in% c('e', 'f', 'g', 'h') 
+cat1 : if( a %in% c('a', 'b') ) !( b %in% c('g', 'h') ) 
+cat2 : if( a %in% c('c', 'd') ) !( b %in% c('e', 'f', 'g') ) 
+cat1 : if ( b == 'g' ) FALSE  
+
+$nodes
+   nodesInTree nodesTraversed 
+             4              2 
+
+$duration
+   user  system elapsed 
+  0.008   0.000   0.008 
+
+> 
+> ## Not run
+> # load 60 edits (36 variables) from demonstration file
+> E <- editfile(system.file('script/bench/edits.R',package='editrules'),type='cat')
+> F <- generateEdits(E)
+> 
+> summary(F$edits)
+Summary of  editarray 
+     count
+block edits variables
+    1    24        19
+> F$nodes
+   nodesInTree nodesTraversed 
+   68719476736             36 
+> F$dudation
+NULL
+> 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fcf.env", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getA")
+> ### * getA
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getA
+> ### Title: Returns the coefficient matrix 'A' of linear (in)equalities
+> ### Aliases: getA
+> 
+> ### ** Examples
+> 
+> 
+> E <- editmatrix(c( "x+3*y == 2*z"
++                  , "x > 2")
++                  )
+> print(E)
+Edit matrix:
+      x y  z Ops CONSTANT
+num1  1 3 -2  ==        0
+num2 -1 0  0   <       -2
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : 2 < x  
+>                  
+> # get editrules, useful for storing and maintaining the rules external from your script
+> as.data.frame(E)
+  name           edit
+1 num1 x + 3*y == 2*z
+2 num2          2 < x
+>                  
+> # get coeficient matrix of inequalities
+> getA(E)
+      var
+rules   x y  z
+  num1  1 3 -2
+  num2 -1 0  0
+> 
+> # get augmented matrix of linear edit set
+> getAb(E)
+      var
+rules   x y  z CONSTANT
+  num1  1 3 -2        0
+  num2 -1 0  0       -2
+> 
+> # get constants of inequalities (i.e. c(0, 2))                
+> getb(E)
+num1 num2 
+   0   -2 
+> 
+> # get operators of inequalities (i.e. c("==",">"))
+> getOps(E)
+num1 num2 
+"=="  "<" 
+> 
+> # get variables of inequalities (i.e. c("x","y","z"))
+> getVars(E)
+[1] "x" "y" "z"
+> 
+> # isNormalized
+> isNormalized(E)
+[1] TRUE
+> 
+> #normalized E
+> E <- normalize(E)
+> E
+Edit matrix:
+      x y  z Ops CONSTANT
+num1  1 3 -2  ==        0
+num2 -1 0  0   <       -2
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : 2 < x  
+> 
+> # is het now normalized?
+> isNormalized(E)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getA", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getAb")
+> ### * getAb
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getAb
+> ### Title: Returns augmented matrix representation of edit set.
+> ### Aliases: getAb
+> 
+> ### ** Examples
+> 
+> 
+> E <- editmatrix(c( "x+3*y == 2*z"
++                  , "x > 2")
++                  )
+> print(E)
+Edit matrix:
+      x y  z Ops CONSTANT
+num1  1 3 -2  ==        0
+num2 -1 0  0   <       -2
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : 2 < x  
+>                  
+> # get editrules, useful for storing and maintaining the rules external from your script
+> as.data.frame(E)
+  name           edit
+1 num1 x + 3*y == 2*z
+2 num2          2 < x
+>                  
+> # get coeficient matrix of inequalities
+> getA(E)
+      var
+rules   x y  z
+  num1  1 3 -2
+  num2 -1 0  0
+> 
+> # get augmented matrix of linear edit set
+> getAb(E)
+      var
+rules   x y  z CONSTANT
+  num1  1 3 -2        0
+  num2 -1 0  0       -2
+> 
+> # get constants of inequalities (i.e. c(0, 2))                
+> getb(E)
+num1 num2 
+   0   -2 
+> 
+> # get operators of inequalities (i.e. c("==",">"))
+> getOps(E)
+num1 num2 
+"=="  "<" 
+> 
+> # get variables of inequalities (i.e. c("x","y","z"))
+> getVars(E)
+[1] "x" "y" "z"
+> 
+> # isNormalized
+> isNormalized(E)
+[1] TRUE
+> 
+> #normalized E
+> E <- normalize(E)
+> E
+Edit matrix:
+      x y  z Ops CONSTANT
+num1  1 3 -2  ==        0
+num2 -1 0  0   <       -2
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : 2 < x  
+> 
+> # is het now normalized?
+> isNormalized(E)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getAb", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getOps")
+> ### * getOps
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getOps
+> ### Title: Returns the operator part of a linear (in)equality 'editmatrix'
+> ###   E
+> ### Aliases: getOps
+> 
+> ### ** Examples
+> 
+> 
+> E <- editmatrix(c( "x+3*y == 2*z"
++                  , "x > 2")
++                  )
+> print(E)
+Edit matrix:
+      x y  z Ops CONSTANT
+num1  1 3 -2  ==        0
+num2 -1 0  0   <       -2
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : 2 < x  
+>                  
+> # get editrules, useful for storing and maintaining the rules external from your script
+> as.data.frame(E)
+  name           edit
+1 num1 x + 3*y == 2*z
+2 num2          2 < x
+>                  
+> # get coeficient matrix of inequalities
+> getA(E)
+      var
+rules   x y  z
+  num1  1 3 -2
+  num2 -1 0  0
+> 
+> # get augmented matrix of linear edit set
+> getAb(E)
+      var
+rules   x y  z CONSTANT
+  num1  1 3 -2        0
+  num2 -1 0  0       -2
+> 
+> # get constants of inequalities (i.e. c(0, 2))                
+> getb(E)
+num1 num2 
+   0   -2 
+> 
+> # get operators of inequalities (i.e. c("==",">"))
+> getOps(E)
+num1 num2 
+"=="  "<" 
+> 
+> # get variables of inequalities (i.e. c("x","y","z"))
+> getVars(E)
+[1] "x" "y" "z"
+> 
+> # isNormalized
+> isNormalized(E)
+[1] TRUE
+> 
+> #normalized E
+> E <- normalize(E)
+> E
+Edit matrix:
+      x y  z Ops CONSTANT
+num1  1 3 -2  ==        0
+num2 -1 0  0   <       -2
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : 2 < x  
+> 
+> # is het now normalized?
+> isNormalized(E)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getOps", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getVars")
+> ### * getVars
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getVars
+> ### Title: get names of variables in a set of edits
+> ### Aliases: getVars getVars.NULL getVars.editset
+> 
+> ### ** Examples
+> 
+> 
+> E <- editmatrix(c( "x+3*y == 2*z"
++                  , "x > 2")
++                  )
+> getVars(E)
+[1] "x" "y" "z"
+> 
+> E <- editarray(expression(
++     gender %in% c('male','female'),
++     pregnant %in% c(TRUE, FALSE),
++     if( gender == 'male' ) pregnant == FALSE
++     )
++ )
+> 
+> getVars(E)
+[1] "gender"   "pregnant"
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getVars", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getb")
+> ### * getb
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getb
+> ### Title: Returns the constant part 'b' of a linear (in)equality
+> ### Aliases: getb
+> 
+> ### ** Examples
+> 
+> 
+> E <- editmatrix(c( "x+3*y == 2*z"
++                  , "x > 2")
++                  )
+> print(E)
+Edit matrix:
+      x y  z Ops CONSTANT
+num1  1 3 -2  ==        0
+num2 -1 0  0   <       -2
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : 2 < x  
+>                  
+> # get editrules, useful for storing and maintaining the rules external from your script
+> as.data.frame(E)
+  name           edit
+1 num1 x + 3*y == 2*z
+2 num2          2 < x
+>                  
+> # get coeficient matrix of inequalities
+> getA(E)
+      var
+rules   x y  z
+  num1  1 3 -2
+  num2 -1 0  0
+> 
+> # get augmented matrix of linear edit set
+> getAb(E)
+      var
+rules   x y  z CONSTANT
+  num1  1 3 -2        0
+  num2 -1 0  0       -2
+> 
+> # get constants of inequalities (i.e. c(0, 2))                
+> getb(E)
+num1 num2 
+   0   -2 
+> 
+> # get operators of inequalities (i.e. c("==",">"))
+> getOps(E)
+num1 num2 
+"=="  "<" 
+> 
+> # get variables of inequalities (i.e. c("x","y","z"))
+> getVars(E)
+[1] "x" "y" "z"
+> 
+> # isNormalized
+> isNormalized(E)
+[1] TRUE
+> 
+> #normalized E
+> E <- normalize(E)
+> E
+Edit matrix:
+      x y  z Ops CONSTANT
+num1  1 3 -2  ==        0
+num2 -1 0  0   <       -2
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : 2 < x  
+> 
+> # is het now normalized?
+> isNormalized(E)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getb", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("localizeErrors")
+> ### * localizeErrors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: localizeErrors
+> ### Title: Localize errors on records in a data.frame.
+> ### Aliases: localizeErrors
+> 
+> ### ** Examples
+> 
+> 
+> # an editmatrix and some data:
+> E <- editmatrix(c(
++     "x + y == z",
++     "x > 0",
++     "y > 0",
++     "z > 0"))
+> 
+> dat <- data.frame(
++     x = c(1,-1,1),
++     y = c(-1,1,1),
++     z = c(2,0,2))
+> 
+> # localize all errors in the data
+> err <- localizeErrors(E,dat)
+> 
+> summary(err)
+Summary of 'errorLocation' object, generated by gaborcsardi at Sat Jun 13 12:02:51 2015 
+by calling checkDatamodel.editmatrix(E, dat, weight) localizeErrors(E, dat) 
+
+Results:
+       err.per.var err.per.rec weight degeneracy  user system elapsed
+min              1           0      0          1 0.002  0.002   0.002
+median           1           1      1          1 0.002  0.002   0.002
+max              1           2      2          1 0.004  0.004   0.004
+total            3           3      3          3 0.008  0.008   0.008
+0 records exceeded maximum search time (0%)
+0 records did not yield a solution (0%)
+> 
+> # what has to be adapted:
+> err$adapt
+      adapt
+record     x     y     z
+     1 FALSE  TRUE FALSE
+     2  TRUE FALSE  TRUE
+     3 FALSE FALSE FALSE
+> # weight, number of equivalent solutions, timings,
+> err$status
+  weight degeneracy  user system elapsed maxDurationExceeded memfail
+1      1          1 0.002  0.002   0.002               FALSE   FALSE
+2      2          1 0.002  0.002   0.002               FALSE   FALSE
+3      0          1 0.004  0.004   0.004               FALSE   FALSE
+> 
+> 
+> ## Not run
+> 
+> # Demonstration of verbose processing
+> # construct 2-block editmatrix
+> F <- editmatrix(c(
++     "x + y == z",
++     "x > 0",
++     "y > 0",
++     "z > 0",
++     "w > 10"))
+> # Using 'dat' as defined above, generate some extra records
+> dd <- dat
+> for ( i in 1:5 ) dd <- rbind(dd,dd)
+> dd$w <- sample(12,nrow(dd),replace=TRUE)
+> 
+> # localize errors verbosely
+> (err <- localizeErrors(F,dd,verbose=TRUE))
+Processing block 1 of 1, record  1 of 96Processing block 1 of 1, record  2 of 96Processing block 1 of 1, record  3 of 96Processing block 1 of 1, record  4 of 96Processing block 1 of 1, record  5 of 96Processing block 1 of 1, record  6 of 96Processing block 1 of 1, record  7 of 96Processing block 1 of 1, record  8 of 96Processing block 1 of 1, record  9 of 96Processing block 1 of 1, record 10 of 96Processing block 1 of 1, record 11 of 96Processing block 1 of 1, record 12 of 96Processing block 1 of 1, record 13 of 96Processing block 1 of 1, record 14 of 96Processing block 1 of 1, record 15 of 96Processing block 1 of 1, record 16 of 96Processing block 1 of 1, record 17 of 96Processing block 1 of 1, record 18 of 96Processing block 1 of 1, record 19 of 96Processing block 1 of 1, record 20 of 96Processing block 1 of 1, record 21 of 96Processing block 1 of 1, record 22 of 96Processing block 1 of 1, record 23 of 96Processing block 1 of 1, record 24 of 96Processing block 1 of 1, record 25 of 96Processing block 1 of 1, record 26 of 96Processing block 1 of 1, record 27 of 96Processing block 1 of 1, record 28 of 96Processing block 1 of 1, record 29 of 96Processing block 1 of 1, record 30 of 96Processing block 1 of 1, record 31 of 96Processing block 1 of 1, record 32 of 96Processing block 1 of 1, record 33 of 96Processing block 1 of 1, record 34 of 96Processing block 1 of 1, record 35 of 96Processing block 1 of 1, record 36 of 96Processing block 1 of 1, record 37 of 96Processing block 1 of 1, record 38 of 96Processing block 1 of 1, record 39 of 96Processing block 1 of 1, record 40 of 96Processing block 1 of 1, record 41 of 96Processing block 1 of 1, record 42 of 96Processing block 1 of 1, record 43 of 96Processing block 1 of 1, record 44 of 96Processing block 1 of 1, record 45 of 96Processing block 1 of 1, record 46 of 96Processing block 1 of 1, record 47 of 96Processing block 1 of 1, record 48 of 96Processing block 1 of 1, record 49 of 96Processing block 1 of 1, record 50 of 96Processing block 1 of 1, record 51 of 96Processing block 1 of 1, record 52 of 96Processing block 1 of 1, record 53 of 96Processing block 1 of 1, record 54 of 96Processing block 1 of 1, record 55 of 96Processing block 1 of 1, record 56 of 96Processing block 1 of 1, record 57 of 96Processing block 1 of 1, record 58 of 96Processing block 1 of 1, record 59 of 96Processing block 1 of 1, record 60 of 96Processing block 1 of 1, record 61 of 96Processing block 1 of 1, record 62 of 96Processing block 1 of 1, record 63 of 96Processing block 1 of 1, record 64 of 96Processing block 1 of 1, record 65 of 96Processing block 1 of 1, record 66 of 96Processing block 1 of 1, record 67 of 96Processing block 1 of 1, record 68 of 96Processing block 1 of 1, record 69 of 96Processing block 1 of 1, record 70 of 96Processing block 1 of 1, record 71 of 96Processing block 1 of 1, record 72 of 96Processing block 1 of 1, record 73 of 96Processing block 1 of 1, record 74 of 96Processing block 1 of 1, record 75 of 96Processing block 1 of 1, record 76 of 96Processing block 1 of 1, record 77 of 96Processing block 1 of 1, record 78 of 96Processing block 1 of 1, record 79 of 96Processing block 1 of 1, record 80 of 96Processing block 1 of 1, record 81 of 96Processing block 1 of 1, record 82 of 96Processing block 1 of 1, record 83 of 96Processing block 1 of 1, record 84 of 96Processing block 1 of 1, record 85 of 96Processing block 1 of 1, record 86 of 96Processing block 1 of 1, record 87 of 96Processing block 1 of 1, record 88 of 96Processing block 1 of 1, record 89 of 96Processing block 1 of 1, record 90 of 96Processing block 1 of 1, record 91 of 96Processing block 1 of 1, record 92 of 96Processing block 1 of 1, record 93 of 96Processing block 1 of 1, record 94 of 96Processing block 1 of 1, record 95 of 96Processing block 1 of 1, record 96 of 96
+Object of class 'errorLocation' generated at Sat Jun 13 12:02:52 2015 
+call : checkDatamodel.editmatrix(E, dat, weight) localizeErrors(F, dd, verbose = TRUE) 
+method : checkDatamodel bb 
+slots: $adapt $status $call $method $user $timestamp 
+
+Values to adapt:      adapt
+record     x     y     z     w
+    1  FALSE  TRUE FALSE  TRUE
+    2   TRUE FALSE  TRUE  TRUE
+    3  FALSE FALSE FALSE  TRUE
+    4  FALSE  TRUE FALSE FALSE
+    5   TRUE FALSE  TRUE  TRUE
+    6  FALSE FALSE FALSE FALSE
+    7  FALSE  TRUE FALSE FALSE
+    8   TRUE FALSE  TRUE  TRUE
+    9  FALSE FALSE FALSE  TRUE
+    10 FALSE  TRUE FALSE  TRUE
+...print truncated 
+
+
+ Status:
+   weight degeneracy  user system elapsed maxDurationExceeded memfail
+1       2          1 0.003  0.003   0.003               FALSE   FALSE
+2       3          1 0.002  0.002   0.002               FALSE   FALSE
+3       1          1 0.003  0.003   0.003               FALSE   FALSE
+4       1          1 0.003  0.003   0.003               FALSE   FALSE
+5       3          1 0.001  0.001   0.001               FALSE   FALSE
+6       0          1 0.003  0.003   0.003               FALSE   FALSE
+7       1          1 0.003  0.003   0.003               FALSE   FALSE
+8       3          1 0.001  0.001   0.001               FALSE   FALSE
+9       1          1 0.004  0.004   0.004               FALSE   FALSE
+10      2          1 0.012  0.012   0.012               FALSE   FALSE
+...print truncated 
+> 
+> # printing is cut off, use summary for an overview
+> summary(err)
+Summary of 'errorLocation' object, generated by gaborcsardi at Sat Jun 13 12:02:52 2015 
+by calling checkDatamodel.editmatrix(E, dat, weight) localizeErrors(F, dd, verbose = TRUE) 
+
+Results:
+       err.per.var err.per.rec weight degeneracy  user system elapsed
+min             32           0      0          1 0.001  0.001   0.001
+median          32           2      2          1 0.003  0.003   0.003
+max             82           3      3          1 0.016  0.016   0.016
+total          178         178    178         96 0.352  0.352   0.352
+0 records exceeded maximum search time (0%)
+0 records did not yield a solution (0%)
+> 
+> # or plot (not very informative in this artificial example)
+> plot(err)
+> 
+> ## End(Not run)
+> 
+> for ( d in dir("../pkg/R",full.names=TRUE)) dmp <- source(d)
+> # Example with different weights for each record
+> E <- editmatrix('x + y == z')
+> dat <- data.frame(
++     x = c(1,1),
++     y = c(1,1),
++     z = c(1,1))
+> 
+> # At equal weights, both records have three solutions (degeneracy): adapt x, y
+> # or z:
+> localizeErrors(E,dat)$status
+  weight degeneracy  user system elapsed maxDurationExceeded memfail
+1      1          3 0.007  0.007   0.007               FALSE   FALSE
+2      1          3 0.007  0.007   0.007               FALSE   FALSE
+> 
+> # Set different weights per record (lower weight means lower reliability):
+> w <- matrix(c(
++     1,2,2,
++     2,2,1),nrow=2,byrow=TRUE)
+> 
+> localizeErrors(E,dat,weight=w)
+Object of class 'errorLocation' generated at Sat Jun 13 12:02:52 2015 
+call : checkDatamodel.editmatrix(E, dat, weight) localizeErrors(E, dat, weight = w) 
+method : checkDatamodel bb 
+slots: $adapt $status $call $method $user $timestamp 
+
+Values to adapt:
+      x     y     z
+1  TRUE FALSE FALSE
+2 FALSE FALSE  TRUE
+
+ Status:
+  weight degeneracy  user system elapsed maxDurationExceeded memfail
+1      1          1 0.004  0.004   0.004               FALSE   FALSE
+2      1          1 0.003  0.003   0.003               FALSE   FALSE
+> 
+> 
+> # an example with categorical variables
+> E <- editarray(expression(
++     age %in% c('under aged','adult'),
++     maritalStatus %in% c('unmarried','married','widowed','divorced'),
++     positionInHousehold %in% c('marriage partner', 'child', 'other'),
++     if( age == 'under aged' ) maritalStatus == 'unmarried',
++     if( maritalStatus %in% c('married','widowed','divorced')) 
++       !positionInHousehold %in% c('marriage partner','child')
++     )
++ )
+> E
+      levels
+edits  age:adlt age:unda mrtS:dvrc mrtS:mrrd mrtS:unmr mrtS:wdwd psIH:chld
+  cat1    FALSE     TRUE      TRUE      TRUE     FALSE      TRUE      TRUE
+  cat2     TRUE     TRUE      TRUE      TRUE     FALSE      TRUE      TRUE
+      levels
+edits  psIH:mrrp psIH:othr
+  cat1      TRUE      TRUE
+  cat2      TRUE     FALSE
+Edit array:
+
+Edit rules:
+dat1 : age %in% c('adult', 'under aged') 
+dat2 : maritalStatus %in% c('divorced', 'married', 'unmarried', 'widowed') 
+dat3 : positionInHousehold %in% c('child', 'marriage partner', 'other') 
+cat1 : if( age == 'under aged' ) !( maritalStatus %in% c('divorced', 'married', 'widowed') ) 
+cat2 : if( maritalStatus %in% c('divorced', 'married', 'widowed') ) !( positionInHousehold %in% c('child', 'marriage partner') )  
+> 
+> #
+> dat <- data.frame(
++     age = c('under aged','adult','adult' ),
++     maritalStatus=c('married','unmarried','widowed' ), 
++     positionInHousehold=c('child','other','marriage partner')
++ )
+> dat
+         age maritalStatus positionInHousehold
+1 under aged       married               child
+2      adult     unmarried               other
+3      adult       widowed    marriage partner
+> localizeErrors(E,dat)
+Object of class 'errorLocation' generated at Sat Jun 13 12:02:52 2015 
+call : checkDatamodel.editarray(E, dat, weight) localizeErrors(E, dat) 
+method : checkDatamodel bb 
+slots: $adapt $status $call $method $user $timestamp 
+
+Values to adapt:
+    age maritalStatus positionInHousehold
+1 FALSE          TRUE               FALSE
+2 FALSE         FALSE               FALSE
+3 FALSE          TRUE               FALSE
+
+ Status:
+  weight degeneracy  user system elapsed maxDurationExceeded memfail
+1      1          1 0.005  0.005   0.005               FALSE   FALSE
+2      0          1 0.003  0.003   0.003               FALSE   FALSE
+3      1          2 0.006  0.006   0.006               FALSE   FALSE
+> # the last record of dat has 2 degenerate solutions. Running  the last command
+> # a few times demonstrates that one of those solutions is chosen at random.
+> 
+> # Increasing the weight of  'positionInHousehold' for example, makes the best
+> # solution unique again
+> localizeErrors(E,dat,weight=c(1,1,2))
+Object of class 'errorLocation' generated at Sat Jun 13 12:02:52 2015 
+call : checkDatamodel.editarray(E, dat, weight) localizeErrors(E, dat, weight = c(1, 1, 2)) 
+method : checkDatamodel bb 
+slots: $adapt $status $call $method $user $timestamp 
+
+Values to adapt:
+    age maritalStatus positionInHousehold
+1 FALSE          TRUE               FALSE
+2 FALSE         FALSE               FALSE
+3 FALSE          TRUE               FALSE
+
+ Status:
+  weight degeneracy  user system elapsed maxDurationExceeded memfail
+1      1          1 0.005  0.005   0.005               FALSE   FALSE
+2      0          1 0.003  0.003   0.003               FALSE   FALSE
+3      1          1 0.006  0.006   0.006               FALSE   FALSE
+> 
+> 
+> # an example with mixed data:
+> 
+> E <- editset(expression(
++     x + y == z,
++     2*u  + 0.5*v == 3*w,
++     w >= 0,
++     if ( x > 0 ) y > 0,
++     x >= 0,
++     y >= 0,
++     z >= 0,
++     A %in% letters[1:4],
++     B %in% letters[1:4],
++     C %in% c(TRUE,FALSE),
++     D %in% letters[5:8],
++     if ( A %in% c('a','b') ) y > 0,
++     if ( A == 'c' ) B %in% letters[1:3],
++     if ( !C == TRUE) D %in% c('e','f')
++ ))
+> 
+> set.seed(1)
+> dat <- data.frame(
++     x = sample(-1:8),
++     y = sample(-1:8),
++     z = sample(10),
++     u = sample(-1:8),
++     v = sample(-1:8),
++     w = sample(10),
++     A = sample(letters[1:4],10,replace=TRUE),
++     B = sample(letters[1:4],10,replace=TRUE),
++     C = sample(c(TRUE,FALSE),10,replace=TRUE),
++     D = sample(letters[5:9],10,replace=TRUE),
++     stringsAsFactors=FALSE
++ )
+> 
+> (el <-localizeErrors(E,dat,verbose=TRUE))
+Method 'bb' is not available for conditional edits on numerical or mixed data. Switching to 'mip'.
+Processing block 1 of 3, record  1 of 10Processing block 1 of 3, record  2 of 10Processing block 1 of 3, record  3 of 10Processing block 1 of 3, record  4 of 10Processing block 1 of 3, record  5 of 10Processing block 1 of 3, record  6 of 10Processing block 1 of 3, record  7 of 10Processing block 1 of 3, record  8 of 10Processing block 1 of 3, record  9 of 10Processing block 1 of 3, record 10 of 10Processing block 2 of 3, record  1 of 10Processing block 2 of 3, record  2 of 10Processing block 2 of 3, record  3 of 10Processing block 2 of 3, record  4 of 10Processing block 2 of 3, record  5 of 10Processing block 2 of 3, record  6 of 10Processing block 2 of 3, record  7 of 10Processing block 2 of 3, record  8 of 10Processing block 2 of 3, record  9 of 10Processing block 2 of 3, record 10 of 10Processing block 3 of 3, record  1 of 10Processing block 3 of 3, record  2 of 10Processing block 3 of 3, record  3 of 10Processing block 3 of 3, record  4 of 10Processing block 3 of 3, record  5 of 10Processing block 3 of 3, record  6 of 10Processing block 3 of 3, record  7 of 10Processing block 3 of 3, record  8 of 10Processing block 3 of 3, record  9 of 10Processing block 3 of 3, record 10 of 10
+Object of class 'errorLocation' generated at Sat Jun 13 12:02:52 2015 
+call : checkDatamodel.editarray(F, dat, weight) checkDatamodel.editmatrix(G, dat, weight) localizeErrors(E, dat, verbose = TRUE) 
+method : checkDatamodel mip 
+slots: $adapt $status $call $method $user $timestamp 
+
+Values to adapt:
+       x     y     z     u     v     w     A     B     C     D
+1  FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+2   TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+3  FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+4  FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+5  FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+6  FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+7  FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE
+8  FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+9  FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+10  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+
+ Status:
+   weight degeneracy  user system elapsed maxDurationExceeded memfail
+1       2         NA 0.020  0.001   0.021               FALSE   FALSE
+2       3         NA 0.040  0.001   0.052               FALSE   FALSE
+3       2         NA 0.034  0.001   0.038               FALSE   FALSE
+4       3         NA 0.027  0.000   0.026               FALSE   FALSE
+5       3         NA 0.024  0.001   0.026               FALSE   FALSE
+6       2         NA 0.019  0.000   0.021               FALSE   FALSE
+7       3         NA 0.029  0.002   0.033               FALSE   FALSE
+8       2         NA 0.051  0.002   0.067               FALSE   FALSE
+9       4         NA 0.050  0.001   0.066               FALSE   FALSE
+10      3         NA 0.025  0.001   0.026               FALSE   FALSE
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("localizeErrors", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("normalize")
+> ### * normalize
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: normalize
+> ### Title: Normalizes an editmatrix
+> ### Aliases: normalize
+> 
+> ### ** Examples
+> 
+> 
+> E <- editmatrix(c( "x+3*y == 2*z"
++                  , "x > 2")
++                  )
+> print(E)
+Edit matrix:
+      x y  z Ops CONSTANT
+num1  1 3 -2  ==        0
+num2 -1 0  0   <       -2
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : 2 < x  
+>                  
+> # get editrules, useful for storing and maintaining the rules external from your script
+> as.data.frame(E)
+  name           edit
+1 num1 x + 3*y == 2*z
+2 num2          2 < x
+>                  
+> # get coeficient matrix of inequalities
+> getA(E)
+      var
+rules   x y  z
+  num1  1 3 -2
+  num2 -1 0  0
+> 
+> # get augmented matrix of linear edit set
+> getAb(E)
+      var
+rules   x y  z CONSTANT
+  num1  1 3 -2        0
+  num2 -1 0  0       -2
+> 
+> # get constants of inequalities (i.e. c(0, 2))                
+> getb(E)
+num1 num2 
+   0   -2 
+> 
+> # get operators of inequalities (i.e. c("==",">"))
+> getOps(E)
+num1 num2 
+"=="  "<" 
+> 
+> # get variables of inequalities (i.e. c("x","y","z"))
+> getVars(E)
+[1] "x" "y" "z"
+> 
+> # isNormalized
+> isNormalized(E)
+[1] TRUE
+> 
+> #normalized E
+> E <- normalize(E)
+> E
+Edit matrix:
+      x y  z Ops CONSTANT
+num1  1 3 -2  ==        0
+num2 -1 0  0   <       -2
+
+Edit rules:
+num1 : x + 3*y == 2*z 
+num2 : 2 < x  
+> 
+> # is het now normalized?
+> isNormalized(E)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("normalize", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("separate")
+> ### * separate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: separate
+> ### Title: Separate an editset into its disconnected blocks and simplify
+> ### Aliases: separate
+> 
+> ### ** Examples
+> 
+> 
+> 
+> E <- editset(expression(
++     x + y == z,
++     2*u  + 0.5*v == 3*w,
++     w >= 0,
++     if ( x > 0 ) y > 0,
++     x >= 0,
++     y >= 0,
++     z >= 0,
++     A %in% letters[1:4],
++     B %in% letters[1:4],
++     C %in% c(TRUE,FALSE),
++     D %in% letters[5:8],
++     if ( A %in% c('a','b') ) y > 0,
++     if ( A == 'c' ) B %in% letters[1:3],
++     if ( !C == TRUE) D %in% c('e','f')
++ ))
+> 
+> (L <- separate(E))
+[[1]]
+editsets:
+
+Set 1  conditions:
+0 < y, 0 < x 
+
+Data model:
+dat1 : A %in% c('a', 'b', 'c', 'd')
+dat2 : B %in% c('a', 'b', 'c', 'd') 
+
+Edit set:
+num1 : x + y == z
+num4 : 0 <= x
+num5 : 0 <= y
+num6 : 0 <= z
+cat2 : 0 < y
+cat1 : if( A == 'c' ) B != 'd' 
+
+Set 2  conditions:
+y <= 0, x <= 0 
+
+Data model:
+dat1 : A %in% c('a', 'b', 'c', 'd')
+dat2 : B %in% c('a', 'b', 'c', 'd') 
+
+Edit set:
+num1 : x + y == z
+num4 : 0 <= x
+num5 : 0 <= y
+num6 : 0 <= z
+cat1 : if( A == 'c' ) B != 'd'
+cat2 : if ( A %in% c('a', 'b') ) FALSE 
+
+Set 3  conditions:
+0 < y, x <= 0 
+
+Data model:
+dat1 : A %in% c('a', 'b', 'c', 'd')
+dat2 : B %in% c('a', 'b', 'c', 'd') 
+
+Edit set:
+num1 : x + y == z
+num4 : 0 <= x
+num5 : 0 <= y
+num6 : 0 <= z
+cat1 : if( A == 'c' ) B != 'd' 
+
+[[2]]
+Edit matrix:
+     u   v  w Ops CONSTANT
+num2 2 0.5 -3  ==        0
+num3 0 0.0 -1  <=        0
+
+Edit rules:
+num2 : 2*u + 0.5*v == 3*w 
+num3 : 0 <= w  
+
+[[3]]
+      levels
+edits  C:FALS C:TRUE   D:e   D:f  D:g  D:h
+  cat1   TRUE  FALSE FALSE FALSE TRUE TRUE
+Edit array:
+
+Edit rules:
+dat1 : C %in% c(FALSE, TRUE) 
+dat2 : D %in% c('e', 'f', 'g', 'h') 
+cat1 : if( C == FALSE ) !( D %in% c('g', 'h') )  
+
+> 
+> sapply(L,class)
+[1] "editlist"   "editmatrix" "editarray" 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("separate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("substValue")
+> ### * substValue
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: substValue
+> ### Title: Replace a variable by a value in a set of edits.
+> ### Aliases: substValue substValue.editarray substValue.editenv
+> ###   substValue.editlist substValue.editmatrix substValue.editset
+> 
+> ### ** Examples
+> 
+> 
+> 
+> E <- editmatrix(expression(
++     x + y == z,
++     2*y < 10,
++     3*x + 1.5*u < 7,
++     z >= 0
++     )
++ )
+> 
+> # single value
+> substValue(E,'z',10)
+Edit matrix:
+     x y z   u Ops CONSTANT
+num1 1 1 0 0.0  ==       10
+num2 0 2 0 0.0   <       10
+num3 3 0 0 1.5   <        7
+
+Edit rules:
+num1 : x + y == 10 
+num2 : 2*y < 10 
+num3 : 3*x + 1.5*u < 7  
+> # multiple values
+> substValue(E,c('x','y'),c(1,3))
+Edit matrix:
+     x y  z   u Ops CONSTANT
+num1 0 0 -1 0.0  ==       -4
+num3 0 0  0 1.5   <        4
+num4 0 0 -1 0.0  <=        0
+
+Edit rules:
+num1 : 4 == z 
+num3 : 1.5*u < 4 
+num4 : 0 <= z  
+> # remove substituted variable from edits
+> substValue(E,'z',10,reduce=TRUE)
+Edit matrix:
+     x y   u Ops CONSTANT
+num1 1 1 0.0  ==       10
+num2 0 2 0.0   <       10
+num3 3 0 1.5   <        7
+
+Edit rules:
+num1 : x + y == 10 
+num2 : 2*y < 10 
+num3 : 3*x + 1.5*u < 7  
+> # do not remove redundant row:
+> substValue(E,'z',10,removeredundant=FALSE)
+Edit matrix:
+     x y z   u Ops CONSTANT
+num1 1 1 0 0.0  ==       10
+num2 0 2 0 0.0   <       10
+num3 3 0 0 1.5   <        7
+num4 0 0 0 0.0  <=       10
+
+Edit rules:
+num1 : x + y == 10 
+num2 : 2*y < 10 
+num3 : 3*x + 1.5*u < 7 
+num4 : 0 <= 10  
+> 
+> 
+> # example with an editset
+> E <- editset(expression(
++     x  + y == z,
++     x >= 0,
++     y >= 0,
++     A %in% c('a1','a2'),
++     B %in% c('b1','b2'),
++     if ( x > 0 ) y > 0,
++     if ( y > 0 ) x > 0,
++     if ( A == 'a' ) B == 'b',
++     if ( A == 'b' ) y > 3
++     )
++ )
+> 
+> # substitute pure numerical variable
+> substValue(E,'z',10)
+
+Data model:
+dat6 : A %in% c('a', 'a1', 'a2', 'b')
+dat7 : B %in% c('b', 'b1', 'b2') 
+
+Edit set:
+num1 : x + y == 10
+num2 : 0 <= x
+num3 : 0 <= y
+cat4 : if( A %in% c('a', 'b') ) !( B %in% c('b1', 'b2') )
+mix5 : if( 0 < x ) y > 0
+mix6 : if( 0 < y ) x > 0
+mix7 : if( y <= 3 ) A != 'b' 
+> # substitute pure categorical variable
+> substValue(E,'A','a1')
+
+Edit set:
+num1 : x + y == z
+num2 : 0 <= x
+num3 : 0 <= y
+cat1 : if( 0 < x ) y > 0
+cat2 : if( 0 < y ) x > 0 
+> # substitute variable appearing in logical constraints
+> substValue(E,'x',3)
+
+Data model:
+dat2 : A %in% c('a', 'a1', 'a2', 'b')
+dat3 : B %in% c('b', 'b1', 'b2') 
+
+Edit set:
+num1 : y + 3 == z
+num3 : 0 <= y
+cat1 : 0 < y
+cat1 : if( A %in% c('a', 'b') ) !( B %in% c('b1', 'b2') )
+cat3 : if( y <= 3 ) A != 'b' 
+> 
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("substValue", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("violatedEdits")
+> ### * violatedEdits
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: violatedEdits
+> ### Title: Check data against constraints
+> ### Aliases: as.data.frame.violatedEdits plot.violatedEdits
+> ###   summary.violatedEdits violatedEdits violatedEdits.character
+> ###   violatedEdits.editarray violatedEdits.editmatrix
+> ###   violatedEdits.editset
+> 
+> ### ** Examples
+> 
+> # Using character vector to define contraints
+> E <- editmatrix(c( "x+3*y==2*z"
++                   , "x==z"
++                   )
++                 )
+>                 
+> dat <- data.frame( x = c(0,2,1)
++                  , y = c(0,0,1)
++                  , z = c(0,1,1)
++                  )
+> print(dat)
+  x y z
+1 0 0 0
+2 2 0 1
+3 1 1 1
+> 
+> ve <- violatedEdits(E,dat)
+> 
+> print(ve)
+      edit
+record  num1  num2
+     1 FALSE FALSE
+     2 FALSE  TRUE
+     3  TRUE FALSE
+> summary(ve, E)
+Edit violations, 3 observations, 0 completely missing (0%):
+
+ editname freq   rel           edit
+     num1    1 33.3% x + 3*y == 2*z
+     num2    1 33.3%         x == z
+
+Edit violations per record:
+
+ errors freq   rel
+      0    1 33.3%
+      1    2 66.7%
+> plot(ve)
+> 
+> # An example with categorical data:
+> 
+> E <- editarray(expression(
++     gender %in% c('male','female'),
++     pregnant %in% c(TRUE, FALSE),
++     if( gender == 'male' ) !pregnant
++     )
++ )
+> print(E)
+      levels
+edits  gndr:feml gndr:male prgn:FALS prgn:TRUE
+  cat1     FALSE      TRUE     FALSE      TRUE
+Edit array:
+
+Edit rules:
+dat1 : gender %in% c('female', 'male') 
+dat2 : pregnant %in% c(FALSE, TRUE) 
+cat1 : if( gender == 'male' ) pregnant == FALSE  
+> 
+> dat <- data.frame(
++     gender=c('male','male','female','cylon'), 
++     pregnant=c(TRUE,FALSE,TRUE,TRUE)
++ )
+> 
+> print(dat)
+  gender pregnant
+1   male     TRUE
+2   male    FALSE
+3 female     TRUE
+4  cylon     TRUE
+> # Standard, the datamodel is checked as well,
+> violatedEdits(E,dat)
+      edit
+record  dat1  dat2  cat1
+     1 FALSE FALSE  TRUE
+     2 FALSE FALSE FALSE
+     3 FALSE FALSE FALSE
+     4  TRUE FALSE FALSE
+> 
+> # but we may turn this of
+> violatedEdits(E,dat,datamodel=FALSE)
+      edit
+record  cat1
+     1  TRUE
+     2 FALSE
+     3 FALSE
+     4 FALSE
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("violatedEdits", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  5.04 0.114 5.435 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')
