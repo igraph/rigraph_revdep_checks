@@ -1,0 +1,90 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "netgsa"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "netgsa-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('netgsa')
+Loading required package: cvTools
+Loading required package: lattice
+Loading required package: robustbase
+Loading required package: corpcor
+Loading required package: glasso
+Loading required package: glmnet
+Loading required package: Matrix
+Loading required package: foreach
+Loaded glmnet 2.0-2
+
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("NetGSA")
+> ### * NetGSA
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NetGSA
+> ### Title: Network-based Gene Set Analysis
+> ### Aliases: NetGSA
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> library(igraph)
+> data(netgsaex)
+> 
+> A1 = netgsaex$A1
+> A2 = netgsaex$A2
+> B = netgsaex$B
+> x = netgsaex$x
+> y = netgsaex$y
+> 
+> ##Visualize the networks
+> par(mar = c(0.5, 0.5, 3, 0.5))
+> plot(netgsaex$g.alt, vertex.size = 5, vertex.label = NA, main="Network - alt")
+Error in check_version(graph) : 
+  This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+Calls: plot ... as.igraph.es -> inherits -> E -> update_es_ref -> check_version
+Execution halted

@@ -1,0 +1,260 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "SINGLE"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "SINGLE-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('SINGLE')
+Loading required package: flsa
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: dse
+Loading required package: tfplot
+Loading required package: tframe
+
+Attaching package: ‘dse’
+
+The following object is masked from ‘package:igraph’:
+
+    permute
+
+The following objects are masked from ‘package:stats’:
+
+    acf, simulate
+
+Loading required package: Matrix
+Warning: replacing previous import by ‘dse::permute’ when loading ‘SINGLE’
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("SINGLE-package")
+> ### * SINGLE-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: SINGLE-package
+> ### Title: Estimate dynamic networks using the Smooth Incremental Graphical
+> ###   Lasso Estimation (SINGLE) Algorithm
+> ### Aliases: SINGLE-package
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> X = generate_random_data(ROI=5, length_=50, seg=3, sparsity=0.15, str=0.6)
+> ## Not run: 
+> ##D S = SINGLE(data=X$data, radius=5, l1=0.75, l2=0.3, k=3)
+> ##D result = precision_recall(true_cov=X$true_cov, estimated_cov=S$P_)
+> ##D plot(result$F1, type='l', ylim=c(0,1), ylab='', 
+> ##D    main='F1 Score', xlab='Time') # plot F1 score over time
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("SINGLE-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("SINGLE")
+> ### * SINGLE
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: SINGLE
+> ### Title: Smooth Incremental Graphical Lasso Estimation (SINGLE)
+> ### Aliases: SINGLE
+> ### Keywords: SINGLE
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> X = generate_random_data(ROI=5, length_=50, seg=3, sparsity=0.1, str=-0.6)
+> ## Not run: 
+> ##D S = SINGLE(data=X$data, verbose=TRUE)
+> ##D plotSINGLE(S, index=c(1,2,3,4,5), fix.axis=T)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("SINGLE", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("choose_h")
+> ### * choose_h
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: choose_h
+> ### Title: Estimate kernel width for Gaussian kernel and Sliding window
+> ### Aliases: choose_h
+> ### Keywords: kernel
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> X = generate_random_data(ROI=5, length_=50, seg=3, sparsity=0.15, str=0.6)
+> h_est = choose_h(data=X$data, sample_size=30, kernel='window', h=seq(10,100,10))
+> C = get_kern_cov(data=X$data, h=h_est, kernel="window")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("choose_h", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generate_random_data")
+> ### * generate_random_data
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generate_random_data
+> ### Title: Generate a random dynamic graph using Vector Autoregressive
+> ###   (VAR) processes
+> ### Aliases: generate_random_data
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> X = generate_random_data(ROI=10, length_=100, seg=3, sparsity=0.1, str=0.6)
+> ## Not run: 
+> ##D S = SINGLE(data=X$data, h=50, l1=0.7, l2=0.5)
+> ##D precision_recall(true_cov=X$true_cov, estimated_cov=S$P_)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generate_random_data", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("get_kern_cov")
+> ### * get_kern_cov
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get_kern_cov
+> ### Title: Estimate time varying sample covariance matrices using kernels
+> ### Aliases: get_kern_cov
+> ### Keywords: kernel
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> X = generate_random_data(ROI=5, length_=50, seg=3, sparsity=0.15, str=0.6)
+> C = get_kern_cov(data=X$data, h=50, kernel="gaussian")
+> ## Not run: 
+> ##D S = SINGLE(C=C, l1=0.7, l2=0.5)
+> ##D plotSINGLE(S, index = c(1,2,3,4,5), x.axis=seq(1,150), 
+> ##D     col.names=seq(1,5), n.row=2, fix.axis=TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get_kern_cov", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotSINGLE")
+> ### * plotSINGLE
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotSINGLE
+> ### Title: Plot pairwise partial correlations as estimated by the SINGLE
+> ###   algorithm
+> ### Aliases: plotSINGLE
+> ### Keywords: SINGLE
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> X = generate_random_data(ROI=5, length_=50, seg=3, sparsity=0.1, str=0.6)
+> ## Not run: 
+> ##D S = SINGLE(data=X$data, h=50, l1=0.7, l2=0.5)
+> ##D plotSINGLE(S, index = c(1,2,3,4,5), x.axis=seq(1,150), 
+> ##D     col.names=seq(1,5), n.row=2, fix.axis=TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotSINGLE", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("precision_recall")
+> ### * precision_recall
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: precision_recall
+> ### Title: Calculate the Precision, Recall and F scores
+> ### Aliases: precision_recall
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> X = generate_random_data(ROI=5, length_=50, seg=3, sparsity=0.1, str=0.6)
+> ## Not run: 
+> ##D S = SINGLE(data=X$data, h=50, l1=0.7, l2=0.5)
+> ##D result = precision_recall(true_cov=X$true_cov, estimated_cov=S$P_)
+> ##D plot(result$F1, type='l', ylim=c(0,1), ylab='', 
+> ##D    main='F1 Score', xlab='Time') # plot F1 score over time
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("precision_recall", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  5.86 0.168 6.038 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

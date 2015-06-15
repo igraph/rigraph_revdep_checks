@@ -1,0 +1,14 @@
+* installing *source* package ‘nat’ ...
+** package ‘nat’ successfully unpacked and MD5 sums checked
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** preparing package for lazy loading
+Warning: replacing previous import by ‘nabor::knn’ when loading ‘nat’
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+Warning: replacing previous import by ‘nabor::knn’ when loading ‘nat’
+* DONE (nat)

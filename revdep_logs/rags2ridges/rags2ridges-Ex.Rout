@@ -1,0 +1,267 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "rags2ridges"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "rags2ridges-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('rags2ridges')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("GGMblockNullPenalty")
+> ### * GGMblockNullPenalty
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: GGMblockNullPenalty
+> ### Title: Generate the distribution of the penalty parameter under the
+> ###   null hypothesis of block-independence
+> ### Aliases: GGMblockNullPenalty
+> 
+> ### ** Examples
+> 
+> ## Obtain some (high-dimensional) data
+> p = 15
+> n = 10
+> set.seed(333)
+> X = matrix(rnorm(n*p), nrow = n, ncol = p)
+> colnames(X)[1:15] = letters[1:15]
+> id <- c(rep(0, 10), rep(1, 5))
+> 
+> ## Generate null distribution of the penalty parameter
+> lambda0dist <- GGMblockNullPenalty(X, id, 5, 0.001, 10)
+> 
+> ## Location of null distribution
+> lambdaNull <- median(lambda0dist)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("GGMblockNullPenalty", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("GGMblockTest")
+> ### * GGMblockTest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: GGMblockTest
+> ### Title: Test for block-indepedence
+> ### Aliases: GGMblockTest
+> 
+> ### ** Examples
+> 
+> ## Obtain some (high-dimensional) data
+> p = 15
+> n = 10
+> set.seed(333)
+> X = matrix(rnorm(n*p), nrow = n, ncol = p)
+> colnames(X)[1:15] = letters[1:15]
+> id <- c(rep(0, 10), rep(1, 5))
+> 
+> ## Generate null distribution of the penalty parameter
+> lambda0dist <- GGMblockNullPenalty(X, id, 5, 0.001, 10)
+> 
+> ## Location of null distribution
+> lambdaNull <- median(lambda0dist)
+> 
+> ## Perform test
+> testRes <- GGMblockTest(X, id, nPerm = 100, lambdaNull)
+0 of 100 permutations done, and counting... 
+25 of 100  permutations done 
+25 of 100 permutations done, and counting... 
+
+Likelihood ratio test for block independence 
+---------------------------------------- 
+-> number of permutations : 100 
+-> test statistic         : 0.569 
+-> p-value                : 1 
+-> remark                 : resampling terminated prematurely due to unlikely significance 
+---------------------------------------- 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("GGMblockTest", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("GGMnetworkStats")
+> ### * GGMnetworkStats
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: GGMnetworkStats
+> ### Title: Gaussian graphical model network statistics
+> ### Aliases: GGMnetworkStats
+> 
+> ### ** Examples
+> 
+> ## Obtain some (high-dimensional) data
+> p = 25
+> n = 10
+> set.seed(333)
+> X = matrix(rnorm(n*p), nrow = n, ncol = p)
+> colnames(X)[1:25] = letters[1:25]
+> Cx <- covML(X)
+> 
+> ## Obtain sparsified partial correlation matrix
+> Pridge   <- ridgeS(Cx, 10, type = "Alt")
+> PCsparse <- sparsify(Pridge , threshold = "localFDR")$sparseParCor
+Step 1... determine cutoff point
+Step 2... estimate parameters of null distribution and eta0
+Step 3... compute p-values and estimate empirical PDF/CDF
+Step 4... compute q-values and local fdr
+Step 5... prepare for plotting
+
+- Retained elements:  11 
+- Corresponding to 3.67 % of possible edges 
+ 
+> 
+> ## Represent the graph and calculate GGM network statistics
+> Ugraph(PCsparse, "fancy")
+> GGMnetworkStats(PCsparse)
+$degree
+a b c d e f g h i j k l m n o p q r s t u v w x y 
+1 0 2 0 2 0 3 0 0 0 0 0 1 4 0 0 2 0 1 0 0 1 2 2 1 
+
+$betweenness
+a b c d e f g h i j k l m n o p q r s t u v w x y 
+0 0 1 0 0 0 4 0 0 0 0 0 0 6 0 0 0 0 0 0 0 0 0 1 0 
+
+$closeness
+          a           b           c           d           e           f 
+0.001808318 0.001666667 0.001811594 0.001666667 0.002070393 0.001666667 
+          g           h           i           j           k           l 
+0.002074689 0.001666667 0.001666667 0.001666667 0.001666667 0.001666667 
+          m           n           o           p           q           r 
+0.001808318 0.002079002 0.001666667 0.001666667 0.002066116 0.001666667 
+          s           t           u           v           w           x 
+0.002057613 0.001666667 0.001666667 0.001808318 0.002066116 0.001811594 
+          y 
+0.001808318 
+
+$eigenCentrality
+           a            b            c            d            e            f 
+9.316870e-17 0.000000e+00 0.000000e+00 0.000000e+00 6.615795e-01 0.000000e+00 
+           g            h            i            j            k            l 
+7.390618e-01 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 
+           m            n            o            p            q            r 
+9.316870e-17 1.000000e+00 0.000000e+00 0.000000e+00 6.140050e-01 0.000000e+00 
+           s            t            u            v            w            x 
+2.811563e-01 0.000000e+00 0.000000e+00 4.658435e-17 6.140050e-01 0.000000e+00 
+           y 
+9.316870e-17 
+
+$nNeg
+a b c d e f g h i j k l m n o p q r s t u v w x y 
+0 0 0 0 1 0 2 0 0 0 0 0 0 3 0 0 1 0 0 0 0 0 1 0 0 
+
+$nPos
+a b c d e f g h i j k l m n o p q r s t u v w x y 
+1 0 2 0 1 0 1 0 0 0 0 0 1 1 0 0 1 0 1 0 0 1 1 2 1 
+
+$chordal
+[1] TRUE
+
+$mutualInfo
+          a           b           c           d           e           f 
+0.006765835 0.000000000 0.014363229 0.000000000 0.011984453 0.000000000 
+          g           h           i           j           k           l 
+0.021184001 0.000000000 0.000000000 0.000000000 0.000000000 0.000000000 
+          m           n           o           p           q           r 
+0.007310069 0.027909170 0.000000000 0.000000000 0.012797068 0.000000000 
+          s           t           u           v           w           x 
+0.006254140 0.000000000 0.000000000 0.007648774 0.013413104 0.014194676 
+          y 
+0.006934944 
+
+$variance
+       a        b        c        d        e        f        g        h 
+1.006789 1.000000 1.014467 1.000000 1.012057 1.000000 1.021410 1.000000 
+       i        j        k        l        m        n        o        p 
+1.000000 1.000000 1.000000 1.000000 1.007337 1.028302 1.000000 1.000000 
+       q        r        s        t        u        v        w        x 
+1.012879 1.000000 1.006274 1.000000 1.000000 1.007678 1.013503 1.014296 
+       y 
+1.006959 
+
+$partialVar
+a b c d e f g h i j k l m n o p q r s t u v w x y 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("GGMnetworkStats", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("GGMpathStats")
+> ### * GGMpathStats
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: GGMpathStats
+> ### Title: Gaussian graphical model node pair path statistics
+> ### Aliases: GGMpathStats
+> 
+> ### ** Examples
+> 
+> ## Obtain some (high-dimensional) data
+> p = 25
+> n = 10
+> set.seed(333)
+> X = matrix(rnorm(n*p), nrow = n, ncol = p)
+> colnames(X)[1:25] = letters[1:25]
+> 
+> ## Obtain regularized precision under optimal penalty
+> OPT <- optPenalty.LOOCVauto(X, lambdaMin = .5, lambdaMax = 30)
+> 
+> ## Determine support regularized standardized precision under optimal penalty
+> PC0 <- sparsify(OPT$optPrec, threshold = "localFDR")$sparseParCor
+Step 1... determine cutoff point
+Step 2... estimate parameters of null distribution and eta0
+Step 3... compute p-values and estimate empirical PDF/CDF
+Step 4... compute q-values and local fdr
+Step 5... prepare for plotting
+
+- Retained elements:  11 
+- Corresponding to 3.67 % of possible edges 
+ 
+> 
+> ## Obtain information on mediating and moderating paths between nodes 14 and 23
+> pathStats <- GGMpathStats(PC0, 14, 23, verbose = TRUE, prune = FALSE)
+Error in switch(mode, out = 1, `in` = 2, all = 3, total = 3) : 
+  EXPR must be a length 1 vector
+Calls: GGMpathStats -> neighbors
+Execution halted

@@ -1,0 +1,22 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/ppiPre.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘ppiPre/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘ppiPre’ version ‘1.7’
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Packages required but not available: ‘AnnotationDbi’ ‘GOSemSim’ ‘GO.db’
+
+Packages which this enhances but not available for checking:
+  ‘KEGG.db’ ‘org.Hs.eg.db’ ‘org.Sc.sgd.db’ ‘org.Ag.eg.db’
+  ‘org.Pt.eg.db’ ‘org.Rn.eg.db’ ‘org.Ss.eg.db’ ‘org.At.tair.db’
+  ‘org.Bt.eg.db’ ‘org.Ce.eg.db’ ‘org.Cf.eg.db’ ‘org.Dm.eg.db’
+  ‘org.Dr.eg.db’ ‘org.EcK12.eg.db’ ‘org.EcSakai.eg.db’ ‘org.Gg.eg.db’
+  ‘org.Mm.eg.db’ ‘org.Mmu.eg.db’ ‘org.Pf.plasmo.db’ ‘org.Xl.eg.db’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+Status: 1 ERROR

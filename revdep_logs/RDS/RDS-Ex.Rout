@@ -1,0 +1,632 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "RDS"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "RDS-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('RDS')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("LRT.trend.test")
+> ### * LRT.trend.test
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: LRT.trend.test
+> ### Title: Compute a test of trend in prevalences based on a
+> ###   likelihood-ratio statistic
+> ### Aliases: LRT.trend LRT.trend.test
+> ### Keywords: manip survey
+> 
+> ### ** Examples
+> 
+> d <- t(data.frame(estimate=c(0.16,0.15,0.3), sigma=c(0.04,0.04,0.1)))
+> colnames(d) <- c("time_1","time_2","time_3")
+> LRT.trend.test(d,number.of.bootstrap.samples=1000)
+In a test of the null hypothesis of equal proportions against the alternative that at least two are unequal, the p-value is 0.392.
+We do not reject the null hypothesis of equal proportions (at the 5% level).
+
+In a test of the null hypothesis of equal proportions against the alternative of a monotone trend (either up or down), the p-value is 0.337.
+We do not reject the null hypothesis of equal proportions (at the 5% level).
+
+In a test of the null hypothesis of equal proportions against the alternative of an increasing trend, the p-value is 0.176.
+We do not reject the null hypothesis of equal proportions (at the 5% level).
+
+In a test of the null hypothesis of equal proportions against the alternative of an decreasing trend, the p-value is 0.992.
+We do not reject the null hypothesis of equal proportions (at the 5% level).
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("LRT.trend.test", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("LRT.value.trend")
+> ### * LRT.value.trend
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: LRT.value.trend
+> ### Title: Compute a test of trend in prevalences based on a
+> ###   likelihood-ratio statistic
+> ### Aliases: LRT.value.trend
+> ### Keywords: manip survey
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D x <- c(0.16,0.15,0.3)
+> ##D sigma <- c(0.04,0.04,0.1)
+> ##D LRT.value.trend(x,sigma)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("LRT.value.trend", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("RDS.I.estimates")
+> ### * RDS.I.estimates
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: RDS.I.estimates
+> ### Title: Compute RDS-I Estimates
+> ### Aliases: RDS.I.estimates
+> ### Keywords: manip survey
+> 
+> ### ** Examples
+> 
+> data(faux)
+> RDS.I.estimates(rds.data=faux,outcome.variable='X')
+RDS-I Estimate for X 
+     Estimate         95% Interval Design Effect Std. Error     N
+blue   0.3109 (  0.2681,   0.3537)          1.42     0.0219   118
+red    0.6891 (  0.6463,   0.7319)          1.42     0.0219   271
+                                                      Total   389
+* Using population size estimate: 1000 
+> RDS.I.estimates(rds.data=faux,outcome.variable='X',smoothed=TRUE)
+RDS-I (DS) Estimate for X 
+     Estimate         95% Interval Design Effect Std. Error     N
+blue   0.3109 (  0.2681,   0.3537)          1.42     0.0219   118
+red    0.6891 (  0.6463,   0.7319)          1.42     0.0219   271
+                                                      Total   389
+* Using population size estimate: 1000 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("RDS.I.estimates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("RDS.II.estimates")
+> ### * RDS.II.estimates
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: RDS.II.estimates
+> ### Title: RDS-II Estimates
+> ### Aliases: RDS.II.estimates
+> ### Keywords: manip survey
+> 
+> ### ** Examples
+> 
+> data(faux)
+> RDS.II.estimates(rds.data=faux,outcome.variable='X')
+RDS-II Estimate for X 
+     Estimate         95% Interval Design Effect Std. Error     N
+blue   0.3103 (  0.2500,   0.3707)          2.82     0.0308   118
+red    0.6897 (  0.6293,   0.7500)          2.82     0.0308   271
+                                                      Total   389
+* Using population size estimate: 1000 
+> RDS.II.estimates(rds.data=faux,outcome.variable='X',subset= Y!="blue")
+RDS-II Estimate for X [c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, 
+TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, 
+TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, 
+FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, 
+FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE)] 
+     Estimate         95% Interval Design Effect Std. Error     N
+blue    0.279 (  0.2018,   0.3562)           2.7     0.0394    63
+red     0.721 (  0.6438,   0.7982)           2.7     0.0394   157
+                                                      Total   220
+* Using population size estimate: 593.0561 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("RDS.II.estimates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("RDS.SS.estimates")
+> ### * RDS.SS.estimates
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: RDS.SS.estimates
+> ### Title: Gile's SS Estimates
+> ### Aliases: RDS.SS.estimates
+> ### Keywords: manip survey
+> 
+> ### ** Examples
+> 
+> data(fauxmadrona)
+> RDS.SS.estimates(rds.data=fauxmadrona,outcome.variable="disease",N=1000)
+Gile's SS Estimate for disease 
+        Estimate         95% Interval Design Effect Std. Error     N
+disease   0.1947 (  0.1694,   0.2200)         0.866     0.0129   500
+                                                         Total   500
+* Using population size estimate: 1000 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("RDS.SS.estimates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("RDS.bootstrap.intervals")
+> ### * RDS.bootstrap.intervals
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: RDS.bootstrap.intervals
+> ### Title: RDS Bootstrap Interval Estimates
+> ### Aliases: RDS.bootstrap.intervals
+> ### Keywords: manip survey
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(fauxmadrona)
+> ##D RDS.bootstrap.intervals(rds.data=fauxmadrona,weight.type="RDS-II",
+> ##D      uncertainty="Salganik",
+> ##D 	outcome.variable="disease",N=1000,number.of.bootstrap.samples=50)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("RDS.bootstrap.intervals", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("RDS.compare.proportions")
+> ### * RDS.compare.proportions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: RDS.compare.proportions
+> ### Title: Compares the rates of two variables against one another.
+> ### Aliases: RDS.compare.proportions
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(faux)
+> ##D int1 <- RDS.bootstrap.intervals(faux, outcome.variable=c("X"),
+> ##D 	weight.type="RDS-II", uncertainty="Salganik", N=1000,
+> ##D 	number.ss.samples.per.iteration=1000,
+> ##D 	confidence.level=0.95, number.of.bootstrap.samples=100)
+> ##D int2 <- RDS.bootstrap.intervals(faux, outcome.variable=c("Y"),
+> ##D 	weight.type="RDS-II", uncertainty="Salganik", N=1000,
+> ##D 	number.ss.samples.per.iteration=1000,
+> ##D 	confidence.level=0.95, number.of.bootstrap.samples=100)
+> ##D RDS.compare.proportions(int1,int2)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("RDS.compare.proportions", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("as.rds.data.frame")
+> ### * as.rds.data.frame
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as.rds.data.frame
+> ### Title: Coerces a data.frame object into an rds.data.frame object.
+> ### Aliases: as.rds.data.frame
+> 
+> ### ** Examples
+> 
+> dat <- data.frame(id=c(1,2,3,4,5), recruiter.id=c(2,-1,2,-1,4),
++                   network.size.variable=c(4,8,8,2,3))
+> as.rds.data.frame(dat)
+An object of class "rds.data.frame"
+
+id:  1 2 3 4 5 
+
+recruiter.id:  2 -1 2 -1 4 
+
+  id recruiter.id network.size.variable
+1  1            2                     4
+2  2           -1                     8
+3  3            2                     8
+4  4           -1                     2
+5  5            4                     3
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("as.rds.data.frame", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bottleneck.plot")
+> ### * bottleneck.plot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bottleneck.plot
+> ### Title: Bottleneck Plot
+> ### Aliases: bottleneck.plot
+> 
+> ### ** Examples
+> 
+> data(fauxmadrona)
+> bottleneck.plot(fauxmadrona,"disease")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bottleneck.plot", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("convergence.plot")
+> ### * convergence.plot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: convergence.plot
+> ### Title: Convergence Plots
+> ### Aliases: convergence.plot
+> 
+> ### ** Examples
+> 
+> data(faux)
+> convergence.plot(faux,c("X","Y"))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("convergence.plot", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("count.transitions")
+> ### * count.transitions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: count.transitions
+> ### Title: Counts the number or recruiter->recruitee transitions between
+> ###   different levels of the grouping variable.
+> ### Aliases: count.transitions
+> 
+> ### ** Examples
+> 
+> data(faux)
+> count.transitions(faux,"X")
+      grp
+rgrp   blue red
+  blue   39  82
+  red    79 188
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("count.transitions", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("differential.activity.estimates")
+> ### * differential.activity.estimates
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: differential.activity.estimates
+> ### Title: Differential Activity between groups
+> ### Aliases: differential.activity.estimates
+> 
+> ### ** Examples
+> 
+> data(faux)
+> differential.activity.estimates(faux,"X",weight.type="RDS-II")
+The mean degree of those with value 1 divided by the mean degree of those without is 1.033423 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("differential.activity.estimates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("faux")
+> ### * faux
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: faux
+> ### Title: A Simulated RDS Data Set
+> ### Aliases: faux
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(faux)
+> RDS.I.estimates(rds.data=faux,outcome.variable='X')
+RDS-I Estimate for X 
+     Estimate         95% Interval Design Effect Std. Error     N
+blue   0.3109 (  0.2681,   0.3537)          1.42     0.0219   118
+red    0.6891 (  0.6463,   0.7319)          1.42     0.0219   271
+                                                      Total   389
+* Using population size estimate: 1000 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("faux", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("get.number.of.recruits")
+> ### * get.number.of.recruits
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get.number.of.recruits
+> ### Title: Calculates the number of (direct) recuits for each respondent.
+> ### Aliases: get.number.of.recruits
+> 
+> ### ** Examples
+> 
+> data(fauxmadrona)
+> nr <- get.number.of.recruits(fauxmadrona)
+> #frequency of number recruited by each id
+> barplot(table(nr))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get.number.of.recruits", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("get.seed.id")
+> ### * get.seed.id
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get.seed.id
+> ### Title: Calculates the root seed id for each node of the recruitement
+> ###   tree.
+> ### Aliases: get.seed.id
+> 
+> ### ** Examples
+> 
+> data(fauxmadrona)
+> seeds <- get.seed.id(fauxmadrona)
+> #number recruited by each seed
+> barplot(table(seeds))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get.seed.id", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("get.wave")
+> ### * get.wave
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get.wave
+> ### Title: Calculates the depth of the recruitment tree (i.e. the
+> ###   recruitment wave) at each node.
+> ### Aliases: get.wave
+> 
+> ### ** Examples
+> 
+> data(fauxmadrona)
+> #number subjects in each wave
+> w <- get.wave(fauxmadrona)
+> #number recruited in each wave
+> barplot(table(w))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get.wave", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("homophily.estimates")
+> ### * homophily.estimates
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: homophily.estimates
+> ### Title: This function computes an estimate of the population homophily
+> ###   and the recruitment homophily based on a categorical variable.
+> ### Aliases: homophily.estimates
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(fauxmadrona)
+> ##D names(fauxmadrona)
+> ##D #
+> ##D # True value:
+> ##D #
+> ##D if(require(network)){
+> ##D 	a=as.sociomatrix(fauxmadrona.network)
+> ##D 	deg <- apply(a,1,sum)
+> ##D 	dis <- fauxmadrona.network %v% "disease"
+> ##D 	deg1 <- apply(a[dis==1,],1,sum)
+> ##D 	deg0 <- apply(a[dis==0,],1,sum)
+> ##D 	# differential activity
+> ##D 	mean(deg1)/ mean(deg0)
+> ##D 	p=mean(dis)
+> ##D 	N=1000
+> ##D 	# True homophily
+> ##D 	p*(1-p)*mean(deg0)*mean(deg1)*N/(mean(deg)*sum(a[dis==1,dis==0]))
+> ##D }
+> ##D # HT based estimators using the to.group information
+> ##D data(fauxmadrona)
+> ##D homophily.estimates(fauxmadrona,outcome.variable="disease",
+> ##D   to.group0.variable="tonondiseased", to.group1.variable="todiseased",
+> ##D   N=1000)
+> ##D # HT based estimators not using the to.group information
+> ##D homophily.estimates(fauxmadrona,outcome.variable="disease",
+> ##D   N=1000,weight.type="RDS-II")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("homophily.estimates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("impute.degree")
+> ### * impute.degree
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: impute.degree
+> ### Title: Estimates each person's personal network size (degree) based on
+> ###   their self-reported degree and the number of their (direct) recruits.
+> ###   It uses the time the person was recruited as a factor in determining
+> ###   the number of recruits they produce.
+> ### Aliases: impute.degree
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(fauxmadrona)
+> ##D # The next line fits the model for the self-reported personal
+> ##D # network sizes and imputes the personal network sizes
+> ##D # It may take up to 60 seconds.
+> ##D idegree <- impute.degree(fauxmadrona)
+> ##D # frequency of estimated personal network sizes
+> ##D table(idegree)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("impute.degree", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.rds.data.frame")
+> ### * plot.rds.data.frame
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.rds.data.frame
+> ### Title: Diagnostic plots for the RDS recruitment proccess
+> ### Aliases: plot.rds.data.frame
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(fauxmadrona)
+> ##D plot(fauxmadrona)
+> ##D plot(fauxmadrona, plot.type='Recruits by wave')
+> ##D plot(fauxmadrona, plot.type='Recruits per seed')
+> ##D plot(fauxmadrona, plot.type='Recruits per subject')
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.rds.data.frame", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print.summary.svyglm.RDS")
+> ### * print.summary.svyglm.RDS
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.summary.svyglm.RDS
+> ### Title: Summarizing Generalized Linear Model Fits with Odds Ratios
+> ### Aliases: print.summary.svyglm.RDS
+> ### Keywords: models regression
+> 
+> ### ** Examples
+> 
+> ## For examples see example(svyglm)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.summary.svyglm.RDS", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rds.interval.estimate")
+> ### * rds.interval.estimate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rds.interval.estimate
+> ### Title: An object of class rds.interval.estimate
+> ### Aliases: rds.interval.estimate
+> ### Keywords: manip survey
+> 
+> ### ** Examples
+> 
+> data(faux)
+> RDS.I.estimates(rds.data=faux,outcome.variable='X',smoothed=TRUE)
+RDS-I (DS) Estimate for X 
+     Estimate         95% Interval Design Effect Std. Error     N
+blue   0.3109 (  0.2681,   0.3537)          1.42     0.0219   118
+red    0.6891 (  0.6463,   0.7319)          1.42     0.0219   271
+                                                      Total   389
+* Using population size estimate: 1000 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rds.interval.estimate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("read.rdsat")
+> ### * read.rdsat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: read.rdsat
+> ### Title: Import data from the 'RDSAT' format as an 'rds.data.frame'
+> ### Aliases: read.rdsat
+> 
+> ### ** Examples
+> 
+> fn <- paste0(path.package("RDS"),"/extdata/nyjazz.rdsat")
+> rd <- read.rdsat(fn)
+> plot(rd)
+Error: 'plot.igraph' is not an exported object from 'namespace:igraph'
+Execution halted

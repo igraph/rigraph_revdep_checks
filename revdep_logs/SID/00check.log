@@ -1,0 +1,16 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/SID.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘SID/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘SID’ version ‘1.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘RBGL’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+Status: 1 ERROR

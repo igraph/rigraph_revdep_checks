@@ -1,0 +1,466 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> set.seed(1501)
+> #-----------------------------
+> library(rtop)
+Loading required package: sp
+> library(rgdal)
+rgdal: version: 0.9-3, (SVN revision 530)
+ Geospatial Data Abstraction Library extensions to R successfully loaded
+ Loaded GDAL runtime: GDAL 1.11.2, released 2015/02/10
+ Path to GDAL shared files: /Users/gaborcsardi/works/igraph/revdep_lib/rgdal/gdal
+ Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
+ Path to PROJ.4 shared files: /Users/gaborcsardi/works/igraph/revdep_lib/rgdal/proj
+ Linking to sp version: 1.1-0 
+> options(error = recover)
+>   # Read directly from shape-files in data directory
+> rpath = system.file("extdata",package="rtop")
+> observations = readOGR(rpath, "observations")
+OGR data source with driver: ESRI Shapefile 
+Source: "/Users/gaborcsardi/works/igraph/revdep_check/rtop.Rcheck/rtop/extdata", layer: "observations"
+with 57 features
+It has 7 fields
+> predictionLocations = readOGR(rpath, "predictionLocations")
+OGR data source with driver: ESRI Shapefile 
+Source: "/Users/gaborcsardi/works/igraph/revdep_check/rtop.Rcheck/rtop/extdata", layer: "predictionLocations"
+with 235 features
+It has 5 fields
+>   #Finding a few prediction locations of them
+>   
+>   observations = observations[1:30,]
+>   predictionLocations = predictionLocations[1:2,]
+>   
+>   observations$obs = observations$QSUMMER_OB/observations$AREASQKM
+>   
+>   # Setting some parameters 
+>   params = list(gDist = TRUE, cloud = FALSE, rresol = 25, hresol = 3)
+>   # Build an object
+>   rtopObj = createRtopObject(observations,predictionLocations, params = params)
+Warning message:
+In createRtopObject(observations, predictionLocations, params = params) :
+  formulaString missing, using obs ~ 1
+>   # Fit a variogram (function also creates it)
+>   rtopObj = rtopFitVariogram(rtopObj)
+56 best 0.216 function convergence 200 parameter convergence 5107.141 
+89 best 0.182 function convergence 200 parameter convergence 4277.399 
+122 best 0.104 function convergence 200 parameter convergence 2494.895 
+152 best 0.104 function convergence 200 parameter convergence 1738.952 
+187 best 0.101 function convergence 200 parameter convergence 1314.769 
+220 best 0.0995 function convergence 73.8 parameter convergence 1144.788 
+250 best 0.0984 function convergence 59.4 parameter convergence 946.5916 
+281 best 0.0984 function convergence 5.6 parameter convergence 621.6711 
+312 best 0.0984 function convergence 5.4 parameter convergence 500.3154 
+344 best 0.0983 function convergence 3.1 parameter convergence 404.3127 
+373 best 0.0983 function convergence 1.2 parameter convergence 307.4578 
+401 best 0.0982 function convergence 0.2 parameter convergence 243.9449 
+430 best 0.0982 function convergence 0.2 parameter convergence 211.7911 
+459 best 0.0982 function convergence 0.2 parameter convergence 178.6656 
+488 best 0.0982 function convergence 0.1 parameter convergence 158.9044 
+514 best 0.0982 function convergence 0.1 parameter convergence 111.8148 
+539 best 0.0982 function convergence 0 parameter convergence 99.64646 
+567 best 0.0982 function convergence 0 parameter convergence 91.3144 
+593 best 0.0982 function convergence 0 parameter convergence 55.35217 
+618 best 0.0982 function convergence 0 parameter convergence 45.28824 
+643 best 0.0982 function convergence 0 parameter convergence 48.12786 
+668 best 0.0982 function convergence 0 parameter convergence 48.69366 
+694 best 0.0982 function convergence 0 parameter convergence 43.32363 
+720 best 0.0982 function convergence 0 parameter convergence 48.47148 
+755 best 0.0982 function convergence 0 parameter convergence 56.07422 
+791 best 0.0982 function convergence 0 parameter convergence 57.32417 
+819 best 0.0982 function convergence 0 parameter convergence 64.50229 
+846 best 0.0982 function convergence 0 parameter convergence 43.09526 
+872 best 0.0982 function convergence 0 parameter convergence 39.88628 
+897 best 0.0982 function convergence 0 parameter convergence 36.0764 
+922 best 0.0982 function convergence 0 parameter convergence 24.27177 
+948 best 0.0982 function convergence 0 parameter convergence 25.0348 
+974 best 0.0982 function convergence 0 parameter convergence 19.51123 
+1002 best 0.0982 function convergence 0 parameter convergence 10.20905 
+1027 best 0.0982 function convergence 0 parameter convergence 7.924086 
+1052 best 0.0982 function convergence 0 parameter convergence 5.617823 
+1078 best 0.0982 function convergence 0 parameter convergence 2.899046 
+1104 best 0.0982 function convergence 0 parameter convergence 2.661443 
+1129 best 0.0982 function convergence 0 parameter convergence 1.900817 
+1155 best 0.0982 function convergence 0 parameter convergence 1.897238 
+1180 best 0.0982 function convergence 0 parameter convergence 1.273579 
+1205 best 0.0982 function convergence 0 parameter convergence 1.335559 
+1230 best 0.0982 function convergence 0 parameter convergence 1.026866 
+1255 best 0.0982 function convergence 0 parameter convergence 0.6620199 
+>   #rtopObj = checkVario(rtopObj)
+>   rtopObj$variogramModel                                                                        
+$model
+[1] "Ex1"
+
+$params
+[1] 9.260163e-05 3.761488e+05 0.000000e+00 6.931844e-02 8.505818e-01
+
+attr(,"class")
+[1] "rtopVariogramModel"
+attr(,"SSErr")
+[1] 0.5488877
+attr(,"criterion")
+[1] 0.09822283
+>   rtopObj2 = rtopKrige(rtopObj, cv = TRUE)
+[1] "Sampling from area number 1 containing 75 points"
+[1] "Sampling from area number 2 containing 90 points"
+[1] "Sampling from area number 3 containing 63 points"
+[1] "Sampling from area number 4 containing 40 points"
+[1] "Sampling from area number 5 containing 34 points"
+[1] "Sampling from area number 6 containing 44 points"
+[1] "Sampling from area number 7 containing 25 points"
+[1] "Sampling from area number 8 containing 42 points"
+[1] "Sampling from area number 9 containing 94 points"
+[1] "Sampling from area number 10 containing 35 points"
+[1] "Sampling from area number 11 containing 89 points"
+[1] "Sampling from area number 12 containing 51 points"
+[1] "Sampling from area number 13 containing 29 points"
+[1] "Sampling from area number 14 containing 26 points"
+[1] "Sampling from area number 15 containing 90 points"
+[1] "Sampling from area number 16 containing 98 points"
+[1] "Sampling from area number 17 containing 40 points"
+[1] "Sampling from area number 18 containing 26 points"
+[1] "Sampling from area number 19 containing 82 points"
+[1] "Sampling from area number 20 containing 46 points"
+[1] "Sampling from area number 21 containing 30 points"
+[1] "Sampling from area number 22 containing 31 points"
+[1] "Sampling from area number 23 containing 26 points"
+[1] "Sampling from area number 24 containing 35 points"
+[1] "Sampling from area number 25 containing 101 points"
+[1] "Sampling from area number 26 containing 26 points"
+[1] "Sampling from area number 27 containing 89 points"
+[1] "Sampling from area number 28 containing 38 points"
+[1] "Sampling from area number 29 containing 81 points"
+[1] "Sampling from area number 30 containing 50 points"
+[1] "Cross-validating location 1  out of  30  observation locations"
+[1] "Cross-validating location 2  out of  30  observation locations"
+[1] "Cross-validating location 3  out of  30  observation locations"
+[1] "Cross-validating location 4  out of  30  observation locations"
+[1] "Cross-validating location 5  out of  30  observation locations"
+[1] "Cross-validating location 6  out of  30  observation locations"
+[1] "Cross-validating location 7  out of  30  observation locations"
+[1] "Cross-validating location 8  out of  30  observation locations"
+[1] "Cross-validating location 9  out of  30  observation locations"
+[1] "Cross-validating location 10  out of  30  observation locations"
+[1] "Cross-validating location 11  out of  30  observation locations"
+[1] "Cross-validating location 12  out of  30  observation locations"
+[1] "Cross-validating location 13  out of  30  observation locations"
+[1] "Cross-validating location 14  out of  30  observation locations"
+[1] "Cross-validating location 15  out of  30  observation locations"
+[1] "Cross-validating location 16  out of  30  observation locations"
+[1] "Cross-validating location 17  out of  30  observation locations"
+[1] "Cross-validating location 18  out of  30  observation locations"
+[1] "Cross-validating location 19  out of  30  observation locations"
+[1] "Cross-validating location 20  out of  30  observation locations"
+[1] "Cross-validating location 21  out of  30  observation locations"
+[1] "Cross-validating location 22  out of  30  observation locations"
+[1] "Cross-validating location 23  out of  30  observation locations"
+[1] "Cross-validating location 24  out of  30  observation locations"
+[1] "Cross-validating location 25  out of  30  observation locations"
+[1] "Cross-validating location 26  out of  30  observation locations"
+[1] "Cross-validating location 27  out of  30  observation locations"
+[1] "Cross-validating location 28  out of  30  observation locations"
+[1] "Cross-validating location 29  out of  30  observation locations"
+[1] "Cross-validating location 30  out of  30  observation locations"
+>   print(attr(rtopObj2$varMatObs,"variogramModel"))
+$model
+[1] "Ex1"
+
+$params
+[1] 9.260163e-05 3.761488e+05 0.000000e+00 6.931844e-02 8.505818e-01
+
+attr(,"class")
+[1] "rtopVariogramModel"
+attr(,"SSErr")
+[1] 0.5488877
+attr(,"criterion")
+[1] 0.09822283
+>   
+>   rtopObj3 = rtopKrige(rtopObj)
+[1] "Sampling from area number 1 containing 75 points"
+[1] "Sampling from area number 2 containing 90 points"
+[1] "Sampling from area number 3 containing 63 points"
+[1] "Sampling from area number 4 containing 40 points"
+[1] "Sampling from area number 5 containing 34 points"
+[1] "Sampling from area number 6 containing 44 points"
+[1] "Sampling from area number 7 containing 25 points"
+[1] "Sampling from area number 8 containing 42 points"
+[1] "Sampling from area number 9 containing 94 points"
+[1] "Sampling from area number 10 containing 35 points"
+[1] "Sampling from area number 11 containing 89 points"
+[1] "Sampling from area number 12 containing 51 points"
+[1] "Sampling from area number 13 containing 29 points"
+[1] "Sampling from area number 14 containing 26 points"
+[1] "Sampling from area number 15 containing 90 points"
+[1] "Sampling from area number 16 containing 98 points"
+[1] "Sampling from area number 17 containing 40 points"
+[1] "Sampling from area number 18 containing 26 points"
+[1] "Sampling from area number 19 containing 82 points"
+[1] "Sampling from area number 20 containing 46 points"
+[1] "Sampling from area number 21 containing 30 points"
+[1] "Sampling from area number 22 containing 31 points"
+[1] "Sampling from area number 23 containing 26 points"
+[1] "Sampling from area number 24 containing 35 points"
+[1] "Sampling from area number 25 containing 101 points"
+[1] "Sampling from area number 26 containing 26 points"
+[1] "Sampling from area number 27 containing 89 points"
+[1] "Sampling from area number 28 containing 38 points"
+[1] "Sampling from area number 29 containing 81 points"
+[1] "Sampling from area number 30 containing 50 points"
+[1] "Sampling from area number 1 containing 75 points"
+[1] "Sampling from area number 2 containing 79 points"
+[1] "Creating prediction semivariance matrix. This can take some time."
+[1] "Predicting location  1  out of  2  prediction locations"
+[1] "Predicting location  2  out of  2  prediction locations"
+>   rtopObj4 = rtopKrige(rtopObj2)
+[1] "Sampling from area number 1 containing 75 points"
+[1] "Sampling from area number 2 containing 79 points"
+[1] "Creating prediction semivariance matrix. This can take some time."
+[1] "Predicting location  1  out of  2  prediction locations"
+[1] "Predicting location  2  out of  2  prediction locations"
+>   
+>   
+>   print(summary(rtopObj2$predictions))
+Object of class SpatialPolygonsDataFrame
+Coordinates:
+       min      max
+x 398053.6 511323.9
+y 454983.1 541508.8
+Is projected: TRUE 
+proj4string :
+[+proj=lcc +lat_1=46 +lat_2=49 +lat_0=47.5 +lon_0=13.33333333333333
++x_0=400000 +y_0=400000 +ellps=bessel +units=m +no_defs]
+Data attributes:
+       ID             EZGID           AREASQKM         XSTATION     
+ Min.   :  60.0   Min.   :  60.0   Min.   : 13.64   Min.   :400882  
+ 1st Qu.: 852.2   1st Qu.: 852.2   1st Qu.: 26.47   1st Qu.:421621  
+ Median :1665.0   Median :1665.0   Median : 51.14   Median :433238  
+ Mean   :1461.2   Mean   :1461.2   Mean   : 48.57   Mean   :442177  
+ 3rd Qu.:2164.0   3rd Qu.:2164.0   3rd Qu.: 62.12   3rd Qu.:466139  
+ Max.   :2387.0   Max.   :2387.0   Max.   :127.90   Max.   :507123  
+    YSTATION        QSUMMER_OB          obs                area          
+ Min.   :458036   Min.   :0.1415   Min.   :0.005397   Min.   : 13643136  
+ 1st Qu.:475353   1st Qu.:0.3305   1st Qu.:0.009116   1st Qu.: 26471133  
+ Median :487692   Median :0.4789   Median :0.011203   Median : 51143819  
+ Mean   :489632   Mean   :0.5283   Mean   :0.011727   Mean   : 48574940  
+ 3rd Qu.:500377   3rd Qu.:0.6475   3rd Qu.:0.012502   3rd Qu.: 62123200  
+ Max.   :535299   Max.   :1.3004   Max.   :0.030287   Max.   :127900610  
+   var1.pred           var1.var           sumWeights       observed       
+ Min.   :0.006823   Min.   :4.981e-07   Min.   :1.298   Min.   :0.005397  
+ 1st Qu.:0.009474   1st Qu.:1.185e-06   1st Qu.:1.485   1st Qu.:0.009116  
+ Median :0.010734   Median :2.593e-06   Median :1.491   Median :0.011203  
+ Mean   :0.011423   Mean   :4.366e-06   Mean   :1.471   Mean   :0.011727  
+ 3rd Qu.:0.011459   3rd Qu.:5.100e-06   3rd Qu.:1.494   3rd Qu.:0.012502  
+ Max.   :0.021935   Max.   :1.834e-05   Max.   :1.498   Max.   :0.030287  
+    residual              zscore        
+ Min.   :-0.0135798   Min.   :-4.76808  
+ 1st Qu.:-0.0022474   1st Qu.:-1.46879  
+ Median : 0.0001636   Median : 0.18447  
+ Mean   : 0.0003043   Mean   : 0.02926  
+ 3rd Qu.: 0.0017427   3rd Qu.: 1.15921  
+ Max.   : 0.0212681   Max.   : 5.80035  
+>   print(summary(rtopObj3$predictions))
+Object of class SpatialPolygonsDataFrame
+Coordinates:
+       min      max
+x 488653.9 498292.5
+y 515726.4 528863.7
+Is projected: TRUE 
+proj4string :
+[+proj=lcc +lat_1=46 +lat_2=49 +lat_0=47.5 +lon_0=13.33333333333333
++x_0=400000 +y_0=400000 +ellps=bessel +units=m +no_defs]
+Data attributes:
+       ID            EZGID          AREASQKM        XSTATION     
+ Min.   :76.00   Min.   :76.00   Min.   :35.98   Min.   :490602  
+ 1st Qu.:76.25   1st Qu.:76.25   1st Qu.:36.61   1st Qu.:490602  
+ Median :76.50   Median :76.50   Median :37.23   Median :490602  
+ Mean   :76.50   Mean   :76.50   Mean   :37.23   Mean   :490602  
+ 3rd Qu.:76.75   3rd Qu.:76.75   3rd Qu.:37.86   3rd Qu.:490602  
+ Max.   :77.00   Max.   :77.00   Max.   :38.49   Max.   :490602  
+    YSTATION           area            var1.pred          var1.var        
+ Min.   :523496   Min.   :35982138   Min.   :0.01121   Min.   :5.552e-07  
+ 1st Qu.:523496   1st Qu.:36608367   1st Qu.:0.01144   1st Qu.:6.474e-07  
+ Median :523496   Median :37234596   Median :0.01168   Median :7.397e-07  
+ Mean   :523496   Mean   :37234596   Mean   :0.01168   Mean   :7.397e-07  
+ 3rd Qu.:523496   3rd Qu.:37860825   3rd Qu.:0.01191   3rd Qu.:8.319e-07  
+ Max.   :523496   Max.   :38487054   Max.   :0.01215   Max.   :9.242e-07  
+   sumWeights   
+ Min.   :1.183  
+ 1st Qu.:1.261  
+ Median :1.339  
+ Mean   :1.339  
+ 3rd Qu.:1.417  
+ Max.   :1.494  
+>   print(summary(rtopObj4$predictions))
+Object of class SpatialPolygonsDataFrame
+Coordinates:
+       min      max
+x 488653.9 498292.5
+y 515726.4 528863.7
+Is projected: TRUE 
+proj4string :
+[+proj=lcc +lat_1=46 +lat_2=49 +lat_0=47.5 +lon_0=13.33333333333333
++x_0=400000 +y_0=400000 +ellps=bessel +units=m +no_defs]
+Data attributes:
+       ID            EZGID          AREASQKM        XSTATION     
+ Min.   :76.00   Min.   :76.00   Min.   :35.98   Min.   :490602  
+ 1st Qu.:76.25   1st Qu.:76.25   1st Qu.:36.61   1st Qu.:490602  
+ Median :76.50   Median :76.50   Median :37.23   Median :490602  
+ Mean   :76.50   Mean   :76.50   Mean   :37.23   Mean   :490602  
+ 3rd Qu.:76.75   3rd Qu.:76.75   3rd Qu.:37.86   3rd Qu.:490602  
+ Max.   :77.00   Max.   :77.00   Max.   :38.49   Max.   :490602  
+    YSTATION           area            var1.pred          var1.var        
+ Min.   :523496   Min.   :35982138   Min.   :0.01121   Min.   :5.552e-07  
+ 1st Qu.:523496   1st Qu.:36608367   1st Qu.:0.01144   1st Qu.:6.474e-07  
+ Median :523496   Median :37234596   Median :0.01168   Median :7.397e-07  
+ Mean   :523496   Mean   :37234596   Mean   :0.01168   Mean   :7.397e-07  
+ 3rd Qu.:523496   3rd Qu.:37860825   3rd Qu.:0.01191   3rd Qu.:8.319e-07  
+ Max.   :523496   Max.   :38487054   Max.   :0.01215   Max.   :9.242e-07  
+   sumWeights   
+ Min.   :1.183  
+ 1st Qu.:1.261  
+ Median :1.339  
+ Mean   :1.339  
+ 3rd Qu.:1.417  
+ Max.   :1.494  
+>   print(all.equal(rtopObj4$predictions, rtopObj3$predictions))
+[1] TRUE
+>   #spplot(rtopObj$predictions,col.regions = bpy.colors(), c("var1.pred","var1.var"))
+>   
+>   # Cross-validation
+>   #spplot(rtopObj2$predictions,col.regions = bpy.colors(), c("observed","var1.pred"))
+>   print(cor(rtopObj2$predictions$observed,rtopObj2$predictions$var1.pred))
+[1] 0.1668735
+>   
+>   
+> 
+>   set.seed(1501)
+>   useRtopWithIntamap()
+Loading optional package: intamap 
+
+>   library(intamap)
+>   output = interpolate(observations,predictionLocations,
++      optList = list(formulaString = obs~1, gDist = TRUE, cloud = FALSE, nmax = 10, rresol = 25, hresol = 3), 
++         methodName = "rtop")
+R 2015-06-13 13:10:21 interpolating 30 observations, 2 prediction locations
+Checking object ... OK
+56 best 0.216 function convergence 200 parameter convergence 5107.141 
+89 best 0.182 function convergence 200 parameter convergence 4277.399 
+122 best 0.104 function convergence 200 parameter convergence 2494.895 
+152 best 0.104 function convergence 200 parameter convergence 1738.952 
+187 best 0.101 function convergence 200 parameter convergence 1314.769 
+220 best 0.0995 function convergence 73.8 parameter convergence 1144.788 
+250 best 0.0984 function convergence 59.4 parameter convergence 946.5916 
+281 best 0.0984 function convergence 5.6 parameter convergence 621.6711 
+312 best 0.0984 function convergence 5.4 parameter convergence 500.3154 
+344 best 0.0983 function convergence 3.1 parameter convergence 404.3127 
+373 best 0.0983 function convergence 1.2 parameter convergence 307.4578 
+401 best 0.0982 function convergence 0.2 parameter convergence 243.9449 
+430 best 0.0982 function convergence 0.2 parameter convergence 211.7911 
+459 best 0.0982 function convergence 0.2 parameter convergence 178.6656 
+488 best 0.0982 function convergence 0.1 parameter convergence 158.9044 
+514 best 0.0982 function convergence 0.1 parameter convergence 111.8148 
+539 best 0.0982 function convergence 0 parameter convergence 99.64646 
+567 best 0.0982 function convergence 0 parameter convergence 91.3144 
+593 best 0.0982 function convergence 0 parameter convergence 55.35217 
+618 best 0.0982 function convergence 0 parameter convergence 45.28824 
+643 best 0.0982 function convergence 0 parameter convergence 48.12786 
+668 best 0.0982 function convergence 0 parameter convergence 48.69366 
+694 best 0.0982 function convergence 0 parameter convergence 43.32363 
+720 best 0.0982 function convergence 0 parameter convergence 48.47148 
+755 best 0.0982 function convergence 0 parameter convergence 56.07422 
+791 best 0.0982 function convergence 0 parameter convergence 57.32417 
+819 best 0.0982 function convergence 0 parameter convergence 64.50229 
+846 best 0.0982 function convergence 0 parameter convergence 43.09526 
+872 best 0.0982 function convergence 0 parameter convergence 39.88628 
+897 best 0.0982 function convergence 0 parameter convergence 36.0764 
+922 best 0.0982 function convergence 0 parameter convergence 24.27177 
+948 best 0.0982 function convergence 0 parameter convergence 25.0348 
+974 best 0.0982 function convergence 0 parameter convergence 19.51123 
+1002 best 0.0982 function convergence 0 parameter convergence 10.20905 
+1027 best 0.0982 function convergence 0 parameter convergence 7.924086 
+1052 best 0.0982 function convergence 0 parameter convergence 5.617823 
+1078 best 0.0982 function convergence 0 parameter convergence 2.899046 
+1104 best 0.0982 function convergence 0 parameter convergence 2.661443 
+1129 best 0.0982 function convergence 0 parameter convergence 1.900817 
+1155 best 0.0982 function convergence 0 parameter convergence 1.897238 
+1180 best 0.0982 function convergence 0 parameter convergence 1.273579 
+1205 best 0.0982 function convergence 0 parameter convergence 1.335559 
+1230 best 0.0982 function convergence 0 parameter convergence 1.026866 
+1255 best 0.0982 function convergence 0 parameter convergence 0.6620199 
+[1] "Sampling from area number 1 containing 75 points"
+[1] "Sampling from area number 2 containing 90 points"
+[1] "Sampling from area number 3 containing 63 points"
+[1] "Sampling from area number 4 containing 40 points"
+[1] "Sampling from area number 5 containing 34 points"
+[1] "Sampling from area number 6 containing 44 points"
+[1] "Sampling from area number 7 containing 25 points"
+[1] "Sampling from area number 8 containing 42 points"
+[1] "Sampling from area number 9 containing 94 points"
+[1] "Sampling from area number 10 containing 35 points"
+[1] "Sampling from area number 11 containing 89 points"
+[1] "Sampling from area number 12 containing 51 points"
+[1] "Sampling from area number 13 containing 29 points"
+[1] "Sampling from area number 14 containing 26 points"
+[1] "Sampling from area number 15 containing 90 points"
+[1] "Sampling from area number 16 containing 98 points"
+[1] "Sampling from area number 17 containing 40 points"
+[1] "Sampling from area number 18 containing 26 points"
+[1] "Sampling from area number 19 containing 82 points"
+[1] "Sampling from area number 20 containing 46 points"
+[1] "Sampling from area number 21 containing 30 points"
+[1] "Sampling from area number 22 containing 31 points"
+[1] "Sampling from area number 23 containing 26 points"
+[1] "Sampling from area number 24 containing 35 points"
+[1] "Sampling from area number 25 containing 101 points"
+[1] "Sampling from area number 26 containing 26 points"
+[1] "Sampling from area number 27 containing 89 points"
+[1] "Sampling from area number 28 containing 38 points"
+[1] "Sampling from area number 29 containing 81 points"
+[1] "Sampling from area number 30 containing 50 points"
+[1] "Sampling from area number 1 containing 75 points"
+[1] "Sampling from area number 2 containing 79 points"
+[1] "Creating prediction semivariance matrix. This can take some time."
+Warning messages:
+1: In predictTime(nObs = dim(observations)[1], nPred = dim(coordinates(predictionLocations))[1],  :
+  
+ using standard model for estimating time. For better 
+ platform spesific predictions, please run 
+ timeModels <- generateTimeModels()
+  and save the workspace
+2: In predictTime(nObs = dim(observations)[1], nPred = dim(coordinates(predictionLocations))[1],  :
+  Could not find time model for method spatialPredict_rtop
+3: In interpolate(observations, predictionLocations, optList = list(formulaString = obs ~  :
+  was not able to estimate prediction time for methodName rtop
+4: In methodParameters.default(krigingObject) :
+  Not able to create methodParameters for variogram of class rtopVariogramModel
+>   
+>   print(all.equal(rtopObj4$predictions@data$var1.pred, output$predictions@data$var1.pred))
+[1] TRUE
+>   print(all.equal(rtopObj4$predictions@data$var1.var, output$predictions@data$var1.var))
+[1] TRUE
+> 
+> # Updating variogramModel
+>   
+>   rtopObj5 = varMat(rtopObj4)
+>   rtopObj6 = updateRtopVariogram(rtopObj5, exp = 1.5, action = "mult")
+>   rtopObj7 = varMat(rtopObj6)
+[1] "Creating prediction semivariance matrix. This can take some time."
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  6.131   0.083   6.216 

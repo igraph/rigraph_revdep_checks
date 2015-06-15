@@ -1,0 +1,1386 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "tcR"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "tcR-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('tcR')
+Loading required package: ggplot2
+Loading required package: dplyr
+
+Attaching package: ‘dplyr’
+
+The following object is masked from ‘package:stats’:
+
+    filter
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+Loading required package: gridExtra
+Loading required package: grid
+Loading required package: reshape2
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:dplyr’:
+
+    %>%, as_data_frame, groups, union
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘tcR’
+
+The following object is masked from ‘package:igraph’:
+
+    diversity
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("AA_TABLE")
+> ### * AA_TABLE
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: AA_TABLE
+> ### Title: Tables with genetic code.
+> ### Aliases: AA_TABLE AA_TABLE_REVERSED
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D AA_TABLE['ATG']  #  => "M"
+> ##D AA_TABLE_REVERSED['K']  #  => list(K = c("AAA", "AAG"))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("AA_TABLE", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("apply.symm")
+> ### * apply.symm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: apply.symm
+> ### Title: Apply function to every pair of data frames from a list.
+> ### Aliases: apply.asymm apply.symm
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # equivalent to intersectClonesets(immdata, 'a0e')
+> ##D apply.symm(immdata, intersectClonesets, .type = 'a0e')
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("apply.symm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("beta.prob")
+> ### * beta.prob
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: beta.prob
+> ### Title: List with assembling probabilities of beta chain TCRs.
+> ### Aliases: beta.prob
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Generate 10 kmers with adjacent nucleotide probability.
+> ##D generate.kmers.prob(rep.int(10, 10), .probs=beta.prob$P.ins.nucl[,c(1, 2:5)])
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("beta.prob", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bootstrap.tcr")
+> ### * bootstrap.tcr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bootstrap.tcr
+> ### Title: Bootstrap for data frames in package tcR.
+> ### Aliases: bootstrap.tcr
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Apply entropy.seg function to samples of size 20000 from immdata$B data frame for 100 iterations.
+> ##D bootstrap.tcr(immdata[[2]], .fun = entropy.seg, .n = 100, .size = 20000, .sim = 'uniform')
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bootstrap.tcr", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("clonal.space.homeostasis")
+> ### * clonal.space.homeostasis
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clonal.space.homeostasis
+> ### Title: Clonal space homeostasis.
+> ### Aliases: clonal.space.homeostasis
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(twb)
+> ##D # Compute summary space of clones, that occupy
+> ##D # [0, .05) and [.05, 1] proportion.
+> ##D clonal.space.homeostasis(twb, c(Low = .05, High = 1)))
+> ##D #        Low (0 < X <= 0.05) High (0.05 < X <= 1)
+> ##D # Subj.A           0.9421980           0.05780198
+> ##D # Subj.B           0.9239454           0.07605463
+> ##D # Subj.C           0.8279270           0.17207296
+> ##D # Subj.D           1.0000000           0.00000000
+> ##D # I.e., for Subj.D sum of all read proportions for clones
+> ##D # which have read proportion between 0 and .05 is equal to 1.
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("clonal.space.homeostasis", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cloneset.stats")
+> ### * cloneset.stats
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cloneset.stats
+> ### Title: MiTCR data frame basic statistics.
+> ### Aliases: cloneset.stats repseq.stats
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Compute basic statistics of list with data frames.
+> ##D cloneset.stats(immdata)
+> ##D repseq.stats(immdata)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cloneset.stats", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("codon.variants")
+> ### * codon.variants
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: codon.variants
+> ### Title: Functions for working with aminoacid sequences.
+> ### Aliases: codon.variants reverse.translation translated.nucl.sequences
+> 
+> ### ** Examples
+> 
+> codon.variants('ACT')
+[[1]]
+[[1]][[1]]
+[1] "GCA" "GCC" "GCG" "GCT"
+
+[[1]][[2]]
+[1] "TGC" "TGT"
+
+[[1]][[3]]
+[1] "ACA" "ACC" "ACG" "ACT"
+
+
+> translated.nucl.sequences(c('ACT', 'CASSLQ'))
+[1]   32 3456
+> reverse.translation('T')  # -> "ACA" "ACC" "ACG" "ACT"
+[1] "ACA" "ACC" "ACG" "ACT"
+> reverse.translation('T', 'XXT')  # -> "ACT"
+[1] "ACT"
+> translated.nucl.sequences('ACT', 'XXXXXXXC')
+[1] 8
+> codon.variants('ACT', 'XXXXXXXC')
+[[1]]
+[[1]][[1]]
+[1] "GCA" "GCC" "GCG" "GCT"
+
+[[1]][[2]]
+[1] "TGC" "TGT"
+
+
+> reverse.translation('ACT', 'XXXXXXXC')
+[1] "GCATGC" "GCCTGC" "GCGTGC" "GCTTGC" "GCATGT" "GCCTGT" "GCGTGT" "GCTTGT"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("codon.variants", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("column.summary")
+> ### * column.summary
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: column.summary
+> ### Title: Columns statistics.
+> ### Aliases: column.summary insertion.stats
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Compute summary statistics of VD insertions
+> ##D # for each V-segment using all V-segments in the given data frame.
+> ##D column.summary(immdata[[1]], 'V.gene', 'Total.insertions')
+> ##D # Compute summary statistics of VD insertions for each V-segment using only V-segments
+> ##D # from the HUMAN_TRBV_MITCR
+> ##D column.summary(immdata[[1]], 'V.gene', 'Total.insertions', HUMAN_TRBV_MITCR)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("column.summary", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cosine.sharing")
+> ### * cosine.sharing
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cosine.sharing
+> ### Title: Shared repertoire analysis.
+> ### Aliases: cosine.sharing shared.clones.count shared.representation
+> ###   shared.summary
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Load the twb data.
+> ##D data(twb)
+> ##D # Create shared repertoire on the twins data using CDR3 amino acid sequences with CDR1-2.
+> ##D twb.shared <- shared.repertoire(twb, 'av', .verbose = T)
+> ##D sh.repr <- shared.representation(twb.shared)
+> ##D sh.repr
+> ##D # Get proportion of represented shared sequences.
+> ##D apply(sh.repr, 2, function (col) col / col[1])
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cosine.sharing", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cosine.similarity")
+> ### * cosine.similarity
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cosine.similarity
+> ### Title: Set and vector similarity measures.
+> ### Aliases: cosine.similarity horn.index jaccard.index morisitas.index
+> ###   overlap.coef similarity tversky.index
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D jaccard.index(1:10, 2:20)
+> ##D a <- length(unique(immdata[[1]][, c('CDR3.amino.acid.sequence', 'V.gene')]))
+> ##D b <- length(unique(immdata[[2]][, c('CDR3.amino.acid.sequence', 'V.gene')]))
+> ##D # Next
+> ##D jaccard.index(a, b, repOverlap(immdata[1:2], .seq = 'aa', .vgene = T))
+> ##D # is equal to
+> ##D repOverlap(immdata[1:2], 'jaccard', seq = 'aa', .vgene = T)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cosine.similarity", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("find.clonotypes")
+> ### * find.clonotypes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: find.clonotypes
+> ### Title: Find target clonotypes and get columns' value corresponded to
+> ###   that clonotypes.
+> ### Aliases: find.clonotypes
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Get ranks of all given sequences in a list of data frames.
+> ##D immdata <- set.rank(immdata)
+> ##D find.clonotypes(.data = immdata, .targets = head(immdata[[1]]$CDR3.amino.acid.sequence),
+> ##D                 .method = 'exact', .col.name = "Rank", .target.col = "CDR3.amino.acid.sequence")
+> ##D # Find close by levenhstein distance clonotypes with similar V-segments and return
+> ##D # their values in columns 'Read.count' and 'Total.insertions'.
+> ##D find.clonotypes(.data = twb, .targets = twb[[1]][, c('CDR3.amino.acid.sequence', 'V.gene')],
+> ##D                 .col.name = c('Read.count', 'Total.insertions'), .method = 'lev',
+> ##D                 .target.col = c('CDR3.amino.acid.sequence', 'V.gene'))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("find.clonotypes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("geneUsage")
+> ### * geneUsage
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: geneUsage
+> ### Title: Gene usage.
+> ### Aliases: geneUsage
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Load your data
+> ##D data(twb)
+> ##D # compute V-segments frequencies of human TCR beta.
+> ##D seg <- geneUsage(twb, HUMAN_TRBV, .norm = T)
+> ##D # plot V-segments frequencies as a heatmap
+> ##D vis.heatmap(seg, .labs = c("Sample", "V gene"))
+> ##D # plot V-segments frequencies directly from clonesets
+> ##D vis.gene.usage(twb, HUMAN_TRBV)
+> ##D # plot V-segments frequencies from the gene frequencies
+> ##D vis.gene.usage(seg, NA)
+> ##D # Compute V-J joint usage.
+> ##D geneUsage(twb, list(HUMAN_TRBV, HUMAN_TRBJ))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("geneUsage", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generate.tcr")
+> ### * generate.tcr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generate.tcr
+> ### Title: Generate random nucleotide TCR sequences.
+> ### Aliases: generate.tcr
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Load list of segments provided along with tcR.
+> ##D data(genesegments)
+> ##D # Load list of probabilities provided along with tcR.
+> ##D data(beta.prob)
+> ##D # Generate repertoire of beta chian with 10000 sequences.
+> ##D artif.rep <- generate.tcR(10000, 'beta')
+> ##D View(artif.rep)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generate.tcr", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("get.deletions.alpha")
+> ### * get.deletions.alpha
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get.deletions.alpha
+> ### Title: Compute the number of deletions in MiTCR data frames.
+> ### Aliases: get.deletions.alpha get.deletions.beta
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(segments)
+> ##D immdata <- get.deletions.beta(.data)
+> ##D immdata.prob <- tcr.prob.df(immdata)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get.deletions.alpha", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("get.n.barcodes")
+> ### * get.n.barcodes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get.n.barcodes
+> ### Title: Resample data frame using values from the column with number of
+> ###   clonesets.
+> ### Aliases: get.n.barcodes
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Get 100K reads (not clones!).
+> ##D immdata.1.100k <- get.n.barcodes(immdata[[1]], 100000, .col = "Read.count")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get.n.barcodes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("group.clonotypes")
+> ### * group.clonotypes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: group.clonotypes
+> ### Title: Get all unique clonotypes.
+> ### Aliases: group.clonotypes
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D tmp <- data.frame(A = c('a','a','b','c', 'a')
+> ##D B = c('V1', 'V1','V1','V2', 'V3')
+> ##D C = c(10,20,30,40,50), stringsAsFactors = F)
+> ##D tmp
+> ##D #   A  B  C
+> ##D # 1 a V1 10
+> ##D # 2 a V1 20
+> ##D # 3 b V1 30
+> ##D # 4 c V2 40
+> ##D # 5 a V3 50
+> ##D group.clonotypes(tmp, 'B', 'C', 'A')
+> ##D #  A  B  C
+> ##D #  1 a V1 30
+> ##D #  3 b V1 50
+> ##D #  4 c V2 30
+> ##D #  5 a V3 40
+> ##D group.clonotypes(tmp, NA, 'C', 'A')
+> ##D #   A  B  C
+> ##D # 1 a V1 80
+> ##D # 3 b V1 30
+> ##D # 4 c V2 40
+> ##D # For tcR data frame:
+> ##D data(twb)
+> ##D twb1.gr <- group.clonotypes(twb[[1]])
+> ##D twb.gr <- group.clonotypes(twb)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("group.clonotypes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("intersectClonesets")
+> ### * intersectClonesets
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: intersectClonesets
+> ### Title: Intersection between sets of sequences or any elements.
+> ### Aliases: intersectClonesets intersectCount intersectIndices
+> ###   intersectLogic
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(twb)
+> ##D # Equivalent to intersectClonesets(twb[[1]]$CDR3.nucleotide.sequence,
+> ##D #                         twb[[2]]$CDR3.nucleotide.sequence)
+> ##D # or intersectCount(twb[[1]]$CDR3.nucleotide.sequence,
+> ##D #                    twb[[2]]$CDR3.nucleotide.sequence)
+> ##D # First "n" stands for a "CDR3.nucleotide.sequence" column, "e" for exact match.
+> ##D twb.12.n0e <- intersectClonesets(twb[[1]], twb[[2]], 'n0e')
+> ##D stopifnot(twb.12.n0e == 46)
+> ##D # First "a" stands for "CDR3.amino.acid.sequence" column.
+> ##D # Second "v" means that intersect should also use the "V.gene" column.
+> ##D intersectClonesets(twb[[1]], twb[[2]], 'ave')
+> ##D # Works also on lists, performs all possible pairwise intersections.
+> ##D intersectClonesets(twb, 'ave')
+> ##D # Plot results.
+> ##D vis.heatmap(intersectClonesets(twb, 'ave'), .title = 'twb - (ave)-intersection', .labs = '')
+> ##D # Get elements which are in both twb[[1]] and twb[[2]].
+> ##D # Elements are tuples of CDR3 nucleotide sequence and corresponding V-segment
+> ##D imm.1.2 <- intersectLogic(twb[[1]], twb[[2]],
+> ##D                            .col = c('CDR3.amino.acid.sequence', 'V.gene'))
+> ##D head(twb[[1]][imm.1.2, c('CDR3.amino.acid.sequence', 'V.gene')])
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("intersectClonesets", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("inverse.simpson")
+> ### * inverse.simpson
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: inverse.simpson
+> ### Title: Distribution evaluation.
+> ### Aliases: chao1 diversity gini gini.simpson inverse.simpson
+> 
+> ### ** Examples
+> 
+> data(twb)
+> # Next two are equal calls:
+> stopifnot(gini(twb[[1]]$Read.count, TRUE, 0) - 0.7609971 < 1e-07)
+> stopifnot(gini(twb[[1]]$Read.proportion, FALSE) - 0.7609971 < 1e-07)
+> stopifnot(chao1(twb[[1]]$Read.count)[1] == 1e+04)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("inverse.simpson", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("kmer.table")
+> ### * kmer.table
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: kmer.table
+> ### Title: Make and manage the table of the most frequent k-mers.
+> ### Aliases: get.kmer.column kmer.table
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D twb.kmers <- kmer.table(twb, .heads = c(5000, 10000), .meat = T)
+> ##D head(get.kmer.column(twb.kmers, 10000))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("kmer.table", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mutated.neighbours")
+> ### * mutated.neighbours
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mutated.neighbours
+> ### Title: Get vertex neighbours.
+> ### Aliases: mutated.neighbours
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(twb)
+> ##D twb.shared <- shared.repertoire(twb)
+> ##D G <- mutation.network(twb.shared)
+> ##D head(mutated.neighbours(G, 1)[[1]])
+> ##D #           label             vseg repind prob people npeople
+> ##D # 1 CASSDRDTGELFF          TRBV6-4      1   -1   1111       4
+> ##D # 2 CASSDSDTGELFF          TRBV6-4     69   -1   1100       2
+> ##D # 3 CASSYRDTGELFF TRBV6-3, TRBV6-2    315   -1   1001       2
+> ##D # 4 CASKDRDTGELFF TRBV6-3, TRBV6-2   2584   -1   0100       1
+> ##D # 5 CASSDGDTGELFF          TRBV6-4   5653   -1   0010       1
+> ##D # 6 CASSDRETGELFF          TRBV6-4   5950   -1   0100       1
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mutated.neighbours", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mutation.network")
+> ### * mutation.network
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mutation.network
+> ### Title: Make mutation network for the given repertoire.
+> ### Aliases: mutation.network
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(twb)
+> ##D twb.shared <- shared.repertoire(twb)
+> ##D G <- mutation.network(twb.shared)
+> ##D get.people.names(G, 300, T)  # "Subj.A|Subj.B"
+> ##D get.people.names(G, 300, F)  # list(c("Subj.A", "Subj.B"))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mutation.network", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("parse.cloneset")
+> ### * parse.cloneset
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: parse.cloneset
+> ### Title: Parse input table files with the immune receptor repertoire
+> ###   data.
+> ### Aliases: parse.cloneset
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Parse file in "~/mitcr/immdata1.txt" as a MiTCR file.
+> ##D immdata1 <- parse.file("~/mitcr/immdata1.txt", 'mitcr')
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("parse.cloneset", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("parse.folder")
+> ### * parse.folder
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: parse.folder
+> ### Title: Parse input table files with immune receptor repertoire data.
+> ### Aliases: parse.file parse.file.list parse.folder parse.migec
+> ###   parse.mitcr parse.mitcrbc
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Parse file in "~/mitcr/immdata1.txt" as a MiTCR file.
+> ##D immdata1 <- parse.file("~/mitcr/immdata1.txt", 'mitcr')
+> ##D # Parse files "~/data/immdata1.txt" and "~/data/immdat2.txt" as MiGEC files.
+> ##D immdata12 <- parse.file.list(c("~/data/immdata1.txt",
+> ##D                              "~/data/immdata2.txt"), 'migec')
+> ##D # Parse all files in "~/data/" as MiGEC files.
+> ##D immdata <- parse.folder("~/data/", 'migec')
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("parse.folder", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pca.segments")
+> ### * pca.segments
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pca.segments
+> ### Title: Perform PCA on segments frequency data.
+> ### Aliases: pca.segments pca.segments.2D
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Load the twins data.
+> ##D data(twb)
+> ##D # Plot a plot of results of PCA on V-segments usage.
+> ##D pca.segments(twb, T, scale. = T)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pca.segments", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rarefaction")
+> ### * rarefaction
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rarefaction
+> ### Title: Diversity evaluation using rarefaction.
+> ### Aliases: rarefaction
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D rarefaction(immdata, .col = "Read.count")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rarefaction", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("repDiversity")
+> ### * repDiversity
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: repDiversity
+> ### Title: General function for the repertoire diversity estimation.
+> ### Aliases: repDiversity
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(twb)
+> ##D twb.div <- repDiversity(twb, "chao1", "read.count")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("repDiversity", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("repOverlap")
+> ### * repOverlap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: repOverlap
+> ### Title: General function for the repertoire overlap evaluation.
+> ### Aliases: repOverlap
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(twb)
+> ##D repOverlap(twb, "exact", .seq = "nuc", .vgene = F)
+> ##D repOverlap(twb, "morisita", .seq = "aa", .vgene = T, .quant = "umi.count")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("repOverlap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("reverse.string")
+> ### * reverse.string
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: reverse.string
+> ### Title: Reverse given character vector by the given n-plets.
+> ### Aliases: reverse.string
+> 
+> ### ** Examples
+> 
+> reverse.string('abcde')  # => "edcba"
+[1] "edcba"
+> reverse.string('abcde', 2)  # => "debca"
+[1] "debca"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("reverse.string", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("segments.alphabets")
+> ### * segments.alphabets
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: segments.alphabets
+> ### Title: Alphabets of TCR and Ig gene segments.
+> ### Aliases: HUMAN_TRAJ HUMAN_TRAV HUMAN_TRBD HUMAN_TRBJ HUMAN_TRBV
+> ###   HUMAN_TRBV_MITCR HUMAN_TRDD HUMAN_TRDJ HUMAN_TRDV HUMAN_TRGJ
+> ###   HUMAN_TRGV genealphabets segments.alphabets
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D HUMAN_TRBV[1]  #  => "TRBV10-1"
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("segments.alphabets", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("segments.list")
+> ### * segments.list
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: segments.list
+> ### Title: Segment data.
+> ### Aliases: genesegments segments.list
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(genesegments)
+> ##D genesegments$Nucleotide.sequence[segments$TRBV[,1] == "TRBV10-1"]
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("segments.list", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("set.group.vector")
+> ### * set.group.vector
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: set.group.vector
+> ### Title: Set group attribute for vertices of a mutation network
+> ### Aliases: get.group.names set.group.vector
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(twb)
+> ##D twb.shared <- shared.repertoire(twb)
+> ##D G <- mutation.network(twb.shared)
+> ##D G <- set.group.vector(G, "twins", list(A = c(1,2), B = c(3,4)))  # <= refactor this
+> ##D get.group.names(G, "twins", 1)       # "A|B"
+> ##D get.group.names(G, "twins", 300)     # "A"
+> ##D get.group.names(G, "twins", 1, F)    # list(c("A", "B"))
+> ##D get.group.names(G, "twins", 300, F)  # list(c("A"))
+> ##D # Because we have only two groups, we can assign more readable attribute.
+> ##D V(G)$twin.names <- get.group.names(G, "twins")
+> ##D V(G)$twin.names[1]  # "A|B"
+> ##D V(G)$twin.names[300]  # "A"
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("set.group.vector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("set.people.vector")
+> ### * set.people.vector
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: set.people.vector
+> ### Title: Set and get attributes of a mutation network related to source
+> ###   people.
+> ### Aliases: get.people.names set.people.vector
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(twb)
+> ##D twb.shared <- shared.repertoire(twb)
+> ##D G <- mutation.network(twb.shared)
+> ##D get.people.names(G, 300, T)  # "Subj.A|Subj.B"
+> ##D get.people.names(G, 300, F)  # list(c("Subj.A", "Subj.B"))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("set.people.vector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("shared.repertoire")
+> ### * shared.repertoire
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: shared.repertoire
+> ### Title: Shared TCR repertoire managing and analysis
+> ### Aliases: shared.matrix shared.repertoire
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Set "Rank" column in data by "Read.count" column.
+> ##D # This is doing automatically in shared.repertoire() function
+> ##D # if the "Rank" column hasn't been found.
+> ##D immdata <- set.rank(immdata)
+> ##D # Generate shared repertoire using "CDR3.amino.acid.sequence" and
+> ##D # "V.gene" columns and with rank.
+> ##D imm.shared.av <- shared.repertoire(immdata, 'avrc')
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("shared.repertoire", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("spectratyping")
+> ### * spectratyping
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: spectratyping
+> ### Title: Spectratype plot.
+> ### Aliases: spectratyping
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Spectratyping of distribution of length of CDR3 nucleotide sequences
+> ##D # by V-beta-segments.
+> ##D immdata <- lapply(immdata, function (x) {
+> ##D              x$Length <- nchar(x$CDR3.nucleotide.sequence)
+> ##D              x
+> ##D            } )
+> ##D spectratyping(immdata, 'Length', 'Vb')
+> ##D # Spectratyping of distribution of Total insertions
+> ##D # by J-beta-segments.
+> ##D spectratyping(immdata, 'Total.insertions', 'Jb')
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("spectratyping", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("startmitcr")
+> ### * startmitcr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: startmitcr
+> ### Title: Start MiTCR directly from the package.
+> ### Aliases: startmitcr
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Equal to
+> ##D # java -Xmx8g -jar ~/programs/mitcr.jar -pset flex
+> ##D #      -level 2 ~/data/raw/TwA1_B.fastq.gz ~/data/mitcr/TwA1_B.txt
+> ##D startmitcr('raw/TwA1_B.fastq.gz', 'mitcr/TwA1_B.txt', .file.path = '~/data/',
+> ##D   pset = 'flex', level = 1, 'debug', .mitcr.path = '~/programs/', .mem = '8g')
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("startmitcr", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("tailbound.proportion")
+> ### * tailbound.proportion
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: tailbound.proportion
+> ### Title: Proportions of specifyed subsets of clones.
+> ### Aliases: clonal.proportion tailbound.proportion top.proportion
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D                                 # How many clones fill up approximately
+> ##D clonal.proportion(immdata, 25)  # the 25% of the sum of values in 'Read.count'?
+> ##D 
+> ##D                                 # What proportion of the top-10 clones' reads
+> ##D vis.top.proportions(immdata)  # Plot this proportions.
+> ##D 
+> ##D                                 # What proportion of sequences which
+> ##D                                 # has 'Read.count' <= 100 to the
+> ##D tailbound.proportion(immdata, 100)  # overall number of reads?
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("tailbound.proportion", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("top.cross")
+> ### * top.cross
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: top.cross
+> ### Title: Perform sequential cross starting from the top of a data frame.
+> ### Aliases: top.cross top.cross.plot top.cross.vec
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D immdata.top <- top.cross(immdata)
+> ##D top.cross.plot(immdata.top)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("top.cross", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("top.fun")
+> ### * top.fun
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: top.fun
+> ### Title: Get samples from a repertoire slice-by-slice or top-by-top and
+> ###   apply function to them.
+> ### Aliases: slice.fun top.fun
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Get entropy of V-usage for the first 1000, 2000, 3000, ... clones.
+> ##D res <- top.fun(immdata[[1]], 1000, entropy.seg)
+> ##D # Get entropy of V-usage for the interval of clones with indices [1,1000], [1001,2000], ...
+> ##D res <- top.fun(immdata[[1]], 1000, entropy.seg)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("top.fun", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("twinsdata")
+> ### * twinsdata
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: twinsdata
+> ### Title: Twins alpha-beta chain data
+> ### Aliases: twa twb twinsdata
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(twa)
+> ##D data(twb)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("twinsdata", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("vis.count.len")
+> ### * vis.count.len
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: vis.count.len
+> ### Title: Plot a histogram of lengths.
+> ### Aliases: vis.count.len
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D load('immdata.rda')
+> ##D # Plot one histogram with main title.
+> ##D vis.count.len(immdata[[1]], 'Main title here')
+> ##D # Plot a grid of histograms with 2 columns.
+> ##D vis.count.len(immdata, 2)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("vis.count.len", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("vis.gene.usage")
+> ### * vis.gene.usage
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: vis.gene.usage
+> ### Title: Histogram of segments usage.
+> ### Aliases: vis.J.usage vis.V.usage vis.gene.usage
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Load your data.
+> ##D load('immdata.rda')
+> ##D # Compute V-usage statistics.
+> ##D imm1.vs <- geneUsage(immdata[[1]], HUMAN_TRBV)
+> ##D vis.V.usage(immdata, HUMAN_TRBV, .main = 'Immdata V-usage [1]', .dodge = T)
+> ##D # Plot a histogram for one data frame using all gene segment data from V.gene column.
+> ##D vis.V.usage(imm1.vs, NA, .main = 'Immdata V-usage [1]')
+> ##D # Plot a grid of histograms - one histogram for V-usage for each data frame in .data.
+> ##D vis.V.usage(immdata, HUMAN_TRBV, .main = 'Immdata V-usage', .dodge = F, .other = F)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("vis.gene.usage", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("vis.group.boxplot")
+> ### * vis.group.boxplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: vis.group.boxplot
+> ### Title: Boxplot for groups of observations.
+> ### Aliases: vis.group.boxplot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D names(immdata)  # "A1" "A2" "B1" "B2" "C1" "C2"
+> ##D # Plot a boxplot for V-usage for each plot
+> ##D # three boxplots for each group.
+> ##D vis.group.boxplot(freq.Vb(immdata),
+> ##D    list(A = c('A1', 'A2'), B = c('B1', 'B2'), C = c('C1', 'C2')),
+> ##D    c('V segments', 'Frequency'))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("vis.group.boxplot", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("vis.heatmap")
+> ### * vis.heatmap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: vis.heatmap
+> ### Title: Heatmap.
+> ### Aliases: vis.heatmap
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Load your data.
+> ##D load('immdata.rda')
+> ##D # Perform cloneset overlap by amino acid sequences with V-segments.
+> ##D imm.av <- repOverlap(immdata, .seq = 'aa', .vgene = T)
+> ##D # Plot a heatmap.
+> ##D vis.heatmap(imm.av, .title = 'Immdata - (ave)-intersection')
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("vis.heatmap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("vis.kmer.histogram")
+> ### * vis.kmer.histogram
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: vis.kmer.histogram
+> ### Title: Plot of the most frequent kmers.
+> ### Aliases: vis.kmer.histogram
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Load necessary data and package.
+> ##D library(gridExtra)
+> ##D load('immdata.rda')
+> ##D # Get 5-mers.
+> ##D imm.km <- get.kmers(immdata)
+> ##D # Plots for kmer proportions in each data frame in immdata.
+> ##D p1 <- vis.kmer.histogran(imm.km, .position = 'stack')
+> ##D p2 <- vis.kmer.histogran(imm.km, .position = 'fill')
+> ##D grid.arrange(p1, p2)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("vis.kmer.histogram", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("vis.logo")
+> ### * vis.logo
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: vis.logo
+> ### Title: Logo - plots for amino acid and nucletide profiles.
+> ### Aliases: vis.logo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D d <- kmer.profile(c('CASLL', 'CASSQ', 'CASGL'))
+> ##D vis.logo(d)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("vis.logo", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("vis.number.count")
+> ### * vis.number.count
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: vis.number.count
+> ### Title: Plot a histogram of counts.
+> ### Aliases: vis.number.count
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D load('immdata.rda')
+> ##D # Plot one histogram with main title.
+> ##D vis.number.count(immdata[[1]], 'Main title here')
+> ##D # Plot a grid of histograms with 2 columns.
+> ##D vis.number.count(immdata, 2)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("vis.number.count", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("vis.radarlike")
+> ### * vis.radarlike
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: vis.radarlike
+> ### Title: Radar-like / spider-like plots.
+> ### Aliases: vis.radarlike
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D load('immdata.rda')
+> ##D # Compute Jensen-Shannon divergence among V-usage of repertoires.
+> ##D imm.js <- js.div.seg(immdata, .verbose = F)
+> ##D # Plot it.
+> ##D vis.radarlike(imm.js)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("vis.radarlike", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("vis.rarefaction")
+> ### * vis.rarefaction
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: vis.rarefaction
+> ### Title: Rarefaction statistics visualisation.
+> ### Aliases: vis.rarefaction
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(twb)
+> ##D names(twb)  # "Subj.A" "Subj.B" "Subj.C" "Subj.D"
+> ##D twb.rar <- rarefaction(twb, .col = "Read.count")
+> ##D vis.rarefaction(twb.rar, list(A = c("Subj.A", "Subj.B"), B = c("Subj.C", "Subj.D")))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("vis.rarefaction", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("vis.top.proportions")
+> ### * vis.top.proportions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: vis.top.proportions
+> ### Title: Visualisation of top clones proportions.
+> ### Aliases: vis.top.proportions
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D vis.top.proportions(immdata)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("vis.top.proportions", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  1.445 0.039 1.493 0.001 0.001 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

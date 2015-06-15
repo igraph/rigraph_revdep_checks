@@ -1,0 +1,130 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "secrlinear"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "secrlinear-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('secrlinear')
+Loading required package: secr
+This is secr 2.9.4. For overview type ?secr
+Loading required package: sp
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("Silverstream")
+> ### * Silverstream
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Silverstream
+> ### Title: Silverstream River Centrelines
+> ### Aliases: Silverstream
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> 
+> ## Not run: 
+> ##D 
+> ##D setwd(system.file("extdata", package = "secrlinear"))
+> ##D silverstreammask <- read.linearmask(file = "silverstream.shp", spacing = 50)
+> ##D par(mar = c(1,1,1,1))
+> ##D plot(silverstreammask)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Silverstream", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("arvicola")
+> ### * arvicola
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Arvicola
+> ### Title: Water Vole Capture Dataset
+> ### Aliases: arvicola
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> 
+> summary(arvicola)
+Object class      capthist 
+Detector type     multi 
+Detector number   88 
+Average spacing   19.80165 m 
+x-range           163.85 835.61 m 
+y-range           457.67 684.59 m 
+Counts by occasion 
+                   1  2  3  4  5  6 Total
+n                 16 11 18 12 16 11    84
+u                 16  2  6  1  1  0    26
+f                  7  3  4  5  3  4    26
+M(t+1)            16 18 24 25 26 26    26
+losses             0  0  0  0  0  0     0
+detections        16 11 18 12 16 11    84
+detectors visited 16 11 18 12 16 11    84
+detectors used    88 88 88 88 88 88   528
+
+> head(traps(arvicola))
+          x      y
+0.A  164.86 609.69
+0.B  164.86 609.69
+20.A 163.85 629.66
+20.B 163.85 629.66
+40.A 164.88 649.19
+40.B 164.88 649.19
+> 
+> ## for speed, pre-compute distance matrix
+> userd <- networkdistance (traps(arvicola), glymemask, glymemask)
+Error in check_version(graph) : 
+  This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+Calls: networkdistance -> cbind -> V -> update_vs_ref -> check_version
+Execution halted

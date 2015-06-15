@@ -1,0 +1,684 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "phyloTop"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "phyloTop-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('phyloTop')
+Loading required package: phylobase
+Loading required package: grid
+Loading required package: NHPoisson
+Loading required package: stats4
+Loading required package: ape
+
+Attaching package: ‘ape’
+
+The following object is masked from ‘package:phylobase’:
+
+    edges
+
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:ape’:
+
+    edges, mst, ring
+
+The following object is masked from ‘package:phylobase’:
+
+    edges
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("SimulatedOutbreakGenealogy")
+> ### * SimulatedOutbreakGenealogy
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: SimulatedOutbreakGenealogy
+> ### Title: Simulated outbreaks with genealogies
+> ### Aliases: maketranstree getgenealogy makephylotree sortmyepi
+> 
+> ### ** Examples
+> 
+> # specify an inhomogeneous rate of new infections
+> lambda<- c(rep(0.2,10), rep(0.1,10)) # twice as infectious in the first half of the 
+> # infectious period, with a mean number of 3 secondary cases
+> 
+> ## Create a simulated outbreak
+>  epirecord<-maketranstree(lambda,duration=2,NumCases=30)
+> 
+> ## Extract the genealogy as a phylo4 object
+> simgeneal<-getgenealogy(epirecord)
+> 
+> ## Not run: 
+> ##D 	# Intermediate functions: 
+> ##D   # creates the phylo4 object from a list of edges and lengths. 
+> ##D 	# makephylotree(Edges,Lengths,Root) 
+> ##D 	
+> ##D 	sortmyepi(epirecord) # sorts the rows of the simulated epidemic
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("SimulatedOutbreakGenealogy", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("allNodeAnalysis")
+> ### * allNodeAnalysis
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: allNodeAnalysis
+> ### Title: All Node Analysis
+> ### Aliases: allNodeAnalysis nDescendants nTipDescendants dists ladderNums
+> ###   treeImb nodeApply
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D ## Creates a random tree of class phylo4
+> ##D tree <- rtree4(50)
+> ##D 
+> ##D ## Label the nodes of a tree by their nodeId
+> ##D labelledTree <- idNodeLabel(tree)
+> ##D plot(labelledTree,show.tip.label=FALSE,show.node.label=TRUE)
+> ##D 
+> ##D ## Finds the number of descendants of the nodes
+> ##D nDescendants(tree)
+> ##D 
+> ##D ## Finds the number of tip descendants of the nodes in the tree
+> ##D nTipDescendants(tree)
+> ##D 
+> ##D ## Finds the distance of each node from the root of the tree
+> ##D dists(tree)
+> ##D 
+> ##D ## Finds the length of the internal ladders in the tree
+> ##D ladderNums(tree)
+> ##D 
+> ##D ## Calculates the imbalance of each of the internal nodes
+> ##D treeImb(tree)
+> ##D 
+> ##D ## This returns the Colless imbalance of all subtrees of the tree
+> ##D ## The vector is named by the nodeId of the root of each subtree
+> ##D nodeApply(tree,colless)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("allNodeAnalysis", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("configurations")
+> ### * configurations
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: configurations
+> ### Title: Configurations in Trees
+> ### Aliases: configurations nConfig configFind configTop classifyConfigFour
+> ###   classifyConfigFive
+> 
+> ### ** Examples
+> 
+> ## Creates a random tree of class phylo4 and plots it with nodes labelled by ID
+> tree <- rtree4(50)
+> tree <- idNodeLabel(tree)
+> plot(tree,show.tip.label=FALSE,show.node.label=TRUE)
+> 
+> ## Finds the number of cherries (also called 2-configurations) in the tree
+> nConfig(tree,2)
+[1] 18
+> 
+> ## Gives you the nodeId of the roots of the cherries
+> configFind(tree,2)
+ [1]  5  6  8 13 14 17 21 22 23 29 32 34 38 40 41 44 47 49 54 55 57 62 63 66 70
+[26] 71 72 78 81 83 87 89 90 93 96 98
+> 
+> ## Finds the complete configuration profile of the tree
+> configTop(tree)
+ [1]  0 18  7  4  3  5  3  0  1  1  1  0  0  1  0  0  0  0  0  0  1  0  0  0  0
+[26]  0  1  0  0  0  0  0  1  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  1
+> 
+> ## Classifies the configurations of size four...
+> classifyConfigFour(tree)
+  laddType branchType
+1        0          8
+> 
+> ##...and the configurations of size five
+> classifyConfigFive(tree)
+  laddType fourType branchType
+1        0        2          4
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("configurations", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("exampleSummary")
+> ### * exampleSummary
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: exampleSummary
+> ### Title: Example Tree Summary
+> ### Aliases: exampleSummary
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> # Load data
+> data(exampleSummary)
+> 
+> # See the format of the data
+> head(exampleSummary)
+  avgLadder nLadders maxLadder sackin   colless nCherries Type
+1  1.933333       15         5    537 0.1875706        16  hom
+2  2.307692       13         7    527 0.1817650        15  hom
+3  1.600000       15         3    512 0.1648159        18  hom
+4  1.705882       17         4    502 0.1369646        17  hom
+5  2.153846       13         4    553 0.2086499        16  hom
+6  1.562500       16         4    505 0.1593220        18  hom
+> 
+> # Find the correlations between the numeric vectors in the summary for the two types of trees
+> # This can be very useful. Observe the differences in correlations 
+> homCor <- cor(exampleSummary[1:50,1:6])
+> ssCor <- cor(exampleSummary[51:100,1:6])
+> randCor <- cor(exampleSummary[101:150,1:6])
+> 
+> ## Not run: 
+> ##D ### I WILL NOW ILLUSTRATE SOME USES OF THE PACKAGE
+> ##D ### THESE METHODS USE LIBARY ggplot2
+> ##D ### IT WILL NEED TO BE SEPERATELY INSTALLED IF YOU WISH TO USE IT
+> ##D 
+> ##D # Initialize plot
+> ##D p <- ggplot(data=exampleSummary) + facet_wrap(~Type)
+> ##D 
+> ##D # A bar plot of nLadders with colors determined by maxLadder 
+> ##D p + geom_bar(aes(nLadders,fill=factor(maxLadder)),binwidth=1) +
+> ##D guides(fill=guide_legend(title='maxLadder'))
+> ##D 
+> ##D # A scatter plot of maxLadder against avgLadder
+> ##D p + geom_point(aes(maxLadder,avgLadder,color=Type)) + theme(legend.position='none')
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("exampleSummary", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fastModelAnalysis")
+> ### * fastModelAnalysis
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fastModelAnalysis
+> ### Title: Fast Model Analysis
+> ### Aliases: fastModelAnalysis baseCreate baseListCreate baseAnalysis
+> ###   baseListAnalysis
+> 
+> ### ** Examples
+> 
+> ## This is an example of using bases to speed up calculation of topological properties.
+> 
+> ## Creates a tree
+> tree <- rtree4(50)
+> 
+> ## Sets up the list of bases 
+> baseFuncs <- c(ladderNums, treeImb, nTipDescendants)
+> 
+> ## Creates the base
+> base <- baseCreate(tree,baseFuncs)
+> 
+> ## Sets up the list of functions from the base
+> ## Note that the functions are matched with the correct base element
+> topFuncs <- c(fNLadders,fColless,function(x) {fNConfig(x,2)})
+> 
+> ## Finds the topological properties
+> baseAnalysis(base,topFuncs)
+     [,1]  [,2] [,3]
+[1,]   11 947.2   18
+> 
+> ## Not run: 
+> ##D ## Now a new list of topFuncs
+> ##D ## Some of these use the same elements of the base
+> ##D ## This means that there will be a speed improvement
+> ##D topFuncs2 <- c(topFuncs, function(x) {fNConfig(x,3)},fAvgLadder)
+> ##D 
+> ##D ## Now we must create an appropriate base for these topFuncs
+> ##D ## Note that the elements are matched to those of topFuncs
+> ##D base2 <- c(base,base[3],base[1])
+> ##D 
+> ##D ## And the new topological properties
+> ##D baseAnalysis(base2,topFuncs2)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fastModelAnalysis", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("homTrees")
+> ### * homTrees
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: homTrees
+> ### Title: Homogeneous Trees
+> ### Aliases: homTrees
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+>   data(homTrees)
+>   ## Not run: 
+> ##D   topList <- c(avgLadder,colless,function(tree){nConfig(tree,2)})
+> ##D   treeListSummary(homTrees,topList)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("homTrees", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("laddItr")
+> ### * laddItr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: laddItr
+> ### Title: Ladder Iteration Tool
+> ### Aliases: laddItr
+> 
+> ### ** Examples
+> 
+> ## Creates a tree
+> tree <- rtree4(50)
+> 
+> ## Creates an appropriate vector
+> ladderNumbers <- ladderNums(tree)
+> 
+> ## Perfoms the operation
+> laddItr(ladderNumbers)
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[39] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[77] 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("laddItr", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("modelAnalysis")
+> ### * modelAnalysis
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: modelAnalysis
+> ### Title: Model Analysis
+> ### Aliases: modelAnalysis modelSummary modelCreate treeListSummary
+> 
+> ### ** Examples
+> 
+> ## Create a function to test
+> maxLadd <- function(tree) {max(ladderNums(tree))}
+> 
+> ## Create a model 
+> ## NOTE THE USE OF 'as'
+> bdModel <- function() {as(rlineage(0.5,0.1,Tmax=6),'phylo4')}
+> 
+> ## Not run: 
+> ##D ## A simple example of modelSummary
+> ##D modelSummary(function(){rtree4(50)},topList=c(avgLadder,sackin),n=10)
+> ##D 
+> ##D ## Another example using the created model and function
+> ##D modelSummary(bdModel,topList=c(maxLadd,sackin),n=10,loadingBar=FALSE)
+> ##D 
+> ##D ## Create a list of trees for more detailed analysis
+> ##D bdTrees <- modelCreate(bdModel,10)
+> ##D 
+> ##D ## Select a number of topological summaries to calculate
+> ##D summaries <- c(avgLadder,maxLadd,sackin,function(tree){nConfig(tree,2)})
+> ##D 
+> ##D ## Calculate these summaries for the trees in question
+> ##D bdSummary <- treeListSummary(bdTrees,summaries)
+> ##D names(bdSummary) <- c('avgLadder','maxLadd','Sackin','Cherries')
+> ##D 
+> ##D ### I WILL NOW ILLUSTRATE SOME USES OF THE PACKAGE
+> ##D ### THESE METHODS USE LIBARY ggplot2
+> ##D ### IT WILL NEED TO BE SEPERATELY INSTALLED IF YOU WISH TO USE IT
+> ##D 
+> ##D # Initialize a plot
+> ##D p <- ggplot(data=bdSummary)
+> ##D 
+> ##D # Simple bar plot
+> ##D p + geom_bar(aes(avgLadder),binwidth=0.1)
+> ##D 
+> ##D # Simple scatter plot
+> ##D p + geom_point(aes(x=Sackin,y=Cherries))
+> ##D 
+> ##D ### See exampleSummary for more examples of plots
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("modelAnalysis", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("nodeAnalysis")
+> ### * nodeAnalysis
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nodeAnalysis
+> ### Title: Node Analysis Functions
+> ### Aliases: nodeAnalysis nodeImb ladderDist nodeDist
+> 
+> ### ** Examples
+> 
+> ## Creates a random tree of class phylo4 and plots it with nodes labelled by ID
+> tree <- rtree4(50)
+> tree <- idNodeLabel(tree)
+> plot(tree,show.tip.label=FALSE,show.node.label=TRUE)
+> 
+> ## Calculate the imbalance of a node
+> nodeImb(tree,60)
+[1] 1 5
+> 
+> ## Calculates the length of the ladder from that node
+> ladderDist(tree,60)
+[1] 1
+> 
+> ## Finds the number of steps required to get from that node to the root
+> nodeDist(tree,60)
+60 
+ 4 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nodeAnalysis", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rTrees")
+> ### * rTrees
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rTrees
+> ### Title: Random Trees
+> ### Aliases: rTrees
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(rTrees)
+> ## Not run: 
+> ##D topList <- c(avgLadder,colless,function(tree){nConfig(tree,2)})
+> ##D treeListSummary(rTrees,topList)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rTrees", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rootLaddDist")
+> ### * rootLaddDist
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rootLaddDist
+> ### Title: Root Ladder Distance
+> ### Aliases: rootLaddDist
+> 
+> ### ** Examples
+> 
+> ## Creates a random tree of class phylo4 and plots it with nodes labelled by ID
+> tree <- rtree4(50)
+> tree <- idNodeLabel(tree)
+> plot(tree,show.tip.label=FALSE,show.node.label=TRUE)
+> 
+> ## Finds the length of the ladder staring from the root
+> rootLaddDist(tree)
+[1] 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rootLaddDist", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ssTrees")
+> ### * ssTrees
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ssTrees
+> ### Title: Super Spreader Trees
+> ### Aliases: ssTrees
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(ssTrees)
+> ## Not run: 
+> ##D topList <- c(avgLadder,colless,function(tree){nConfig(tree,2)})
+> ##D treeListSummary(ssTrees,topList)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ssTrees", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("topFuncs")
+> ### * topFuncs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: topFuncs
+> ### Title: Functions from Bases to Topological Properties
+> ### Aliases: topFuncs fWidths fAvgLadder fNLadders fColless fNConfig
+> 
+> ### ** Examples
+> 
+> ## Sets up an example tree
+> tree <- rtree4(50)
+> 
+> ## This returns the same ouput as avgLadder(tree)
+> ladderNumbers <- ladderNums(tree)
+> fAvgLadder(ladderNumbers)
+[1] 1.272727
+> 
+> ## But now we can calculate the number of ladders more efficiently.
+> fNLadders
+function (ladderNumbers) 
+{
+    nLadds <- 0
+    m <- max(ladderNumbers)
+    while (m > 0) {
+        count <- sum(ladderNumbers == m)
+        nLadds <- nLadds + count
+        ladderNumbers <- laddItr(ladderNumbers)
+        m <- max(ladderNumbers)
+    }
+    return(nLadds)
+}
+<environment: namespace:phyloTop>
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("topFuncs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("treeAnalysis")
+> ### * treeAnalysis
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: treeAnalysis
+> ### Title: Tree Analysis Functions
+> ### Aliases: treeAnalysis splitTop sackin widths avgLadder nLadders colless
+> ###   nodeFrac topSumm cherries pitchforks maxheight stairs ILnumber
+> 
+> ### ** Examples
+> 
+> ## Creates a random tree of class phylo4 and plots it with nodes labelled by ID
+> tree <- rtree4(50)
+> tree <- idNodeLabel(tree)
+> plot(tree,show.tip.label=FALSE,show.node.label=TRUE)
+> ## Not run: 
+> ##D ## Finds the split topology of the fourth level
+> ##D splitTop(tree,4)
+> ##D 
+> ##D ## Finds the Sackin Imbalance
+> ##D sackin(tree)
+> ##D 
+> ##D ## Finds the width topology of the tree
+> ##D widths(tree)
+> ##D 
+> ##D ## Finds the average ladder length
+> ##D avgLadder(tree)
+> ##D 
+> ##D ## Finds the number of distinct ladders in the tree
+> ##D nLadders(tree)
+> ##D 
+> ##D ## Finds the Colless Imbalance (normalized)
+> ##D colless(tree)
+> ##D 
+> ##D ## Finds the fraction of nodes for which colless(subtree of node) >= 0.25
+> ##D nodeFrac(tree,colless,0.25)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("treeAnalysis", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("treeGraphics")
+> ### * treeGraphics
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: treeGraphics
+> ### Title: Tree Graphics
+> ### Aliases: treeGraphics ladderShow configShow subtreeShow
+> 
+> ### ** Examples
+> 
+> ## Creates a random tree of class phylo4 and plots it with nodes labelled by ID
+> tree <- rtree4(50)
+> tree <- idNodeLabel(tree)
+> plot(tree,show.tip.label=FALSE,show.node.label=TRUE)
+> 
+> ## Plots the tree showing the ladders
+> ladderShow(tree)
+> 
+> ## Plots the tree showing the 3-configurations
+> configShow(tree,3)
+> 
+> ## Highlights the descendents of two particular nodes
+> subtreeShow(tree,c(60,90))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("treeGraphics", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("utility")
+> ### * utility
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: utility
+> ### Title: Utility Functions
+> ### Aliases: utility rtree4 idNodeLabel nTipChildren phyloCheck
+> 
+> ### ** Examples
+> 
+> ## Creates a random tree of class phylo4
+> tree <- rtree4(50)
+> 
+> ## Label the nodes of a tree by their nodeId
+> labelledTree <- idNodeLabel(tree)
+> plot(labelledTree,show.tip.label=FALSE,show.node.label=TRUE)
+> 
+> ## Find the number of tip children of a node
+> nTipChildren(tree,70)
+[1] 0
+> 
+> ## Checks that the tree is of the correct type
+> phyloCheck(tree)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("utility", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  4.76 0.105 4.874 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

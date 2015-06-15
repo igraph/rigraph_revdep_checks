@@ -1,0 +1,56 @@
+* installing *source* package ‘NetSim’ ...
+** package ‘NetSim’ successfully unpacked and MD5 sums checked
+** libs
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c attribute/AttributeContainer.cpp -o attribute/AttributeContainer.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c io/Output.cpp -o io/Output.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/ChangeModel.cpp -o model/ChangeModel.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/JacksonRogers2007ChangeModel.cpp -o model/JacksonRogers2007ChangeModel.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/ModelManager.cpp -o model/ModelManager.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/ModelResult.cpp -o model/ModelResult.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/MultinomialChoiceBehaviorChangeModel.cpp -o model/MultinomialChoiceBehaviorChangeModel.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/MultinomialChoiceNetworkChangeModel.cpp -o model/MultinomialChoiceNetworkChangeModel.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/MultinomialChoiceUtils.cpp -o model/MultinomialChoiceUtils.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/TimeModel.cpp -o model/TimeModel.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/Updater.cpp -o model/Updater.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/WattsStrogatzRandomRewiringChangeModel.cpp -o model/WattsStrogatzRandomRewiringChangeModel.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/saom/EffectContainerManager.cpp -o model/saom/EffectContainerManager.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/saom/EffectFactory.cpp -o model/saom/EffectFactory.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c model/saom/SaomEffect.cpp -o model/saom/SaomEffect.o
+model/saom/SaomEffect.cpp:365:25: warning: using integer absolute value function 'abs' when argument is of floating point type [-Wabsolute-value]
+                double sim = (range - abs(alterValue - egoValue)) / range;
+                                      ^
+model/saom/SaomEffect.cpp:365:25: note: use function 'std::abs' instead
+                double sim = (range - abs(alterValue - egoValue)) / range;
+                                      ^~~
+                                      std::abs
+model/saom/SaomEffect.cpp:384:24: warning: using integer absolute value function 'abs' when argument is of floating point type [-Wabsolute-value]
+        double sim = (range - abs(alterValue - egoValue)) / range;
+                              ^
+model/saom/SaomEffect.cpp:384:24: note: use function 'std::abs' instead
+        double sim = (range - abs(alterValue - egoValue)) / range;
+                              ^~~
+                              std::abs
+2 warnings generated.
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c network/MemoryOneModeNetwork.cpp -o network/MemoryOneModeNetwork.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c network/NetworkUtils.cpp -o network/NetworkUtils.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c network/OneModeNetwork.cpp -o network/OneModeNetwork.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c network/ValuedMemoryOneModeNetwork.cpp -o network/ValuedMemoryOneModeNetwork.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c processstate/ProcessState.cpp -o processstate/ProcessState.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c processstate/ProcessStateManager.cpp -o processstate/ProcessStateManager.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c simulator/Simulator.cpp -o simulator/Simulator.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c utils/Random.cpp -o utils/Random.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c rwrapper/rwrapper_simulator.cpp -o rwrapper/rwrapper_simulator.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c rwrapper/wrapper_model.cpp -o rwrapper/wrapper_model.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c rwrapper/wrapper_network.cpp -o rwrapper/wrapper_network.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c rwrapper/wrapper_process_state.cpp -o rwrapper/wrapper_process_state.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c rwrapper/rwrapper_attribute_container.cpp -o rwrapper/rwrapper_attribute_container.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c rwrapper/rwrapper_utils.cpp -o rwrapper/rwrapper_utils.o
+clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o NetSim.so attribute/AttributeContainer.o io/Output.o model/ChangeModel.o model/JacksonRogers2007ChangeModel.o model/ModelManager.o model/ModelResult.o model/MultinomialChoiceBehaviorChangeModel.o model/MultinomialChoiceNetworkChangeModel.o model/MultinomialChoiceUtils.o model/TimeModel.o model/Updater.o model/WattsStrogatzRandomRewiringChangeModel.o model/saom/EffectContainerManager.o model/saom/EffectFactory.o model/saom/SaomEffect.o network/MemoryOneModeNetwork.o network/NetworkUtils.o network/OneModeNetwork.o network/ValuedMemoryOneModeNetwork.o processstate/ProcessState.o processstate/ProcessStateManager.o simulator/Simulator.o utils/Random.o rwrapper/rwrapper_simulator.o rwrapper/wrapper_model.o rwrapper/wrapper_network.o rwrapper/wrapper_process_state.o rwrapper/rwrapper_attribute_container.o rwrapper/rwrapper_utils.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/NetSim.Rcheck/NetSim/libs
+** R
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (NetSim)

@@ -1,0 +1,117 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/intergraph.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘intergraph/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘intergraph’ version ‘2.0-1’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘intergraph’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... ERROR
+Running examples in ‘intergraph-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: asDF
+> ### Title: Convert network to data frame(s)
+> ### Aliases: asDF asDF.igraph asDF.network
+> 
+> ### ** Examples
+> 
+> # using method for 'network' objects
+> d1 <- asDF(exNetwork)
+> str(d1)
+List of 2
+ $ edges   :'data.frame':	11 obs. of  4 variables:
+  ..$ V1   : int [1:11] 2 3 4 5 6 8 10 11 14 12 ...
+  ..$ V2   : int [1:11] 1 1 1 1 7 9 11 12 12 13 ...
+  ..$ label: chr [1:11] "ba" "ca" "da" "ea" ...
+  ..$ na   : logi [1:11] FALSE FALSE FALSE FALSE FALSE FALSE ...
+ $ vertexes:'data.frame':	15 obs. of  4 variables:
+  ..$ intergraph_id: int [1:15] 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ label        : chr [1:15] "a" "b" "c" "d" ...
+  ..$ na           : logi [1:15] FALSE FALSE FALSE FALSE FALSE FALSE ...
+  ..$ vertex.names : chr [1:15] "a" "b" "c" "d" ...
+> 
+> # using method for 'igraph' objects
+> d2 <- asDF(exIgraph)
+Error in check_version(graph) : 
+  This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+Calls: asDF ... as.igraph.es -> inherits -> E -> update_es_ref -> check_version
+Execution halted
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... ERROR
+Running the tests in ‘tests/testall.R’ failed.
+Last 13 lines of output:
+  8: dumpAttr(object, "edge")
+  9: dumpAttr.igraph(object, "edge")
+  10: lapply(nams, function(a) igraph::get.edge.attribute(x, a))
+  11: FUN(X[[i]], ...)
+  12: igraph::get.edge.attribute(x, a)
+  13: as.igraph.es(graph, index)
+  14: inherits(e, "igraph.es")
+  15: E(graph)
+  16: update_es_ref(graph)
+  17: check_version(graph)
+  18: stop("This graph was created by an old(er) igraph version.\n", "  Call upgrade_graph() on it to use with the current igraph version")
+  Error: Test failures
+  Execution halted
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking running R code from vignettes ... OK
+* checking re-building of vignette outputs ... NOTE
+Error in re-building vignettes:
+  ...
+Quitting from lines 99-100 (howto.Rmd) 
+Error: processing vignette 'howto.Rmd' failed with diagnostics:
+This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+Execution halted
+
+* DONE
+Status: 2 ERRORs, 1 NOTE

@@ -1,0 +1,139 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "nat"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "nat-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('nat')
+Loading required package: rgl
+Warning: replacing previous import by ‘nabor::knn’ when loading ‘nat’
+Some nat functions depend on a CMTK installation. See ?cmtk and README.md for details.
+
+Attaching package: ‘nat’
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("Cell07PNs")
+> ### * Cell07PNs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Cell07PNs
+> ### Title: Cell07PNs: 40 Sample Projection Neurons from Jefferis, Potter et
+> ###   al 2007
+> ### Aliases: Cell07PNs
+> 
+> ### ** Examples
+> 
+> head(Cell07PNs)
+        Brain RegistrationScore Notes Glomerulus Batch Directory Traced
+EBH11R EBH11R                 4              DA1   PN2    unsure    yes
+EBH20L EBH20L                 4              DL3   PN2   unsure2    yes
+EBH20R EBH20R                 4              DA1   PN2   unsure2    yes
+EBI12L EBI12L                 4              DA1   PN2   unsure3    yes
+EBI22R EBI22R                 4              DL3   PN2   unsure3    yes
+EBJ23L EBJ23L                 4              DL3   PN2   unsure4    yes
+       Scored.By Sex Include     ID HaveWarp HaveAsc
+EBH11R       ACH   M         EBH11R     TRUE    TRUE
+EBH20L       ACH             EBH20L     TRUE    TRUE
+EBH20R       ACH   M         EBH20R     TRUE    TRUE
+EBI12L       ACH   F         EBI12L     TRUE    TRUE
+EBI22R       ACH             EBI22R     TRUE    TRUE
+EBJ23L       ACH             EBJ23L     TRUE    TRUE
+                                                TraceFile AscBatch Status
+EBH11R /GD/projects/PN2/TransformedTraces/DA1/EBH11R.tasc      New       
+EBH20L /GD/projects/PN2/TransformedTraces/DL3/EBH20L.tasc      New       
+EBH20R /GD/projects/PN2/TransformedTraces/DA1/EBH20R.tasc      New       
+EBI12L /GD/projects/PN2/TransformedTraces/DA1/EBI12L.tasc      New       
+EBI22R /GD/projects/PN2/TransformedTraces/DL3/EBI22R.tasc      New       
+EBJ23L /GD/projects/PN2/TransformedTraces/DL3/EBJ23L.tasc      New       
+       GlomSeq NumNAs MBP1 MBP2 LHBP PNType Seq nTrees StartPoint
+EBH11R       1      0   34   48   75    iPN  13      1          1
+EBH20L       1      0   29   29   77    iPN  15      1          1
+EBH20R       2      0   24   80  147    iPN  16      1          1
+EBI12L       3      0   29   59   89    iPN  18      1          1
+EBI22R       2      0   34   34   56    iPN  20      1          1
+EBJ23L       3      0   23   23   52    iPN  21      1          1
+                 CreatedAt
+EBH11R 2006-01-17 10:21:14
+EBH20L 2006-01-17 10:21:14
+EBH20R 2006-01-17 10:21:14
+EBI12L 2006-01-17 10:21:15
+EBI22R 2006-01-17 10:21:15
+EBJ23L 2006-01-17 10:21:15
+                                                                                            WarpFile
+EBH11R  /GD/projects/PN2/allreg/warp/unsure/average-goodbrains_EBH11R101_warp_m0g40c4e1e-1x16r3.list
+EBH20L /GD/projects/PN2/allreg/warp/unsure2/average-goodbrains_EBH20L101_warp_m0g40c4e1e-1x16r3.list
+EBH20R /GD/projects/PN2/allreg/warp/unsure2/average-goodbrains_EBH20R101_warp_m0g40c4e1e-1x16r3.list
+EBI12L /GD/projects/PN2/allreg/warp/unsure3/average-goodbrains_EBI12L101_warp_m0g40c4e1e-1x16r3.list
+EBI22R /GD/projects/PN2/allreg/warp/unsure3/average-goodbrains_EBI22R101_warp_m0g40c4e1e-1x16r3.list
+EBJ23L /GD/projects/PN2/allreg/warp/unsure4/average-goodbrains_EBJ23L101_warp_m0g40c4e1e-1x16r3.list
+> table(with(Cell07PNs,Glomerulus))
+
+     1      D    DA1    DA3    DC1    DC2    DC3    DL1    DL3    DL5    DL6 
+     0      0     11      0      0      0      0      0     10      0      0 
+   DM1    DM2    DM3    DM5    DM6   DP1m NP5194 NP6099   VA1d  VA1lm    VA2 
+     0      0      0      0      0      8      0      0     11      0      0 
+   VA3    VA6   VA7l   VA7m    VC2   VL2p  VL2pP    VM1    VM2    VM3    VM7 
+     0      0      0      0      0      0      0      0      0      0      0 
+  acj6   vDA1 vVA1lm   vVL1 vmulti 
+     0      0      0      0      0 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Cell07PNs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("MBL.surf")
+> ### * MBL.surf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MBL.surf
+> ### Title: Surface object (hxsurf) for the left mushroom body in FCWB
+> ###   template space
+> ### Aliases: MBL.surf
+> 
+> ### ** Examples
+> 
+> plot3d(kcs20)
+X Error of failed request:  BadDrawable (invalid Pixmap or Window parameter)
+  Major opcode of failed request:  14 (X_GetGeometry)
+  Resource id in failed request:  0x0
+  Serial number of failed request:  708
+  Current serial number in output stream:  708

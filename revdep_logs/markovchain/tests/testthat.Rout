@@ -1,0 +1,43 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(testthat)
+> library(markovchain)
+> 
+> test_check("markovchain")
+Loading required package: matlab
+
+Attaching package: 'matlab'
+
+The following object is masked from 'package:stats':
+
+    reshape
+
+The following objects are masked from 'package:utils':
+
+    find, fix
+
+The following object is masked from 'package:base':
+
+    sum
+
+testthat results ================================================================
+OK: 5 SKIPPED: 0 FAILED: 0
+> 
+> proc.time()
+   user  system elapsed 
+  1.627   0.074   1.692 

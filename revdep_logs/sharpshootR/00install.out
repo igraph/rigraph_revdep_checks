@@ -1,0 +1,8 @@
+* installing *source* package ‘sharpshootR’ ...
+** package ‘sharpshootR’ successfully unpacked and MD5 sums checked
+** R
+** data
+** preparing package for lazy loading
+Error : object ‘plot.igraph’ is not exported by 'namespace:igraph'
+ERROR: lazy loading failed for package ‘sharpshootR’
+* removing ‘/Users/gaborcsardi/works/igraph/revdep_check/sharpshootR.Rcheck/sharpshootR’

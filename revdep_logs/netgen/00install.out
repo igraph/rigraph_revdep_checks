@@ -1,0 +1,14 @@
+* installing *source* package ‘netgen’ ...
+** package ‘netgen’ successfully unpacked and MD5 sums checked
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Warning: replacing previous import by ‘igraph::normalize’ when loading ‘netgen’
+Warning: replacing previous import by ‘stringr::%>%’ when loading ‘netgen’
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+Warning: replacing previous import by ‘igraph::normalize’ when loading ‘netgen’
+Warning: replacing previous import by ‘stringr::%>%’ when loading ‘netgen’
+* DONE (netgen)

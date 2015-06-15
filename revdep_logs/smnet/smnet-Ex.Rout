@@ -1,0 +1,1158 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "smnet"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "smnet-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('smnet')
+Loading required package: SSN
+Loading required package: RSQLite
+Loading required package: DBI
+Loading required package: sp
+Loading required package: spam
+Loading required package: grid
+Spam version 1.0-1 (2014-09-09) is loaded.
+Type 'help( Spam)' or 'demo( spam)' for a short introduction 
+and overview of this package.
+Help for individual functions is also obtained by adding the
+suffix '.spam' to the function name, e.g. 'help( chol.spam)'.
+
+Attaching package: ‘spam’
+
+The following objects are masked from ‘package:base’:
+
+    backsolve, forwardsolve
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("get_adjacency")
+> ### * get_adjacency
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get_adjacency
+> ### Title: Construct an Adjacency Matrix
+> ### Aliases: get_adjacency
+> ### Keywords: network sparse P-spline
+> 
+> ### ** Examples
+> 
+> # Set up an SSN object - this part taken 
+> # from the SSN:::SimulateOnSSN help file
+> example_network<- createSSN(
++                      n          = 50,
++                      obsDesign  = binomialDesign(200), 
++                      predDesign = binomialDesign(50),
++                      importToR  = TRUE, 
++                      path = paste(tempdir(),"/example_network",sep = ""),
++                      treeFunction = iterativeTreeLayout
++                      )
+> 
+> # plot the simulated network structure with prediction locations
+> # plot(example_network, bty = "n", xlab = "x-coord", ylab = "y-coord")
+> 
+> ## create distance matrices, including between predicted and observed
+> createDistMat(example_network, "preds", o.write=TRUE, amongpred = TRUE)
+> 
+> ## extract the observed and predicted data frames
+> observed_data            <- getSSNdata.frame(example_network, "Obs")
+> prediction_data          <- getSSNdata.frame(example_network, "preds")
+> 
+> ## associate continuous covariates with the observation locations
+> #  data generated from a normal distribution
+> obs                      <- rnorm(200)
+> observed_data[,"X"]      <- obs
+> observed_data[,"X2"]     <- obs^2
+> 
+> ## associate continuous covariates with the prediction locations
+> #  data generated from a normal distribution
+> pred                     <- rnorm(50) 
+> prediction_data[,"X"]    <- pred
+> prediction_data[,"X2"]   <- pred^2
+> 
+> ## simulate some Gaussian data that follows a 'tail-up' spatial process
+> sims <- SimulateOnSSN(
++                ssn.object      = example_network, 
++                ObsSimDF        = observed_data, 
++                PredSimDF       = prediction_data,  
++                PredID          = "preds",  
++                formula         = ~ 1 + X,
++                coefficients    = c(1, 10),
++                CorModels       = c("Exponential.tailup"), 
++                use.nugget      = TRUE,
++                CorParms        = c(10, 5, 0.1),
++                addfunccol      = "addfunccol")$ssn.object
+> 
+> 
+> ## extract the observed and predicted data frames, now with simulated values
+> sim1DFpred         <- getSSNdata.frame(sims, "preds")
+> sim1preds          <- sim1DFpred[,"Sim_Values"]
+> sim1DFpred[,"Sim_Values"] <- NA
+> sims               <- putSSNdata.frame(sim1DFpred, sims, "preds")
+> 
+> # create the adjacency matrix for use with smnet
+> adjacency    <- get_adjacency(
++                   paste(tempdir(), "/example_network", sep = ""), 
++                   net = 1
++                   )
+> 
+> # not run - plot the adjacency matrix
+> # display(adjacency[[1]])
+> 
+> # sometimes it is useful to see which varaibles are valid network weights 
+> # in the data contained within the SSN object
+> show_weights(sims, adjacency)
+
+The following recognised weights were found: 
+-------------------------------------------- 
+shreve, addfunccol.> 
+> # fit a penalised spatial model to the stream network data
+> # Sim_Values are quadratic in the X covariate.  To highlight 
+> # the fitting of smooth terms, this is treated as non-linear 
+> # and unknown using m().
+> mod_smn       <- smnet(formula = Sim_Values ~ m(X) + m(X2) + 
++ network(adjacency = adjacency, weight = "shreve"), 
++                        data.object = sims, netID = 1)
+Provided weight passes additivity check... 
+Convergence reached in 165 iterations after 0.628 s 
+
+Estimated smoothing parameters (log scale) 
+------------------------------------------ 
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+
+AICC = 6.3   n = 200  R2.adj = 0.98> 
+> # not run - plot different summaries of the model
+> plot(mod_smn, type = "covariates")
+> plot(mod_smn, type = "nodes")
+> plot(mod_smn, type = "segments", weight = 4, shadow = 2)
+> plot(mod_smn, type = "full", weight = 4, shadow = 2)
+> 
+> # obtain predictions at the prediction locations and plot 
+> # against true values
+> preds <- predict(mod_smn, newdata = getSSNdata.frame(sims, "preds"))
+> plot(preds$predictions, sim1preds)
+> 
+> # obtain summary of the fitted model
+> summary(mod_smn)
+
+-----------------------------------------------
+Linear terms:
+-----------------------------------------------
+            Estimate Std. Error t value   Pr(>|t|)
+(Intercept)   2.5298     0.1185  21.349 1.0935e-47
+
+
+-----------------------------------------------
+Smooth terms:
+-----------------------------------------------
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get_adjacency", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("m")
+> ### * m
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: m
+> ### Title: Specify Smooth Terms in Formulae
+> ### Aliases: m
+> 
+> ### ** Examples
+> 
+> 
+> # Set up an SSN object - this part taken 
+> # from the SSN:::SimulateOnSSN help file
+> example_network<- createSSN(
++                      n          = 50,
++                      obsDesign  = binomialDesign(200), 
++                      predDesign = binomialDesign(50),
++                      importToR  = TRUE, 
++                      path = paste(tempdir(),"/example_network",sep = ""),
++                      treeFunction = iterativeTreeLayout
++                      )
+> 
+> # plot the simulated network structure with prediction locations
+> # plot(example_network, bty = "n", xlab = "x-coord", ylab = "y-coord")
+> 
+> ## create distance matrices, including between predicted and observed
+> createDistMat(example_network, "preds", o.write=TRUE, amongpred = TRUE)
+> 
+> ## extract the observed and predicted data frames
+> observed_data            <- getSSNdata.frame(example_network, "Obs")
+> prediction_data          <- getSSNdata.frame(example_network, "preds")
+> 
+> ## associate continuous covariates with the observation locations
+> #  data generated from a normal distribution
+> obs                      <- rnorm(200)
+> observed_data[,"X"]      <- obs
+> observed_data[,"X2"]     <- obs^2
+> 
+> ## associate continuous covariates with the prediction locations
+> #  data generated from a normal distribution
+> pred                     <- rnorm(50) 
+> prediction_data[,"X"]    <- pred
+> prediction_data[,"X2"]   <- pred^2
+> 
+> ## simulate some Gaussian data that follows a 'tail-up' spatial process
+> sims <- SimulateOnSSN(
++                ssn.object      = example_network, 
++                ObsSimDF        = observed_data, 
++                PredSimDF       = prediction_data,  
++                PredID          = "preds",  
++                formula         = ~ 1 + X,
++                coefficients    = c(1, 10),
++                CorModels       = c("Exponential.tailup"), 
++                use.nugget      = TRUE,
++                CorParms        = c(10, 5, 0.1),
++                addfunccol      = "addfunccol")$ssn.object
+> 
+> 
+> ## extract the observed and predicted data frames, now with simulated values
+> sim1DFpred         <- getSSNdata.frame(sims, "preds")
+> sim1preds          <- sim1DFpred[,"Sim_Values"]
+> sim1DFpred[,"Sim_Values"] <- NA
+> sims               <- putSSNdata.frame(sim1DFpred, sims, "preds")
+> 
+> # create the adjacency matrix for use with smnet
+> adjacency    <- get_adjacency(
++                   paste(tempdir(), "/example_network", sep = ""), 
++                   net = 1
++                   )
+> 
+> # not run - plot the adjacency matrix
+> # display(adjacency[[1]])
+> 
+> # sometimes it is useful to see which varaibles are valid network weights 
+> # in the data contained within the SSN object
+> show_weights(sims, adjacency)
+
+The following recognised weights were found: 
+-------------------------------------------- 
+shreve, addfunccol.> 
+> # fit a penalised spatial model to the stream network data
+> # Sim_Values are quadratic in the X covariate.  To highlight 
+> # the fitting of smooth terms, this is treated as non-linear 
+> # and unknown using m().
+> mod_smn       <- smnet(formula = Sim_Values ~ m(X) + m(X2) + 
++ network(adjacency = adjacency, weight = "shreve"), 
++                        data.object = sims, netID = 1)
+Provided weight passes additivity check... 
+Convergence reached in 165 iterations after 0.612 s 
+
+Estimated smoothing parameters (log scale) 
+------------------------------------------ 
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+
+AICC = 6.3   n = 200  R2.adj = 0.98> 
+> # not run - plot different summaries of the model
+> plot(mod_smn, type = "covariates")
+> plot(mod_smn, type = "nodes")
+> plot(mod_smn, type = "segments", weight = 4, shadow = 2)
+> plot(mod_smn, type = "full", weight = 4, shadow = 2)
+> 
+> # obtain predictions at the prediction locations and plot 
+> # against true values
+> preds <- predict(mod_smn, newdata = getSSNdata.frame(sims, "preds"))
+> plot(preds$predictions, sim1preds)
+> 
+> # obtain summary of the fitted model
+> summary(mod_smn)     
+
+-----------------------------------------------
+Linear terms:
+-----------------------------------------------
+            Estimate Std. Error t value   Pr(>|t|)
+(Intercept)   2.5298     0.1185  21.349 1.0935e-47
+
+
+-----------------------------------------------
+Smooth terms:
+-----------------------------------------------
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("m", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("network")
+> ### * network
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: network
+> ### Title: Specify Network Smoother in Formulae
+> ### Aliases: network
+> 
+> ### ** Examples
+> 
+> 
+> # Set up an SSN object - this part taken 
+> # from the SSN:::SimulateOnSSN help file
+> example_network<- createSSN(
++                      n          = 50,
++                      obsDesign  = binomialDesign(200), 
++                      predDesign = binomialDesign(50),
++                      importToR  = TRUE, 
++                      path = paste(tempdir(),"/example_network",sep = ""),
++                      treeFunction = iterativeTreeLayout
++                      )
+> 
+> # plot the simulated network structure with prediction locations
+> # plot(example_network, bty = "n", xlab = "x-coord", ylab = "y-coord")
+> 
+> ## create distance matrices, including between predicted and observed
+> createDistMat(example_network, "preds", o.write=TRUE, amongpred = TRUE)
+> 
+> ## extract the observed and predicted data frames
+> observed_data            <- getSSNdata.frame(example_network, "Obs")
+> prediction_data          <- getSSNdata.frame(example_network, "preds")
+> 
+> ## associate continuous covariates with the observation locations
+> #  data generated from a normal distribution
+> obs                      <- rnorm(200)
+> observed_data[,"X"]      <- obs
+> observed_data[,"X2"]     <- obs^2
+> 
+> ## associate continuous covariates with the prediction locations
+> #  data generated from a normal distribution
+> pred                     <- rnorm(50) 
+> prediction_data[,"X"]    <- pred
+> prediction_data[,"X2"]   <- pred^2
+> 
+> ## simulate some Gaussian data that follows a 'tail-up' spatial process
+> sims <- SimulateOnSSN(
++                ssn.object      = example_network, 
++                ObsSimDF        = observed_data, 
++                PredSimDF       = prediction_data,  
++                PredID          = "preds",  
++                formula         = ~ 1 + X,
++                coefficients    = c(1, 10),
++                CorModels       = c("Exponential.tailup"), 
++                use.nugget      = TRUE,
++                CorParms        = c(10, 5, 0.1),
++                addfunccol      = "addfunccol")$ssn.object
+> 
+> 
+> ## extract the observed and predicted data frames, now with simulated values
+> sim1DFpred         <- getSSNdata.frame(sims, "preds")
+> sim1preds          <- sim1DFpred[,"Sim_Values"]
+> sim1DFpred[,"Sim_Values"] <- NA
+> sims               <- putSSNdata.frame(sim1DFpred, sims, "preds")
+> 
+> # create the adjacency matrix for use with smnet
+> adjacency    <- get_adjacency(
++                   paste(tempdir(), "/example_network", sep = ""), 
++                   net = 1
++                   )
+> 
+> # not run - plot the adjacency matrix
+> # display(adjacency[[1]])
+> 
+> # sometimes it is useful to see which varaibles are valid network weights 
+> # in the data contained within the SSN object
+> show_weights(sims, adjacency)
+
+The following recognised weights were found: 
+-------------------------------------------- 
+shreve, addfunccol.> 
+> # fit a penalised spatial model to the stream network data
+> # Sim_Values are quadratic in the X covariate.  To highlight 
+> # the fitting of smooth terms, this is treated as non-linear 
+> # and unknown using m().
+> mod_smn       <- smnet(formula = Sim_Values ~ m(X) + m(X2) + 
++ network(adjacency = adjacency, weight = "shreve"), 
++                        data.object = sims, netID = 1)
+Provided weight passes additivity check... 
+Convergence reached in 165 iterations after 0.642 s 
+
+Estimated smoothing parameters (log scale) 
+------------------------------------------ 
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+
+AICC = 6.3   n = 200  R2.adj = 0.98> 
+> # not run - plot different summaries of the model
+> plot(mod_smn, type = "covariates")
+> plot(mod_smn, type = "nodes")
+> plot(mod_smn, type = "segments", weight = 4, shadow = 2)
+> plot(mod_smn, type = "full", weight = 4, shadow = 2)
+> 
+> # obtain predictions at the prediction locations and plot 
+> # against true values
+> preds <- predict(mod_smn, newdata = getSSNdata.frame(sims, "preds"))
+> plot(preds$predictions, sim1preds)
+> 
+> # obtain summary of the fitted model
+> summary(mod_smn)
+
+-----------------------------------------------
+Linear terms:
+-----------------------------------------------
+            Estimate Std. Error t value   Pr(>|t|)
+(Intercept)   2.5298     0.1185  21.349 1.0935e-47
+
+
+-----------------------------------------------
+Smooth terms:
+-----------------------------------------------
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("network", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.smnet")
+> ### * plot.smnet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.smnet
+> ### Title: Plot a Stream Network Model
+> ### Aliases: plot.smnet
+> 
+> ### ** Examples
+> 
+> 
+> # Set up an SSN object - this part taken 
+> # from the SSN:::SimulateOnSSN help file
+> example_network<- createSSN(
++                      n          = 50,
++                      obsDesign  = binomialDesign(200), 
++                      predDesign = binomialDesign(50),
++                      importToR  = TRUE, 
++                      path = paste(tempdir(),"/example_network",sep = ""),
++                      treeFunction = iterativeTreeLayout
++                      )
+> 
+> # plot the simulated network structure with prediction locations
+> # plot(example_network, bty = "n", xlab = "x-coord", ylab = "y-coord")
+> 
+> ## create distance matrices, including between predicted and observed
+> createDistMat(example_network, "preds", o.write=TRUE, amongpred = TRUE)
+> 
+> ## extract the observed and predicted data frames
+> observed_data            <- getSSNdata.frame(example_network, "Obs")
+> prediction_data          <- getSSNdata.frame(example_network, "preds")
+> 
+> ## associate continuous covariates with the observation locations
+> #  data generated from a normal distribution
+> obs                      <- rnorm(200)
+> observed_data[,"X"]      <- obs
+> observed_data[,"X2"]     <- obs^2
+> 
+> ## associate continuous covariates with the prediction locations
+> #  data generated from a normal distribution
+> pred                     <- rnorm(50) 
+> prediction_data[,"X"]    <- pred
+> prediction_data[,"X2"]   <- pred^2
+> 
+> ## simulate some Gaussian data that follows a 'tail-up' spatial process
+> sims <- SimulateOnSSN(
++                ssn.object      = example_network, 
++                ObsSimDF        = observed_data, 
++                PredSimDF       = prediction_data,  
++                PredID          = "preds",  
++                formula         = ~ 1 + X,
++                coefficients    = c(1, 10),
++                CorModels       = c("Exponential.tailup"), 
++                use.nugget      = TRUE,
++                CorParms        = c(10, 5, 0.1),
++                addfunccol      = "addfunccol")$ssn.object
+> 
+> 
+> ## extract the observed and predicted data frames, now with simulated values
+> sim1DFpred         <- getSSNdata.frame(sims, "preds")
+> sim1preds          <- sim1DFpred[,"Sim_Values"]
+> sim1DFpred[,"Sim_Values"] <- NA
+> sims               <- putSSNdata.frame(sim1DFpred, sims, "preds")
+> 
+> # create the adjacency matrix for use with smnet
+> adjacency    <- get_adjacency(
++                   paste(tempdir(), "/example_network", sep = ""), 
++                   net = 1
++                   )
+> 
+> # not run - plot the adjacency matrix
+> # display(adjacency[[1]])
+> 
+> # sometimes it is useful to see which varaibles are valid network weights 
+> # in the data contained within the SSN object
+> show_weights(sims, adjacency)
+
+The following recognised weights were found: 
+-------------------------------------------- 
+shreve, addfunccol.> 
+> # fit a penalised spatial model to the stream network data
+> # Sim_Values are quadratic in the X covariate.  To highlight 
+> # the fitting of smooth terms, this is treated as non-linear 
+> # and unknown using m().
+> mod_smn       <- smnet(formula = Sim_Values ~ m(X) + m(X2) + 
++ network(adjacency = adjacency, weight = "shreve"), 
++                        data.object = sims, netID = 1)
+Provided weight passes additivity check... 
+Convergence reached in 165 iterations after 0.579 s 
+
+Estimated smoothing parameters (log scale) 
+------------------------------------------ 
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+
+AICC = 6.3   n = 200  R2.adj = 0.98> 
+> # not run - plot different summaries of the model
+> plot(mod_smn, type = "covariates")
+> plot(mod_smn, type = "nodes")
+> plot(mod_smn, type = "segments", weight = 4, shadow = 2)
+> plot(mod_smn, type = "full", weight = 4, shadow = 2)
+> 
+> # obtain predictions at the prediction locations and plot 
+> # against true values
+> preds <- predict(mod_smn, newdata = getSSNdata.frame(sims, "preds"))
+> plot(preds$predictions, sim1preds)
+> 
+> # obtain summary of the fitted model
+> summary(mod_smn)
+
+-----------------------------------------------
+Linear terms:
+-----------------------------------------------
+            Estimate Std. Error t value   Pr(>|t|)
+(Intercept)   2.5298     0.1185  21.349 1.0935e-47
+
+
+-----------------------------------------------
+Smooth terms:
+-----------------------------------------------
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.smnet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("predict.smnet")
+> ### * predict.smnet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: predict.smnet
+> ### Title: Predict From a Stream Network Model.
+> ### Aliases: predict.smnet
+> 
+> ### ** Examples
+> 
+> 
+> # Set up an SSN object - this part taken 
+> # from the SSN:::SimulateOnSSN help file
+> example_network<- createSSN(
++                      n          = 50,
++                      obsDesign  = binomialDesign(200), 
++                      predDesign = binomialDesign(50),
++                      importToR  = TRUE, 
++                      path = paste(tempdir(),"/example_network",sep = ""),
++                      treeFunction = iterativeTreeLayout
++                      )
+> 
+> # plot the simulated network structure with prediction locations
+> # plot(example_network, bty = "n", xlab = "x-coord", ylab = "y-coord")
+> 
+> ## create distance matrices, including between predicted and observed
+> createDistMat(example_network, "preds", o.write=TRUE, amongpred = TRUE)
+> 
+> ## extract the observed and predicted data frames
+> observed_data            <- getSSNdata.frame(example_network, "Obs")
+> prediction_data          <- getSSNdata.frame(example_network, "preds")
+> 
+> ## associate continuous covariates with the observation locations
+> #  data generated from a normal distribution
+> obs                      <- rnorm(200)
+> observed_data[,"X"]      <- obs
+> observed_data[,"X2"]     <- obs^2
+> 
+> ## associate continuous covariates with the prediction locations
+> #  data generated from a normal distribution
+> pred                     <- rnorm(50) 
+> prediction_data[,"X"]    <- pred
+> prediction_data[,"X2"]   <- pred^2
+> 
+> ## simulate some Gaussian data that follows a 'tail-up' spatial process
+> sims <- SimulateOnSSN(
++                ssn.object      = example_network, 
++                ObsSimDF        = observed_data, 
++                PredSimDF       = prediction_data,  
++                PredID          = "preds",  
++                formula         = ~ 1 + X,
++                coefficients    = c(1, 10),
++                CorModels       = c("Exponential.tailup"), 
++                use.nugget      = TRUE,
++                CorParms        = c(10, 5, 0.1),
++                addfunccol      = "addfunccol")$ssn.object
+> 
+> 
+> ## extract the observed and predicted data frames, now with simulated values
+> sim1DFpred         <- getSSNdata.frame(sims, "preds")
+> sim1preds          <- sim1DFpred[,"Sim_Values"]
+> sim1DFpred[,"Sim_Values"] <- NA
+> sims               <- putSSNdata.frame(sim1DFpred, sims, "preds")
+> 
+> # create the adjacency matrix for use with smnet
+> adjacency    <- get_adjacency(
++                   paste(tempdir(), "/example_network", sep = ""), 
++                   net = 1
++                   )
+> 
+> # not run - plot the adjacency matrix
+> # display(adjacency[[1]])
+> 
+> # sometimes it is useful to see which varaibles are valid network weights 
+> # in the data contained within the SSN object
+> show_weights(sims, adjacency)
+
+The following recognised weights were found: 
+-------------------------------------------- 
+shreve, addfunccol.> 
+> # fit a penalised spatial model to the stream network data
+> # Sim_Values are quadratic in the X covariate.  To highlight 
+> # the fitting of smooth terms, this is treated as non-linear 
+> # and unknown using m().
+> mod_smn       <- smnet(formula = Sim_Values ~ m(X) + m(X2) + 
++ network(adjacency = adjacency, weight = "shreve"), 
++                        data.object = sims, netID = 1)
+Provided weight passes additivity check... 
+Convergence reached in 165 iterations after 0.638 s 
+
+Estimated smoothing parameters (log scale) 
+------------------------------------------ 
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+
+AICC = 6.3   n = 200  R2.adj = 0.98> 
+> # not run - plot different summaries of the model
+> plot(mod_smn, type = "covariates")
+> plot(mod_smn, type = "nodes")
+> plot(mod_smn, type = "segments", weight = 4, shadow = 2)
+> plot(mod_smn, type = "full", weight = 4, shadow = 2)
+> 
+> # obtain predictions at the prediction locations and plot 
+> # against true values
+> preds <- predict(mod_smn, newdata = getSSNdata.frame(sims, "preds"))
+> plot(preds$predictions, sim1preds)
+> 
+> # obtain summary of the fitted model
+> summary(mod_smn)
+
+-----------------------------------------------
+Linear terms:
+-----------------------------------------------
+            Estimate Std. Error t value   Pr(>|t|)
+(Intercept)   2.5298     0.1185  21.349 1.0935e-47
+
+
+-----------------------------------------------
+Smooth terms:
+-----------------------------------------------
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("predict.smnet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("show_weights")
+> ### * show_weights
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: show_weights
+> ### Title: Search for and Validate Weights in an SSN Object
+> ### Aliases: show_weights
+> 
+> ### ** Examples
+> 
+> 
+> # Set up an SSN object - this part taken 
+> # from the SSN:::SimulateOnSSN help file
+> example_network<- createSSN(
++                      n          = 50,
++                      obsDesign  = binomialDesign(200), 
++                      predDesign = binomialDesign(50),
++                      importToR  = TRUE, 
++                      path = paste(tempdir(),"/example_network",sep = ""),
++                      treeFunction = iterativeTreeLayout
++                      )
+> 
+> # plot the simulated network structure with prediction locations
+> # plot(example_network, bty = "n", xlab = "x-coord", ylab = "y-coord")
+> 
+> ## create distance matrices, including between predicted and observed
+> createDistMat(example_network, "preds", o.write=TRUE, amongpred = TRUE)
+> 
+> ## extract the observed and predicted data frames
+> observed_data            <- getSSNdata.frame(example_network, "Obs")
+> prediction_data          <- getSSNdata.frame(example_network, "preds")
+> 
+> ## associate continuous covariates with the observation locations
+> #  data generated from a normal distribution
+> obs                      <- rnorm(200)
+> observed_data[,"X"]      <- obs
+> observed_data[,"X2"]     <- obs^2
+> 
+> ## associate continuous covariates with the prediction locations
+> #  data generated from a normal distribution
+> pred                     <- rnorm(50) 
+> prediction_data[,"X"]    <- pred
+> prediction_data[,"X2"]   <- pred^2
+> 
+> ## simulate some Gaussian data that follows a 'tail-up' spatial process
+> sims <- SimulateOnSSN(
++                ssn.object      = example_network, 
++                ObsSimDF        = observed_data, 
++                PredSimDF       = prediction_data,  
++                PredID          = "preds",  
++                formula         = ~ 1 + X,
++                coefficients    = c(1, 10),
++                CorModels       = c("Exponential.tailup"), 
++                use.nugget      = TRUE,
++                CorParms        = c(10, 5, 0.1),
++                addfunccol      = "addfunccol")$ssn.object
+> 
+> 
+> ## extract the observed and predicted data frames, now with simulated values
+> sim1DFpred         <- getSSNdata.frame(sims, "preds")
+> sim1preds          <- sim1DFpred[,"Sim_Values"]
+> sim1DFpred[,"Sim_Values"] <- NA
+> sims               <- putSSNdata.frame(sim1DFpred, sims, "preds")
+> 
+> # create the adjacency matrix for use with smnet
+> adjacency    <- get_adjacency(
++                   paste(tempdir(), "/example_network", sep = ""), 
++                   net = 1
++                   )
+> 
+> # not run - plot the adjacency matrix
+> # display(adjacency[[1]])
+> 
+> # sometimes it is useful to see which varaibles are valid network weights 
+> # in the data contained within the SSN object
+> show_weights(sims, adjacency)
+
+The following recognised weights were found: 
+-------------------------------------------- 
+shreve, addfunccol.> 
+> # fit a penalised spatial model to the stream network data
+> # Sim_Values are quadratic in the X covariate.  To highlight 
+> # the fitting of smooth terms, this is treated as non-linear 
+> # and unknown using m().
+> mod_smn       <- smnet(formula = Sim_Values ~ m(X) + m(X2) + 
++ network(adjacency = adjacency, weight = "shreve"), 
++                        data.object = sims, netID = 1)
+Provided weight passes additivity check... 
+Convergence reached in 165 iterations after 0.545 s 
+
+Estimated smoothing parameters (log scale) 
+------------------------------------------ 
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+
+AICC = 6.3   n = 200  R2.adj = 0.98> 
+> # not run - plot different summaries of the model
+> plot(mod_smn, type = "covariates")
+> plot(mod_smn, type = "nodes")
+> plot(mod_smn, type = "segments", weight = 4, shadow = 2)
+> plot(mod_smn, type = "full", weight = 4, shadow = 2)
+> 
+> # obtain predictions at the prediction locations and plot 
+> # against true values
+> preds <- predict(mod_smn, newdata = getSSNdata.frame(sims, "preds"))
+> plot(preds$predictions, sim1preds)
+> 
+> # obtain summary of the fitted model
+> summary(mod_smn)
+
+-----------------------------------------------
+Linear terms:
+-----------------------------------------------
+            Estimate Std. Error t value   Pr(>|t|)
+(Intercept)   2.5298     0.1185  21.349 1.0935e-47
+
+
+-----------------------------------------------
+Smooth terms:
+-----------------------------------------------
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("show_weights", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("smnet")
+> ### * smnet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: smnet
+> ### Title: Additive Modelling for Stream Networks
+> ### Aliases: smnet
+> ### Keywords: network sparse P-spline
+> 
+> ### ** Examples
+> 
+> 
+> # Set up an SSN object - this part taken 
+> # from the SSN:::SimulateOnSSN help file
+> example_network<- createSSN(
++                      n          = 50,
++                      obsDesign  = binomialDesign(200), 
++                      predDesign = binomialDesign(50),
++                      importToR  = TRUE, 
++                      path = paste(tempdir(),"/example_network",sep = ""),
++                      treeFunction = iterativeTreeLayout
++                      )
+> 
+> # plot the simulated network structure with prediction locations
+> # plot(example_network, bty = "n", xlab = "x-coord", ylab = "y-coord")
+> 
+> ## create distance matrices, including between predicted and observed
+> createDistMat(example_network, "preds", o.write=TRUE, amongpred = TRUE)
+> 
+> ## extract the observed and predicted data frames
+> observed_data            <- getSSNdata.frame(example_network, "Obs")
+> prediction_data          <- getSSNdata.frame(example_network, "preds")
+> 
+> ## associate continuous covariates with the observation locations
+> #  data generated from a normal distribution
+> obs                      <- rnorm(200)
+> observed_data[,"X"]      <- obs
+> observed_data[,"X2"]     <- obs^2
+> 
+> ## associate continuous covariates with the prediction locations
+> #  data generated from a normal distribution
+> pred                     <- rnorm(50) 
+> prediction_data[,"X"]    <- pred
+> prediction_data[,"X2"]   <- pred^2
+> 
+> ## simulate some Gaussian data that follows a 'tail-up' spatial process
+> sims <- SimulateOnSSN(
++                ssn.object      = example_network, 
++                ObsSimDF        = observed_data, 
++                PredSimDF       = prediction_data,  
++                PredID          = "preds",  
++                formula         = ~ 1 + X,
++                coefficients    = c(1, 10),
++                CorModels       = c("Exponential.tailup"), 
++                use.nugget      = TRUE,
++                CorParms        = c(10, 5, 0.1),
++                addfunccol      = "addfunccol")$ssn.object
+> 
+> 
+> ## extract the observed and predicted data frames, now with simulated values
+> sim1DFpred         <- getSSNdata.frame(sims, "preds")
+> sim1preds          <- sim1DFpred[,"Sim_Values"]
+> sim1DFpred[,"Sim_Values"] <- NA
+> sims               <- putSSNdata.frame(sim1DFpred, sims, "preds")
+> 
+> # create the adjacency matrix for use with smnet
+> adjacency    <- get_adjacency(
++                   paste(tempdir(), "/example_network", sep = ""), 
++                   net = 1
++                   )
+> 
+> # not run - plot the adjacency matrix
+> # display(adjacency[[1]])
+> 
+> # sometimes it is useful to see which varaibles are valid network weights 
+> # in the data contained within the SSN object
+> show_weights(sims, adjacency)
+
+The following recognised weights were found: 
+-------------------------------------------- 
+shreve, addfunccol.> 
+> # fit a penalised spatial model to the stream network data
+> # Sim_Values are quadratic in the X covariate.  To highlight 
+> # the fitting of smooth terms, this is treated as non-linear 
+> # and unknown using m().
+> mod_smn       <- smnet(formula = Sim_Values ~ m(X) + m(X2) + 
++ network(adjacency = adjacency, weight = "shreve"), 
++                        data.object = sims, netID = 1)
+Provided weight passes additivity check... 
+Convergence reached in 165 iterations after 0.71 s 
+
+Estimated smoothing parameters (log scale) 
+------------------------------------------ 
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+
+AICC = 6.3   n = 200  R2.adj = 0.98> 
+> # not run - plot different summaries of the model
+> plot(mod_smn, type = "covariates")
+> plot(mod_smn, type = "nodes")
+> plot(mod_smn, type = "segments", weight = 4, shadow = 2)
+> plot(mod_smn, type = "full", weight = 4, shadow = 2)
+> 
+> # obtain predictions at the prediction locations and plot 
+> # against true values
+> preds <- predict(mod_smn, newdata = getSSNdata.frame(sims, "preds"))
+> plot(preds$predictions, sim1preds)
+> 
+> # obtain summary of the fitted model
+> summary(mod_smn)
+
+-----------------------------------------------
+Linear terms:
+-----------------------------------------------
+            Estimate Std. Error t value   Pr(>|t|)
+(Intercept)   2.5298     0.1185  21.349 1.0935e-47
+
+
+-----------------------------------------------
+Smooth terms:
+-----------------------------------------------
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("smnet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.smnet")
+> ### * summary.smnet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.smnet
+> ### Title: Summarise Stream Network Model
+> ### Aliases: summary.smnet
+> 
+> ### ** Examples
+> 
+> 
+> # Set up an SSN object - this part taken 
+> # from the SSN:::SimulateOnSSN help file
+> example_network<- createSSN(
++                      n          = 50,
++                      obsDesign  = binomialDesign(200), 
++                      predDesign = binomialDesign(50),
++                      importToR  = TRUE, 
++                      path = paste(tempdir(),"/example_network",sep = ""),
++                      treeFunction = iterativeTreeLayout
++                      )
+> 
+> # plot the simulated network structure with prediction locations
+> # plot(example_network, bty = "n", xlab = "x-coord", ylab = "y-coord")
+> 
+> ## create distance matrices, including between predicted and observed
+> createDistMat(example_network, "preds", o.write=TRUE, amongpred = TRUE)
+> 
+> ## extract the observed and predicted data frames
+> observed_data            <- getSSNdata.frame(example_network, "Obs")
+> prediction_data          <- getSSNdata.frame(example_network, "preds")
+> 
+> ## associate continuous covariates with the observation locations
+> #  data generated from a normal distribution
+> obs                      <- rnorm(200)
+> observed_data[,"X"]      <- obs
+> observed_data[,"X2"]     <- obs^2
+> 
+> ## associate continuous covariates with the prediction locations
+> #  data generated from a normal distribution
+> pred                     <- rnorm(50) 
+> prediction_data[,"X"]    <- pred
+> prediction_data[,"X2"]   <- pred^2
+> 
+> ## simulate some Gaussian data that follows a 'tail-up' spatial process
+> sims <- SimulateOnSSN(
++                ssn.object      = example_network, 
++                ObsSimDF        = observed_data, 
++                PredSimDF       = prediction_data,  
++                PredID          = "preds",  
++                formula         = ~ 1 + X,
++                coefficients    = c(1, 10),
++                CorModels       = c("Exponential.tailup"), 
++                use.nugget      = TRUE,
++                CorParms        = c(10, 5, 0.1),
++                addfunccol      = "addfunccol")$ssn.object
+> 
+> 
+> ## extract the observed and predicted data frames, now with simulated values
+> sim1DFpred         <- getSSNdata.frame(sims, "preds")
+> sim1preds          <- sim1DFpred[,"Sim_Values"]
+> sim1DFpred[,"Sim_Values"] <- NA
+> sims               <- putSSNdata.frame(sim1DFpred, sims, "preds")
+> 
+> # create the adjacency matrix for use with smnet
+> adjacency    <- get_adjacency(
++                   paste(tempdir(), "/example_network", sep = ""), 
++                   net = 1
++                   )
+> 
+> # not run - plot the adjacency matrix
+> # display(adjacency[[1]])
+> 
+> # sometimes it is useful to see which varaibles are valid network weights 
+> # in the data contained within the SSN object
+> show_weights(sims, adjacency)
+
+The following recognised weights were found: 
+-------------------------------------------- 
+shreve, addfunccol.> 
+> # fit a penalised spatial model to the stream network data
+> # Sim_Values are quadratic in the X covariate.  To highlight 
+> # the fitting of smooth terms, this is treated as non-linear 
+> # and unknown using m().
+> mod_smn       <- smnet(formula = Sim_Values ~ m(X) + m(X2) + 
++ network(adjacency = adjacency, weight = "shreve"), 
++                        data.object = sims, netID = 1)
+Provided weight passes additivity check... 
+Convergence reached in 165 iterations after 0.539 s 
+
+Estimated smoothing parameters (log scale) 
+------------------------------------------ 
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+
+AICC = 6.3   n = 200  R2.adj = 0.98> 
+> # not run - plot different summaries of the model
+> plot(mod_smn, type = "covariates")
+> plot(mod_smn, type = "nodes")
+> plot(mod_smn, type = "segments", weight = 4, shadow = 2)
+> plot(mod_smn, type = "full", weight = 4, shadow = 2)
+> 
+> # obtain predictions at the prediction locations and plot 
+> # against true values
+> preds <- predict(mod_smn, newdata = getSSNdata.frame(sims, "preds"))
+> plot(preds$predictions, sim1preds)
+> 
+> # obtain summary of the fitted model
+> summary(mod_smn)
+
+-----------------------------------------------
+Linear terms:
+-----------------------------------------------
+            Estimate Std. Error t value   Pr(>|t|)
+(Intercept)   2.5298     0.1185  21.349 1.0935e-47
+
+
+-----------------------------------------------
+Smooth terms:
+-----------------------------------------------
+        par_1 par_2    df
+m(X)    16.24   ---     1
+m(X2)   19.46   ---     1
+Network  0.34 -32.8 38.03
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.smnet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  19.652 0.401 20.329 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

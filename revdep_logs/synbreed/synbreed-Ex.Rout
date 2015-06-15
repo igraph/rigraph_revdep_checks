@@ -1,0 +1,1693 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "synbreed"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "synbreed-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('synbreed')
+Loading required package: doBy
+Loading required package: survival
+Loading required package: BLR
+Loading required package: SuppDists
+Loading required package: regress
+Loading required package: abind
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("Extract.GenMap")
+> ### * Extract.GenMap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: [.GenMap
+> ### Title: Extract or replace part of map data.frame
+> ### Aliases: [.GenMap
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(maize)
+> ##D head(maize$map)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Extract.GenMap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Extract.relationshipMatrix")
+> ### * Extract.relationshipMatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: [.relationshipMatrix
+> ### Title: Extract or replace part of relationship matrix
+> ### Aliases: [.relationshipMatrix
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(maize)
+> ##D U <- kin(codeGeno(maize),ret="realized")
+> ##D U[1:3,1:3]
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Extract.relationshipMatrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("LD")
+> ### * LD
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pairwiseLD
+> ### Title: Pairwise LD between markers
+> ### Aliases: pairwiseLD
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D maizeC <- codeGeno(maize)
+> ##D maizeLD <- pairwiseLD(maizeC,chr=1,type="data.frame")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("LD", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("LDDist")
+> ### * LDDist
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: LDDist
+> ### Title: LD versus distance Plot
+> ### Aliases: LDDist
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D # maize data example
+> ##D data(maize)
+> ##D maizeC <- codeGeno(maize)
+> ##D 
+> ##D # LD for chr 1
+> ##D maizeLD <- pairwiseLD(maizeC,chr=1,type="data.frame")
+> ##D # scatterplot
+> ##D LDDist(maizeLD,type="p",pch=19,colD=hsv(alpha=0.1,v=0))
+> ##D 
+> ##D # stacked bars  with default categories
+> ##D LDDist(maizeLD,type="bars")
+> ##D 
+> ##D # stacked bars  with user-defined categories
+> ##D LDDist(maizeLD,type="bars",breaks=list(dist=c(0,10,20,40,60,180),
+> ##D r2=c(1,0.6,0.4,0.3,0.1,0)))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("LDDist", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("LDMap")
+> ### * LDMap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: LDMap
+> ### Title: LD Heatmap
+> ### Aliases: LDMap
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D maizeC <- codeGeno(maize)
+> ##D 
+> ##D # LD for chr 1
+> ##D maizeLD <- pairwiseLD(maizeC,chr=1,type="matrix")
+> ##D LDMap(maizeLD,maizeC)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("LDMap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("MME")
+> ### * MME
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MME
+> ### Title: Mixed Model Equations
+> ### Aliases: MME
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D 
+> ##D # realized kinship matrix
+> ##D maizeC <- codeGeno(maize)
+> ##D U <- kin(maizeC,ret="realized")/2
+> ##D 
+> ##D # solution with gpMod
+> ##D m <- gpMod(maizeC,kin=U,model="BLUP")
+> ##D 
+> ##D # solution with MME
+> ##D diag(U) <- diag(U) + 0.000001  # to avoid singularities
+> ##D # determine shrinkage parameter
+> ##D lambda <- m$fit$sigma[2]/ m$fit$sigma[1]
+> ##D # multiply G with shrinkage parameter
+> ##D GI <- solve(U)*lambda
+> ##D y <- maizeC$pheno[,1,]
+> ##D n <- length(y)
+> ##D X <- matrix(1,ncol=1,nrow=n)
+> ##D mme <- MME(y=y,Z=diag(n),GI=GI,X=X,RI=diag(n))
+> ##D 
+> ##D # comparison
+> ##D head(m$fit$predicted[,1]-m$fit$beta)
+> ##D head(mme$u)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("MME", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("add.individuals")
+> ### * add.individuals
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: add.individuals
+> ### Title: Add new individuals to objects of class gpData
+> ### Aliases: add.individuals
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> # add one new DH line to maize data
+> library(synbreedData)
+> data(maize)
+> newDHpheno <- data.frame(Trait=1000,row.names="newDH")
+> # simulating genotypic data
+> newDHgeno <- matrix(sample(c(0,1),ncol(maize$geno),replace=TRUE),nrow=1)
+> rownames(newDHgeno) <- "newDH"
+> # new pedigree
+> newDHpedigree <- data.frame(ID="newDH",Par1=0,Par2=0,gener=0)
+> # new covar information
+> newDHcovar <- data.frame(family=NA,DH=1,tbv=1000,row.names="newDH")
+> 
+> # add individual
+> maize2 <- add.individuals(maize,newDHpheno,newDHgeno,newDHpedigree,newDHcovar)
+Warning in add.individuals(maize, newDHpheno, newDHgeno, newDHpedigree,  :
+  Not all traits and covariates are available in the new data!
+> summary(maize2)
+object of class 'gpData' 
+covar 
+	 No. of individuals 1611 
+	         phenotyped 1251 
+	          genotyped 1251 
+pheno 
+	 No. of traits:		   1 
+
+    IDTrait     
+ Min.   :120.7  
+ 1st Qu.:142.8  
+ Median :148.9  
+ Mean   :148.9  
+ 3rd Qu.:154.9  
+ Max.   :181.8  
+ NA's   :1      
+
+geno 
+	 No. of markers 1117 
+	 genotypes 0 1 
+	 frequencies 0.3401376 0.6598624 
+	 NA's 0.000 %
+map 
+	 No. of mapped markers  1117 
+	 No. of chromosomes     10 
+
+	 markers per chromosome 
+	
+  1   2   3   4   5   6   7   8   9  10 
+ 76  96  99 122  85 106 154 130 121 128 
+
+pedigree 
+Number of 
+	 individuals  1611 
+	 Par 1        219 
+	 Par 2        221 
+	 generations  15 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("add.individuals", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:synbreedData’
+
+> nameEx("add.markers")
+> ### * add.markers
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: add.markers
+> ### Title: Add new markers to an object of class gpData
+> ### Aliases: add.markers
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> # creating gpData object
+> # phenotypic data
+> pheno <- data.frame(Yield = rnorm(10,100,5), Height = rnorm(10,10,1))
+> rownames(pheno) <- 1:10
+> # genotypic data
+> geno <- matrix(sample(c(1,0,2,NA),size=120,replace=TRUE,
++ prob=c(0.6,0.2,0.1,0.1)),nrow=10)
+> rownames(geno) <-  1:10
+> # genetic map
+> map <- data.frame(chr=rep(1:3,each=4),pos=rep(1:12))
+> colnames(geno) <- rownames(map) <-  paste("M",1:12,sep="")
+> # as gpData object
+> gp <- create.gpData(pheno,geno,map)
+> 
+> 
+> # new data
+> geno2 <- matrix(c(0,0,1,1,1,2,2,1,1,2,1,2,0,2,1,1,1,2,2,2),ncol=2)
+> rownames(geno2) <- 1:10
+> map2 <- data.frame(pos=c(0.3,5),chr=c(1,2))
+> rownames(map2) <- colnames(geno2) <- c("M13","M14")
+> 
+> # adding new markers
+> gp2 <- add.markers(gp,geno2,map2)
+> summary(gp2)
+object of class 'gpData' 
+covar 
+	 No. of individuals 10 
+	         phenotyped 10 
+	          genotyped 10 
+pheno 
+	 No. of traits:		   2 
+
+     Yield            Height      
+ Min.   : 95.82   Min.   : 7.785  
+ 1st Qu.: 97.27   1st Qu.: 9.962  
+ Median :101.28   Median :10.492  
+ Mean   :100.66   Mean   :10.249  
+ 3rd Qu.:102.77   3rd Qu.:10.913  
+ Max.   :107.98   Max.   :11.512  
+
+geno 
+	 No. of markers 14 
+	 genotypes 0 1 2 
+	 frequencies 0.2214286 0.6 0.1214286 
+	 NA's 5.714 %
+map 
+	 No. of mapped markers  14 
+	 No. of chromosomes     3 
+
+	 markers per chromosome 
+	
+1 2 3 
+5 5 4 
+
+pedigree 
+NULL
+> summary(gp)
+object of class 'gpData' 
+covar 
+	 No. of individuals 10 
+	         phenotyped 10 
+	          genotyped 10 
+pheno 
+	 No. of traits:		   2 
+
+     Yield            Height      
+ Min.   : 95.82   Min.   : 7.785  
+ 1st Qu.: 97.27   1st Qu.: 9.962  
+ Median :101.28   Median :10.492  
+ Mean   :100.66   Mean   :10.249  
+ 3rd Qu.:102.77   3rd Qu.:10.913  
+ Max.   :107.98   Max.   :11.512  
+
+geno 
+	 No. of markers 12 
+	 genotypes 0 1 2 
+	 frequencies 0.2333333 0.625 0.075 
+	 NA's 6.667 %
+map 
+	 No. of mapped markers  12 
+	 No. of chromosomes     3 
+
+	 markers per chromosome 
+	
+1 2 3 
+4 4 4 
+
+pedigree 
+NULL
+>                                                                                        
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("add.markers", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("codeGeno")
+> ### * codeGeno
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: codeGeno
+> ### Title: Recode genotypic data, imputation of missing values and
+> ###   preselection of markers
+> ### Aliases: codeGeno
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> # create marker data for 9 SNPs and 10 homozygous individuals
+> snp9 <- matrix(c(
++   "AA",   "AA",   "AA",   "BB",   "AA",   "AA",   "AA",   "AA",  NA,
++   "AA",   "AA",   "BB",   "BB",   "AA",   "AA",   "BB",   "AA",  NA,
++   "AA",   "AA",   "AB",   "BB",   "AB",   "AA",   "AA",   "BB",  NA,
++   "AA",   "AA",   "BB",   "BB",   "AA",   "AA",   "AA",   "AA",  NA,
++   "AA",   "AA",   "BB",   "AB",   "AA",   "BB",   "BB",   "BB",  "AB",
++   "AA",   "AA",   "BB",   "BB",   "AA",   NA,     "BB",   "AA",  NA,
++   "AB",   "AA",   "BB",   "BB",   "BB",   "AA",   "BB",   "BB",  NA,
++   "AA",   "AA",    NA,    "BB",    NA,    "AA",   "AA",   "AA",  "AA",
++   "AA",    NA,     NA,    "BB",   "BB",   "BB",   "BB",   "BB",  "AA",
++   "AA",    NA,    "AA",   "BB",   "BB",   "BB",   "AA",   "AA",  NA),
++   ncol=9,byrow=TRUE)
+> 
+> # set names for markers and individuals
+> colnames(snp9) <- paste("SNP",1:9,sep="")
+> rownames(snp9) <- paste("ID",1:10+100,sep="")
+> 
+> # create object of class 'gpData'
+> gp <- create.gpData(geno=snp9)
+> 
+> # code genotypic data
+> gp.coded <- codeGeno(gp,impute=TRUE,impute.type="random")
+
+     Summary of imputation 
+    total number of missing values                : 13 
+    number of random imputations                  : 13 
+> 
+> # comparison
+> gp.coded$geno
+      SNP1 SNP2 SNP3 SNP4 SNP5 SNP6 SNP7 SNP8 SNP9
+ID101    0    0    2    0    0    0    0    0    0
+ID102    0    0    0    0    0    0    2    0    0
+ID103    0    0    1    0    1    0    0    2    0
+ID104    0    0    0    0    0    0    0    0    0
+ID105    0    0    0    1    0    2    2    2    1
+ID106    0    0    0    0    0    2    2    0    0
+ID107    1    0    0    0    2    0    2    2    0
+ID108    0    0    1    0    1    0    0    0    0
+ID109    0    0    1    0    2    2    2    2    0
+ID110    0    0    2    0    2    2    0    0    0
+> gp$geno
+      SNP1 SNP2 SNP3 SNP4 SNP5 SNP6 SNP7 SNP8 SNP9
+ID101 "AA" "AA" "AA" "BB" "AA" "AA" "AA" "AA" NA  
+ID102 "AA" "AA" "BB" "BB" "AA" "AA" "BB" "AA" NA  
+ID103 "AA" "AA" "AB" "BB" "AB" "AA" "AA" "BB" NA  
+ID104 "AA" "AA" "BB" "BB" "AA" "AA" "AA" "AA" NA  
+ID105 "AA" "AA" "BB" "AB" "AA" "BB" "BB" "BB" "AB"
+ID106 "AA" "AA" "BB" "BB" "AA" NA   "BB" "AA" NA  
+ID107 "AB" "AA" "BB" "BB" "BB" "AA" "BB" "BB" NA  
+ID108 "AA" "AA" NA   "BB" NA   "AA" "AA" "AA" "AA"
+ID109 "AA" NA   NA   "BB" "BB" "BB" "BB" "BB" "AA"
+ID110 "AA" NA   "AA" "BB" "BB" "BB" "AA" "AA" NA  
+> 
+> # example with heterogeneous stock mice
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(mice)
+> ##D summary(mice)
+> ##D # heterozygous values must be labeled  (may run some seconds)
+> ##D mice.coded <- codeGeno(mice,label.heter=function(x) substr(x,1,1)!=substr(x,3,3))
+> ##D 
+> ##D 
+> ##D # example with maize data and imputing by family
+> ##D data(maize)
+> ##D # first only recode alleles
+> ##D maize.coded <- codeGeno(maize,label.heter=NULL)
+> ##D 
+> ##D # set 200 random chosen values to NA
+> ##D set.seed(123)
+> ##D ind1 <- sample(1:nrow(maize.coded $geno),200)
+> ##D ind2 <- sample(1:ncol(maize.coded $geno),200)
+> ##D original <- maize.coded$geno[cbind(ind1,ind2)]
+> ##D 
+> ##D maize.coded$geno[cbind(ind1,ind2)] <- NA
+> ##D # imputing of missing values by family structure
+> ##D maize.imputed <- codeGeno( maize.coded,impute=TRUE,impute.type="family",label.heter=NULL)
+> ##D 
+> ##D 
+> ##D # compare in a cross table
+> ##D imputed <- maize.imputed$geno[cbind(ind1,ind2)]
+> ##D (t1 <- table(original,imputed) )
+> ##D # sum of correct replacements
+> ##D sum(diag(t1))/sum(t1)
+> ##D 
+> ##D # compare with random imputation
+> ##D maize.random <- codeGeno(maize.coded,impute=TRUE,impute.type="random",label.heter=NULL)
+> ##D imputed2 <- maize.random$geno[cbind(ind1,ind2)]
+> ##D (t2 <- table(original,imputed2) )
+> ##D # sum of correct replacements
+> ##D sum(diag(t2))/sum(t2)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("codeGeno", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("create.gpData")
+> ### * create.gpData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: create.gpData
+> ### Title: Create genomic prediction data object
+> ### Aliases: create.gpData
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> set.seed(123)
+> # 9 plants with 2 traits
+> n <- 9  # only for n > 6
+> pheno <- data.frame(Yield = rnorm(n,200,5), Height=rnorm(n,100,1))
+> rownames(pheno) <- letters[1:n]
+> 
+> # marker matrix
+> geno <- matrix(sample(c("AA","AB","BB",NA),size=n*12,replace=TRUE,
++ prob=c(0.6,0.2,0.1,0.1)),nrow=n)
+> rownames(geno) <-  letters[n:1]
+> colnames(geno) <- paste("M",1:12,sep="")
+> 
+> # genetic map
+> # one SNP is not mapped (M5) and will therefore be removed
+> map <- data.frame(chr=rep(1:3,each=4),pos=rep(1:12))
+> map  <- map[-5,]
+> rownames(map) <- paste("M",c(1:4,6:12),sep="") 
+> 
+> # simulate pedigree
+> ped <- simul.pedigree(3,c(3,3,n-6))
+> 
+> # combine in one object
+> gp <- create.gpData(pheno,geno,map,ped)
+Warning in create.gpData(pheno, geno, map, ped) :
+  not all markers in 'geno' mapped in 'map'. gaps filled with 'NA' 
+
+> summary(gp)
+object of class 'gpData' 
+covar 
+	 No. of individuals 9 
+	         phenotyped 0 
+	          genotyped 0 
+pheno 
+	 No. of traits:		   2 
+
+     Yield           Height      
+ Min.   :193.7   Min.   : 98.03  
+ 1st Qu.:197.2   1st Qu.: 99.55  
+ Median :200.4   Median :100.36  
+ Mean   :200.7   Mean   :100.16  
+ 3rd Qu.:202.3   3rd Qu.:100.50  
+ Max.   :208.6   Max.   :101.79  
+
+geno 
+	 No. of markers 12 
+	 genotypes AA AB BB 
+	 frequencies 0.6203704 0.212963 0.09259259 
+	 NA's 7.407 %
+map 
+	 No. of mapped markers  11 
+	 No. of chromosomes     3 
+
+	 markers per chromosome 
+	
+1 2 3 
+4 3 4 
+
+pedigree 
+Number of 
+	 individuals  9 
+	 males :  NA , females :  NA 
+	 Par 1 (sire)  4 
+	 Par 2 (dam)   4 
+	 generations  3 
+> 
+> 
+> # 9 plants with 2 traits , 3 replcations
+> n <- 9  #
+> pheno <- data.frame(ID = rep(letters[1:n],3), rep = rep(1:3,each=n), 
++                     Yield = rnorm(3*n,200,5), Height=rnorm(3*n,100,1))
+> 
+> # combine in one object
+> gp2 <- create.gpData(pheno,geno,map,repeated="rep")
+Warning in create.gpData(pheno, geno, map, repeated = "rep") :
+  not all markers in 'geno' mapped in 'map'. gaps filled with 'NA' 
+
+> summary(gp2)
+object of class 'gpData' 
+covar 
+	 No. of individuals 9 
+	         phenotyped 9 
+	          genotyped 9 
+pheno 
+	 No. of traits:		   2 
+	 No. of repeated measures: 3 
+
+     Yield           Height      
+ Min.   :194.9   Min.   : 98.33  
+ 1st Qu.:198.3   1st Qu.: 99.28  
+ Median :200.9   Median : 99.93  
+ Mean   :201.0   Mean   : 99.84  
+ 3rd Qu.:203.0   3rd Qu.:100.27  
+ Max.   :210.9   Max.   :101.84  
+
+geno 
+	 No. of markers 12 
+	 genotypes AA AB BB 
+	 frequencies 0.6203704 0.212963 0.09259259 
+	 NA's 7.407 %
+map 
+	 No. of mapped markers  11 
+	 No. of chromosomes     3 
+
+	 markers per chromosome 
+	
+1 2 3 
+4 3 4 
+
+pedigree 
+NULL
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("create.gpData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("create.pedigree")
+> ### * create.pedigree
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: create.pedigree
+> ### Title: Create pedigree object
+> ### Aliases: create.pedigree
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> # example with 9 individuals        
+> id <- 1:9
+> par1 <- c(0,0,0,0,1,1,1,4,7)
+> par2 <- c(0,0,0,0,2,3,2,5,8)
+> gener <- c(0,0,0,0,1,1,1,2,3)
+> 
+> # create pedigree object (using argument gener)
+> ped <- create.pedigree(id,par1,par2,gener)
+> ped
+  ID Par1 Par2 gener
+1  1    0    0     0
+2  2    0    0     0
+3  3    0    0     0
+4  4    0    0     0
+5  5    1    2     1
+6  6    1    3     1
+7  7    1    2     1
+8  8    4    5     2
+9  9    7    8     3
+> plot(ped)
+> 
+> # create pedigree object (without using argument gener)
+> ped2 <- create.pedigree(id,par1,par2)
+> ped2
+  ID Par1 Par2 gener
+1  1    0    0     0
+2  2    0    0     0
+3  3    0    0     0
+4  4    0    0     0
+5  5    1    2     1
+6  6    1    3     1
+7  7    1    2     1
+8  8    4    5     2
+9  9    7    8     3
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("create.pedigree", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("crossVal")
+> ### * crossVal
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: crossVal
+> ### Title: Cross validation of different prediction models
+> ### Aliases: crossVal
+> 
+> ### ** Examples
+> 
+> # loading the maize data set
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D maize2 <- codeGeno(maize)
+> ##D U <- kin(maize2,ret="realized")
+> ##D # cross validation
+> ##D cv.maize  <- crossVal(maize2,cov.matrix=list(U),k=5,Rep=1,
+> ##D             Seed=123,sampling="random",varComp=c(26.5282,48.5785),VC.est="commit")
+> ##D cv.maize2 <- crossVal(maize2,k=5,Rep=1,
+> ##D              Seed=123,sampling="random",varComp=c(0.0704447,48.5785),VC.est="commit")
+> ##D # comparing results, both are equal!
+> ##D cv.maize$PredAbi
+> ##D cv.maize2$PredAbi
+> ##D summary(cv.maize)
+> ##D summary(cv.maize2)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("crossVal", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("discard.markers")
+> ### * discard.markers
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: discard.markers
+> ### Title: Subsets for objects of class gpData
+> ### Aliases: discard.markers discard.individuals
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # example data
+> ##D set.seed(311)
+> ##D pheno <- data.frame(Yield = rnorm(10,200,5),Height=rnorm(10,100,1))
+> ##D rownames(pheno) <- letters[1:10]
+> ##D geno <- matrix(sample(c("A","A/B","B",NA),size=120,replace=TRUE,
+> ##D prob=c(0.6,0.2,0.1,0.1)),nrow=10)
+> ##D rownames(geno) <-  letters[1:10]
+> ##D colnames(geno) <- paste("M",1:12,sep="")
+> ##D # one SNP is not mapped (M5)
+> ##D map <- data.frame(chr=rep(1:3,each=4),pos=rep(1:12))
+> ##D map  <- map[-5,]
+> ##D rownames(map) <- paste("M",c(1:4,6:12),sep="")
+> ##D gp <- create.gpData(pheno=pheno,geno=geno,map=map)
+> ##D summary(gp)
+> ##D 
+> ##D # remove unmapped SNP M5 (which has no postion in the map)
+> ##D gp2 <- discard.markers(gp,"M5")
+> ##D summary(gp2)
+> ##D 
+> ##D # discard genotypes with missing values in the marker matrix
+> ##D gp3 <- discard.individuals(gp,names(which(rowSums(is.na(gp$geno))>0)))
+> ##D summary(gp3)
+> ## End(Not run)
+>  
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("discard.markers", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gpData2cross")
+> ### * gpData2cross
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gpData2cross
+> ### Title: Conversion between objects of class 'cross' and 'gpData'
+> ### Aliases: gpData2cross cross2gpData
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D # from gpData to cross
+> ##D data(maize)
+> ##D maizeC <- codeGeno(maize)
+> ##D maize.cross <- gpData2cross(maizeC)
+> ##D # descriptive statistics
+> ##D summary(maize.cross)
+> ##D plot(maize.cross)
+> ##D 
+> ##D # use function scanone
+> ##D maize.cross <- calc.genoprob(maize.cross, step=2.5)
+> ##D result <- scanone(maize.cross, pheno.col=1, method="em")
+> ##D # display of LOD curve along the chromosome
+> ##D plot(result)
+> ##D 
+> ##D 
+> ##D # from cross to gpData
+> ##D data(fake.f2)
+> ##D fake.f2.gpData <- cross2gpData(fake.f2)
+> ##D summary(fake.f2.gpData)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gpData2cross", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gpData2data.frame")
+> ### * gpData2data.frame
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gpData2data.frame
+> ### Title: Merge of phenotypic and genotypic data
+> ### Aliases: gpData2data.frame
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> # example data with unrepeated observations
+> set.seed(311)
+> 
+> # simulating genotypic and phenotypic data 
+> pheno <- data.frame(Yield = rnorm(12,100,5),Height=rnorm(12,100,1))
+> rownames(pheno) <- letters[4:15]
+> geno <- matrix(sample(c("A","A/B","B",NA),size=120,replace=TRUE,
++ prob=c(0.6,0.2,0.1,0.1)),nrow=10)
+> rownames(geno) <-  letters[1:10]
+> colnames(geno) <- paste("M",1:12,sep="")
+> # different subset of individuals in pheno and geno
+> 
+> # create 'gpData' object
+> gp <- create.gpData(pheno=pheno,geno=geno)
+> summary(gp)
+object of class 'gpData' 
+covar 
+	 No. of individuals 15 
+	         phenotyped 12 
+	          genotyped 10 
+pheno 
+	 No. of traits:		   2 
+
+     Yield            Height      
+ Min.   : 91.58   Min.   : 98.66  
+ 1st Qu.: 97.05   1st Qu.: 99.42  
+ Median : 99.88   Median : 99.96  
+ Mean   :100.71   Mean   :100.02  
+ 3rd Qu.:104.37   3rd Qu.:100.56  
+ Max.   :108.52   Max.   :102.16  
+
+geno 
+	 No. of markers 12 
+	 genotypes A A/B B 
+	 frequencies 0.55 0.2833333 0.1083333 
+	 NA's 5.833 %
+map 
+	 No. of mapped markers  
+	 No. of chromosomes     0 
+
+	 markers per chromosome 
+	NULL
+
+pedigree 
+NULL
+> gp$covar
+   id phenotyped genotyped family
+1   a      FALSE      TRUE     NA
+2   b      FALSE      TRUE     NA
+3   c      FALSE      TRUE     NA
+4   d       TRUE      TRUE     NA
+5   e       TRUE      TRUE     NA
+6   f       TRUE      TRUE     NA
+7   g       TRUE      TRUE     NA
+8   h       TRUE      TRUE     NA
+9   i       TRUE      TRUE     NA
+10  j       TRUE      TRUE     NA
+11  k       TRUE     FALSE     NA
+12  l       TRUE     FALSE     NA
+13  m       TRUE     FALSE     NA
+14  n       TRUE     FALSE     NA
+15  o       TRUE     FALSE     NA
+> 
+> # as data.frame with individuals with genotypes and phenotypes
+> gpData2data.frame(gp,trait=1:2)
+  ID     Yield    Height  M1  M2  M3  M4  M5   M6  M7  M8  M9 M10  M11 M12
+1  d 103.74755  99.66269   A   A   B   A   A    A   A   A   A A/B    A A/B
+2  e 103.31617 100.81681   B   B   B   A A/B    A   B A/B A/B A/B    A A/B
+3  f  97.35312  98.89526 A/B   A   A   A A/B    A   A A/B   A   A  A/B   A
+4  g  91.57516 100.68823   A A/B   A   A   A    A   A   A   A   A    A A/B
+5  h 100.13829 102.16435   A   A A/B   A   A    B   A   B A/B   A <NA>   A
+6  i 107.93992  98.82903   B   A A/B   A   A  A/B   A   A   A A/B    A   A
+7  j  99.61985 100.45542 A/B A/B A/B A/B   A <NA> A/B   A A/B   A    A A/B
+> # as data.frame with all individuals with phenotypes
+> gpData2data.frame(gp,1:2,all.pheno=TRUE)
+   ID     Yield    Height   M1   M2   M3   M4   M5   M6   M7   M8   M9  M10
+1   d 103.74755  99.66269    A    A    B    A    A    A    A    A    A  A/B
+2   e 103.31617 100.81681    B    B    B    A  A/B    A    B  A/B  A/B  A/B
+3   f  97.35312  98.89526  A/B    A    A    A  A/B    A    A  A/B    A    A
+4   g  91.57516 100.68823    A  A/B    A    A    A    A    A    A    A    A
+5   h 100.13829 102.16435    A    A  A/B    A    A    B    A    B  A/B    A
+6   i 107.93992  98.82903    B    A  A/B    A    A  A/B    A    A    A  A/B
+7   j  99.61985 100.45542  A/B  A/B  A/B  A/B    A <NA>  A/B    A  A/B    A
+8   k  96.14182  98.66120 <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA>
+9   l 106.22697 100.51160 <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA>
+10  m 108.52087  99.59828 <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA>
+11  n  95.58941  99.85997 <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA>
+12  o  98.34257 100.05597 <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA>
+    M11  M12
+1     A  A/B
+2     A  A/B
+3   A/B    A
+4     A  A/B
+5  <NA>    A
+6     A    A
+7     A  A/B
+8  <NA> <NA>
+9  <NA> <NA>
+10 <NA> <NA>
+11 <NA> <NA>
+12 <NA> <NA>
+> # as data.frame with all individuals with genotypes
+> gpData2data.frame(gp,1:2,all.geno=TRUE)
+   ID     Yield    Height  M1   M2   M3   M4   M5   M6   M7  M8  M9 M10  M11
+1   a        NA        NA   A <NA>    A    B  A/B  A/B    A   A   A   A  A/B
+2   b        NA        NA   A  A/B  A/B <NA> <NA>  A/B <NA>   A   B   A    B
+3   c        NA        NA   A  A/B <NA>    A    A    B    B   A   A   A  A/B
+4   d 103.74755  99.66269   A    A    B    A    A    A    A   A   A A/B    A
+5   e 103.31617 100.81681   B    B    B    A  A/B    A    B A/B A/B A/B    A
+6   f  97.35312  98.89526 A/B    A    A    A  A/B    A    A A/B   A   A  A/B
+7   g  91.57516 100.68823   A  A/B    A    A    A    A    A   A   A   A    A
+8   h 100.13829 102.16435   A    A  A/B    A    A    B    A   B A/B   A <NA>
+9   i 107.93992  98.82903   B    A  A/B    A    A  A/B    A   A   A A/B    A
+10  j  99.61985 100.45542 A/B  A/B  A/B  A/B    A <NA>  A/B   A A/B   A    A
+   M12
+1    A
+2  A/B
+3    A
+4  A/B
+5  A/B
+6    A
+7  A/B
+8    A
+9    A
+10 A/B
+> 
+> # example with repeated observations
+> set.seed(311)
+> 
+> # simulating genotypic and phenotypic data 
+> pheno <- data.frame(ID = letters[1:10], Trait = c(rnorm(10,1,2),rnorm(10,2,0.2),
++                     rbeta(10,2,4)), repl = rep(1:3, each=10))
+> geno <- matrix(rep(c(1,0,2),10),nrow=10)
+> colnames(geno) <- c("M1","M2","M3")
+> rownames(geno) <-  letters[1:10]
+> 
+> # create 'gpData' object
+> gp <- create.gpData(pheno=pheno,geno=geno, repeated="repl")
+> 
+> # reshape of phenotypic data and merge of genotypic data,
+> # levels of grouping variable loc are named "a", "b" and "c"
+> gpData2data.frame(gp,onlyPheno=FALSE,times=letters[1:3])
+   ID       Trait repl M1 M2 M3
+1   a  2.49901835    1  1  0  2
+2   a  1.82357645    2  1  0  2
+3   a  0.45743884    3  1  0  2
+4   b  2.32646975    1  0  2  1
+5   b  1.93370264    2  0  2  1
+6   b  0.24944791    3  0  2  1
+7   c -0.05875262    1  2  1  0
+8   c  1.93253810    2  2  1  0
+9   c  0.30267353    3  2  1  0
+10  d -2.36993769    1  1  0  2
+11  d  2.16336165    2  1  0  2
+12  d  0.34600429    3  1  0  2
+13  e  1.05531482    1  0  2  1
+14  e  1.77905233    2  0  2  1
+15  e  0.04740353    3  0  2  1
+16  f  4.17596909    1  2  1  0
+17  f  2.13764680    2  2  1  0
+18  f  0.21349058    3  2  1  0
+19  g  0.84794183    1  1  0  2
+20  g  2.43287034    2  1  0  2
+21  g  0.64711744    3  1  0  2
+22  h -0.54327190    1  0  2  1
+23  h  1.76580507    2  0  2  1
+24  h  0.32324225    3  0  2  1
+25  i  3.49078725    1  2  1  0
+26  i  2.09108499    2  2  1  0
+27  i  0.55176008    3  2  1  0
+28  j  4.40834726    1  1  0  2
+29  j  1.73224005    2  1  0  2
+30  j  0.46329332    3  1  0  2
+>                             
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gpData2data.frame", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gpMod")
+> ### * gpMod
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gpMod
+> ### Title: Genomic predictions models for objects of class gpData
+> ### Aliases: gpMod
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D maizeC <- codeGeno(maize)
+> ##D 
+> ##D # pedigree-based (expected) kinship matrix
+> ##D K <- kin(maizeC,ret="kin",DH=maize$covar$DH)
+> ##D 
+> ##D # marker-based (realized) relationship matrix
+> ##D # divide by an additional factor 2
+> ##D # because for testcross prediction the kinship of DH lines is used
+> ##D U <- kin(maizeC,ret="realized")/2
+> ##D # BLUP models
+> ##D # P-BLUP
+> ##D mod1 <- gpMod(maizeC,model="BLUP",kin=K)
+> ##D # G-BLUP
+> ##D mod2 <- gpMod(maizeC,model="BLUP",kin=U)
+> ##D 
+> ##D # Bayesian Lasso
+> ##D prior <- list(varE=list(df=3,S=35),lambda = list(shape=0.52,rate=1e-4,value=20,type='random'))
+> ##D mod3 <- gpMod(maizeC,model="BL",prior=prior,nIter=6000,burnIn=1000,thin=5)
+> ##D 
+> ##D summary(mod1)
+> ##D summary(mod2)
+> ##D summary(mod3)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gpMod", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("kinship")
+> ### * kinship
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: kin
+> ### Title: Relatedness based on pedigree or marker data
+> ### Aliases: kin
+> 
+> ### ** Examples
+> 
+> 
+> #=========================
+> # (1) pedigree based relatedness
+> #=========================
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D K <- kin(maize,ret="kin")
+> ##D plot(K)
+> ## End(Not run)
+> 
+> #=========================
+> # (2) marker based relatedness
+> #=========================
+> ## Not run: 
+> ##D data(maize)
+> ##D U <- kin(codeGeno(maize),ret="realized")
+> ##D plot(U)
+> ## End(Not run)
+> 
+> 
+> ### Example for Legarra et al. (2009), J. Dairy Sci. 92: p. 4660
+> id <- 1:17
+> par1 <- c(0,0,0,0,0,0,0,0,1,3,5,7,9,11,4,13,13)
+> par2 <- c(0,0,0,0,0,0,0,0,2,4,6,8,10,12,11,15,14)
+> ped <- create.pedigree(id,par1,par2)
+> gp <- create.gpData(pedigree=ped)
+> 
+> # additive relationship
+> A <- kin(gp,ret="add")
+> # dominance relationship
+> D <- kin(gp,ret="dom")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("kinship", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("manhattanPlot")
+> ### * manhattanPlot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: manhattanPlot
+> ### Title: Manhattan plot for SNP effects
+> ### Aliases: manhattanPlot
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(mice)
+> ##D # plot only random noise
+> ##D b <- rexp(ncol(mice$geno),3)
+> ##D manhattanPlot(b,mice)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("manhattanPlot", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.genMap")
+> ### * plot.genMap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotGenMap
+> ### Title: Plot marker map
+> ### Aliases: plotGenMap plot.GenMap
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D # low density plot
+> ##D data(maize)
+> ##D plotGenMap(maize)
+> ##D 
+> ##D # high density plot
+> ##D data(mice)
+> ##D plotGenMap(mice,dense=TRUE,nMarker=FALSE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.genMap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.pedigree")
+> ### * plot.pedigree
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.pedigree
+> ### Title: Visualization of pedigree
+> ### Aliases: plot.pedigree
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> # example with 9 individuals        
+> id <- 1:9
+> par1 <- c(0,0,0,0,1,1,1,4,7)
+> par2 <- c(0,0,0,0,2,3,2,5,8)
+> gener <- c(0,0,0,0,1,1,1,2,3)
+> 
+> # create pedigree object 
+> ped <- create.pedigree(id,par1,par2,gener)
+> plot(ped)               
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.pedigree", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.relationshipMatrix")
+> ### * plot.relationshipMatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.relationshipMatrix
+> ### Title: Heatmap for relationship Matrix
+> ### Aliases: plot.relationshipMatrix
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> # small pedigree
+> ped <- simul.pedigree(gener=4,7)
+> gp <- create.gpData(pedigree=ped)
+> A <- kin(gp,ret="add")
+> plot(A)
+> 
+> # big pedigree
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D K <- kin(maize,ret="kin")
+> ##D U <- kin(codeGeno(maize),ret="realized")/2
+> ##D # equal colorkeys
+> ##D plot(K,levelbreaks=seq(0,2,length=9))
+> ##D plot(U,levelbreaks=seq(0,2,length=9))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.relationshipMatrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotNeighbourLD")
+> ### * plotNeighbourLD
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotNeighbourLD
+> ### Title: Plot neighbour linkage disequilibrium
+> ### Aliases: plotNeighbourLD
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D maize2 <-codeGeno(maize)
+> ##D LD <- pairwiseLD(maize2,chr=1:10,type="matrix")
+> ##D plotNeighbourLD(LD,maize2,nMarker=FALSE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotNeighbourLD", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("predict.gpMod")
+> ### * predict.gpMod
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: predict.gpMod
+> ### Title: Prediction for genomic prediction models.
+> ### Aliases: predict.gpMod
+> 
+> ### ** Examples
+> 
+> # Example from Henderson (1977)
+> dat <- data.frame(y=c(132,147,156,172),time=c(1,2,1,2),animal=c(1,2,3,4))
+> ped <- create.pedigree(ID=c(6,5,1,2,3,4),Par1=c(0,0,5,5,1,6),Par2=c(0,0,0,0,6,2))
+> gp <- create.gpData(pheno=dat,pedigree=ped)
+> A <- kin(gp,ret="add")
+> 
+> # assuming h2=sigma2u/(sigma2u+sigma2)=0.5
+> # no REML fit possible due to the limited number of observations
+> y <- c(132,147,156,172)
+> names(y) <- paste(1:4)
+> mod1 <- list(fit=list(sigma=c(1,1)),kin=A,model="BLUP",y=y,m=NULL)
+> # matrix A included all individuals (including those which should be predicted)
+> class(mod1) <- "gpMod"
+> predict(mod1,c("5","6"))
+       5        6 
+147.8208 158.9151 
+> 
+> # prediction 'by hand'
+> X <- matrix(1,ncol=1,nrow=4)
+> Z <- diag(6)[-c(1,2),]
+> AI <- solve(A)
+> RI <- diag(4)
+> 
+> res <- MME(X,Z,AI,RI,y)
+> res$b + res$u[1:2]
+[1] 147.8208 158.9151
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("predict.gpMod", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("read.vcf2list")
+> ### * read.vcf2list
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: read.vcf2list
+> ### Title: Read data of a vcf-file to a matrix
+> ### Aliases: read.vcf2list
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D maize$info$map.unit <- "kb"
+> ##D maize <- codeGeno(maize)
+> ##D write.vcf(maize, "maize.vcf")
+> ##D genInfo <- read.vcf2list("maize.vcf")
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("read.vcf2list", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("read.vcf2matrix")
+> ### * read.vcf2matrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: read.vcf2matrix
+> ### Title: Read data of a vcf-file to a matrix
+> ### Aliases: read.vcf2matrix
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D maize$info$map.unit <- "kb"
+> ##D maize <- codeGeno(maize)
+> ##D write.vcf(maize, "maize.vcf")
+> ##D geno <- read.vcf2matrix("maize.vcf")
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("read.vcf2matrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simul.pedigree")
+> ### * simul.pedigree
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simul.pedigree
+> ### Title: Simulation of pedigree structure
+> ### Aliases: simul.pedigree
+> 
+> ### ** Examples
+> 
+> # example for plants
+> ped <- simul.pedigree(gener=4,ids=c(3,5,8,8))
+> plot(ped)
+> #example for animals
+> peda <- simul.pedigree(gener=4,ids=c(3,5,8,8),animals=TRUE)
+> plot(peda)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simul.pedigree", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simul.phenotype")
+> ### * simul.phenotype
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simul.phenotype
+> ### Title: Simulation of a field trial with single trait
+> ### Aliases: simul.phenotype
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D ped <- simul.pedigree(gener=5)
+> ##D varcom <- list(sigma2e=25,sigma2a=36,sigma2l=9,sigma2b=4)
+> ##D # field trial with 3 locations and 2 blocks within locations
+> ##D data.simul <- simul.phenotype(ped,mu=10,vc=varcom,Nloc=3,Nrepl=2)
+> ##D head(data.simul)
+> ##D # analysis of variance
+> ##D anova(lm(Trait~ID+Loc+Loc:Block,data=data.simul))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simul.phenotype", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.LDdf")
+> ### * summary.LDdf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.LDdf
+> ### Title: Summary for LD objects
+> ### Aliases: summary.LDdf summary.LDmat
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+>   ## Not run: 
+> ##D   library(synbreed)
+> ##D   data(maize)
+> ##D   maizeC <- codeGeno(maize)
+> ##D   maizeLD <- pairwiseLD(maizeC,chr=1:10,type="data.frame")
+> ##D   maizeLDm <- pairwiseLD(maizeC,chr=1:10,type="matrix")
+> ##D   summary(maizeLD)
+> ##D   summary(maizeLDm)
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.LDdf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.gpData")
+> ### * summary.gpData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.gpData
+> ### Title: Summary for class gpData
+> ### Aliases: summary.gpData print.summary.gpData
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D summary(maize)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.gpData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.gpMod")
+> ### * summary.gpMod
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.gpMod
+> ### Title: Summary for class gpMod
+> ### Aliases: summary.gpMod summary.gpModList print.summary.gpMod
+> ###   print.summary.gpModList
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D maizeC <- codeGeno(maize)
+> ##D # marker-based (realized) relationship matrix
+> ##D U <- kin(maizeC,ret="realized")/2
+> ##D 
+> ##D # BLUP model
+> ##D mod <- gpMod(maizeC,model="BLUP",kin=U)
+> ##D summary(mod)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.gpMod", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.map")
+> ### * summary.map
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summaryGenMap
+> ### Title: Summary of marker map information
+> ### Aliases: summaryGenMap
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D summaryGenMap(maize)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.map", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.pedigree")
+> ### * summary.pedigree
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.pedigree
+> ### Title: Summary of pedigree information
+> ### Aliases: summary.pedigree print.summary.pedigree
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> # plant pedigree
+> ped <- simul.pedigree(gener=4,7)
+> summary(ped)
+Number of 
+	 individuals  28 
+	 males :  NA , females :  NA 
+	 Par 1 (sire)  14 
+	 Par 2 (dam)   12 
+	 generations  4 
+> 
+> # animal pedigree
+> ped <- simul.pedigree(gener=4,7,animals=TRUE)
+> summary(ped)
+Number of 
+	 individuals  28 
+	 males :  12 , females :  16 
+	 Par 1 (sire)  9 
+	 Par 2 (dam)   11 
+	 generations  4 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.pedigree", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.relationshipMatrix")
+> ### * summary.relationshipMatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.relationshipMatrix
+> ### Title: Summary of relationship matrices
+> ### Aliases: summary.relationshipMatrix print.summary.relationshipMatrix
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D data(maize)
+> ##D U <- kin(codeGeno(maize),ret="realized")
+> ##D summary(U)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.relationshipMatrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("write.beagle")
+> ### * write.beagle
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: write.beagle
+> ### Title: Prepare genotypic data for Beagle
+> ### Aliases: write.beagle
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> map <- data.frame(chr=c(1,1,1,1,1,2,2,2,2),pos=1:9)
+> geno <-  matrix(sample(c(0,1,2,NA),size=10*9,replace=TRUE),nrow=10,ncol=9)
+> colnames(geno) <- rownames(map) <- paste("SNP",1:9,sep="")
+> rownames(geno) <- paste("ID",1:10+100,sep="")
+> 
+> gp <- create.gpData(geno=geno,map=map)
+> gp1 <- discard.markers(gp,rownames(map[map$chr!=1,]))
+> ## Not run: write.beagle(gp1,prefix="test")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("write.beagle", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("write.plink")
+> ### * write.plink
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: write.plink
+> ### Title: Prepare data for PLINK
+> ### Aliases: write.plink
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(synbreedData)
+> ##D write.plink(maize,type="data.frame")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("write.plink", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("write.relationshipMatrix")
+> ### * write.relationshipMatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: write.relationshipMatrix
+> ### Title: Writing relationshipMatrix in table format
+> ### Aliases: write.relationshipMatrix
+> ### Keywords: IO
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # example with 9 individuals        
+> ##D id <- 1:9
+> ##D par1 <- c(0,0,0,0,1,1,1,4,7)
+> ##D par2 <- c(0,0,0,0,2,3,2,5,8)
+> ##D gener <- c(0,0,0,0,1,1,1,2,3)
+> ##D ped <- create.pedigree(id,par1,par2,gener)
+> ##D gp <- create.gpData(pedigree=ped)
+> ##D 
+> ##D A <- kin(ped,ret="add")
+> ##D write.relationshipMatrix(A,type="ginv")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("write.relationshipMatrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("write.vcf")
+> ### * write.vcf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: write.vcf
+> ### Title: Prepare genotypic data in vcf-Format
+> ### Aliases: write.vcf
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> map <- data.frame(chr=c(1,1,1,1,1,2,2,2,2),pos=1:9)
+> geno <-  matrix(sample(c(0,1,2,NA),size=10*9,replace=TRUE),nrow=10,ncol=9)
+> colnames(geno) <- rownames(map) <- paste("SNP",1:9,sep="")
+> rownames(geno) <- paste("ID",1:10+100,sep="")
+> 
+> gp <- create.gpData(geno=geno,map=map)
+> gp1 <- discard.markers(gp,rownames(map[map$chr!=1,]))
+> ## Not run: write.vcf(gp1,prefix="test")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("write.vcf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  6.352 0.172 6.622 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

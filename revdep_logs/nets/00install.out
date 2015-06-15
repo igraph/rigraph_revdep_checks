@@ -1,0 +1,81 @@
+* installing *source* package ‘nets’ ...
+** package ‘nets’ successfully unpacked and MD5 sums checked
+** libs
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c nets.c -o nets.o
+nets.c:58:7: warning: using integer absolute value function 'abs' when argument is of floating point type [-Wabsolute-value]
+                if( abs(sum)>lambda*w[j] )
+                    ^
+nets.c:58:7: note: use function 'fabs' instead
+                if( abs(sum)>lambda*w[j] )
+                    ^~~
+                    fabs
+nets.c:80:8: warning: using integer absolute value function 'abs' when argument is of floating point type [-Wabsolute-value]
+                        if( abs(sum)>lambda*w[j] ) {
+                            ^
+nets.c:80:8: note: use function 'fabs' instead
+                        if( abs(sum)>lambda*w[j] ) {
+                            ^~~
+                            fabs
+nets.c:161:7: warning: using integer absolute value function 'abs' when argument is of floating point type [-Wabsolute-value]
+                if( abs(sum)>lambda*w[j] ) {
+                    ^
+nets.c:161:7: note: use function 'fabs' instead
+                if( abs(sum)>lambda*w[j] ) {
+                    ^~~
+                    fabs
+nets.c:198:9: warning: using integer absolute value function 'abs' when argument is of floating point type [-Wabsolute-value]
+                                if( abs(sum)>2*lambda*w[j] ) {
+                                    ^
+nets.c:198:9: note: use function 'fabs' instead
+                                if( abs(sum)>2*lambda*w[j] ) {
+                                    ^~~
+                                    fabs
+nets.c:199:31: warning: using integer absolute value function 'abs' when argument is of floating point type [-Wabsolute-value]
+                                        theta[j] = sgn(-sum) * ( abs(sum)/X_sumsqr[j] - (2.0*lambda*w[j])/X_sumsqr[j] );
+                                                                 ^
+nets.c:199:31: note: use function 'fabs' instead
+                                        theta[j] = sgn(-sum) * ( abs(sum)/X_sumsqr[j] - (2.0*lambda*w[j])/X_sumsqr[j] );
+                                                                 ^~~
+                                                                 fabs
+nets.c:234:8: warning: using integer absolute value function 'abs' when argument is of floating point type [-Wabsolute-value]
+                        if( abs(sum)>2*lambda*w[j] ) {
+                            ^
+nets.c:234:8: note: use function 'fabs' instead
+                        if( abs(sum)>2*lambda*w[j] ) {
+                            ^~~
+                            fabs
+nets.c:235:30: warning: using integer absolute value function 'abs' when argument is of floating point type [-Wabsolute-value]
+                                theta[j] = sgn(-sum) * ( abs(sum)/X_sumsqr[j] - (2*lambda*w[j])/X_sumsqr[j] );
+                                                         ^
+nets.c:235:30: note: use function 'fabs' instead
+                                theta[j] = sgn(-sum) * ( abs(sum)/X_sumsqr[j] - (2*lambda*w[j])/X_sumsqr[j] );
+                                                         ^~~
+                                                         fabs
+nets.c:322:8: warning: using integer absolute value function 'abs' when argument is of floating point type [-Wabsolute-value]
+                        if( abs(cov)>lambda ){
+                            ^
+nets.c:322:8: note: use function 'fabs' instead
+                        if( abs(cov)>lambda ){
+                            ^~~
+                            fabs
+nets.c:361:10: warning: using integer absolute value function 'abs' when argument is of floating point type [-Wabsolute-value]
+                                        if( abs(cov)>lambda ){
+                                            ^
+nets.c:361:10: note: use function 'fabs' instead
+                                        if( abs(cov)>lambda ){
+                                            ^~~
+                                            fabs
+nets.c:271:9: warning: unused variable 'eps' [-Wunused-variable]
+        double eps, eps_1, eps_2;
+               ^
+10 warnings generated.
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o nets.so nets.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/nets.Rcheck/nets/libs
+** R
+** demo
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (nets)

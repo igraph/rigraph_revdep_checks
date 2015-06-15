@@ -1,0 +1,92 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "PBC"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "PBC-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('PBC')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("PBC-class")
+> ### * PBC-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: PBC-class
+> ### Title: Class "PBC" for the PBC model
+> ### Aliases: getRoot,PBC-method getGraph,PBC-method getF,PBC-method
+> ###   getNIteration,PBC-method getDxf,PBC-method getDxdyf,PBC-method
+> ###   getGraf,PBC-method getGradxf,PBC-method getGradxdyf,PBC-method
+> ###   getBINMAT,PBC-method getModel,PBC-method setDensity,PBC-method
+> ###   setGradient,PBC-method pbcPlot,PBC-method pbcPlot getDxdyf getDxf
+> ###   getF getGradxdyf getGradxf getGraf setGradient setDensity
+> ###   phi.student1 phi.student phi.norm margin compute gradxf2.student
+> ###   gradxf.norm gradxdyphi2.student gradxdyphi.norm getModel getRoot
+> ###   getNIteration getGraph dxf.student dxf.norm dxdyphi.student
+> ###   dxdyphi.norm getBINMAT draw getBinMat pbc igraph-class PBC-class
+> 
+> ### ** Examples
+> 
+> ## PBC class information
+> showClass("PBC")
+Class "PBC" [package "PBC"]
+
+Slots:
+                                                                        
+Name:        root      graph          f        dxf      dxdyf       graf
+Class:  character     igraph expression expression expression expression
+                                                                        
+Name:      gradxf   gradxdyf     BINMAT      model    density   gradient
+Class: expression expression     matrix  character    numeric     vector
+                 
+Name:  nIteration
+Class:    numeric
+> ## Create a PBC object with linking family "Gumbel"
+> g <- graph.formula(X1-X3,X2-X3,X3-X4,X4-X5,simplify = FALSE)
+> pbcObj <- pbc(g, model="gumbel")
+Error in matrix(res, ncol = 2, byrow = TRUE) : 
+  unimplemented type 'expression' in 'copyMatrix'
+Calls: pbc ... as.igraph.es -> inherits -> na.omit -> E -> ends -> matrix
+Execution halted

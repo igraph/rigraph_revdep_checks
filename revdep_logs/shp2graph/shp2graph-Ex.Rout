@@ -1,0 +1,251 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "shp2graph"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "shp2graph-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('shp2graph')
+Loading required package: maptools
+Loading required package: sp
+Checking rgeos availability: FALSE
+ 	Note: when rgeos is not available, polygon geometry 	computations in maptools depend on gpclib,
+ 	which has a restricted licence. It is disabled by default;
+ 	to enable gpclib, type gpclibPermit()
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("ORN")
+> ### * ORN
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ORN
+> ### Title: Ontario Road Network data set (SpatialLinesDataFrame)
+> ### Aliases: ORN rn
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(ORN)
+> plot(rn)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ORN", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("PN.amalgamation")
+> ### * PN.amalgamation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: PN.amalgamation
+> ### Title: Amalgamate edges connected by a pseudo-node
+> ### Aliases: PN.amalgamation Minus.DegreeL Update.nodelist Update.edgelist
+> ###   extend.eadf is.exception
+> ### Keywords: pseudo, node
+> 
+> ### ** Examples
+> 
+> data(ORN)
+> rtNEL<-readshpnw(rn, ELComputed=TRUE)
+> res.sl<-SL.extraction(rtNEL[[2]],rtNEL[[3]])
+> res.me<-ME.simplification(res.sl[[1]],res.sl[[2]],DegreeL=res.sl[[4]]) 
+> res.pn<-PN.amalgamation(res.me[[1]],res.me[[2]],DegreeL=res.me[[4]])
+> ptcoords<-Nodes.coordinates(res.pn[[1]])
+> plot(rn)
+> points(ptcoords, col="green")
+> plot(rn)
+> points(Nodes.coordinates(rtNEL[[2]]), col="red")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("PN.amalgamation", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("nel2igraph")
+> ### * nel2igraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nel2igraph
+> ### Title: Produce a "igraph" object
+> ### Aliases: nel2igraph
+> ### Keywords: igraph
+> 
+> ### ** Examples
+> 
+> data(ORN)
+> rtNEL<-readshpnw(rn, ELComputed=TRUE)
+> #Add the edge length as the weight for graph
+> igr<-nel2igraph(rtNEL[[2]],rtNEL[[3]],weight=rtNEL[[4]])
+> plot(igr, vertex.label=NA, vertex.size=2,vertex.size2=2)
+> plot(rn)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nel2igraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("points2network")
+> ### * points2network
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: points2network
+> ### Title: Integrate a point data set with a network
+> ### Aliases: points2network Nearest.nodes footpoint.nodes Add.nodes
+> ###   virtualedge.nn point.in.bbox
+> ### Keywords: spatial, graph
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(ORN)
+> ##D pts<-spsample(rn, 100, type="random")
+> ##D ptsxy<-coordinates(pts)[,1:2]
+> ##D ptsxy<-cbind(ptsxy[,1]+0.008,ptsxy[,2]+0.008)
+> ##D #Mapping each point to the nearest node in the network/graph
+> ##D res<-points2network(ntdata=rn,pointsxy=ptsxy, mapping.method=1)
+> ##D ptsinnt.view(ntdata=rn, nodelist=res[[1]], pointsxy=ptsxy,
+> ##D              CoorespondIDs=res[[3]])
+> ##D #Mapping each point to the nearest point (add them as nodes if they are not) on 
+> ##D #the network
+> ##D res<-points2network(ntdata=rn,pointsxy=ptsxy, mapping.method=2,ea.prop=rep(0,37))
+> ##D ptsinnt.view(ntdata=rn, nodelist=res[[1]], pointsxy=ptsxy, CoorespondIDs=res[[3]]) 
+> ##D #Add a new edge(Virtual edge) between each point and the nearest node
+> ##D res<-points2network(ntdata=rn,pointsxy=ptsxy, mapping.method=3,ea.prop=rep(0,37))
+> ##D VElist<-res[[7]]
+> ##D ptsinnt.view(ntdata=rn, nodelist=res[[1]], pointsxy=ptsxy, CoorespondIDs=res[[3]], 
+> ##D              VElist=VElist)
+> ##D #Add a new edge(Virtual edge) between each point and the nearest point
+> ##D res<-points2network(ntdata=rn,pointsxy=ptsxy, mapping.method=4,ea.prop=rep(0,37))
+> ##D VElist<-res[[7]]
+> ##D ptsinnt.view(ntdata=rn, nodelist=res[[1]], pointsxy=ptsxy, CoorespondIDs=res[[3]],
+> ##D              VElist=VElist) 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("points2network", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ptsinnt.view")
+> ### * ptsinnt.view
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ptsinnt.view
+> ### Title: Visualize the result of integrating a set of data points with
+> ###   given network
+> ### Aliases: ptsinnt.view
+> 
+> ### ** Examples
+> 
+> data(ORN)
+> pts<-spsample(rn, 100, type="random")
+> ptsxy<-coordinates(pts)[,1:2]
+> ptsxy<-cbind(ptsxy[,1]+0.008,ptsxy[,2]+0.008)
+> #Mapping each point to the nearest node in the network/graph
+> res<-points2network(ntdata=rn,pointsxy=ptsxy, mapping.method=1)
+> #Visualize the results without virtual edges 
+> ptsinnt.view(ntdata=rn, nodelist=res[[1]], pointsxy=ptsxy, 
++              CoorespondIDs=res[[3]])
+> #Visualize the results with virtual edges
+> res<-points2network(ntdata=rn,pointsxy=ptsxy, mapping.method=3,
++                     ea.prop=rep(0,37))
+> VElist<-res[[7]]
+> ptsinnt.view(ntdata=rn, nodelist=res[[1]], pointsxy=ptsxy, 
++              CoorespondIDs=res[[3]], VElist=VElist)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ptsinnt.view", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("readshpnw")
+> ### * readshpnw
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: readshpnw
+> ### Title: Read a network from a "SpatialLines" or "SpatialLinesDataFrame"
+> ###   object
+> ### Aliases: readshpnw
+> ### Keywords: spatial, graph
+> 
+> ### ** Examples
+> 
+> data(ORN)
+> rtNEL<-readshpnw(rn)
+> nl<-rtNEL[[2]]
+> el<-rtNEL[[3]]
+> #Compute edge length
+> rtNEL<-readshpnw(rn, ELComputed=TRUE)
+> edgelength<-rtNEL[[4]]
+> eadf<-rtNEL[[5]]
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("readshpnw", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  1.686 0.033 1.727 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

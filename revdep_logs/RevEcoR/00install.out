@@ -1,0 +1,10 @@
+* installing *source* package ‘RevEcoR’ ...
+** package ‘RevEcoR’ successfully unpacked and MD5 sums checked
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** preparing package for lazy loading
+Error : object ‘plot.igraph’ is not exported by 'namespace:igraph'
+ERROR: lazy loading failed for package ‘RevEcoR’
+* removing ‘/Users/gaborcsardi/works/igraph/revdep_check/RevEcoR.Rcheck/RevEcoR’

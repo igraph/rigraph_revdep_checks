@@ -1,0 +1,282 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "SOMbrero"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "SOMbrero-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('SOMbrero')
+Loading required package: knitr
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+***********************************************************
+
+      This is 'SOMbrero' package, v 1.0
+
+Citation details with citation('SOMbrero')
+
+Further information with help(SOMbrero)...
+
+Use sombreroGUI() to start the Graphical Interface.
+
+Warning! This package has been implemented by girls.
+Default colors may not be suited for men.
+
+***********************************************************
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("initGrid")
+> ### * initGrid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: initGrid
+> ### Title: Create an empty Self-Organizing Map structure
+> ### Aliases: initGrid print.myGrid summary.myGrid
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> # creating a default grid
+> # default parameters are: 5x5 dimension, squared topology 
+> # and letremy distance type
+> initGrid()
+
+      Self-Organizing Map structure
+
+        Features   :
+           topology     :  square 
+           x dimension  :  5 
+           y dimension  :  5 
+           distance type:  euclidean 
+
+> 
+> # creating a 5x7 squared grid
+> initGrid(dimension=c(5, 7), topo="square", dist.type="maximum")
+
+      Self-Organizing Map structure
+
+        Features   :
+           topology     :  square 
+           x dimension  :  5 
+           y dimension  :  7 
+           distance type:  maximum 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("initGrid", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("initSOM")
+> ### * initSOM
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: initSOM
+> ### Title: Initialize parameters for the SOM algorithm
+> ### Aliases: initSOM print.paramSOM summary.paramSOM
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> # create a default 'paramSOM' class object
+> default.paramSOM <- initSOM()
+> summary(default.paramSOM)
+
+Summary
+
+  Class                            :  paramSOM 
+
+  Parameters of the SOM
+
+    SOM mode                       :  online 
+    SOM type                       :  numeric 
+    Affectation type               :  standard 
+    Grid                           : 
+      Self-Organizing Map structure
+
+        Features   :
+           topology     :  square 
+           x dimension  :  5 
+           y dimension  :  5 
+           distance type:  euclidean 
+
+    Number of iterations           :  500 
+    Number of intermediate backups :  0 
+    Initializing prototypes method :  random 
+    Data pre-processing type       :  unitvar 
+    Neighbourhood type             :  gaussian 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("initSOM", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("lesmis")
+> ### * lesmis
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: lesmis
+> ### Title: Dataset "Les Miserables"
+> ### Aliases: lesmis dissim.lesmis
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(lesmis)
+> ## Not run: 
+> ##D summary(lesmis)
+> ##D plot(lesmis,vertex.size=0)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("lesmis", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.myGrid")
+> ### * plot.myGrid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.myGrid
+> ### Title: Draw a 'myGrid' class object
+> ### Aliases: plot.myGrid
+> ### Keywords: aplot
+> 
+> ### ** Examples
+> 
+> # creating grid
+> a.grid <- initGrid(dimension=c(5,5), topo="square", dist.type="maximum")
+> 
+> # plotting grid
+> # without any color specification
+> plot(a.grid)
+> # generating colors from rainbow() function
+> my.colors <- rainbow(5*5)
+> plot(a.grid, neuron.col=my.colors)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.myGrid", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("predict.somRes")
+> ### * predict.somRes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: predict.somRes
+> ### Title: Predict the classification of a new observation
+> ### Aliases: predict.somRes
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> set.seed(2343)
+> my.som <- trainSOM(x.data=iris[-100,1:4], dimension=c(5,5))
+> predict(my.som, iris[100,1:4])
+100 
+  6 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("predict.somRes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("presidentielles2002")
+> ### * presidentielles2002
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: presidentielles2002
+> ### Title: 2002 French presidential election data set
+> ### Aliases: presidentielles2002
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(presidentielles2002)
+> apply(presidentielles2002,2,sum)
+     MEGRET      LEPAGE  GLUCKSTEIN      BAYROU      CHIRAC      LE_PEN 
+     667043      535875      132696     1949219     5666021     4804772 
+    TAUBIRA SAINT_JOSSE      MAMERE      JOSPIN      BOUTIN         HUE 
+     660515     1204801     1495774     4610267      339157      960548 
+CHEVENEMENT     MADELIN   LAGUILLER  BESANCENOT 
+    1518568     1113551     1630118     1210562 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("presidentielles2002", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("projectIGraph.somRes")
+> ### * projectIGraph.somRes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: projectIGraph
+> ### Title: Compute the projection of a graph on a grid
+> ### Aliases: projectIGraph.somRes projectIGraph
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> data(lesmis)
+> set.seed(7383)
+> mis.som <- trainSOM(x.data=dissim.lesmis, type="relational", nb.save=10)
+> proj.lesmis <- projectIGraph(mis.som, lesmis)
+Error in check_version(graph) : 
+  This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+Calls: projectIGraph ... projectGraph -> V -> update_vs_ref -> check_version
+Execution halted

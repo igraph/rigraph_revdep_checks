@@ -1,0 +1,701 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "PGRdup"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "PGRdup-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('PGRdup')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("AddProbDup")
+> ### * AddProbDup
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: AddProbDup
+> ### Title: Add probable duplicate sets fields to the PGR passport database
+> ### Aliases: AddProbDup
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D #' # Load PGR passport database
+> ##D GN <- GN1000
+> ##D 
+> ##D # Set database fields to use
+> ##D GNfields <- c("NationalID", "CollNo", "DonorID", "OtherID1", "OtherID2")
+> ##D 
+> ##D # Clean the data
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) DataClean(x))
+> ##D y1 <- list(c("Gujarat", "Dwarf"), c("Castle", "Cary"), c("Small", "Japan"),
+> ##D c("Big", "Japan"), c("Mani", "Blanco"), c("Uganda", "Erect"),
+> ##D c("Mota", "Company"))
+> ##D y2 <- c("Dark", "Light", "Small", "Improved", "Punjab", "SAM")
+> ##D y3 <- c("Local", "Bold", "Cary", "Mutant", "Runner", "Giant", "No.",
+> ##D         "Bunch", "Peanut")
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeKW(x, y1, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergePrefix(x, y2, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeSuffix(x, y3, delim = c("space", "dash")))
+> ##D 
+> ##D # Generate KWIC index
+> ##D GNKWIC <- KWIC(GN, GNfields)
+> ##D 
+> ##D # Specify the exceptions as a vector
+> ##D exep <- c("A", "B", "BIG", "BOLD", "BUNCH", "C", "COMPANY", "CULTURE",
+> ##D          "DARK", "E", "EARLY", "EC", "ERECT", "EXOTIC", "FLESH", "GROUNDNUT",
+> ##D          "GUTHUKAI", "IMPROVED", "K", "KUTHUKADAL", "KUTHUKAI", "LARGE",
+> ##D          "LIGHT", "LOCAL", "OF", "OVERO", "P", "PEANUT", "PURPLE", "R",
+> ##D          "RED", "RUNNER", "S1", "SAM", "SMALL", "SPANISH", "TAN", "TYPE",
+> ##D          "U", "VALENCIA", "VIRGINIA", "WHITE")
+> ##D 
+> ##D # Specify the synsets as a list
+> ##D syn <- list(c("CHANDRA", "AH114"), c("TG1", "VIKRAM"))
+> ##D 
+> ##D # Fetch probable duplicate sets
+> ##D GNdup <- ProbDup(kwic1 = GNKWIC, method = "a", excep = exep, fuzzy = TRUE,
+> ##D                  phonetic = TRUE, encoding = "primary",
+> ##D                  semantic = TRUE, syn = syn)
+> ##D 
+> ##D # Add the duplicates sets to the original database
+> ##D GNwithdup <-  AddProbDup(pdup = GNdup, db = GN1000, addto = "I")
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("AddProbDup", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("DataClean")
+> ### * DataClean
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: DataClean
+> ### Title: Clean PGR passport data.
+> ### Aliases: DataClean
+> 
+> ### ** Examples
+> 
+> names <- c("S7-12-6", "ICG-3505", "U 4-47-18;EC 21127", "AH 6481", "RS   1",
++            "AK 12-24", "2-5 (NRCG-4053)", "T78, Mwitunde", "ICG 3410",
++            "#648-4 (Gwalior)", "TG4;U/4/47/13", "EC0021003")
+> DataClean(names)
+ [1] "S7126"          "ICG3505"        "U44718 EC21127" "AH6481"        
+ [5] "RS1"            "AK1224"         "25 NRCG4053"    "T78 MWITUNDE"  
+ [9] "ICG3410"        "6484 GWALIOR"   "TG4 U44713"     "EC21003"       
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("DataClean", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("DisProbDup")
+> ### * DisProbDup
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: DisProbDup
+> ### Title: Get disjoint probable duplicate sets
+> ### Aliases: DisProbDup
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D # Load PGR passport database
+> ##D GN <- GN1000
+> ##D 
+> ##D # Set database fields to use
+> ##D GNfields <- c("NationalID", "CollNo", "DonorID", "OtherID1", "OtherID2")
+> ##D 
+> ##D # Clean the data
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) DataClean(x))
+> ##D y1 <- list(c("Gujarat", "Dwarf"), c("Castle", "Cary"), c("Small", "Japan"),
+> ##D c("Big", "Japan"), c("Mani", "Blanco"), c("Uganda", "Erect"),
+> ##D c("Mota", "Company"))
+> ##D y2 <- c("Dark", "Light", "Small", "Improved", "Punjab", "SAM")
+> ##D y3 <- c("Local", "Bold", "Cary", "Mutant", "Runner", "Giant", "No.",
+> ##D         "Bunch", "Peanut")
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeKW(x, y1, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergePrefix(x, y2, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeSuffix(x, y3, delim = c("space", "dash")))
+> ##D 
+> ##D # Generate KWIC index
+> ##D GNKWIC <- KWIC(GN, GNfields)
+> ##D 
+> ##D # Specify the exceptions as a vector
+> ##D exep <- c("A", "B", "BIG", "BOLD", "BUNCH", "C", "COMPANY", "CULTURE",
+> ##D          "DARK", "E", "EARLY", "EC", "ERECT", "EXOTIC", "FLESH", "GROUNDNUT",
+> ##D          "GUTHUKAI", "IMPROVED", "K", "KUTHUKADAL", "KUTHUKAI", "LARGE",
+> ##D          "LIGHT", "LOCAL", "OF", "OVERO", "P", "PEANUT", "PURPLE", "R",
+> ##D          "RED", "RUNNER", "S1", "SAM", "SMALL", "SPANISH", "TAN", "TYPE",
+> ##D          "U", "VALENCIA", "VIRGINIA", "WHITE")
+> ##D 
+> ##D # Specify the synsets as a list
+> ##D syn <- list(c("CHANDRA", "AH114"), c("TG1", "VIKRAM"))
+> ##D 
+> ##D # Fetch probable duplicate sets
+> ##D GNdup <- ProbDup(kwic1 = GNKWIC, method = "a", excep = exep, fuzzy = TRUE,
+> ##D                  phonetic = TRUE, encoding = "primary",
+> ##D                  semantic = TRUE, syn = syn)
+> ##D lapply(GNdup, dim)
+> ##D 
+> ##D # Get disjoint probable duplicate sets of each kind
+> ##D disGNdup1 <- DisProbDup(GNdup, combine = NULL)
+> ##D lapply(disGNdup1, nrow)
+> ##D 
+> ##D # Get disjoint probable duplicate sets combining all the kinds of sets
+> ##D disGNdup2 <- DisProbDup(GNdup, combine = c("F", "P", "S"))
+> ##D lapply(disGNdup2, nrow)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("DisProbDup", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("DoubleMetaphone")
+> ### * DoubleMetaphone
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: DoubleMetaphone
+> ### Title: Double Metaphone Phonetic Algorithm
+> ### Aliases: DoubleMetaphone
+> 
+> ### ** Examples
+> 
+> # Return the primary and secondary Double Metaphone encodings for a character vector.
+> str1 <- c("Jyothi", "Jyoti")
+> str2 <- c("POLLACHI", "BOLLACHI")
+> DoubleMetaphone(str1)
+$primary
+[1] "J0" "JT"
+
+$alternate
+[1] "AT" "AT"
+
+> DoubleMetaphone(str2)
+$primary
+[1] "PLX" "PLX"
+
+$alternate
+[1] "PLK" "PLK"
+
+> ## Not run: 
+> ##D # Issue a warning in case of non-ASCII characters.
+> ##D str3 <- c("J\xf5geva", "Jogeva")
+> ##D DoubleMetaphone(str3) 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("DoubleMetaphone", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("KWIC")
+> ### * KWIC
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: KWIC
+> ### Title: Create a KWIC Index
+> ### Aliases: KWIC
+> 
+> ### ** Examples
+> 
+> # Load PGR passport database
+> GN <- GN1000
+> 
+> # Set database fields to use
+> GNfields <- c("NationalID", "CollNo", "DonorID", "OtherID1", "OtherID2")
+> 
+> # Clean the data
+> GN[GNfields] <- lapply(GN[GNfields], function(x) DataClean(x))
+> 
+> ## Not run: 
+> ##D 
+> ##D # Generate KWIC index
+> ##D GNKWIC <- KWIC(GN, GNfields)
+> ##D 
+> ##D # Retrieve the KWIC index from the KWIC object
+> ##D KWIC <- GNKWIC[[1]]
+> ##D 
+> ##D # Retrieve the keyword frequencies from the KWIC object
+> ##D KeywordFreq <- GNKWIC[[2]]
+> ##D 
+> ##D # Show error in case of duplicates and NULL values
+> ##D # in the primary key/ID field "NationalID"
+> ##D GN[1001:1005,] <- GN[1:5,]
+> ##D GN[1001,3] <- ""
+> ##D GNKWIC <- KWIC(GN, GNfields)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("KWIC", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("MergeKW")
+> ### * MergeKW
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MergeKW
+> ### Title: Merge keyword strings
+> ### Aliases: MergeKW MergePrefix MergeSuffix
+> 
+> ### ** Examples
+> 
+> names <- c("Punjab Bold", "Gujarat- Dwarf", "Nagpur.local", "SAM COL 144",
++            "SAM COL--280", "NIZAMABAD-LOCAL", "Dark Green Mutant",
++            "Dixie-Giant", "Georgia- Bunch", "Uganda-erect", "Small Japan",
++            "Castle  Cary", "Punjab erect", "Improved small japan",
++            "Dark Purple")
+> 
+> # Merge pairs of strings
+> y1 <- list(c("Gujarat", "Dwarf"), c("Castle", "Cary"), c("Small", "Japan"),
++            c("Big", "Japan"), c("Mani", "Blanco"), c("Uganda", "Erect"),
++            c("Mota", "Company"))
+> names <- MergeKW(names, y1, delim = c("space", "dash", "period"))
+> 
+> # Merge prefix strings
+> y2 <- c("Light", "Small", "Improved", "Punjab", "SAM")
+> names <- MergePrefix(names, y2, delim = c("space", "dash", "period"))
+> 
+> # Merge suffix strings
+> y3 <- c("Local", "Bold", "Cary", "Mutant", "Runner", "Giant", "No.",
++         "Bunch", "Peanut")
+> names <- MergeSuffix(names, y3, delim = c("space", "dash", "period"))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("MergeKW", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ParseProbDup")
+> ### * ParseProbDup
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ParseProbDup
+> ### Title: Parse an object of class 'ProbDup' to a data frame.
+> ### Aliases: ParseProbDup
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D #' # Load PGR passport database
+> ##D GN <- GN1000
+> ##D 
+> ##D # Set database fields to use
+> ##D GNfields <- c("NationalID", "CollNo", "DonorID", "OtherID1", "OtherID2")
+> ##D 
+> ##D # Clean the data
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) DataClean(x))
+> ##D y1 <- list(c("Gujarat", "Dwarf"), c("Castle", "Cary"), c("Small", "Japan"),
+> ##D c("Big", "Japan"), c("Mani", "Blanco"), c("Uganda", "Erect"),
+> ##D c("Mota", "Company"))
+> ##D y2 <- c("Dark", "Light", "Small", "Improved", "Punjab", "SAM")
+> ##D y3 <- c("Local", "Bold", "Cary", "Mutant", "Runner", "Giant", "No.",
+> ##D         "Bunch", "Peanut")
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeKW(x, y1, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergePrefix(x, y2, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeSuffix(x, y3, delim = c("space", "dash")))
+> ##D 
+> ##D # Generate KWIC index
+> ##D GNKWIC <- KWIC(GN, GNfields)
+> ##D 
+> ##D # Specify the exceptions as a vector
+> ##D exep <- c("A", "B", "BIG", "BOLD", "BUNCH", "C", "COMPANY", "CULTURE",
+> ##D          "DARK", "E", "EARLY", "EC", "ERECT", "EXOTIC", "FLESH", "GROUNDNUT",
+> ##D          "GUTHUKAI", "IMPROVED", "K", "KUTHUKADAL", "KUTHUKAI", "LARGE",
+> ##D          "LIGHT", "LOCAL", "OF", "OVERO", "P", "PEANUT", "PURPLE", "R",
+> ##D          "RED", "RUNNER", "S1", "SAM", "SMALL", "SPANISH", "TAN", "TYPE",
+> ##D          "U", "VALENCIA", "VIRGINIA", "WHITE")
+> ##D 
+> ##D # Specify the synsets as a list
+> ##D syn <- list(c("CHANDRA", "AH114"), c("TG1", "VIKRAM"))
+> ##D 
+> ##D # Fetch probable duplicate sets
+> ##D GNdup <- ProbDup(kwic1 = GNKWIC, method = "a", excep = exep, fuzzy = TRUE,
+> ##D                  phonetic = TRUE, encoding = "primary",
+> ##D                  semantic = TRUE, syn = syn)
+> ##D 
+> ##D # Convert to data frame of sets
+> ##D GNdupParsed <- ParseProbDup(GNdup)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ParseProbDup", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ProbDup")
+> ### * ProbDup
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ProbDup
+> ### Title: Identify Probable Duplicates of Accessions
+> ### Aliases: ProbDup
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D # Method "a"
+> ##D #===========
+> ##D 
+> ##D # Load PGR passport database
+> ##D GN <- GN1000
+> ##D 
+> ##D # Set database fields to use
+> ##D GNfields <- c("NationalID", "CollNo", "DonorID", "OtherID1", "OtherID2")
+> ##D 
+> ##D # Clean the data
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) DataClean(x))
+> ##D y1 <- list(c("Gujarat", "Dwarf"), c("Castle", "Cary"), c("Small", "Japan"),
+> ##D c("Big", "Japan"), c("Mani", "Blanco"), c("Uganda", "Erect"),
+> ##D c("Mota", "Company"))
+> ##D y2 <- c("Dark", "Light", "Small", "Improved", "Punjab", "SAM")
+> ##D y3 <- c("Local", "Bold", "Cary", "Mutant", "Runner", "Giant", "No.",
+> ##D         "Bunch", "Peanut")
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeKW(x, y1, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergePrefix(x, y2, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeSuffix(x, y3, delim = c("space", "dash")))
+> ##D 
+> ##D # Generate KWIC index
+> ##D GNKWIC <- KWIC(GN, GNfields)
+> ##D 
+> ##D # Specify the exceptions as a vector
+> ##D exep <- c("A", "B", "BIG", "BOLD", "BUNCH", "C", "COMPANY", "CULTURE",
+> ##D          "DARK", "E", "EARLY", "EC", "ERECT", "EXOTIC", "FLESH", "GROUNDNUT",
+> ##D          "GUTHUKAI", "IMPROVED", "K", "KUTHUKADAL", "KUTHUKAI", "LARGE",
+> ##D          "LIGHT", "LOCAL", "OF", "OVERO", "P", "PEANUT", "PURPLE", "R",
+> ##D          "RED", "RUNNER", "S1", "SAM", "SMALL", "SPANISH", "TAN", "TYPE",
+> ##D          "U", "VALENCIA", "VIRGINIA", "WHITE")
+> ##D 
+> ##D # Specify the synsets as a list
+> ##D syn <- list(c("CHANDRA", "AH114"), c("TG1", "VIKRAM"))
+> ##D 
+> ##D # Fetch probable duplicate sets
+> ##D GNdup <- ProbDup(kwic1 = GNKWIC, method = "a", excep = exep, fuzzy = TRUE,
+> ##D                  phonetic = TRUE, encoding = "primary",
+> ##D                  semantic = TRUE, syn = syn)
+> ##D 
+> ##D # Method "b and c"
+> ##D #=================
+> ##D 
+> ##D # Load PGR passport databases
+> ##D GN1 <- GN1000[!grepl("^ICG", GN1000$DonorID), ]
+> ##D GN1$DonorID <- NULL
+> ##D GN2 <- GN1000[grepl("^ICG", GN1000$DonorID), ]
+> ##D GN2$NationalID <- NULL
+> ##D 
+> ##D # Set database fields to use
+> ##D GN1fields <- c("NationalID", "CollNo", "OtherID1", "OtherID2")
+> ##D GN2fields <- c("DonorID", "CollNo", "OtherID1", "OtherID2")
+> ##D 
+> ##D # Clean the data
+> ##D GN1[GN1fields] <- lapply(GN1[GN1fields], function(x) DataClean(x))
+> ##D GN2[GN2fields] <- lapply(GN2[GN2fields], function(x) DataClean(x))
+> ##D y1 <- list(c("Gujarat", "Dwarf"), c("Castle", "Cary"), c("Small", "Japan"),
+> ##D c("Big", "Japan"), c("Mani", "Blanco"), c("Uganda", "Erect"),
+> ##D c("Mota", "Company"))
+> ##D y2 <- c("Dark", "Light", "Small", "Improved", "Punjab", "SAM")
+> ##D y3 <- c("Local", "Bold", "Cary", "Mutant", "Runner", "Giant", "No.",
+> ##D         "Bunch", "Peanut")
+> ##D GN1[GN1fields] <- lapply(GN1[GN1fields], function(x) MergeKW(x, y1, delim = c("space", "dash")))
+> ##D GN1[GN1fields] <- lapply(GN1[GN1fields], function(x) MergePrefix(x, y2, delim = c("space", "dash")))
+> ##D GN1[GN1fields] <- lapply(GN1[GN1fields], function(x) MergeSuffix(x, y3, delim = c("space", "dash")))
+> ##D GN2[GN2fields] <- lapply(GN2[GN2fields], function(x) MergeKW(x, y1, delim = c("space", "dash")))
+> ##D GN2[GN2fields] <- lapply(GN2[GN2fields], function(x) MergePrefix(x, y2, delim = c("space", "dash")))
+> ##D GN2[GN2fields] <- lapply(GN2[GN2fields], function(x) MergeSuffix(x, y3, delim = c("space", "dash")))
+> ##D 
+> ##D # Remove duplicated DonorID records in GN2
+> ##D GN2 <- GN2[!duplicated(GN2$DonorID), ]
+> ##D 
+> ##D # Generate KWIC index
+> ##D GN1KWIC <- KWIC(GN1, GN1fields)
+> ##D GN2KWIC <- KWIC(GN2, GN2fields)
+> ##D 
+> ##D # Specify the exceptions as a vector
+> ##D exep <- c("A", "B", "BIG", "BOLD", "BUNCH", "C", "COMPANY", "CULTURE",
+> ##D          "DARK", "E", "EARLY", "EC", "ERECT", "EXOTIC", "FLESH", "GROUNDNUT",
+> ##D          "GUTHUKAI", "IMPROVED", "K", "KUTHUKADAL", "KUTHUKAI", "LARGE",
+> ##D          "LIGHT", "LOCAL", "OF", "OVERO", "P", "PEANUT", "PURPLE", "R",
+> ##D          "RED", "RUNNER", "S1", "SAM", "SMALL", "SPANISH", "TAN", "TYPE",
+> ##D          "U", "VALENCIA", "VIRGINIA", "WHITE")
+> ##D 
+> ##D # Specify the synsets as a list
+> ##D syn <- list(c("CHANDRA", "AH114"), c("TG1", "VIKRAM"))
+> ##D 
+> ##D # Fetch probable duplicate sets
+> ##D GNdupb <- ProbDup(kwic1 = GN1KWIC, kwic2 = GN2KWIC, method = "b",
+> ##D                   excep = exep, fuzzy = TRUE, phonetic = TRUE,
+> ##D                   encoding = "primary", semantic = TRUE, syn = syn)
+> ##D 
+> ##D GNdupc <- ProbDup(kwic1 = GN1KWIC, kwic2 = GN2KWIC, method = "c",
+> ##D                   excep = exep, fuzzy = TRUE, phonetic = TRUE,
+> ##D                   encoding = "primary", semantic = TRUE, syn = syn)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ProbDup", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ReconstructProbDup")
+> ### * ReconstructProbDup
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ReconstructProbDup
+> ### Title: Reconstruct an object of class ProbDup
+> ### Aliases: ReconstructProbDup
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D # Load PGR passport database
+> ##D GN <- GN1000
+> ##D 
+> ##D # Set database fields to use
+> ##D GNfields <- c("NationalID", "CollNo", "DonorID", "OtherID1", "OtherID2")
+> ##D 
+> ##D # Clean the data
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) DataClean(x))
+> ##D y1 <- list(c("Gujarat", "Dwarf"), c("Castle", "Cary"), c("Small", "Japan"),
+> ##D c("Big", "Japan"), c("Mani", "Blanco"), c("Uganda", "Erect"),
+> ##D c("Mota", "Company"))
+> ##D y2 <- c("Dark", "Light", "Small", "Improved", "Punjab", "SAM")
+> ##D y3 <- c("Local", "Bold", "Cary", "Mutant", "Runner", "Giant", "No.",
+> ##D         "Bunch", "Peanut")
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeKW(x, y1, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergePrefix(x, y2, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeSuffix(x, y3, delim = c("space", "dash")))
+> ##D 
+> ##D # Generate KWIC index
+> ##D GNKWIC <- KWIC(GN, GNfields)
+> ##D 
+> ##D # Specify the exceptions as a vector
+> ##D exep <- c("A", "B", "BIG", "BOLD", "BUNCH", "C", "COMPANY", "CULTURE",
+> ##D          "DARK", "E", "EARLY", "EC", "ERECT", "EXOTIC", "FLESH", "GROUNDNUT",
+> ##D          "GUTHUKAI", "IMPROVED", "K", "KUTHUKADAL", "KUTHUKAI", "LARGE",
+> ##D          "LIGHT", "LOCAL", "OF", "OVERO", "P", "PEANUT", "PURPLE", "R",
+> ##D          "RED", "RUNNER", "S1", "SAM", "SMALL", "SPANISH", "TAN", "TYPE",
+> ##D          "U", "VALENCIA", "VIRGINIA", "WHITE")
+> ##D 
+> ##D # Specify the synsets as a list
+> ##D syn <- list(c("CHANDRA", "AH114"), c("TG1", "VIKRAM"))
+> ##D 
+> ##D # Fetch probable duplicate sets
+> ##D GNdup <- ProbDup(kwic1 = GNKWIC, method = "a", excep = exep, fuzzy = TRUE,
+> ##D                  phonetic = TRUE, encoding = "primary",
+> ##D                  semantic = TRUE, syn = syn)
+> ##D 
+> ##D # Get disjoint probable duplicate sets of each kind
+> ##D disGNdup <- DisProbDup(GNdup, combine = NULL)
+> ##D 
+> ##D # Get the data frame for reviewing the duplicate sets identified
+> ##D RevGNdup <- ReviewProbDup(pdup = disGNdup, db1 = GN1000,
+> ##D                           extra.db1 = c("SourceCountry", "TransferYear"),
+> ##D                           max.count = 30, insert.blanks = TRUE)
+> ##D # Examine and review the duplicate sets using edit function
+> ##D RevGNdup <- edit(RevGNdup)
+> ##D 
+> ##D # Examine and make changes to a set
+> ##D subset(RevGNdup, SET_NO==12 & TYPE=="P", select= c(IDKW, DEL, SPLIT))
+> ##D RevGNdup[c(110, 112, 114, 118, 121, 122, 124), 6] <- "Y"
+> ##D RevGNdup[c(111, 115, 128), 7] <- 1
+> ##D RevGNdup[c(113, 117, 120), 7] <- 2
+> ##D RevGNdup[c(116, 119), 7] <- 3
+> ##D RevGNdup[c(123, 125), 7] <- 4
+> ##D RevGNdup[c(126, 127), 7] <- 5
+> ##D subset(RevGNdup, SET_NO==12 & TYPE=="P", select= c(IDKW, DEL, SPLIT))
+> ##D 
+> ##D # Reconstruct ProDup object
+> ##D GNdup2 <- ReconstructProbDup(RevGNdup)
+> ##D lapply(disGNdup, nrow)
+> ##D lapply(GNdup2, nrow)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ReconstructProbDup", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ReviewProbDup")
+> ### * ReviewProbDup
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ReviewProbDup
+> ### Title: Retrieve probable duplicate set information from PGR passport
+> ###   database for review
+> ### Aliases: ReviewProbDup
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D # Load PGR passport database
+> ##D GN <- GN1000
+> ##D 
+> ##D # Set database fields to use
+> ##D GNfields <- c("NationalID", "CollNo", "DonorID", "OtherID1", "OtherID2")
+> ##D 
+> ##D # Clean the data
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) DataClean(x))
+> ##D y1 <- list(c("Gujarat", "Dwarf"), c("Castle", "Cary"), c("Small", "Japan"),
+> ##D c("Big", "Japan"), c("Mani", "Blanco"), c("Uganda", "Erect"),
+> ##D c("Mota", "Company"))
+> ##D y2 <- c("Dark", "Light", "Small", "Improved", "Punjab", "SAM")
+> ##D y3 <- c("Local", "Bold", "Cary", "Mutant", "Runner", "Giant", "No.",
+> ##D         "Bunch", "Peanut")
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeKW(x, y1, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergePrefix(x, y2, delim = c("space", "dash")))
+> ##D GN[GNfields] <- lapply(GN[GNfields], function(x) MergeSuffix(x, y3, delim = c("space", "dash")))
+> ##D 
+> ##D # Generate KWIC index
+> ##D GNKWIC <- KWIC(GN, GNfields)
+> ##D 
+> ##D # Specify the exceptions as a vector
+> ##D exep <- c("A", "B", "BIG", "BOLD", "BUNCH", "C", "COMPANY", "CULTURE",
+> ##D          "DARK", "E", "EARLY", "EC", "ERECT", "EXOTIC", "FLESH", "GROUNDNUT",
+> ##D          "GUTHUKAI", "IMPROVED", "K", "KUTHUKADAL", "KUTHUKAI", "LARGE",
+> ##D          "LIGHT", "LOCAL", "OF", "OVERO", "P", "PEANUT", "PURPLE", "R",
+> ##D          "RED", "RUNNER", "S1", "SAM", "SMALL", "SPANISH", "TAN", "TYPE",
+> ##D          "U", "VALENCIA", "VIRGINIA", "WHITE")
+> ##D 
+> ##D # Specify the synsets as a list
+> ##D syn <- list(c("CHANDRA", "AH114"), c("TG1", "VIKRAM"))
+> ##D 
+> ##D # Fetch probable duplicate sets
+> ##D GNdup <- ProbDup(kwic1 = GNKWIC, method = "a", excep = exep, fuzzy = TRUE,
+> ##D                  phonetic = TRUE, encoding = "primary",
+> ##D                  semantic = TRUE, syn = syn)
+> ##D 
+> ##D # Get disjoint probable duplicate sets of each kind
+> ##D disGNdup <- DisProbDup(GNdup, combine = NULL)
+> ##D 
+> ##D # Get the data frame for reviewing the duplicate sets identified
+> ##D RevGNdup <- ReviewProbDup(pdup = disGNdup, db1 = GN1000,
+> ##D                           extra.db1 = c("SourceCountry", "TransferYear"),
+> ##D                           max.count = 30, insert.blanks = TRUE)
+> ##D # Examine and review the duplicate sets using edit function
+> ##D RevGNdup <- edit(RevGNdup)
+> ##D 
+> ##D # OR examine and review the duplicate sets after exporting them as a csv file
+> ##D write.csv(file="Duplicate sets for review.csv", x=RevGNdup)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ReviewProbDup", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ValidatePrimKey")
+> ### * ValidatePrimKey
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ValidatePrimKey
+> ### Title: Validate if a data frame column confirms to primary key/ID
+> ###   constraints
+> ### Aliases: ValidatePrimKey
+> 
+> ### ** Examples
+> 
+> GN <- GN1000
+> ValidatePrimKey(x=GN, prim.key="NationalID")
+OK: No duplicated records found in prim.key field
+OK: No NULL records found in prim.key field
+$message1
+[1] "OK: No duplicated records found in prim.key field"
+
+$Duplicates
+NULL
+
+$message2
+[1] "OK: No NULL records found in prim.key field"
+
+$NullRecords
+NULL
+
+> ## Not run: 
+> ##D # Show error in case of duplicates and NULL values
+> ##D # in the primary key/ID field "NationalID"
+> ##D GN[1001:1005,] <- GN[1:5,]
+> ##D GN[1001,3] <- ""
+> ##D ValidatePrimKey(x=GN, prim.key="NationalID")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ValidatePrimKey", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.417 0.016 0.437 0.001 0.001 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

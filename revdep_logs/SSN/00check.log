@@ -1,0 +1,656 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/SSN.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘SSN/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘SSN’ version ‘1.1.5’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘SSN’ can be installed ... OK
+* checking installed package size ... NOTE
+  installed size is  5.1Mb
+  sub-directories of 1Mb or more:
+    doc       1.1Mb
+    lsndata   2.5Mb
+* checking package directory ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking line endings in C/C++/Fortran sources/headers ... OK
+* checking compiled code ... OK
+* checking sizes of PDF files under ‘inst/doc’ ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... ERROR
+Running examples in ‘SSN-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: SimulateOnSSN
+> ### Title: Simulating Data on Spatial Stream Networks
+> ### Aliases: SimulateOnSSN
+> 
+> ### ** Examples
+> 
+> #######################################
+> ## example 1: Gaussian data, 2 networks
+> #######################################
+> 
+> library(SSN)
+> set.seed(101)
+> ## simulate a SpatialStreamNetwork object
+> raw1.ssn <- createSSN(n = c(10,10),
++     obsDesign = binomialDesign(c(50,50)), predDesign = binomialDesign(c(100,100)),
++ 	importToR = TRUE, path = paste(tempdir(),"/sim1", sep = ""))
+> plot(raw1.ssn)
+> 
+> ## create distance matrices, including between predicted and observed
+> createDistMat(raw1.ssn, "preds", o.write=TRUE, amongpred = TRUE)
+> 
+> ## look at the column names of each of the data frames
+> names(raw1.ssn)
+$Obs
+ [1] "locID"      "upDist"     "pid"        "netID"      "rid"       
+ [6] "ratio"      "shreve"     "addfunccol" "NEAR_X"     "NEAR_Y"    
+
+$preds
+ [1] "locID"      "upDist"     "pid"        "netID"      "rid"       
+ [6] "ratio"      "shreve"     "addfunccol" "NEAR_X"     "NEAR_Y"    
+
+> 
+> ## extract the observed and predicted data frames
+> raw1DFobs <- getSSNdata.frame(raw1.ssn, "Obs")
+> raw1DFpred <- getSSNdata.frame(raw1.ssn, "preds")
+> 
+> ## add a continuous covariate randomly
+> raw1DFobs[,"X1"] <- rnorm(length(raw1DFobs[,1]))
+> raw1DFpred[,"X1"] <- rnorm(length(raw1DFpred[,1]))
+> 
+> ## add a categorical covariate randomly
+> raw1DFobs[,"F1"] <- as.factor(sample.int(3,length(raw1DFobs[,1]), replace = TRUE))
+> raw1DFpred[,"F1"] <- as.factor(sample.int(3,length(raw1DFpred[,1]), replace = TRUE))
+> 
+> ## simulate Gaussian data
+> sim1.out <- SimulateOnSSN(raw1.ssn,
++ 	ObsSimDF = raw1DFobs,
++ 	PredSimDF = raw1DFpred,
++ 	PredID = "preds",
++ 	formula = ~ X1 + F1,
++ 	coefficients = c(1, .5, -1, 1),
++ 	CorModels = c("Exponential.tailup", "Exponential.taildown"),
++ 	use.nugget = TRUE,
++ 	use.anisotropy = FALSE,
++ 	CorParms = c(2, 5, 2, 5, 0.1),
++ 	addfunccol = "addfunccol")
+> 
+> ## Columns of design matrix, coefficients argument applied to these
+> sim1.out$FixedEffects
+       Xnames Coefficient
+1 (Intercept)         1.0
+2          X1         0.5
+3         F12        -1.0
+4         F13         1.0
+> 
+> ## extract the ssn.object
+> sim1.ssn <- sim1.out$ssn.object
+> 
+> ## extract the observed and predicted data frames, now with simulated values
+> sim1DFobs <- getSSNdata.frame(sim1.ssn, "Obs")
+> sim1DFobs[,"Sim_Values"]
+  [1] -1.22221603  4.63912013  2.61728318  2.08787430  2.79048827  1.64033148
+  [7]  3.49540946  1.99945533  5.72195878  1.20537606  2.99037210  1.67877369
+ [13] -0.51200212  1.35291928  3.99476133  0.70740751  1.01256425  5.38907795
+ [19]  2.76542504  3.36835225  1.51621684  1.96676706  1.81892768 -0.80520080
+ [25]  0.05693503  0.69611890  0.07005844  2.86270046  1.93813656  1.66973468
+ [31]  3.95391369  1.16850219  0.36026058 -1.10791594  0.12566414 -1.43834661
+ [37]  0.69236606  2.59446507  1.69784809  3.52564693  1.06980961 -0.30536485
+ [43] -0.09252584  1.58185562  1.97110922  2.39896065  2.70699895  2.89575511
+ [49]  2.82499131  2.98420754 -0.22938636  1.20469100  1.94339172  1.50021304
+ [55]  2.30724767  1.63846283  0.65354338 -0.36399753  2.19599708 -0.55693252
+ [61] -2.45291734  3.19421460 -2.26737820  0.99835279  0.37491736 -0.88000103
+ [67]  1.34138560  3.01037830  0.96254576  0.23918404  3.32474447  2.23326315
+ [73]  1.87103880  2.48801876  0.23901987 -1.20189523  1.45746703 -1.45504862
+ [79] -2.47756017  0.81722022  0.98496416 -2.40688920  1.09409146 -1.14140862
+ [85]  2.80984996 -0.15283142  2.76631989 -1.49042589  2.55362768 -1.07074101
+ [91]  0.53528971  2.61915527 -2.89275396  0.09577112  0.46590269  1.39517740
+ [97]  1.42268596  0.59728284 -2.95525195  4.57564676
+> sim1DFpred <- getSSNdata.frame(sim1.ssn, "preds")
+> sim1DFpred[,"Sim_Values"]
+  [1]  0.90022179 -0.41282611  4.04054785  3.29128707  3.33055418  2.84417972
+  [7] -2.78260315  2.07483716  3.17869484 -0.60004571  2.90952775 -0.64288100
+ [13] -0.03491546  4.67513772  4.76810022  3.68529578  1.13991597  1.70658724
+ [19]  1.12762684  1.41887483  0.45311675  0.88622539  5.46857129  1.32914323
+ [25]  0.64484278  3.34303984  0.15421007  2.18519934  1.36442289  4.87824147
+ [31]  1.65248755  2.43422956  0.71373275  1.94060359  1.92271221  3.53886042
+ [37]  3.16735849  1.68087713  1.91498299  0.42178747  0.57373418  2.73271917
+ [43] -0.32626370  0.77176114  1.01788214  2.41854045  6.32744102  1.37179285
+ [49] -0.70787537 -1.40514483  0.63303383 -0.48877376 -0.52145761  3.05408689
+ [55] -0.28282582  2.71714904  3.86713443  4.76398834  0.21383758  2.16347844
+ [61]  4.25314770  3.84701713  3.50128009  3.77780398  0.43647427  1.31199011
+ [67] -1.22953430  2.74217901  0.26494851  2.49376613  0.91615371  2.35073005
+ [73]  1.77085946  0.46187341  1.37541422  0.08820810  4.51074452 -0.44896499
+ [79]  1.72817983 -1.13197006  3.10548018  4.49461712  2.10152842  4.69690834
+ [85]  3.39922575  3.16603618 -1.12129236  3.75663566  1.58317379  4.26059766
+ [91]  0.91838379  1.91024851  4.09803929  2.14609306  0.98833217  2.75162381
+ [97]  1.81045836  0.87533777  0.63199948  0.18344066 -1.54025210  0.23425787
+[103]  0.80153991  0.94887259  0.06943306  2.39996953 -1.41065690  1.00739854
+[109] -3.83899461 -0.53752253 -0.28800064 -0.25210009  0.31297603  1.78450093
+[115]  5.05302283  2.48839069 -1.30079354 -0.62959345  0.62667206  4.95014964
+[121]  1.95043133  0.14525495  3.01857698  0.35436941  0.78416368  0.22548448
+[127]  2.04326741  0.06874216 -2.07524148 -0.88005153  2.30160356 -2.36412541
+[133]  2.19116972 -0.41121250  5.00110689  1.68382117  1.45023533  0.81779967
+[139] -0.84480430 -1.73482270  2.62198854 -2.61896318  3.42261897  4.26309575
+[145]  3.26525695  3.17263882  2.65645933  1.71130230  3.44862809  0.20268776
+[151]  1.15200580  0.44839442  1.36702546  0.11790512 -0.24375402  1.57702866
+[157]  1.77033570 -2.99595711  2.37607936  3.65182474  2.18867494  3.45299200
+[163]  0.26978345  4.53104868  1.87604903 -1.65134014  2.07875823  1.88976928
+[169]  1.20580964 -1.05023794  0.47757510  3.27415777  3.02438409 -0.16796632
+[175]  2.59291582  1.34009753  1.63429809 -1.09995260 -0.25282263  1.93945274
+[181]  2.84386817  3.66277324 -0.86760097  0.31237487  2.48537729  0.37393541
+[187] -1.54643205  5.08228036 -3.37771315 -0.08407991 -2.35993735  1.37779282
+[193]  1.79250206 -0.18933285 -0.37120536  1.14680133 -0.90535391 -0.76086874
+[199] -0.37739976  6.00019593
+> 
+> ## plot the simulated observed values
+> plot(sim1.ssn, "Sim_Values")
+> 
+> ## store simulated prediction values, and then create NAs in their place
+> sim1preds <- sim1DFpred[,"Sim_Values"]
+> sim1DFpred[,"Sim_Values"] <- NA
+> sim1.ssn <- putSSNdata.frame(sim1DFpred, sim1.ssn, "preds")
+> 
+> # NOT RUN, IT TAKES A MINUTE OR SO
+> ## fit a model to see how well we estimate simulation parameters
+> #fitSimGau <- glmssn(Sim_Values ~ X1 + F1, ssn.object = sim1.ssn,
+> #	 CorModels = c("Exponential.tailup", "Exponential.taildown"),
+> #	 addfunccol = "addfunccol")
+> # LOAD A STORED VERSION INSTEAD
+> data(modelFits)
+> #make sure fitSimGau has the correct path, will vary for each users installation
+> #predictions depend on distance matrix created earlier with createDistMat function
+> #path of this lsn directory was created with createSSN
+> fitSimGau$ssn.object@path <- paste(tempdir(),"/sim1", sep = "")
+> 
+> summary(fitSimGau)
+
+Call:
+glmssn(formula = Sim_Values ~ X1 + F1, ssn.object = sim1.ssn, 
+    CorModels = c("Exponential.tailup", "Exponential.taildown"), 
+    addfunccol = "addfunccol")
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.4017 -1.1714  0.4401  1.1060  4.6293 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.65419    0.45644  -1.433    0.155    
+X1           0.41216    0.06982   5.903   <2e-16 ***
+F11          0.00000         NA      NA       NA    
+F12         -1.09780    0.14820  -7.408   <2e-16 ***
+F13          1.27425    0.14291   8.917   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Covariance Parameters:
+     Covariance.Model Parameter Estimate
+   Exponential.tailup   parsill  3.22828
+   Exponential.tailup     range  4.24424
+ Exponential.taildown   parsill  0.00140
+ Exponential.taildown     range  9.09635
+               Nugget   parsill  0.08062
+
+Residual standard error: 1.81942
+Generalized R-squared: 0.7705965
+> 
+> ## make predictions
+> pred1.ssn <- predict(fitSimGau,"preds")
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+> par(bg = "grey60")
+> plot(pred1.ssn, color.palette = terrain.colors(10))
+Error in quantile.default(cexVals, seq(0, 1, by = 0.2)) : 
+  missing values and NaN's not allowed if 'na.rm' is FALSE
+Calls: plot ... plot.glmssn.predict -> quantile -> quantile.default
+Execution halted
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking running R code from vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 ERROR, 1 NOTE

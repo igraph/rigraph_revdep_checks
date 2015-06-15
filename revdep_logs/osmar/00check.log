@@ -1,0 +1,77 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/osmar.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘osmar/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘osmar’ version ‘1.1-7’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘osmar’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... NOTE
+'library' or 'require' calls in package code:
+  ‘igraph’ ‘sp’
+  Please use :: or requireNamespace() instead.
+  See section 'Suggested packages' in the 'Writing R Extensions' manual.
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+as_igraph : <anonymous>: no visible global function definition for
+  ‘distHaversine’
+as_igraph: no visible global function definition for ‘graph.edgelist’
+as_igraph: no visible global function definition for ‘E’
+as_igraph: no visible global function definition for ‘E<-’
+as_sp_lines: no visible global function definition for ‘Lines’
+as_sp_points: no visible global function definition for
+  ‘SpatialPointsDataFrame’
+as_sp_polygons: no visible global function definition for ‘Polygons’
+as_sp_polygons: no visible global function definition for
+  ‘SpatialPolygons’
+as_sp_polygons: no visible global function definition for
+  ‘SpatialPolygonsDataFrame’
+make_SLDF: no visible global function definition for ‘SpatialLines’
+make_SLDF: no visible global function definition for
+  ‘SpatialLinesDataFrame’
+osm_crs: no visible global function definition for ‘CRS’
+ways_nodes2Line: no visible global function definition for ‘Line’
+ways_nodes2Polygon: no visible global function definition for ‘Polygon’
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... NOTE
+  Note: found 80 marked UTF-8 strings
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... OK
+* DONE
+Status: 3 NOTEs

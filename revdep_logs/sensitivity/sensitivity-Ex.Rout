@@ -1,0 +1,1629 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "sensitivity"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "sensitivity-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('sensitivity')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("PLI")
+> ### * PLI
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: PLI
+> ### Title: Perturbation Law-based Indices (PLI)
+> ### Aliases: PLI
+> 
+> ### ** Examples
+> 
+> # Model: Ishigami function with a treshold at -7
+> # Failure points are those < -7
+> 
+>   distributionIshigami = list()
+> 	for (i in 1:3){
++ 		distributionIshigami[[i]]=list("unif",c(-pi,pi))
++ 		distributionIshigami[[i]]$r=("runif")
++ 	}
+>   
+> # Monte Carlo sampling to obtain failure points
+> 
+>   N = 10^5
+> 	X = matrix(0,ncol=3,nrow=N)
+> 	for( i in 1:3){
++     X[,i] = runif(N,-pi,pi)
++     }
+>      
+> 	T = ishigami.fun(X)
+> 	s = sum(as.numeric(T < -7)) # Number of failure
+> 	pdefchap = s/N      # Failure probability
+> 	ptsdef = X[T < -7,]	# Failure points
+> 	
+> # sensitivity indices with perturbation of the mean 
+>   
+> 	v_delta = seq(-3,3,1/20) 
+> 	Toto = PLI(failurepoints=ptsdef,failureprobabilityhat=pdefchap,samplesize=N,
++ 		deltasvector=v_delta,InputDistributions=distributionIshigami,type="MOY",
++ 		samedelta=TRUE)
+> 	BIshm = Toto[[1]]
+> 	SIshm = Toto[[2]]
+> 
+> 	par(mar=c(4,5,1,1))
+> 	plot(v_delta,BIshm[,2],ylim=c(-4,4),xlab=expression(delta),
++ 		ylab=expression(hat(S[i*delta])),pch=19,cex=1.5)
+> 	points(v_delta,BIshm[,1],col="darkgreen",pch=15,cex=1.5)
+> 	points(v_delta,BIshm[,3],col="red",pch=17,cex=1.5)
+> 	lines(v_delta,BIshm[,2]+1.96*SIshm[,2],col="black"); 
+> 	lines(v_delta,BIshm[,2]-1.96*SIshm[,2],col="black")
+> 	lines(v_delta,BIshm[,1]+1.96*SIshm[,1],col="darkgreen"); 
+> 	lines(v_delta,BIshm[,1]-1.96*SIshm[,1],col="darkgreen")
+> 	lines(v_delta,BIshm[,3]+1.96*SIshm[,3],col="red"); 
+> 	lines(v_delta,BIshm[,3]-1.96*SIshm[,3],col="red");
+> 	abline(h=0,lty=2)
+> 	legend(0,3,legend=c("X1","X2","X3"),
++ 		col=c("darkgreen","black","red"),pch=c(15,19,17),cex=1.5)
+>   
+> # sensitivity indices with perturbation of the variance 
+> 
+> 	v_delta = seq(1,5,1/4) # user parameter. (the true variance is 3.29)	
+> 	Toto = PLI(failurepoints=ptsdef,failureprobabilityhat=pdefchap,samplesize=N,
++ 		deltasvector=v_delta,InputDistributions=distributionIshigami,type="VAR",
++ 		samedelta=TRUE)
+> 	BIshv=Toto[[1]]
+> 	SIshv=Toto[[2]]
+> 
+> 	par(mfrow=c(2,1),mar=c(1,5,1,1)+0.1)
+> 	plot(v_delta,BIshv[,2],ylim=c(-.5,.5),xlab=expression(V_f),
++ 		ylab=expression(hat(S[i*delta])),pch=19,cex=1.5)
+> 	points(v_delta,BIshv[,1],col="darkgreen",pch=15,cex=1.5)
+> 	points(v_delta,BIshv[,3],col="red",pch=17,cex=1.5)
+> 	lines(v_delta,BIshv[,2]+1.96*SIshv[,2],col="black"); 
+> 	lines(v_delta,BIshv[,2]-1.96*SIshv[,2],col="black")
+> 	lines(v_delta,BIshv[,1]+1.96*SIshv[,1],col="darkgreen"); 
+> 	lines(v_delta,BIshv[,1]-1.96*SIshv[,1],col="darkgreen")
+> 	lines(v_delta,BIshv[,3]+1.96*SIshv[,3],col="red"); 
+> 	lines(v_delta,BIshv[,3]-1.96*SIshv[,3],col="red");
+> 
+> 	par(mar=c(4,5.1,1.1,1.1))
+> 	plot(v_delta,BIshv[,2],ylim=c(-30,.7),xlab=expression(V[f]),
++ 		ylab=expression(hat(S[i*delta])),pch=19,cex=1.5)
+> 	points(v_delta,BIshv[,1],col="darkgreen",pch=15,cex=1.5)
+> 	points(v_delta,BIshv[,3],col="red",pch=17,cex=1.5)
+> 	lines(v_delta,BIshv[,2]+1.96*SIshv[,2],col="black"); 
+> 	lines(v_delta,BIshv[,2]-1.96*SIshv[,2],col="black")
+> 	lines(v_delta,BIshv[,1]+1.96*SIshv[,1],col="darkgreen"); 
+> 	lines(v_delta,BIshv[,1]-1.96*SIshv[,1],col="darkgreen")
+> 	lines(v_delta,BIshv[,3]+1.96*SIshv[,3],col="red"); 
+> 	lines(v_delta,BIshv[,3]-1.96*SIshv[,3],col="red");
+> 	legend(2.5,-10,legend=c("X1","X2","X3"),col=c("darkgreen","black","red"),
++ 		pch=c(15,19,17),cex=1.5)
+>   
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("PLI", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("PoincareConstant")
+> ### * PoincareConstant
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: PoincareConstant
+> ### Title: Poincare constants for Derivative-based Global Sensitivity
+> ###   Measures (DGSM)
+> ### Aliases: PoincareConstant
+> 
+> ### ** Examples
+> 
+> 
+> # Exponential law (log-concave)
+> PoincareConstant(dexp,qexp,rate=1)
+[1] 4
+> 
+> # Weibull law (non log-concave)
+> PoincareConstant(dweibull,cdfct=pweibull, logconcave=FALSE, 
++ optimize.interval=c(0, 15), shape=1, scale=1)
+[1] 4
+> 
+> ## Not run: 
+> ##D # Triangular law (log-concave)
+> ##D library(triangle)
+> ##D PoincareConstant(dtriangle, qtriangle, a=49, b=51, c=50)
+> ##D 
+> ##D # Truncated Gumbel law (log-concave)
+> ##D library(evd)
+> ##D PoincareConstant(dgumbel, qgumbel, pgumbel, truncated=TRUE, 
+> ##D min=500, max=3000, loc=1013.0, scale=558.0) 
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("PoincareConstant", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("decoupling")
+> ### * decoupling
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: decoupling
+> ### Title: Decoupling Simulations and Estimations
+> ### Aliases: decoupling tell ask
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> # Example of use of fast99 with "model = NULL"
+> x <- fast99(model = NULL, factors = 3, n = 1000,
++             q = "qunif", q.arg = list(min = -pi, max = pi))
+> y <- ishigami.fun(x$X)
+> tell(x, y)
+> print(x)
+
+Call:
+fast99(model = NULL, factors = 3, n = 1000, q = "qunif", q.arg = list(min = -pi,     max = pi))
+
+Model runs: 3000 
+
+Estimations of the indices:
+    first order total order
+X1 3.076874e-01   0.5506015
+X2 4.419659e-01   0.4697538
+X3 3.407670e-29   0.2391275
+> plot(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("decoupling", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("delsa")
+> ### * delsa
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: delsa
+> ### Title: Distributed Evaluation of Local Sensitivity Analysis
+> ### Aliases: delsa tell.delsa print.delsa plot.delsa
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the non-monotonic Sobol g-function
+> # (there are 8 factors, all following the uniform distribution on [0,1])
+> 
+> ## Not run: 
+> ##D library(randtoolbox)
+> ##D x <- delsa(model=sobol.fun,
+> ##D            par.ranges=replicate(8,c(0,1),simplify=FALSE),
+> ##D            samples=100,method="sobol")
+> ##D 
+> ##D # Summary of sensitivity indices of each parameter across parameter space
+> ##D print(x)
+> ##D 
+> ##D library(ggplot2)
+> ##D library(reshape2)
+> ##D x11()
+> ##D plot(x)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("delsa", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fast99")
+> ### * fast99
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fast99
+> ### Title: Extended Fourier Amplitude Sensitivity Test
+> ### Aliases: fast99 tell.fast99 print.fast99 plot.fast99
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the non-monotonic Ishigami function
+> x <- fast99(model = ishigami.fun, factors = 3, n = 1000,
++             q = "qunif", q.arg = list(min = -pi, max = pi))
+> print(x)
+
+Call:
+fast99(model = ishigami.fun, factors = 3, n = 1000, q = "qunif",     q.arg = list(min = -pi, max = pi))
+
+Model runs: 3000 
+
+Estimations of the indices:
+    first order total order
+X1 3.076874e-01   0.5506015
+X2 4.419659e-01   0.4697538
+X3 3.407670e-29   0.2391275
+> plot(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fast99", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("morris")
+> ### * morris
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: morris
+> ### Title: Morris's Elementary Effects Screening Method
+> ### Aliases: morris tell.morris print.morris plot.morris plot3d.morris
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the non-monotonic function of Morris
+> x <- morris(model = morris.fun, factors = 20, r = 4,
++             design = list(type = "oat", levels = 5, grid.jump = 3))
+> print(x)
+
+Call:
+morris(model = morris.fun, factors = 20, r = 4, design = list(type = "oat",     levels = 5, grid.jump = 3))
+
+Model runs: 84 
+            mu   mu.star      sigma
+X1  35.5913260 76.889572 92.3668234
+X2  14.3880550 60.421549 72.5283318
+X3  17.8165619 56.549625 89.2039588
+X4  16.8940012 55.162289 78.5027780
+X5  11.5087995 19.362354 22.7244602
+X6   0.4468641 42.492036 49.8539758
+X7  53.9643452 53.964345 16.8417251
+X8  32.0388429 32.038843  0.7981507
+X9  38.9993364 38.999336  6.9701889
+X10 37.9529120 37.952912  3.7428338
+X11  0.8110970 10.109749 11.6873692
+X12 -5.1810793  5.181079  4.7977247
+X13  1.0726976  4.794849  6.0356966
+X14  3.9570003  4.299360  4.4384940
+X15 -1.2561901  6.302775  8.4223324
+X16 -2.6828058  5.200854  6.1503131
+X17  0.7258489  3.842857  4.8523059
+X18 -0.5773799  4.960249  6.2067005
+X19 -4.9383342  4.938334  4.1853075
+X20 -2.9431126  4.606961  5.7626795
+> plot(x)
+> ## Not run: 
+> ##D library(rgl)
+> ##D plot3d.morris(x)  # (requires the package 'rgl')
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("morris", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("parameterSets")
+> ### * parameterSets
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: parameterSets
+> ### Title: Generate parameter sets
+> ### Aliases: parameterSets
+> ### Keywords: utilities
+> 
+> ### ** Examples
+> 
+> 
+> X.grid <- parameterSets(par.ranges=list(V1=c(1,1000),V2=c(1,4)),
++                           samples=c(10,10),method="grid")
+> plot(X.grid)
+> 
+> X.innergrid<-parameterSets(par.ranges=list(V1=c(1,1000),V2=c(1,4)),
++                           samples=c(10,10),method="innergrid")
+> points(X.innergrid,col="red")
+> 
+> ## Not run: 
+> ##D library(randtoolbox)
+> ##D X.sobol<-parameterSets(par.ranges=list(V1=c(1,1000),V2=c(1,4)),
+> ##D                            samples=100,method="sobol")
+> ##D plot(X.sobol)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("parameterSets", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pcc")
+> ### * pcc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pcc
+> ### Title: Partial Correlation Coefficients
+> ### Aliases: pcc print.pcc plot.pcc
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> # a 100-sample with X1 ~ U(0.5, 1.5)
+> #                   X2 ~ U(1.5, 4.5)
+> #                   X3 ~ U(4.5, 13.5)
+> library(boot)
+> n <- 100
+> X <- data.frame(X1 = runif(n, 0.5, 1.5),
++                 X2 = runif(n, 1.5, 4.5),
++                 X3 = runif(n, 4.5, 13.5))
+> 
+> # linear model : Y = X1 + X2 + X3
+> y <- with(X, X1 + X2 + X3)
+> 
+> # sensitivity analysis
+> x <- pcc(X, y, nboot = 100)
+[1] "All values of t are equal to  1 \n Cannot calculate confidence intervals"
+[1] "All values of t are equal to  1 \n Cannot calculate confidence intervals"
+[1] "All values of t are equal to  1 \n Cannot calculate confidence intervals"
+> print(x)
+
+Call:
+pcc(X = X, y = y, nboot = 100)
+
+Partial Correlation Coefficients (PCC):
+   original bias   std. error min. c.i. max. c.i.
+X1        1    0 6.787245e-17        NA        NA
+X2        1    0 7.231315e-17        NA        NA
+X3        1    0 6.506270e-17        NA        NA
+> #plot(x) # TODO: find another example...
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pcc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:boot’
+
+> nameEx("sb")
+> ### * sb
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sb
+> ### Title: Sequential Bifurcations
+> ### Aliases: sb ask.sb tell.sb print.sb plot.sb
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # a model with interactions
+> p <- 50
+> beta <- numeric(length = p)
+> beta[1:5] <- runif(n = 5, min = 10, max = 50)
+> beta[6:p] <- runif(n = p - 5, min = 0, max = 0.3)
+> beta <- sample(beta)
+> gamma <- matrix(data = runif(n = p^2, min = 0, max = 0.1), nrow = p, ncol = p)
+> gamma[lower.tri(gamma, diag = TRUE)] <- 0
+> gamma[1,2] <- 5
+> gamma[5,9] <- 12
+> f <- function(x) { return(sum(x * beta) + (x %*% gamma %*% x))}
+> 
+> # 10 iterations of SB
+> sa <- sb(p, interaction = TRUE)
+> for (i in 1 : 10) {
++   x <- ask(sa)
++   y <- list()
++   for (i in names(x)) {
++     y[[i]] <- f(x[[i]])
++   }
++   tell(sa, y)
++ }
+> print(sa)
+
+Groups:
+   group     effect
+1    1-4  0.7783123
+2      5 92.6566232
+3      6 36.1345545
+4      7  0.2304622
+5   8-13  2.1366944
+6  14-16  0.8649244
+7  17-19 66.5525053
+8  20-25  1.7045900
+9  26-38 54.1803595
+10 39-50 44.9765867
+> plot(sa)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sb", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sensiFdiv")
+> ### * sensiFdiv
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sensiFdiv
+> ### Title: Sensitivity Indices based on Csiszar f-divergence
+> ### Aliases: sensiFdiv tell.sensiFdiv print.sensiFdiv plot.sensiFdiv
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(ks)
+> ##D 
+> ##D # Test case : the non-monotonic Sobol g-function
+> ##D n <- 100
+> ##D X <- data.frame(matrix(runif(8 * n), nrow = n))
+> ##D 
+> ##D # Density-based sensitivity analysis
+> ##D x <- sensiFdiv(model = sobol.fun, X = X, fdiv = c("TV","KL"), nboot=30)
+> ##D print(x)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sensiFdiv", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sensiHSIC")
+> ### * sensiHSIC
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sensiHSIC
+> ### Title: Sensitivity Indices based on Hilbert-Schmidt Independence
+> ###   Criterion (HSIC)
+> ### Aliases: sensiHSIC tell.sensiHSIC print.sensiHSIC plot.sensiHSIC
+> 
+> ### ** Examples
+> 
+>  ## Not run: 
+> ##D  
+> ##D   # Test case : the non-monotonic Sobol g-function
+> ##D   # Only one kernel is provided with default hyperparameter value
+> ##D   n <- 100
+> ##D   X <- data.frame(matrix(runif(8 * n), nrow = n))
+> ##D   x <- sensiHSIC(model = sobol.fun, X, kernelX = "raquad", kernelY = "rbf")
+> ##D   print(x)
+> ##D   
+> ##D   # Test case : the Ishigami function
+> ##D   # A list of kernels is given with default hyperparameter value
+> ##D   n <- 100
+> ##D   X <- data.frame(matrix(-pi+2*pi*runif(3 * n), nrow = n))
+> ##D   x <- sensiHSIC(model = ishigami.fun, X, kernelX = c("rbf","matern3","dcov"), 
+> ##D                   kernelY = "rbf")
+> ##D   print(x)
+> ##D   
+> ##D   # A combination of kernels is given and a dummy value is passed for 
+> ##D   # the first hyperparameter
+> ##D   x <- sensiHSIC(model = ishigami.fun, X, kernelX = c("ssanova1","matern3","dcov"), 
+> ##D                   paramX = c(1,2,1), kernelY = "ssanova1")
+> ##D   print(x)
+> ##D  
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sensiHSIC", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sobol")
+> ### * sobol
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobol
+> ### Title: Monte Carlo Estimation of Sobol' Indices
+> ### Aliases: sobol tell.sobol print.sobol plot.sobol
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the non-monotonic Sobol g-function
+> 
+> # The method of sobol requires 2 samples
+> # (there are 8 factors, all following the uniform distribution on [0,1])
+> library(boot)
+> n <- 1000
+> X1 <- data.frame(matrix(runif(8 * n), nrow = n))
+> X2 <- data.frame(matrix(runif(8 * n), nrow = n))
+> 
+> # sensitivity analysis
+> x <- sobol(model = sobol.fun, X1 = X1, X2 = X2, order = 2, nboot = 100)
+> print(x)
+
+Call:
+sobol(model = sobol.fun, X1 = X1, X2 = X2, order = 2, nboot = 100)
+
+Model runs: 37000 
+
+Sobol indices
+          original         bias std. error   min. c.i.  max. c.i.
+X1     0.730019700  0.001635815 0.04760883  0.65302712 0.84667711
+X2     0.211907894  0.002943371 0.07310359  0.04993381 0.36278763
+X3     0.078226918  0.002205552 0.07122948 -0.05870761 0.20594739
+X4     0.069162223  0.002829296 0.07271067 -0.08504881 0.20161228
+X5     0.048054332  0.002936524 0.07250915 -0.09763048 0.18127706
+X6     0.046752766  0.002890521 0.07262221 -0.09894040 0.17993451
+X7     0.048854725  0.002889256 0.07263190 -0.09596556 0.18263534
+X8     0.046524927  0.002923648 0.07280978 -0.09898899 0.17972261
+X1*X2  0.002524661 -0.003406075 0.08553192 -0.16362961 0.17917056
+X1*X3 -0.040637339 -0.002574986 0.07544656 -0.16535322 0.10676039
+X1*X4 -0.037919726 -0.003265050 0.07436258 -0.17246689 0.11089813
+X1*X5 -0.047877123 -0.002967307 0.07262189 -0.18097418 0.09752432
+X1*X6 -0.048747093 -0.003019146 0.07265525 -0.18242539 0.09648519
+X1*X7 -0.046741865 -0.002939986 0.07265231 -0.17960979 0.09902564
+X1*X8 -0.047052348 -0.002918201 0.07273183 -0.18044841 0.09880736
+X2*X3 -0.054908344 -0.003672127 0.07368050 -0.18379290 0.09331595
+X2*X4 -0.046910574 -0.002265983 0.07276400 -0.18138104 0.09778480
+X2*X5 -0.047002555 -0.002944625 0.07268277 -0.18056756 0.09851649
+X2*X6 -0.047190979 -0.002907341 0.07265473 -0.18076655 0.09796697
+X2*X7 -0.047263812 -0.002920379 0.07272181 -0.18053412 0.09846844
+X2*X8 -0.047321872 -0.002963195 0.07261584 -0.18087570 0.09832392
+X3*X4 -0.046793584 -0.002935199 0.07256860 -0.18034246 0.09944745
+X3*X5 -0.047502303 -0.002926352 0.07263646 -0.18079892 0.09813156
+X3*X6 -0.047430981 -0.002927209 0.07265565 -0.18108339 0.09817198
+X3*X7 -0.047447570 -0.002929621 0.07268742 -0.18099024 0.09837058
+X3*X8 -0.047493733 -0.002919507 0.07262791 -0.18067389 0.09782021
+X4*X5 -0.047330355 -0.002925548 0.07265708 -0.18088597 0.09825786
+X4*X6 -0.047314530 -0.002927867 0.07265566 -0.18075600 0.09814209
+X4*X7 -0.047441174 -0.002918327 0.07264538 -0.18094022 0.09813120
+X4*X8 -0.047457377 -0.002919407 0.07264528 -0.18086003 0.09806655
+X5*X6 -0.047382122 -0.002931406 0.07265242 -0.18082807 0.09818656
+X5*X7 -0.047371753 -0.002929821 0.07265133 -0.18081901 0.09819576
+X5*X8 -0.047366658 -0.002930508 0.07265105 -0.18080936 0.09820378
+X6*X7 -0.047385489 -0.002930780 0.07265188 -0.18083908 0.09818182
+X6*X8 -0.047369677 -0.002929361 0.07265078 -0.18081949 0.09819094
+X7*X8 -0.047358731 -0.002930340 0.07265092 -0.18080660 0.09820357
+> #plot(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobol", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:boot’
+
+> nameEx("sobol2002")
+> ### * sobol2002
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobol2002
+> ### Title: Monte Carlo Estimation of Sobol' Indices (scheme by Saltelli
+> ###   2002)
+> ### Aliases: sobol2002 tell.sobol2002 print.sobol2002 plot.sobol2002
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the non-monotonic Sobol g-function
+> 
+> # The method of sobol requires 2 samples
+> # There are 8 factors, all following the uniform distribution
+> # on [0,1]
+> 
+> library(boot)
+> n <- 1000
+> X1 <- data.frame(matrix(runif(8 * n), nrow = n))
+> X2 <- data.frame(matrix(runif(8 * n), nrow = n))
+> 
+> # sensitivity analysis
+> 
+> x <- sobol2002(model = sobol.fun, X1, X2, nboot = 100)
+> print(x)
+
+Call:
+sobol2002(model = sobol.fun, X1 = X1, X2 = X2, nboot = 100)
+
+Model runs: 10000 
+
+First order indices:
+        original         bias   std. error     min. c.i.   max. c.i.
+X1  0.7066482232 1.780969e-02 0.0939548571  0.4737493096 0.856871226
+X2  0.1634091423 2.196382e-04 0.0428998879  0.0686886737 0.265763073
+X3  0.0182942909 1.391667e-03 0.0168473014 -0.0244162291 0.050252493
+X4 -0.0050519339 2.609678e-04 0.0069649994 -0.0206439987 0.007792164
+X5  0.0015673711 1.629991e-05 0.0008148743 -0.0002224214 0.002938720
+X6  0.0028956420 6.219833e-05 0.0007461783  0.0009795931 0.003985229
+X7  0.0007752682 6.419734e-05 0.0007279253 -0.0005803784 0.002535428
+X8  0.0031162310 2.940387e-05 0.0008148165  0.0014151725 0.004874221
+
+Total indices:
+        original          bias  std. error    min. c.i.     max. c.i.
+X1  7.414646e-01 -1.960565e-03 0.069663611  0.601697943  0.8929181907
+X2  2.014757e-01 -7.536041e-04 0.046294950  0.088598527  0.2948152352
+X3  2.875130e-02 -1.111581e-03 0.023425279 -0.017179167  0.0778818984
+X4  2.539945e-02  1.930460e-04 0.011027280  0.001527045  0.0484753182
+X5 -1.961470e-03 -4.845290e-05 0.001175541 -0.004048823  0.0008240589
+X6 -4.633942e-03 -1.247765e-04 0.001141453 -0.006780275 -0.0022113689
+X7 -3.531615e-05 -7.042929e-05 0.001084257 -0.002173130  0.0021517567
+X8 -2.763939e-03 -7.010327e-06 0.001135731 -0.005103776 -0.0004876084
+> plot(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobol2002", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:boot’
+
+> nameEx("sobol2007")
+> ### * sobol2007
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobol2007
+> ### Title: Monte Carlo Estimation of Sobol' Indices (improved formulas of
+> ###   Mauntz: Sobol et al. (2007) and Saltelli et al. (2010))
+> ### Aliases: sobol2007 tell.sobol2007 print.sobol2007 plot.sobol2007
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the non-monotonic Sobol g-function
+> 
+> # The method of sobol requires 2 samples
+> # There are 8 factors, all following the uniform distribution
+> # on [0,1]
+> 
+> library(boot)
+> n <- 1000
+> X1 <- data.frame(matrix(runif(8 * n), nrow = n))
+> X2 <- data.frame(matrix(runif(8 * n), nrow = n))
+> 
+> # sensitivity analysis
+> 
+> x <- sobol2007(model = sobol.fun, X1, X2, nboot = 100)
+> print(x)
+
+Call:
+sobol2007(model = sobol.fun, X1 = X1, X2 = X2, nboot = 100)
+
+Model runs: 10000 
+
+First order indices:
+        original          bias   std. error    min. c.i.    max. c.i.
+X1  0.7045233935  1.778879e-02 0.0939165951  0.471650959 0.8547455451
+X2  0.1612843126  1.987354e-04 0.0428587989  0.066689147 0.2635888998
+X3  0.0161694613  1.370764e-03 0.0168202912 -0.026450096 0.0480947255
+X4 -0.0071767635  2.400650e-04 0.0069582472 -0.022778000 0.0056997912
+X5 -0.0005574586 -4.602879e-06 0.0008078295 -0.002210859 0.0008377983
+X6  0.0007708123  4.129554e-05 0.0007530543 -0.001143119 0.0019017831
+X7 -0.0013495615  4.329455e-05 0.0007340102 -0.002705916 0.0005413625
+X8  0.0009914013  8.501079e-06 0.0008111339 -0.000588189 0.0026829405
+
+Total indices:
+        original          bias  std. error     min. c.i.     max. c.i.
+X1  0.7435440926 -1.942575e-03 0.069700966  0.6036900538  8.949637e-01
+X2  0.2035551992 -7.356137e-04 0.046295328  0.0906698031  2.967674e-01
+X3  0.0308308392 -1.093591e-03 0.023426131 -0.0151366263  7.985765e-02
+X4  0.0274789853  2.110364e-04 0.011033339  0.0035058231  5.047940e-02
+X5  0.0001180705 -3.046246e-05 0.001173831 -0.0020409585  2.797088e-03
+X6 -0.0025544018 -1.067861e-04 0.001153699 -0.0047592325 -5.065674e-05
+X7  0.0020442239 -5.243885e-05 0.001096049 -0.0001661387  4.249043e-03
+X8 -0.0006843989  1.098011e-05 0.001124454 -0.0030102437  1.596873e-03
+> plot(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobol2007", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:boot’
+
+> nameEx("sobolCert")
+> ### * sobolCert
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobolCert
+> ### Title: Monte Carlo Estimation of Sobol' Indices using certified
+> ###   meta-models
+> ### Aliases: sobolCert print.sobolCert
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> 	## Not run: 
+> ##D # Test case
+> ##D 
+> ##D n <- 1000
+> ##D X1 <- data.frame(matrix(runif(3 * n), nrow = n))
+> ##D X2 <- data.frame(matrix(runif(3 * n), nrow = n))
+> ##D 
+> ##D # sensitivity analysis
+> ##D x=sobolCert(model=function(X) { list(out=X[1]+2*X[2]+X[3]+.001*runif(1),err=.01); }, 
+> ##D             X1, X2, conf=.99, lambda0=.1, h=.1, nboot=30)
+> ##D print(x)
+> ##D 
+> ##D x=sobolCert(model=NULL, X1=NULL, X2=NULL, conf=.95)
+> ##D print(x)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobolCert", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sobolEff")
+> ### * sobolEff
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobolEff
+> ### Title: Monte Carlo Estimation of Sobol' Indices (formulas of
+> ###   Janon-Monod)
+> ### Aliases: sobolEff tell.sobolEff print.sobolEff plot.sobolEff
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the non-monotonic Sobol g-function
+> 
+> # The method of sobol requires 2 samples
+> # (there are 8 factors, all following the uniform distribution on [0,1])
+> n <- 1000
+> X1 <- data.frame(matrix(runif(8 * n), nrow = n))
+> X2 <- data.frame(matrix(runif(8 * n), nrow = n))
+> 
+> # sensitivity analysis
+> x <- sobolEff(model = sobol.fun, X1 = X1, X2 = X2, nboot = 0)
+> print(x)
+
+Call:
+sobolEff(model = sobol.fun, X1 = X1, X2 = X2, nboot = 0)
+
+Model runs: 9000 
+
+Model variance: 0.4982365 
+
+
+
+Sobol indices
+   original std. error min. c.i. max. c.i.
+S1 0.756746   0.013798  0.729703  0.783789
+S2 0.208673   0.033453  0.143107  0.274239
+S3 0.060053   0.032730 -0.004096  0.124202
+S4 0.065639   0.031568  0.003766  0.127512
+S5 0.052196   0.031287 -0.009125  0.113517
+S6 0.051087   0.031251 -0.010165  0.112339
+S7 0.051432   0.031315 -0.009944  0.112808
+S8 0.050888   0.031303 -0.010464  0.112240
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobolEff", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sobolGP")
+> ### * sobolGP
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobolGP
+> ### Title: Kriging-based sensitivity analysis
+> ### Aliases: sobolGP plot.sobolGP ask.sobolGP tell.sobolGP print.sobolGP
+> 
+> ### ** Examples
+> 
+> 
+> ## Not run: 
+> ##D library(DiceKriging)
+> ##D 
+> ##D #--------------------------------------#
+> ##D # kriging model building
+> ##D #--------------------------------------#
+> ##D 
+> ##D d <- 2; n <- 16
+> ##D design.fact <- expand.grid(x1=seq(0,1,length=4), x2=seq(0,1,length=4))
+> ##D y <- apply(design.fact, 1, branin) 
+> ##D 
+> ##D m <- km(design=design.fact, response=y)
+> ##D 
+> ##D #--------------------------------------#
+> ##D # sobol samples & candidate points
+> ##D #--------------------------------------#
+> ##D 
+> ##D n <- 1000
+> ##D X1 <- data.frame(matrix(runif(d * n), nrow = n))
+> ##D X2 <- data.frame(matrix(runif(d * n), nrow = n))
+> ##D 
+> ##D candidate <- data.frame(matrix(runif(d * 100), nrow = 100))
+> ##D 
+> ##D #--------------------------------------#
+> ##D # Kriging-based Sobol
+> ##D #--------------------------------------#
+> ##D 
+> ##D res <- sobolGP(
+> ##D model = m,
+> ##D type="UK",
+> ##D MCmethod="sobol",
+> ##D X1,
+> ##D X2,
+> ##D nsim = 100,
+> ##D conf = 0.95,
+> ##D nboot=100,
+> ##D sequential = TRUE,
+> ##D candidate,
+> ##D sequential.tot=FALSE,
+> ##D max_iter = 1000
+> ##D ) 
+> ##D 
+> ##D res
+> ##D plot(res)
+> ##D x <- ask(res)
+> ##D y <- branin(x)
+> ##D res.new <- tell(res,y,x)
+> ##D res.new
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobolGP", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sobolMultOut")
+> ### * sobolMultOut
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobolMultOut
+> ### Title: Monte Carlo Estimation of Aggregated Sobol' Indices for multiple
+> ###   and functional outputs
+> ### Aliases: sobolMultOut print.sobolMultOut plot.sobolMultOut
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Functional toy function: Arctangent temporal function (Auder, 2011)
+> ##D # X: input matrix (in [-7,7]^2)
+> ##D # q: number of discretization steps of [0,2pi] interval
+> ##D # output: vector of q values
+> ##D 
+> ##D atantemp <- function(X, q = 100){
+> ##D   
+> ##D   n <- dim(X)[[1]]
+> ##D   t <- (0:(q-1)) * (2*pi) / (q-1)
+> ##D   
+> ##D   res <- matrix(0,ncol=q,nrow=n)
+> ##D   for (i in 1:n) res[i,] <- atan(X[i,1]) * cos(t) + atan(X[i,2]) * sin(t)
+> ##D 
+> ##D   return(res)  
+> ##D }
+> ##D 
+> ##D # Tests functional toy fct 
+> ##D 
+> ##D y0 <- atantemp(matrix(c(-7,0,7,-7,0,7),ncol=2))
+> ##D #plot(y0[1,],type="l")
+> ##D #apply(y0,1,lines)
+> ##D 
+> ##D n <- 100
+> ##D X <- matrix(c(runif(2*n,-7,7)),ncol=2)
+> ##D y <- atantemp(X)
+> ##D x11()
+> ##D plot(y0[2,],ylim=c(-2,2),type="l")
+> ##D apply(y,1,lines)
+> ##D 
+> ##D # Sobol indices computations
+> ##D 
+> ##D n <- 1000
+> ##D X1 <- data.frame(matrix(runif(2*n,-7,7), nrow = n))
+> ##D X2 <- data.frame(matrix(runif(2*n,-7,7), nrow = n))
+> ##D 
+> ##D x11()
+> ##D sa <- sobolMultOut(model=atantemp, q=100, X1, X2, 
+> ##D                    MCmethod="soboljansen", plotFct=T)
+> ##D print(sa)
+> ##D x11()
+> ##D plot(sa)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobolMultOut", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sobolTIIlo")
+> ### * sobolTIIlo
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobolTIIlo
+> ### Title: Liu and Owen Estimation of Total Interaction Indices
+> ### Aliases: sobolTIIlo tell.sobolTIIlo print.sobolTIIlo plot.sobolTIIlo
+> ###   plotFG.sobolTIIlo
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the Ishigami function
+> 
+> # The method requires 2 samples
+> n <- 1000
+> X1 <- data.frame(matrix(runif(3 * n, -pi, pi), nrow = n))
+> X2 <- data.frame(matrix(runif(3 * n, -pi, pi), nrow = n))
+> 
+> # sensitivity analysis (the true values of the scaled TIIs are 0, 0.244, 0)
+> x <- sobolTIIlo(model = ishigami.fun, X1 = X1, X2 = X2)
+> print(x)
+
+Call:
+sobolTIIlo(model = ishigami.fun, X1 = X1, X2 = X2)
+
+Model runs: 7000 
+
+unscaled tii
+          original
+X1*X2 9.439130e-32
+X1*X3 3.012016e+00
+X2*X3 5.943811e-32
+
+scaled tii
+          original    std.error    min. c.i.    max. c.i.
+X1*X2 7.499343e-33 4.973541e-34 6.524547e-33 8.474139e-33
+X1*X3 2.393032e-01 2.006684e-02 1.999729e-01 2.786335e-01
+X2*X3 4.722329e-33 3.778136e-34 3.981828e-33 5.462830e-33
+> 
+> # plot of tiis and FANOVA graph
+> plot(x)
+> 
+> ## Not run: 
+> ##D library(igraph)
+> ##D plotFG(x)
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobolTIIlo", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sobolTIIpf")
+> ### * sobolTIIpf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobolTIIpf
+> ### Title: Pick-freeze Estimation of Total Interaction Indices
+> ### Aliases: sobolTIIpf tell.sobolTIIpf print.sobolTIIpf plot.sobolTIIpf
+> ###   plotFG.sobolTIIpf plotFG
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the Ishigami function
+> 
+> # The method requires 2 samples
+> n <- 1000
+> X1 <- data.frame(matrix(runif(3 * n, -pi, pi), nrow = n))
+> X2 <- data.frame(matrix(runif(3 * n, -pi, pi), nrow = n))
+> 
+> # sensitivity analysis (the true values are 0, 0.244, 0)
+> x <- sobolTIIpf(model = ishigami.fun, X1 = X1, X2 = X2)
+> print(x)
+
+Call:
+sobolTIIpf(model = ishigami.fun, X1 = X1, X2 = X2)
+
+Model runs: 4000 
+
+scaled tii
+         original
+X1*X2 0.009706088
+X1*X3 0.269752988
+X2*X3 0.042540242
+> 
+> # plot of tiis and FANOVA graph
+> plot(x)
+> 
+> ## Not run: 
+> ##D library(igraph)
+> ##D plotFG(x)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobolTIIpf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("soboljansen")
+> ### * soboljansen
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: soboljansen
+> ### Title: Monte Carlo Estimation of Sobol' Indices (improved formulas of
+> ###   Jansen (1999) and Saltelli et al. (2010))
+> ### Aliases: soboljansen tell.soboljansen print.soboljansen
+> ###   plot.soboljansen
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the non-monotonic Sobol g-function
+> 
+> # The method of sobol requires 2 samples
+> # There are 8 factors, all following the uniform distribution
+> # on [0,1]
+> 
+> library(boot)
+> n <- 1000
+> X1 <- data.frame(matrix(runif(8 * n), nrow = n))
+> X2 <- data.frame(matrix(runif(8 * n), nrow = n))
+> 
+> # sensitivity analysis
+> 
+> x <- soboljansen(model = sobol.fun, X1, X2, nboot = 100)
+> print(x)
+
+Call:
+soboljansen(model = sobol.fun, X1 = X1, X2 = X2, nboot = 100)
+
+Model runs: 10000 
+
+First order indices:
+     original         bias std. error    min. c.i. max. c.i.
+X1 0.75148319 -0.001673097 0.01854867  0.716772652 0.7880965
+X2 0.21061671 -0.010420413 0.04580451  0.139725811 0.3085799
+X3 0.08409092 -0.009273034 0.04909796  0.002127223 0.1888486
+X4 0.07876858 -0.008775010 0.04645670  0.001634024 0.1670197
+X5 0.06815095 -0.009187224 0.04656978 -0.005915935 0.1693354
+X6 0.06678834 -0.009216903 0.04638960 -0.006309843 0.1669648
+X7 0.06927719 -0.009161869 0.04644022 -0.003829549 0.1685072
+X8 0.06888936 -0.009132162 0.04635069 -0.004059963 0.1679347
+
+Total indices:
+       original         bias   std. error    min. c.i.    max. c.i.
+X1 7.645408e-01 8.360393e-03 4.288831e-02 6.763257e-01 0.8459027518
+X2 2.227212e-01 7.328157e-04 1.684351e-02 1.875590e-01 0.2561366010
+X3 3.156673e-02 3.990811e-04 2.204793e-03 2.515086e-02 0.0354148818
+X4 1.020434e-02 7.489821e-05 7.020964e-04 8.632547e-03 0.0114068339
+X5 9.073883e-05 1.188645e-06 6.091712e-06 7.728293e-05 0.0001020129
+X6 1.098246e-04 4.578277e-07 6.568339e-06 9.509462e-05 0.0001226795
+X7 9.798098e-05 1.741606e-06 6.853034e-06 8.211142e-05 0.0001092354
+X8 9.834639e-05 6.455165e-07 6.624831e-06 8.434694e-05 0.0001115431
+> plot(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("soboljansen", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:boot’
+
+> nameEx("sobolmara")
+> ### * sobolmara
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobolmara
+> ### Title: Monte Carlo Estimation of Sobol' Indices via matrix permutations
+> ### Aliases: sobolmara tell.sobolmara print.sobolmara plot.sobolmara
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the non-monotonic Sobol g-function
+> 
+> # The method of sobolmara requires 1 sample
+> # (there are 8 factors, all following the uniform distribution on [0,1])
+> n <- 1000
+> X1 <- data.frame(matrix(runif(8 * n), nrow = n))
+> 
+> # sensitivity analysis
+> x <- sobolmara(model = sobol.fun, X1 = X1)
+> print(x)
+
+Call:
+sobolmara(model = sobol.fun, X1 = X1)
+
+Model runs: 2000 
+
+Sobol indices
+        original
+X1  0.6998969255
+X2  0.1565249628
+X3  0.0394254836
+X4  0.0035459517
+X5  0.0360382520
+X6 -0.0270303427
+X7 -0.0001584731
+X8  0.0098703239
+> plot(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobolmara", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sobolmartinez")
+> ### * sobolmartinez
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobolmartinez
+> ### Title: Monte Carlo Estimation of Sobol' Indices (formulas of Martinez
+> ###   (2011))
+> ### Aliases: sobolmartinez tell.sobolmartinez print.sobolmartinez
+> ###   plot.sobolmartinez
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the non-monotonic Sobol g-function
+> 
+> # The method of sobol requires 2 samples
+> # There are 8 factors, all following the uniform distribution
+> # on [0,1]
+> 
+> library(boot)
+> n <- 1000
+> X1 <- data.frame(matrix(runif(8 * n), nrow = n))
+> X2 <- data.frame(matrix(runif(8 * n), nrow = n))
+> 
+> # sensitivity analysis
+> 
+> x <- sobolmartinez(model = sobol.fun, X1, X2, nboot = 0)
+> print(x)
+
+Call:
+sobolmartinez(model = sobol.fun, X1 = X1, X2 = X2, nboot = 0)
+
+Model runs: 10000 
+
+First order indices:
+     original    min. c.i. max. c.i.
+X1 0.74692456  0.718186502 0.7731190
+X2 0.20913723  0.149076936 0.2676601
+X3 0.06756544  0.005595792 0.1290181
+X4 0.05770776 -0.004300709 0.1192741
+X5 0.05057219 -0.011456808 0.1122135
+X6 0.05069907 -0.011329618 0.1123391
+X7 0.05107235 -0.010955419 0.1127086
+X8 0.05189644 -0.010129230 0.1135243
+
+Total indices:
+       original    min. c.i.    max. c.i.
+X1 7.654121e-01 7.076703e-01 0.8248581511
+X2 2.191513e-01 1.960740e-01 0.2445763882
+X3 3.156289e-02 2.792942e-02 0.0356604964
+X4 1.019991e-02 9.014454e-03 0.0115403604
+X5 9.078002e-05 8.018201e-05 0.0001027788
+X6 1.083737e-04 9.572183e-05 0.0001226977
+X7 9.746479e-05 8.608640e-05 0.0001103470
+X8 9.823494e-05 8.676665e-05 0.0001112190
+> plot(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobolmartinez", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:boot’
+
+> nameEx("sobolowen")
+> ### * sobolowen
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobolowen
+> ### Title: Monte Carlo Estimation of Sobol' Indices (improved formulas of
+> ###   Owen (2013)
+> ### Aliases: sobolowen tell.sobolowen print.sobolowen plot.sobolowen
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> # Test case : the non-monotonic Sobol g-function
+> 
+> # The method of sobolowen requires 3 samples
+> # There are 8 factors, all following the uniform distribution
+> # on [0,1]
+> 
+> library(boot)
+> n <- 1000
+> X1 <- data.frame(matrix(runif(8 * n), nrow = n))
+> X2 <- data.frame(matrix(runif(8 * n), nrow = n))
+> X3 <- data.frame(matrix(runif(8 * n), nrow = n))
+> 
+> # sensitivity analysis
+> 
+> ## Not run: 
+> ##D x <- sobolowen(model = sobol.fun, X1, X2, X3, nboot = 100)
+> ##D print(x)
+> ##D plot(x)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobolowen", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:boot’
+
+> nameEx("sobolroalhs")
+> ### * sobolroalhs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sobolroalhs
+> ### Title: Sobol' Indices Estimation Using Replicated OA-based LHS
+> ### Aliases: sobolroalhs tell.sobolroalhs print.sobolroalhs
+> ###   plot.sobolroalhs
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> library(numbers)
+> 
+> # Test case : the non-monotonic Sobol g-function
+> 
+> # The method of sobol requires 2 samples
+> # (there are 8 factors, all following the uniform distribution on [0,1])
+> 
+> # first-order sensitivity indices
+> x <- sobolroalhs(model = sobol.fun, factors = 8, runs = 1000, order = 1)
+> print(x)
+
+Call:
+sobolroalhs(model = sobol.fun, factors = 8, runs = 1000, order = 1)
+
+Model runs: 2000 
+
+Model variance:
+      original
+Vs   0.4461275
+Veff 0.4601482
+
+First order indices:
+       original min. c.i. max. c.i.
+S1     0.731021  0.699187  0.762856
+S2     0.187233  0.124193  0.250272
+S3     0.079448  0.014940  0.143956
+S4    -0.008333 -0.067967  0.051301
+S5    -0.038653 -0.099040  0.021735
+S6    -0.014660 -0.076368  0.047047
+S7     0.028243 -0.035687  0.092172
+S8     0.008441 -0.055876  0.072758
+Seff1  0.708589  0.676689  0.740489
+Seff2  0.181370  0.118275  0.244465
+Seff3  0.076869  0.012360  0.141378
+Seff4 -0.008237 -0.067871  0.051397
+Seff5 -0.037633 -0.098028  0.022762
+Seff6 -0.014371 -0.076079  0.047336
+Seff7  0.027224 -0.036706  0.091155
+Seff8  0.008026 -0.056292  0.072345
+> plot(x)
+> 
+> # closed second-order sensitivity indices
+> x <- sobolroalhs(model = sobol.fun, factors = 8, runs = 1000, order = 2)
+Warning in sobolroalhs(model = sobol.fun, factors = 8, runs = 1000, order = 2) :
+  The number of model evaluations (runs) you entered is not the square of a prime number. It has been replaced by : 961
+> print(x)
+
+Call:
+sobolroalhs(model = sobol.fun, factors = 8, runs = 1000, order = 2)
+
+Model runs: 1922 
+
+Model variance:
+      original
+Vs   0.4750299
+Veff 0.4736262
+
+Global second order indices:
+        original min. c.i. max. c.i.
+S12     0.950815  0.944549  0.957082
+S13     0.768776  0.741863  0.795689
+S14     0.732523  0.701495  0.763550
+S15     0.689696  0.654989  0.724403
+S16     0.719271  0.686488  0.752055
+S17     0.720845  0.690178  0.751511
+S18     0.725212  0.694375  0.756048
+S23     0.222877  0.153907  0.291846
+S24     0.173123  0.103454  0.242792
+S25     0.186257  0.119760  0.252755
+S26     0.150123  0.083320  0.216927
+S27     0.225557  0.158741  0.292373
+S28     0.178710  0.110343  0.247076
+S34     0.032136 -0.034053  0.098325
+S35     0.037267 -0.026706  0.101241
+S36    -0.025509 -0.089137  0.038119
+S37     0.040648 -0.024580  0.105876
+S38     0.045056 -0.021142  0.111254
+S45     0.080435  0.018488  0.142382
+S46     0.045145 -0.018946  0.109235
+S47    -0.031863 -0.095627  0.031901
+S48     0.009327 -0.053686  0.072341
+S56    -0.021210 -0.082246  0.039826
+S57     0.001251 -0.064052  0.066555
+S58    -0.018991 -0.077829  0.039847
+S67     0.014734 -0.051203  0.080670
+S68     0.004478 -0.061995  0.070951
+S78    -0.001226 -0.063931  0.061480
+Seff12  0.953633  0.947415  0.959851
+Seff13  0.771054  0.744184  0.797925
+Seff14  0.734694  0.703695  0.765692
+Seff15  0.691740  0.657043  0.726438
+Seff16  0.721403  0.688640  0.754166
+Seff17  0.722981  0.692350  0.753612
+Seff18  0.727361  0.696547  0.758175
+Seff23  0.223537  0.154582  0.292493
+Seff24  0.173636  0.103976  0.243296
+Seff25  0.186809  0.120314  0.253305
+Seff26  0.150568  0.083771  0.217365
+Seff27  0.226225  0.159419  0.293031
+Seff28  0.179239  0.110878  0.247600
+Seff34  0.032231 -0.033956  0.098419
+Seff35  0.037378 -0.026595  0.101351
+Seff36 -0.025585 -0.089212  0.038043
+Seff37  0.040769 -0.024459  0.105996
+Seff38  0.045190 -0.021007  0.111387
+Seff45  0.080673  0.018726  0.142621
+Seff46  0.045278 -0.018812  0.109369
+Seff47 -0.031958 -0.095721  0.031806
+Seff48  0.009355 -0.053659  0.072368
+Seff56 -0.021273 -0.082308  0.039763
+Seff57  0.001255 -0.064049  0.066558
+Seff58 -0.019048 -0.077885  0.039790
+Seff67  0.014777 -0.051159  0.080714
+Seff68  0.004492 -0.061982  0.070965
+Seff78 -0.001229 -0.063935  0.061477
+> plot(x)
+> 
+> # Test case : the Ishigami function
+> 
+> # New function because sobolroalhs() works with U[0,1] inputs
+> ishigami1.fun=function(x) ishigami.fun(x*2*pi-pi)
+> 
+> # first-order sensitivity indices
+> x <- sobolroalhs(model = ishigami1.fun, factors = 3, runs = 100000, order = 1)
+> print(x)
+
+Call:
+sobolroalhs(model = ishigami1.fun, factors = 3, runs = 1e+05,     order = 1)
+
+Model runs: 200000 
+
+Model variance:
+     original
+Vs   13.78034
+Veff 13.83910
+
+First order indices:
+      original min. c.i. max. c.i.
+S1    0.313567  0.308272  0.318863
+S2    0.444193  0.439260  0.449126
+S3    0.001259 -0.007161  0.009679
+Seff1 0.312236  0.306938  0.317534
+Seff2 0.442307  0.437374  0.447240
+Seff3 0.001253 -0.007166  0.009673
+> plot(x)
+> 
+> # closed second-order sensitivity indices
+> x <- sobolroalhs(model = ishigami1.fun, factors = 3, runs = 100000, order = 2)
+Warning in sobolroalhs(model = ishigami1.fun, factors = 3, runs = 1e+05,  :
+  The number of model evaluations (runs) you entered is not the square of a prime number. It has been replaced by : 97969
+> print(x)
+
+Call:
+sobolroalhs(model = ishigami1.fun, factors = 3, runs = 1e+05,     order = 2)
+
+Model runs: 195938 
+
+Model variance:
+     original
+Vs   13.92817
+Veff 13.88320
+
+Global second order indices:
+       original min. c.i. max. c.i.
+S12    0.752735  0.750074  0.755396
+S13    0.558454  0.553625  0.563282
+S23    0.440398  0.432550  0.448247
+Seff12 0.755173  0.752515  0.757831
+Seff13 0.560263  0.555447  0.565079
+Seff23 0.441825  0.433975  0.449675
+> plot(x)
+> 
+> # dealing with NA values
+> x <- sobolroalhs(model = NULL, factors = 3, runs = 100000, order =1,na.rm=TRUE)
+> y <- ishigami1.fun(x$X)
+> # we randomly insert NA values in y
+> pos <- sample(length(y),100)
+> y[pos] <- NA
+> tell(x,y)
+> print(x)
+
+Call:
+sobolroalhs(model = NULL, factors = 3, runs = 1e+05, order = 1,     na.rm = TRUE)
+
+Model runs: 200000 
+
+Percentage of missing values(NA): 0.05 
+
+Model variance:
+     original
+Vs   13.84141
+Veff 13.82072
+
+First order indices:
+       original min. c.i. max. c.i.
+S1     0.310827  0.305525  0.316129
+S2     0.440014  0.435021  0.445007
+S3    -0.002258 -0.010643  0.006126
+Seff1  0.311293  0.305992  0.316594
+Seff2  0.440644  0.435651  0.445637
+Seff3 -0.002305 -0.010689  0.006080
+> plot(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sobolroalhs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:numbers’
+
+> nameEx("src")
+> ### * src
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: src
+> ### Title: Standardized Regression Coefficients
+> ### Aliases: src print.src plot.src
+> ### Keywords: regression
+> 
+> ### ** Examples
+> 
+> 
+> # a 100-sample with X1 ~ U(0.5, 1.5)
+> #                   X2 ~ U(1.5, 4.5)
+> #                   X3 ~ U(4.5, 13.5)
+> 
+> library(boot)
+> n <- 100
+> X <- data.frame(X1 = runif(n, 0.5, 1.5),
++                 X2 = runif(n, 1.5, 4.5),
++                 X3 = runif(n, 4.5, 13.5))
+> 
+> # linear model : Y = X1 + X2 + X3
+> 
+> y <- with(X, X1 + X2 + X3)
+> 
+> # sensitivity analysis
+> 
+> x <- src(X, y, nboot = 100)
+> print(x)
+
+Call:
+src(X = X, y = y, nboot = 100)
+
+Standardized Regression Coefficients (SRC):
+     original        bias  std. error  min. c.i. max. c.i.
+X1 0.09923377 0.001714440 0.007282216 0.08244855 0.1132520
+X2 0.30240928 0.002463140 0.022629707 0.25230773 0.3432292
+X3 0.93035057 0.004456949 0.028435221 0.86746042 0.9779002
+> plot(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("src", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:boot’
+
+> nameEx("template_replace")
+> ### * template_replace
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: template.replace
+> ### Title: Replace Values in a Template Text
+> ### Aliases: template.replace
+> ### Keywords: IO
+> 
+> ### ** Examples
+> 
+> txt <- c("Hello $(name)!", "$(a) + $(b) = @{$(a)+$(b)}",
++          "pi = @{format(pi,digits=5)}")
+> replacement <- list(name = "world", a = 1, b = 2)
+> # 1. without code evaluation:
+> txt.rpl1 <- template.replace(txt, replacement)
+> print(txt.rpl1)
+[1] "Hello world!"                "1 + 2 = @{1+2}"             
+[3] "pi = @{format(pi,digits=5)}"
+> # 2. with code evalutation:
+> txt.rpl2 <- template.replace(txt, replacement, eval = TRUE)
+> print(txt.rpl2)
+[1] "Hello world!" "1 + 2 = 3"    "pi = 3.1416" 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("template_replace", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  5.668 0.216 5.901 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

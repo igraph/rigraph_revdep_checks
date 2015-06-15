@@ -1,0 +1,23 @@
+
+> library(PBC)
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+> g <- graph.formula(X1 - X2, X2 - X3, X3 - X4, X4 - 
++     X5, simplify = FALSE)
+
+> myPBC <- pbcGumbel(g)
+
+  When sourcing ‘PBC.R’:
+Error: unimplemented type 'expression' in 'copyMatrix'
+Execution halted

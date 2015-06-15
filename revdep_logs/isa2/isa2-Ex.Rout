@@ -1,0 +1,1054 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "isa2"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "isa2-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('isa2')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("generate.seeds")
+> ### * generate.seeds
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generate.seeds
+> ### Title: Generate seed vectors for the Iterative Signature Algorithm
+> ### Aliases: generate.seeds
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## Just to get always the same result
+> set.seed(24)
+> 
+> ## Create some random seeds with different sparseness
+> data <- isa.in.silico()
+> sparsity <- rep( c(1,5,25,125), length=100)
+> row.seeds <- generate.seeds(length=nrow(data[[1]]), count=100,
++                             sparsity=sparsity)
+> 
+> ## Do ISA with the seeds
+> normed.data <- isa.normalize(data[[1]])
+> isaresult <- isa.iterate(normed.data, thr.row=1, thr.col=1,
++                          row.seeds=row.seeds)
+> 
+> ## Add the sparsity to the seed data
+> isaresult$seeddata$sparsity <- sparsity
+> 
+> ## Check which ones leed to higher robustness scores
+> rob <- robustness(normed.data, isaresult$rows, isaresult$columns)
+> tapply(rob, sparsity, mean)
+       1        5       25      125 
+32.83525 41.67871 44.57298 42.86087 
+> ## About the same
+> 
+> ## How many unique modules did we find for the different sparsity
+> isaresult.unique <- isa.unique(normed.data, isaresult)
+> tapply(seq_len(ncol(isaresult.unique$rows)),
++        isaresult.unique$seeddata$sparsity, length)
+  1   5  25 125 
+  9   5   4   3 
+> ## We usually find more modules with sparser seeds
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generate.seeds", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("isa")
+> ### * isa
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isa
+> ### Title: Iterative Signature Algorithm
+> ### Aliases: isa isa,matrix-method
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## We generate some noisy in-silico data with modules and try to find
+> ## them with the ISA. This might take one or two minutes.
+> data <- isa.in.silico(noise=0.1)
+> isa.result <- isa(data[[1]])
+> 
+> ## Find the best bicluster for each block in the input
+> best <- apply(cor(isa.result$rows, data[[2]]), 2, which.max)
+> 
+> ## Check correlation
+> sapply(seq_along(best),
++        function(x) cor(isa.result$rows[,best[x]], data[[2]][,x]))
+[1] 0.9999623 0.9999709 0.9999642
+> 
+> ## The same for the columns
+> sapply(seq_along(best),
++        function(x) cor(isa.result$columns[,best[x]], data[[3]][,x]))
+[1] 0.9999948 0.9999954 0.9999938
+> 
+> ## Plot the data and the modules found
+> if (interactive()) {
++   layout(rbind(1:2,3:4))
++   image(data[[1]], main="In-silico data")
++   sapply(best, function(b) image(outer(isa.result$rows[,b],
++                                        isa.result$columns[,b]),
++                                  main=paste("Module", b)))  
++ }
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isa", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("isa.biclust")
+> ### * isa.biclust
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isa.biclust
+> ### Title: Convert ISA modules to a Biclust class, as defined by the
+> ###   biclust package
+> ### Aliases: isa.biclust
+> 
+> ### ** Examples
+> 
+> ## You need the biclust package for this
+> if (require(biclust)) {
++   set.seed(1)
++   data <- isa.in.silico()
++   modules <- isa(data[[1]])
++   bc <- isa.biclust(modules)
++ 
++   ## A heatmap
++   drawHeatmap(data[[1]], bc, 1)
++ 
++   ## A "bubble" plot
++   bubbleplot(data[[1]], bc)
++ 
++   ## Compare values inside and outside the bicluster
++   plotclust(bc, data[[1]])
++ 
++   ## Plot profiles of bicluster elements
++   parallelCoordinates(data[[1]], bc, number=1)
++ 
++   ## Coherence measures vs. ISA robustness
++   cV <- sapply(seq(bc@Number), function(x)
++      constantVariance(data[[1]], bc, x, dimension="both"))
++   aV <- sapply(seq(bc@Number), function(x)
++      additiveVariance(data[[1]], bc, x, dimension="both"))
++   mV <- sapply(seq(bc@Number), function(x)
++      multiplicativeVariance(data[[1]], bc, x, dimension="both"))
++   sV <- sapply(seq(bc@Number), function(x)
++      signVariance(data[[1]], bc, x, dimension="both"))
++ 
++   rob <- robustness(isa.normalize(data[[1]]), modules$rows,
++      modules$columns)
++ 
++   cor( cbind(cV, aV, mV, sV, rob) )
++ }
+Loading required package: biclust
+Loading required package: MASS
+Loading required package: grid
+Loading required package: colorspace
+Loading required package: lattice
+           cV        aV        mV        sV       rob
+cV  1.0000000 0.9993351 0.7259760 0.9999732 0.9997407
+aV  0.9993351 1.0000000 0.7219710 0.9992621 0.9984729
+mV  0.7259760 0.7219710 1.0000000 0.7235262 0.7340964
+sV  0.9999732 0.9992621 0.7235262 1.0000000 0.9996893
+rob 0.9997407 0.9984729 0.7340964 0.9996893 1.0000000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isa.biclust", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:biclust’, ‘package:lattice’, ‘package:colorspace’,
+  ‘package:grid’, ‘package:MASS’
+
+> nameEx("isa.in.silico")
+> ### * isa.in.silico
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isa.in.silico
+> ### Title: Generate in-silico input data for biclustering algorithms
+> ### Aliases: isa.in.silico
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## Define a function for plotting if we are interactive
+> if (interactive()) { layout( rbind(1:2,3:4) ) }
+> myimage <- function(mat) {
++   if (interactive()) { par(mar=c(1,2,2,1)); image(mat[[1]]) }
++ }
+> 
+> ## Create a simple checkerboard without overlap and noise
+> silico1 <- isa.in.silico(100, 100, 10, mod.row.size=10, mod.col.size=10,
++                          noise=0)
+> myimage(silico1)
+> 
+> ## The same, but with some overlap and noise
+> silico2 <- isa.in.silico(100, 100, 10, mod.row.size=10, mod.col.size=10,
++                          noise=0.1, overlap.row=3)
+> myimage(silico2)
+> 
+> ## Modules with different noise levels
+> silico3 <- isa.in.silico(100, 100, 5, mod.row.size=10, mod.col.size=10,
++                          noise=0.01, mod.noise=seq(0.1,by=0.1,length=5))
+> myimage(silico3)
+> 
+> ## Modules with different signal levels
+> silico4 <- isa.in.silico(100, 100, 5, mod.row.size=10, mod.col.size=10,
++                          noise=0.01, mod.signal=seq(1,5,length=5))
+> myimage(silico4)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isa.in.silico", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("isa.iterate")
+> ### * isa.iterate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isa.iterate
+> ### Title: The Iterative Signature Algorithm
+> ### Aliases: isa.iterate isa.iterate,list-method
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## A basic ISA work flow for a single threshold combination
+> ## In-silico data
+> set.seed(1)
+> insili <- isa.in.silico()
+> 
+> ## Random seeds
+> seeds <- generate.seeds(length=nrow(insili[[1]]), count=100)
+> 
+> ## Normalize input matrix
+> nm <- isa.normalize(insili[[1]])
+> 
+> ## Do ISA
+> isares <- isa.iterate(nm, row.seeds=seeds, thr.row=2, thr.col=1)
+> 
+> ## Eliminate duplicates
+> isares <- isa.unique(nm, isares)
+> 
+> ## Filter out not robust ones
+> isares <- isa.filter.robust(insili[[1]], nm, isares)
+> 
+> ## Print the sizes of the modules
+> cbind( colSums(isares$rows!=0), colSums(isares$columns!=0) )
+     [,1] [,2]
+[1,]   50    8
+[2,]   50    8
+[3,]   50    8
+> 
+> ## Plot the original data and the modules found
+> if (interactive()) {
++   layout(rbind(1:2))
++   image(insili[[1]], main="In silico data")
++   image(outer(isares$rows[,1],isares$columns[,1])+
++         outer(isares$rows[,2],isares$columns[,2])+
++         outer(isares$rows[,3],isares$columns[,3]), main="ISA modules")
++ }
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isa.iterate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("isa.normalize")
+> ### * isa.normalize
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isa.normalize
+> ### Title: Normalize input data for use with ISA
+> ### Aliases: isa.normalize isa.normalize,matrix-method
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## In-silico data
+> set.seed(1)
+> insili <- isa.in.silico()
+> nm <- isa.normalize(insili[[1]])
+> 
+> ## Check it
+> max(abs(rowSums(nm[[1]])))
+[1] 1.491862e-14
+> max(abs(rowSums(nm[[2]])))
+[1] 3.151993e-15
+> 
+> max(abs(apply(t(nm[[1]]), 2, sd) - 1))
+[1] 1.110223e-16
+> max(abs(apply(t(nm[[2]]), 2, sd) - 1))
+[1] 2.220446e-16
+> 
+> ## Plot them
+> if (interactive()) {
++   layout(rbind(1:2,3:4))
++   image(insili[[1]], main="Original data")
++   image(t(nm[[1]]), main="Row normalized")
++   image(nm[[2]], main="Column normalized")
++ }
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isa.normalize", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("isa.option")
+> ### * isa.option
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isa.option
+> ### Title: Options for the isa package
+> ### Aliases: isa.option
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## Make isa functions verbose
+> isa.option(verbose=TRUE)
+> 
+> ## Query the value of 'verbose'
+> isa.option("verbose")
+[1] TRUE
+> 
+> ## Query all options
+> isa.option()
+$status.function
+function (...) 
+isa.status.default(...)
+<environment: 0x7fdee5792068>
+
+$verbose
+[1] TRUE
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isa.option", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("isa.sweep")
+> ### * isa.sweep
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isa.sweep
+> ### Title: Create a hierarchical structure of ISA biclusters
+> ### Aliases: isa.sweep isa.sweep,matrix-method sweep.graph
+> ###   sweep.graph,list-method
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## In-silico data
+> set.seed(1)
+> insili <- isa.in.silico()
+Creating in-silico data set 
+DONE 
+> 
+> ## Do ISA with a bunch of row thresholds while keeping the column
+> ## threshold fixed. This is quite an artificial example...
+> isares <- isa(insili[[1]], thr.row=c(0.5,1,2), thr.col=0)
+Performing complete ISA work flow 
+ISA normalization 
+DONE 
+Generating seeds 
+DONE 
+Doing ISA iteration 
+DONE 
+Doing ISA iteration 
+DONE 
+Doing ISA iteration 
+DONE 
+Creating unique module set 
+DONE 
+Creating unique module set 
+DONE 
+Creating unique module set 
+DONE 
+Filtering ISA result for robustness... 
+Calculating ISA robustness 
+DONE 
+ISA normalization 
+DONE 
+Doing ISA iteration 
+DONE 
+Calculating ISA robustness 
+DONE 
+DONE. 
+Filtering ISA result for robustness... 
+Calculating ISA robustness 
+DONE 
+ISA normalization 
+DONE 
+Doing ISA iteration 
+DONE 
+Calculating ISA robustness 
+DONE 
+DONE. 
+Filtering ISA result for robustness... 
+Calculating ISA robustness 
+DONE 
+ISA normalization 
+DONE 
+Doing ISA iteration 
+DONE 
+Calculating ISA robustness 
+DONE 
+DONE. 
+Creating unique module set 
+DONE 
+DONE 
+> 
+> ## Create a nice tree from the modules, we need the normed data for this
+> nm <- isa.normalize(insili[[1]])
+ISA normalization 
+DONE 
+> isa.tree <- isa.sweep(insili[[1]], nm, isares)
+Performing an ISA sweep 
+Doing ISA iteration 
+DONE 
+Creating unique module set 
+DONE 
+Calculating ISA robustness 
+DONE 
+Doing ISA iteration 
+DONE 
+Creating unique module set 
+DONE 
+Calculating ISA robustness 
+DONE 
+DONE 
+> network <- sweep.graph(isa.tree)
+Loading required namespace: igraph
+> 
+> ## Plot the network of modules, only if the igraph package is
+> ## installed
+> if (interactive() && require(igraph) &&
++     compareVersion(packageDescription("igraph")$Version, "0.6")>=0) {
++   lab <- paste(sep="", seq_len(ncol(isa.tree$rows)), ": ",
++                colSums(isa.tree$rows!=0), ",",
++                colSums(isa.tree$columns!=0))
++   par(mar=c(1,1,1,1))
++   roots <- tapply(topological.sort(network, mode="out"),
++                   clusters(network)$membership, function(x) x[1])
++   rootlevel <- isa.tree$seeddata$level-1
++   coords <- layout.reingold.tilford(network, root=roots,
++                                     rootlevel=rootlevel[roots+1])
++   plot(network, layout=coords,
++        vertex.shape="rectangle", vertex.color="green",
++        vertex.label=lab, vertex.size=30, vertex.size2=10)
++ }
+> 
+> ## Plot the modules themselves as well
+> if (interactive()) {
++   plotModules(isa.tree)
++ }
+> 
+> ## Yet another plot, the scores for the rows within the modules
+> if (interactive()) {
++   layout(matrix( 1:15, ncol=3 ))
++   for (i in seq(ncol(isa.tree$rows))) {
++     par(mar=c(2,2,1,1))
++     plot(isa.tree$rows[,i], axes=FALSE, ylim=c(-1,1))
++     axis(1); axis(2)
++     text(nrow(isa.tree$rows), 1, adj=c(1,1), paste(sep="", "#", i), cex=2)
++   }
++ }
+>     
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isa.sweep", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("isa.unique")
+> ### * isa.unique
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isa.unique
+> ### Title: Filter out biclusters that are very similar to each other
+> ### Aliases: isa.unique isa.unique,list,list-method
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## Create an ISA module set
+> set.seed(1)
+> insili <- isa.in.silico(noise=0.01)
+Creating in-silico data set 
+DONE 
+> 
+> ## Random seeds
+> seeds <- generate.seeds(length=nrow(insili[[1]]), count=20)
+Generating seeds 
+DONE 
+> 
+> ## Normalize input matrix
+> nm <- isa.normalize(insili[[1]])
+ISA normalization 
+DONE 
+> 
+> ## Do ISA
+> isares <- isa.iterate(nm, row.seeds=seeds, thr.row=2, thr.col=1)
+Doing ISA iteration 
+DONE 
+> 
+> ## Check correlation among modules
+> cc <- cor(isares$rows)
+Warning in cor(isares$rows) : the standard deviation is zero
+> if (interactive()) { hist(cc[lower.tri(cc)],10) }
+> 
+> ## Some of them are quite high, how many?
+> undiag <- function(x) { diag(x) <- 0; x }
+> sum(undiag(cc) > 0.99, na.rm=TRUE)
+[1] 44
+> 
+> ## Eliminate duplicated modules
+> isares.unique <- isa.unique(nm, isares)
+Creating unique module set 
+DONE 
+> 
+> ## How many modules left?
+> ncol(isares.unique$rows)
+[1] 8
+> 
+> ## Double check
+> cc2 <- cor(isares.unique$rows)
+> if (interactive()) { hist(cc2[lower.tri(cc2)],10) }
+> 
+> ## High correlation?
+> sum(undiag(cc2) > 0.99, na.rm=TRUE)
+[1] 0
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isa.unique", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.modules")
+> ### * plot.modules
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotModules
+> ### Title: Image plots of biclusters
+> ### Aliases: images plotModules plotModules,list-method
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## The following should plot the input matrix and the four modules
+> ## found by ISA
+> set.seed(1)   # to get same plot every time
+> data <- isa.in.silico(100, 100, num.fact=4)
+Creating in-silico data set 
+DONE 
+> modules <- isa(data[[1]], thr.row=2, thr.col=2)
+Performing complete ISA work flow 
+ISA normalization 
+DONE 
+Generating seeds 
+DONE 
+Doing ISA iteration 
+DONE 
+Creating unique module set 
+DONE 
+Filtering ISA result for robustness... 
+Calculating ISA robustness 
+DONE 
+ISA normalization 
+DONE 
+Doing ISA iteration 
+DONE 
+Calculating ISA robustness 
+DONE 
+DONE. 
+Creating unique module set 
+DONE 
+DONE 
+> plotModules(modules, data=data[[1]], binary=FALSE,
++             names=c("Input matrix",
++                     paste("Module", seq_len(ncol(modules$rows)))))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.modules", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ppa")
+> ### * ppa
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ppa
+> ### Title: The Ping-Pong Algorithm
+> ### Aliases: ppa ppa,list-method
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## WE do not run this, it takes relatively long
+> ## Not run: 
+> ##D data <- ppa.in.silico(noise=0.1)
+> ##D ppa.result <- ppa(data[1:2], direction="up")
+> ##D 
+> ##D ## Find the best bicluster for each block in the input
+> ##D ## (based on the rows of the first input matrix)
+> ##D best <- apply(cor(ppa.result$rows1, data[[3]]), 2, which.max)
+> ##D 
+> ##D ## Check correlation
+> ##D sapply(seq_along(best),
+> ##D        function(x) cor(ppa.result$rows1[,best[x]], data[[3]][,x]))
+> ##D 
+> ##D ## The same for the rows of the second matrix
+> ##D sapply(seq_along(best),
+> ##D        function(x) cor(ppa.result$rows2[,best[x]], data[[4]][,x]))
+> ##D 
+> ##D ## The same for the columns
+> ##D sapply(seq_along(best),
+> ##D        function(x) cor(ppa.result$columns[,best[x]], data[[5]][,x]))
+> ##D 
+> ##D ## Plot the data and the modules found
+> ##D if (interactive()) {
+> ##D   layout(rbind(1:2,c(3,6),c(4,7), c(5,8)))
+> ##D   image(data[[1]], main="In-silico data, first matrix")
+> ##D   image(data[[2]], main="In-silico data, second matrix")
+> ##D   sapply(best[1:3], function(b) image(outer(ppa.result$rows1[,b],
+> ##D                                        ppa.result$columns[,b]),
+> ##D                                  main=paste("Module", b)))  
+> ##D   sapply(best[1:3], function(b) image(outer(ppa.result$rows2[,b],
+> ##D                                        ppa.result$columns[,b]),
+> ##D                                  main=paste("Module", b)))  
+> ##D }
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ppa", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ppa.in.silico")
+> ### * ppa.in.silico
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ppa.in.silico
+> ### Title: Generate in-silico input data for testing the PPA algorithm
+> ### Aliases: ppa.in.silico
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## Define a function for plotting if we are interactive
+> if (interactive()) { layout(cbind(1:2,3:4,5:6,7:8)) }
+> myimage <- function(mat) {
++   if (interactive()) {
++     par(mar=c(3,2,1,1)); image(mat[[1]])
++     par(mar=c(3,2,1,1)); image(mat[[2]])
++   }
++ }
+> 
+> ## Co-modules without overlap and noise
+> silico1 <- ppa.in.silico(100, 100, 100, 10, mod.row1.size=10,
++                          mod.row2.size=10, mod.col.size=10, noise=0)
+Creating in-silico data set for PPA 
+DONE 
+> myimage(silico1)
+> 
+> ## The same, but with overlap and noise
+> silico2 <- ppa.in.silico(100, 100, 100, 10, mod.row1.size=10,
++                          mod.row2.size=10, mod.col.size=10, noise=0.1,
++                          overlap.row1=3)
+Creating in-silico data set for PPA 
+DONE 
+> myimage(silico2)
+> 
+> ## Co-modules with different noise levels
+> silico3 <- ppa.in.silico(100, 100, 100, 5, mod.row1.size=10,
++                          mod.row2.size=10, mod.col.size=10, noise=0.01,
++                          mod.noise=seq(0.1,by=0.1,length=5))
+Creating in-silico data set for PPA 
+DONE 
+> myimage(silico3)
+> 
+> ## Co-modules withe different signal levels
+> silico4 <- ppa.in.silico(100, 100, 100, 5, mod.row1.size=10,
++                          mod.row2.size=10, mod.col.size=10, noise=0.01,
++                          mod.signal=seq(1,5,length=5))
+Creating in-silico data set for PPA 
+DONE 
+> myimage(silico4)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ppa.in.silico", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("ppa.iterate")
+> ### * ppa.iterate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ppa.iterate
+> ### Title: The Ping-Pong Algorithm
+> ### Aliases: ppa.iterate ppa.iterate,list-method
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## A basic PPA workflow with a single threshold combination
+> ## In-silico data
+> set.seed(1)
+> insili <- ppa.in.silico()
+Creating in-silico data set for PPA 
+DONE 
+> 
+> ## Random seeds
+> seeds <- generate.seeds(length=nrow(insili[[1]]), count=100)
+Generating seeds 
+DONE 
+> 
+> ## Normalize input matrices
+> nm <- ppa.normalize(insili[1:2])
+PPA normalization 
+PPA normalization 
+> 
+> ## Do PPA
+> ppares <- ppa.iterate(nm, row1.seeds=seeds, thr.row1=1, direction="up")
+Doing PPA iteration 
+isa iteration 
+> 
+> ## Eliminate duplicates
+> ppares <- ppa.unique(nm, ppares)
+> 
+> ## Fitler out not robust ones
+> ppares <- ppa.filter.robust(insili[1:2], nm, ppares)
+Filtering PPA result for robustness... 
+Calculating PPA robustness 
+DONE 
+Generating seeds 
+DONE 
+PPA normalization 
+PPA normalization 
+Doing PPA iteration 
+isa iteration 
+Calculating PPA robustness 
+DONE 
+DONE 
+> 
+> ## Print the sizes of the co-modules
+> cbind(colSums(ppares$rows1 != 0), colSums(ppares$rows1 != 0),
++       colSums(ppares$columns != 0))
+     [,1] [,2] [,3]
+[1,]   50   50    8
+[2,]   50   50    8
+[3,]   50   50    8
+> 
+> ## Plot the original data and the first three modules found
+> if (interactive()) {
++   layout(rbind(1:2,3:4))
++   image(insili[[1]], main="In silico data 1")
++   image(outer(ppares$rows1[,1],ppares$columns[,1])+
++         outer(ppares$rows1[,2],ppares$columns[,2])+
++         outer(ppares$rows1[,3],ppares$columns[,3]), main="PPA co-modules 2")
++   image(insili[[2]], main="In silico data 2")
++   image(outer(ppares$rows2[,1],ppares$columns[,1])+
++         outer(ppares$rows2[,2],ppares$columns[,2])+
++         outer(ppares$rows2[,3],ppares$columns[,3]), main="PPA co-modules 2")
++ }
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ppa.iterate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ppa.normalize")
+> ### * ppa.normalize
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ppa.normalize
+> ### Title: Normalize input data for use with the PPA
+> ### Aliases: ppa.normalize ppa.normalize,list-method
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## In-silico data
+> set.seed(1)
+> insili <- ppa.in.silico()
+Creating in-silico data set for PPA 
+DONE 
+> nm <- ppa.normalize(insili[1:2])
+PPA normalization 
+PPA normalization 
+> 
+> ## Check it
+> max(abs(rowSums(nm[[1]])))
+[1] 1.491862e-14
+> max(abs(rowSums(nm[[2]])))
+[1] 3.497203e-15
+> max(abs(rowSums(nm[[3]])))
+[1] 9.270362e-15
+> max(abs(rowSums(nm[[4]])))
+[1] 3.151993e-15
+> 
+> max(abs(rowSums(nm[[1]])))
+[1] 1.491862e-14
+> max(abs(rowSums(nm[[2]])))
+[1] 3.497203e-15
+> max(abs(rowSums(nm[[3]])))
+[1] 9.270362e-15
+> max(abs(rowSums(nm[[4]])))
+[1] 3.151993e-15
+> 
+> ## Plot them
+> if (interactive()) {
++   layout(rbind(1:3,4:6))
++   image(insili[[1]], main="Original data 1")
++   image(t(nm[[1]]), main="Row normalized 1")
++   image(nm[[2]], main="Column normalized 1")
++ 
++   image(insili[[2]], main="Original data 2")
++   image(t(nm[[3]]), main="Row normalized 2")
++   image(nm[[4]], main="Column normalized 2")
++ }
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ppa.normalize", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ppa.unique")
+> ### * ppa.unique
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ppa.unique
+> ### Title: Filter co-modules that are very similar to each other
+> ### Aliases: ppa.unique ppa.unique,list,list-method
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## Create an PPA module set
+> set.seed(1)
+> insili <- ppa.in.silico(noise=0.01)
+Creating in-silico data set for PPA 
+DONE 
+> 
+> ## Random seeds
+> seeds <- generate.seeds(length=nrow(insili[[1]]), count=20)
+Generating seeds 
+DONE 
+> 
+> ## Normalize input matrix
+> nm <- ppa.normalize(insili[1:2])
+PPA normalization 
+PPA normalization 
+> 
+> ## Do PPA
+> ppares <- ppa.iterate(nm, row1.seeds=seeds,
++                       thr.row1=2, thr.row2=2, thr.col=1)
+Doing PPA iteration 
+isa iteration 
+> 
+> ## Check correlation among modules
+> cc <- cor(ppares$rows1)
+Warning in cor(ppares$rows1) : the standard deviation is zero
+> if (interactive()) { hist(cc[lower.tri(cc)],10) }
+> 
+> ## Some of them are quite high, how many?
+> undiag <- function(x) { diag(x) <- 0; x }
+> sum(undiag(cc) > 0.99, na.rm=TRUE)
+[1] 26
+> 
+> ## Eliminate duplicated modules
+> ppares.unique <- ppa.unique(nm, ppares)
+> 
+> ## How many modules left?
+> ncol(ppares.unique$rows1)
+[1] 11
+> 
+> ## Double check
+> cc2 <- cor(ppares.unique$rows1)
+> if (interactive()) { hist(cc2[lower.tri(cc2)],10) }
+> 
+> ## High correlation?
+> sum(undiag(cc2) > 0.99, na.rm=TRUE)
+[1] 0
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ppa.unique", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("robustness")
+> ### * robustness
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: robustness
+> ### Title: Robustness of ISA biclusters and PPA co-modules
+> ### Aliases: robustness isa.filter.robust ppa.filter.robust
+> ###   robustness,list-method isa.filter.robust,matrix-method
+> ###   ppa.filter.robust,list-method
+> ### Keywords: cluster
+> 
+> ### ** Examples
+> 
+> ## A basic ISA work flow for a single threshold combination
+> ## In-silico data
+> set.seed(1)
+> insili <- isa.in.silico()
+Creating in-silico data set 
+DONE 
+> 
+> ## Random seeds
+> seeds <- generate.seeds(length=nrow(insili[[1]]), count=100)
+Generating seeds 
+DONE 
+> 
+> ## Normalize input matrix
+> nm <- isa.normalize(insili[[1]])
+ISA normalization 
+DONE 
+> 
+> ## Do ISA
+> isares <- isa.iterate(nm, row.seeds=seeds, thr.row=2, thr.col=1)
+Doing ISA iteration 
+DONE 
+> 
+> ## Eliminate duplicates
+> isares <- isa.unique(nm, isares)
+Creating unique module set 
+DONE 
+> 
+> ## Calculate robustness
+> rob <- robustness(nm, isares$rows, isares$columns)
+Calculating ISA robustness 
+DONE 
+> rob
+ [1] 43.428439 43.483155 43.436918 10.122035 10.624746 10.880133 11.413864
+ [8] 11.503873 10.909615 11.142131 10.905874 11.831418 11.087601 10.417483
+[15] 11.312241 11.913762 11.226405 10.461673 11.880359 11.696574 10.828712
+[22] 10.364887 11.535347 11.997876 11.097804 10.009119 10.494894 11.169973
+[29]  7.801491 10.147349 10.361350 10.630731 10.706106 10.878777 10.148696
+[36] 10.975921 10.759763
+> 
+> ## There are three robust ones and a lot of less robust ones
+> ## Plot the three robust ones and three others
+> if (interactive()) {
++   toplot1 <- rev(order(rob))[1:3]
++   toplot2 <- sample(seq_along(rob)[-toplot1], 3)
++   layout( rbind(1:3,4:6) )
++   for (i in c(toplot1, toplot2)) {
++     image(outer(isares$rows[,i], isares$column[,i]),
++           main=round(rob[i],2))
++   }
++ }
+> 
+> ## Filter out not robust ones
+> isares2 <- isa.filter.robust(insili[[1]], nm, isares)
+Filtering ISA result for robustness... 
+Calculating ISA robustness 
+DONE 
+Generating seeds 
+DONE 
+ISA normalization 
+DONE 
+Doing ISA iteration 
+DONE 
+Calculating ISA robustness 
+DONE 
+DONE. 
+> 
+> ## Probably there are only three of them left
+> ncol(isares2$rows)
+[1] 3
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("robustness", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  9.908 0.332 10.314 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

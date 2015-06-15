@@ -1,0 +1,20 @@
+* installing *source* package ‘SSN’ ...
+** package ‘SSN’ successfully unpacked and MD5 sums checked
+** libs
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/BH/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c RdbfwriteSSN.c -o RdbfwriteSSN.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/BH/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c additiveFunctionValues.cpp -o additiveFunctionValues.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/BH/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c dbfopenSSN.c -o dbfopenSSN.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/BH/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c init.c -o init.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/BH/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c test_fc_UNIX.c -o test_fc_UNIX.o
+clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o SSN.so RdbfwriteSSN.o additiveFunctionValues.o dbfopenSSN.o init.o test_fc_UNIX.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/SSN.Rcheck/SSN/libs
+** R
+** data
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+* DONE (SSN)

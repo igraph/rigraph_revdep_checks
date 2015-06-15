@@ -1,0 +1,130 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "treemap"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "treemap-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('treemap')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("itreemap")
+> ### * itreemap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: itreemap
+> ### Title: Interactive user interface for treemap
+> ### Aliases: itreemap
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(business)
+> ##D itreemap(business)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("itreemap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("random.hierarchical.data")
+> ### * random.hierarchical.data
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: random.hierarchical.data
+> ### Title: Create random hierarchical data
+> ### Aliases: random.hierarchical.data
+> 
+> ### ** Examples
+> 
+> d <- random.hierarchical.data(200)
+> treemap(d, index=names(d)[1:(ncol(d)-1)], vSize="x")
+> 
+> d <- random.hierarchical.data(number.children=5)
+> treemap(d, index=names(d)[1:(ncol(d)-1)], vSize="x")
+> 
+> d <- random.hierarchical.data(method="full.tree", number.children=3, value.generator=runif)
+> treemap(d, index=names(d)[1:(ncol(d)-1)], vSize="x")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("random.hierarchical.data", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("treecolors")
+> ### * treecolors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: treecolors
+> ### Title: Interactive tool to experiment with Tree Colors
+> ### Aliases: treecolors
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D treecolors()
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("treecolors", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("treegraph")
+> ### * treegraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: treegraph
+> ### Title: Create a tree graph
+> ### Aliases: treegraph
+> 
+> ### ** Examples
+> 
+> data(business)
+> treegraph(business, index=c("NACE1", "NACE2", "NACE3", "NACE4"), show.labels=FALSE)
+> treegraph(business[business$NACE1=="F - Construction",],
++     index=c("NACE2", "NACE3", "NACE4"), show.labels=TRUE, truncate.labels=c(2,4,6))
+> treegraph(business[business$NACE1=="F - Construction",],
++     index=c("NACE2", "NACE3", "NACE4"), show.labels=TRUE, truncate.labels=c(2,4,6),
++     vertex.layout=igraph::layout.fruchterman.reingold)
+Error in (function (graph, coords = NULL, dim = 2, niter = 500, start.temp = sqrt(vcount(graph)),  : 
+  unused arguments (circular = TRUE, root = 1)
+Calls: treegraph -> do.call -> <Anonymous>
+Execution halted

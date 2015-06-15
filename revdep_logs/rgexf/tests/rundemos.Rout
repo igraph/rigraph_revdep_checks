@@ -1,0 +1,1922 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(rgexf)
+Loading required package: XML
+Loading required package: Rook
+Loading required package: igraph
+
+Attaching package: 'igraph'
+
+The following objects are masked from 'package:stats':
+
+    decompose, spectrum
+
+The following object is masked from 'package:base':
+
+    union
+
+> 
+> demo(edge.list)
+
+
+	demo(edge.list)
+	---- ~~~~~~~~~
+
+> ################################################################################
+> # Demo of gexf function - Input: a list of edges  
+> # Author: Jorge Fabrega
+> ################################################################################
+> pause <- function() {  
++   invisible(readline("\nPress <return> to continue: ")) 
++ }
+
+> pause()
+
+Press <return> to continue: 
+
+> ## Demos for rgexf - Nodes and edges with attributes.
+> ## Input: A matrix of edges 
+> 
+> # Defining a matrix of edges
+> relations <- matrix(c("Juan","Carlos",
++                       "Juan","Pedro",
++                       "Juan","Matthew",
++                       "Pedro","Matthew",
++                       "Matthew","Carlos",
++                       "Carlos","Pedro",
++                       "Pedro","Carlos",
++                       "Carlos","Juan",
++                       "Carlos","Juan"),
++                     ncol=2, byrow=T)
+
+> relations
+      [,1]      [,2]     
+ [1,] "Juan"    "Carlos" 
+ [2,] "Juan"    "Pedro"  
+ [3,] "Juan"    "Matthew"
+ [4,] "Pedro"   "Matthew"
+ [5,] "Matthew" "Carlos" 
+ [6,] "Carlos"  "Pedro"  
+ [7,] "Pedro"   "Carlos" 
+ [8,] "Carlos"  "Juan"   
+ [9,] "Carlos"  "Juan"   
+
+> # Now, with processEdgeList you can transform your edge list into a gexf file
+> 
+> pause()
+
+Press <return> to continue: 
+
+> edge.list(relations)
+$nodes
+  id   label
+1  1  Carlos
+2  2    Juan
+3  3 Matthew
+4  4   Pedro
+
+$edges
+      source target
+ [1,]      2      1
+ [2,]      2      4
+ [3,]      2      3
+ [4,]      4      3
+ [5,]      3      1
+ [6,]      1      4
+ [7,]      4      1
+ [8,]      1      2
+ [9,]      1      2
+
+> demo(gexf)
+
+
+	demo(gexf)
+	---- ~~~~
+
+> ################################################################################
+> # Demo of gexf function
+> # Author: Jorge Fabrega
+> ################################################################################
+> pause <- function() {  
++   invisible(readline("\nPress <return> to continue: ")) 
++ }
+
+> pause()
+
+Press <return> to continue: 
+
+> # Defining a matrix of nodes
+> pause()
+
+Press <return> to continue: 
+
+> people <- data.frame(id=1:4, label=c("juan", "pedro", "matthew", "carlos"))
+
+> people
+  id   label
+1  1    juan
+2  2   pedro
+3  3 matthew
+4  4  carlos
+
+> # Defining a matrix of edges
+> pause()
+
+Press <return> to continue: 
+
+> relations <- data.frame(source=c(1,1,1,2,3,4,2,4,4), 
++                         target=c(4,2,3,3,4,2,4,1,1))
+
+> relations
+  source target
+1      1      4
+2      1      2
+3      1      3
+4      2      3
+5      3      4
+6      4      2
+7      2      4
+8      4      1
+9      4      1
+
+> # Defining a matrix of dynamics (start, end) for nodes and edges
+> pause()
+
+Press <return> to continue: 
+
+> time.nodes <- data.frame(matrix(c(10.0,13.0,2.0,2.0,12.0,rep(NA,3)),
++                                 nrow=4, ncol=2))
+
+> time.nodes
+  X1 X2
+1 10 12
+2 13 NA
+3  2 NA
+4  2 NA
+
+> time.edges<- data.frame(matrix(c(10.0,13.0,2.0,2.0,12.0,1,5,rep(NA,5),
++                                  rep(c(0,1),3)), ncol=2))
+
+> time.edges
+  X1 X2
+1 10 NA
+2 13 NA
+3  2 NA
+4  2  0
+5 12  1
+6  1  0
+7  5  1
+8 NA  0
+9 NA  1
+
+> # Defining a data frame of attributes for nodes and edges
+> pause()
+
+Press <return> to continue: 
+
+> node.att <- data.frame(letrafavorita=c(letters[1:3],"hola"), numbers=1:4)
+
+> node.att
+  letrafavorita numbers
+1             a       1
+2             b       2
+3             c       3
+4          hola       4
+
+> edge.att <- data.frame(letrafavorita=letters[1:9], numbers=1:9)
+
+> edge.att
+  letrafavorita numbers
+1             a       1
+2             b       2
+3             c       3
+4             d       4
+5             e       5
+6             f       6
+7             g       7
+8             h       8
+9             i       9
+
+> ################################################################################
+> # First example: a simple net
+> pause()
+
+Press <return> to continue: 
+
+> write.gexf(nodes=people, edges=relations)
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="static" defaultedgetype="undirected">
+    <nodes>
+      <node id="1" label="juan"/>
+      <node id="2" label="pedro"/>
+      <node id="3" label="matthew"/>
+      <node id="4" label="carlos"/>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" weight="1"/>
+      <edge id="1" source="1" target="2" weight="1"/>
+      <edge id="2" source="1" target="3" weight="1"/>
+      <edge id="3" source="2" target="3" weight="1"/>
+      <edge id="4" source="3" target="4" weight="1"/>
+      <edge id="5" source="4" target="2" weight="1"/>
+      <edge id="6" source="2" target="4" weight="1"/>
+      <edge id="7" source="4" target="1" weight="1"/>
+      <edge id="8" source="4" target="1" weight="1"/>
+    </edges>
+  </graph>
+</gexf>
+
+> ################################################################################
+> # Second example: a simple net with nodes attributes
+> pause()
+
+Press <return> to continue: 
+
+> write.gexf(nodes=people, edges=relations, nodesAtt=node.att)
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="static" defaultedgetype="undirected">
+    <attributes class="node" mode="static">
+      <attribute id="att1" title="letrafavorita" type="string"/>
+      <attribute id="att2" title="numbers" type="integer"/>
+    </attributes>
+    <nodes>
+      <node id="1" label="juan">
+        <attvalues>
+          <attvalue for="att1" value="a"/>
+          <attvalue for="att2" value="1"/>
+        </attvalues>
+      </node>
+      <node id="2" label="pedro">
+        <attvalues>
+          <attvalue for="att1" value="b"/>
+          <attvalue for="att2" value="2"/>
+        </attvalues>
+      </node>
+      <node id="3" label="matthew">
+        <attvalues>
+          <attvalue for="att1" value="c"/>
+          <attvalue for="att2" value="3"/>
+        </attvalues>
+      </node>
+      <node id="4" label="carlos">
+        <attvalues>
+          <attvalue for="att1" value="hola"/>
+          <attvalue for="att2" value="4"/>
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" weight="1"/>
+      <edge id="1" source="1" target="2" weight="1"/>
+      <edge id="2" source="1" target="3" weight="1"/>
+      <edge id="3" source="2" target="3" weight="1"/>
+      <edge id="4" source="3" target="4" weight="1"/>
+      <edge id="5" source="4" target="2" weight="1"/>
+      <edge id="6" source="2" target="4" weight="1"/>
+      <edge id="7" source="4" target="1" weight="1"/>
+      <edge id="8" source="4" target="1" weight="1"/>
+    </edges>
+  </graph>
+</gexf>
+
+> ################################################################################
+> # Third example: a simple net with dynamic nodes
+> pause()
+
+Press <return> to continue: 
+
+> write.gexf(nodes=people, edges=relations, nodeDynamic=time.nodes)
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="dynamic" start="10" end="2" timeformat="double" defaultedgetype="undirected">
+    <nodes>
+      <node id="1" label="juan" start="10" end="12"/>
+      <node id="2" label="pedro" start="13" end="2"/>
+      <node id="3" label="matthew" start="2" end="2"/>
+      <node id="4" label="carlos" start="2" end="2"/>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" weight="1"/>
+      <edge id="1" source="1" target="2" weight="1"/>
+      <edge id="2" source="1" target="3" weight="1"/>
+      <edge id="3" source="2" target="3" weight="1"/>
+      <edge id="4" source="3" target="4" weight="1"/>
+      <edge id="5" source="4" target="2" weight="1"/>
+      <edge id="6" source="2" target="4" weight="1"/>
+      <edge id="7" source="4" target="1" weight="1"/>
+      <edge id="8" source="4" target="1" weight="1"/>
+    </edges>
+  </graph>
+</gexf>
+
+> ################################################################################
+> # Fourth example: a simple net with dynamic nodes with attributes
+> pause()
+
+Press <return> to continue: 
+
+> write.gexf(nodes=people, edges=relations, nodeDynamic=time.nodes, nodesAtt=node.att)
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="dynamic" start="10" end="2" timeformat="double" defaultedgetype="undirected">
+    <attributes class="node" mode="static">
+      <attribute id="att1" title="letrafavorita" type="string"/>
+      <attribute id="att2" title="numbers" type="integer"/>
+    </attributes>
+    <nodes>
+      <node id="1" label="juan" start="10" end="12">
+        <attvalues>
+          <attvalue for="att1" value="a"/>
+          <attvalue for="att2" value="1"/>
+        </attvalues>
+      </node>
+      <node id="2" label="pedro" start="13" end="2">
+        <attvalues>
+          <attvalue for="att1" value="b"/>
+          <attvalue for="att2" value="2"/>
+        </attvalues>
+      </node>
+      <node id="3" label="matthew" start="2" end="2">
+        <attvalues>
+          <attvalue for="att1" value="c"/>
+          <attvalue for="att2" value="3"/>
+        </attvalues>
+      </node>
+      <node id="4" label="carlos" start="2" end="2">
+        <attvalues>
+          <attvalue for="att1" value="hola"/>
+          <attvalue for="att2" value="4"/>
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" weight="1"/>
+      <edge id="1" source="1" target="2" weight="1"/>
+      <edge id="2" source="1" target="3" weight="1"/>
+      <edge id="3" source="2" target="3" weight="1"/>
+      <edge id="4" source="3" target="4" weight="1"/>
+      <edge id="5" source="4" target="2" weight="1"/>
+      <edge id="6" source="2" target="4" weight="1"/>
+      <edge id="7" source="4" target="1" weight="1"/>
+      <edge id="8" source="4" target="1" weight="1"/>
+    </edges>
+  </graph>
+</gexf>
+
+> ################################################################################
+> # Fifth example: a simple net with dynamic edges with attributes
+> pause()
+
+Press <return> to continue: 
+
+> write.gexf(nodes=people, edges=relations, edgeDynamic=time.edges, edgesAtt=edge.att)
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="dynamic" start="0" end="5" timeformat="double" defaultedgetype="undirected">
+    <attributes class="edge" mode="static">
+      <attribute id="att1" title="letrafavorita" type="string"/>
+      <attribute id="att2" title="numbers" type="integer"/>
+    </attributes>
+    <nodes>
+      <node id="1" label="juan"/>
+      <node id="2" label="pedro"/>
+      <node id="3" label="matthew"/>
+      <node id="4" label="carlos"/>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" start="10" end="5" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="a"/>
+          <attvalue for="att2" value="1"/>
+        </attvalues>
+      </edge>
+      <edge id="1" source="1" target="2" start="13" end="5" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="b"/>
+          <attvalue for="att2" value="2"/>
+        </attvalues>
+      </edge>
+      <edge id="2" source="1" target="3" start="2" end="5" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="c"/>
+          <attvalue for="att2" value="3"/>
+        </attvalues>
+      </edge>
+      <edge id="3" source="2" target="3" start="2" end="0" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="d"/>
+          <attvalue for="att2" value="4"/>
+        </attvalues>
+      </edge>
+      <edge id="4" source="3" target="4" start="12" end="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="e"/>
+          <attvalue for="att2" value="5"/>
+        </attvalues>
+      </edge>
+      <edge id="5" source="4" target="2" start="1" end="0" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="f"/>
+          <attvalue for="att2" value="6"/>
+        </attvalues>
+      </edge>
+      <edge id="6" source="2" target="4" start="5" end="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="g"/>
+          <attvalue for="att2" value="7"/>
+        </attvalues>
+      </edge>
+      <edge id="7" source="4" target="1" start="0" end="0" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="h"/>
+          <attvalue for="att2" value="8"/>
+        </attvalues>
+      </edge>
+      <edge id="8" source="4" target="1" start="0" end="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="i"/>
+          <attvalue for="att2" value="9"/>
+        </attvalues>
+      </edge>
+    </edges>
+  </graph>
+</gexf>
+
+> ################################################################################
+> # Sixth example: a simple net with dynamic edges and nodes with attributes
+> pause()
+
+Press <return> to continue: 
+
+> write.gexf(nodes=people, edges=relations, edgeDynamic=time.edges, edgesAtt=edge.att,
++      nodeDynamic=time.nodes, nodesAtt=node.att)
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="dynamic" start="0" end="5" timeformat="double" defaultedgetype="undirected">
+    <attributes class="node" mode="static">
+      <attribute id="att1" title="letrafavorita" type="string"/>
+      <attribute id="att2" title="numbers" type="integer"/>
+    </attributes>
+    <attributes class="edge" mode="static">
+      <attribute id="att1" title="letrafavorita" type="string"/>
+      <attribute id="att2" title="numbers" type="integer"/>
+    </attributes>
+    <nodes>
+      <node id="1" label="juan" start="10" end="12">
+        <attvalues>
+          <attvalue for="att1" value="a"/>
+          <attvalue for="att2" value="1"/>
+        </attvalues>
+      </node>
+      <node id="2" label="pedro" start="13" end="5">
+        <attvalues>
+          <attvalue for="att1" value="b"/>
+          <attvalue for="att2" value="2"/>
+        </attvalues>
+      </node>
+      <node id="3" label="matthew" start="2" end="5">
+        <attvalues>
+          <attvalue for="att1" value="c"/>
+          <attvalue for="att2" value="3"/>
+        </attvalues>
+      </node>
+      <node id="4" label="carlos" start="2" end="5">
+        <attvalues>
+          <attvalue for="att1" value="hola"/>
+          <attvalue for="att2" value="4"/>
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" start="10" end="5" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="a"/>
+          <attvalue for="att2" value="1"/>
+        </attvalues>
+      </edge>
+      <edge id="1" source="1" target="2" start="13" end="5" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="b"/>
+          <attvalue for="att2" value="2"/>
+        </attvalues>
+      </edge>
+      <edge id="2" source="1" target="3" start="2" end="5" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="c"/>
+          <attvalue for="att2" value="3"/>
+        </attvalues>
+      </edge>
+      <edge id="3" source="2" target="3" start="2" end="0" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="d"/>
+          <attvalue for="att2" value="4"/>
+        </attvalues>
+      </edge>
+      <edge id="4" source="3" target="4" start="12" end="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="e"/>
+          <attvalue for="att2" value="5"/>
+        </attvalues>
+      </edge>
+      <edge id="5" source="4" target="2" start="1" end="0" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="f"/>
+          <attvalue for="att2" value="6"/>
+        </attvalues>
+      </edge>
+      <edge id="6" source="2" target="4" start="5" end="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="g"/>
+          <attvalue for="att2" value="7"/>
+        </attvalues>
+      </edge>
+      <edge id="7" source="4" target="1" start="0" end="0" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="h"/>
+          <attvalue for="att2" value="8"/>
+        </attvalues>
+      </edge>
+      <edge id="8" source="4" target="1" start="0" end="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="i"/>
+          <attvalue for="att2" value="9"/>
+        </attvalues>
+      </edge>
+    </edges>
+  </graph>
+</gexf>
+
+> ################################################################################
+> # Seventh example: a simple net with dynamic edges and nodes with attributes
+> pause()
+
+Press <return> to continue: 
+
+> imagee <- data.frame(image=rbind(
++   "Yellow_solid_sphere.png",
++   "Yellow_solid_sphere.png",
++   "Yellow_solid_sphere.png",
++   "Yellow_solid_sphere.png"), stringsAsFactors=F)
+
+> # Colors
+> nodecolors <- cbind(t(col2rgb(topo.colors(nrow(people)))),alpha=1)
+
+> colnames(nodecolors) <- c("r", "b", "g", "a")
+
+> edgecolors <- cbind(t(col2rgb(cm.colors(nrow(relations)))),alpha=1)
+
+> colnames(edgecolors) <- c("r", "b", "g", "a")
+
+> # TRUE/FALSE attributes
+> nodetruefalse <- data.frame(nodetrue=rnorm(NROW(people)) > 0)
+
+> edgetruefalse <- data.frame(edgetrue=rnorm(NROW(relations)) > 0)
+
+> grafo <- write.gexf(nodes=people, edges=relations, 
++               nodesAtt=cbind(imagee,nodetruefalse),
++               nodesVizAtt=list(
++                 shape=c("rectangle", "square", "triangle", "diamond"),
++                 position=matrix(1:12,nrow=4),
++                 image=imagee, 
++                 color=nodecolors,
++                 size=c(1,4,10,30)
++                 ), 
++               edgesVizAtt=list(
++                 size=1:9, 
++                 color=edgecolors
++                 ), 
++               edgesAtt=edgetruefalse)
+
+> print(grafo)
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="static" defaultedgetype="undirected">
+    <attributes class="node" mode="static">
+      <attribute id="att1" title="image" type="string"/>
+      <attribute id="att2" title="nodetrue" type="boolean"/>
+    </attributes>
+    <attributes class="edge" mode="static">
+      <attribute id="att1" title="edgetrue" type="boolean"/>
+    </attributes>
+    <nodes>
+      <node id="1" label="juan">
+        <attvalues>
+          <attvalue for="att1" value="Yellow_solid_sphere.png"/>
+          <attvalue for="att2" value="FALSE"/>
+        </attvalues>
+        <viz:color r="76" g="0" b="255" a="1"/>
+        <viz:position x="1" y="5" z="9"/>
+        <viz:size value="1"/>
+        <viz:shape value="rectangle"/>
+        <viz:shape value="image" uri="Yellow_solid_sphere.png"/>
+      </node>
+      <node id="2" label="pedro">
+        <attvalues>
+          <attvalue for="att1" value="Yellow_solid_sphere.png"/>
+          <attvalue for="att2" value="TRUE"/>
+        </attvalues>
+        <viz:color r="0" g="229" b="255" a="1"/>
+        <viz:position x="2" y="6" z="10"/>
+        <viz:size value="4"/>
+        <viz:shape value="square"/>
+        <viz:shape value="image" uri="Yellow_solid_sphere.png"/>
+      </node>
+      <node id="3" label="matthew">
+        <attvalues>
+          <attvalue for="att1" value="Yellow_solid_sphere.png"/>
+          <attvalue for="att2" value="TRUE"/>
+        </attvalues>
+        <viz:color r="0" g="255" b="77" a="1"/>
+        <viz:position x="3" y="7" z="11"/>
+        <viz:size value="10"/>
+        <viz:shape value="triangle"/>
+        <viz:shape value="image" uri="Yellow_solid_sphere.png"/>
+      </node>
+      <node id="4" label="carlos">
+        <attvalues>
+          <attvalue for="att1" value="Yellow_solid_sphere.png"/>
+          <attvalue for="att2" value="TRUE"/>
+        </attvalues>
+        <viz:color r="255" g="255" b="0" a="1"/>
+        <viz:position x="4" y="8" z="12"/>
+        <viz:size value="30"/>
+        <viz:shape value="diamond"/>
+        <viz:shape value="image" uri="Yellow_solid_sphere.png"/>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="TRUE"/>
+        </attvalues>
+        <viz:color r="128" g="255" b="255" a="1"/>
+        <viz:size value="1"/>
+      </edge>
+      <edge id="1" source="1" target="2" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="FALSE"/>
+        </attvalues>
+        <viz:color r="159" g="255" b="255" a="1"/>
+        <viz:size value="2"/>
+      </edge>
+      <edge id="2" source="1" target="3" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="TRUE"/>
+        </attvalues>
+        <viz:color r="191" g="255" b="255" a="1"/>
+        <viz:size value="3"/>
+      </edge>
+      <edge id="3" source="2" target="3" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="FALSE"/>
+        </attvalues>
+        <viz:color r="223" g="255" b="255" a="1"/>
+        <viz:size value="4"/>
+      </edge>
+      <edge id="4" source="3" target="4" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="TRUE"/>
+        </attvalues>
+        <viz:color r="255" g="255" b="255" a="1"/>
+        <viz:size value="5"/>
+      </edge>
+      <edge id="5" source="4" target="2" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="FALSE"/>
+        </attvalues>
+        <viz:color r="255" g="223" b="255" a="1"/>
+        <viz:size value="6"/>
+      </edge>
+      <edge id="6" source="2" target="4" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="FALSE"/>
+        </attvalues>
+        <viz:color r="255" g="191" b="255" a="1"/>
+        <viz:size value="7"/>
+      </edge>
+      <edge id="7" source="4" target="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="TRUE"/>
+        </attvalues>
+        <viz:color r="255" g="159" b="255" a="1"/>
+        <viz:size value="8"/>
+      </edge>
+      <edge id="8" source="4" target="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="TRUE"/>
+        </attvalues>
+        <viz:color r="255" g="128" b="255" a="1"/>
+        <viz:size value="9"/>
+      </edge>
+    </edges>
+  </graph>
+</gexf>
+> demo(gexfattributes)
+
+
+	demo(gexfattributes)
+	---- ~~~~~~~~~~~~~~
+
+> ################################################################################
+> # Demo of gexf function - Network with nodes and edges attributes
+> # Author: Jorge Fabrega
+> ################################################################################
+> 
+> pause <- function() {  
++   invisible(readline("\nPress <return> to continue: ")) 
++ }
+
+> pause()
+
+Press <return> to continue: 
+
+> ## Demos for rgexf - Nodes and edges with attributes.
+> ## 1. A matrix of nodes 
+> ## 2. A matrix of edges
+> ## 3. A matrix of nodes attributes
+> ## 4. A matrix of edges attributes
+> 
+> # Defining a matrix of nodes
+> people <- matrix(c(1:4, 'juan', 'pedro', 'matthew', 'carlos'),ncol=2)
+
+> people
+     [,1] [,2]     
+[1,] "1"  "juan"   
+[2,] "2"  "pedro"  
+[3,] "3"  "matthew"
+[4,] "4"  "carlos" 
+
+> # Defining a matrix of edges
+> relations <- matrix(c(1,4,1,2,1,3,2,3,3,4,4,2,2,4,4,1,4,1), ncol=2, byrow=T)
+
+> relations
+      [,1] [,2]
+ [1,]    1    4
+ [2,]    1    2
+ [3,]    1    3
+ [4,]    2    3
+ [5,]    3    4
+ [6,]    4    2
+ [7,]    2    4
+ [8,]    4    1
+ [9,]    4    1
+
+> # Defining two dataframes with attributes for nodes and edges, respectively.
+> node.att <- data.frame(attributes=c(letters[1:3],"a word"), numbers=1:4, stringsAsFactors=F)
+
+> node.att
+  attributes numbers
+1          a       1
+2          b       2
+3          c       3
+4     a word       4
+
+> edge.att <- data.frame(attributes=letters[1:9], numbers=1:9, stringsAsFactors=F)
+
+> edge.att
+  attributes numbers
+1          a       1
+2          b       2
+3          c       3
+4          d       4
+5          e       5
+6          f       6
+7          g       7
+8          h       8
+9          i       9
+
+> ################################################################################
+> # Network with nodes attributes
+> # you create a .gexf archive by adding the expression:
+> #
+> #                       ,output="yourgraph.gexf" 
+> #
+> # before the last closing 
+> # parenthesis in the following function
+> 
+> write.gexf(nodes=people, edges=relations, nodesAtt=node.att, edgesAtt=edge.att)
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="static" defaultedgetype="undirected">
+    <attributes class="node" mode="static">
+      <attribute id="att1" title="attributes" type="string"/>
+      <attribute id="att2" title="numbers" type="integer"/>
+    </attributes>
+    <attributes class="edge" mode="static">
+      <attribute id="att1" title="attributes" type="string"/>
+      <attribute id="att2" title="numbers" type="integer"/>
+    </attributes>
+    <nodes>
+      <node id="1" label="juan">
+        <attvalues>
+          <attvalue for="att1" value="a"/>
+          <attvalue for="att2" value="1"/>
+        </attvalues>
+      </node>
+      <node id="2" label="pedro">
+        <attvalues>
+          <attvalue for="att1" value="b"/>
+          <attvalue for="att2" value="2"/>
+        </attvalues>
+      </node>
+      <node id="3" label="matthew">
+        <attvalues>
+          <attvalue for="att1" value="c"/>
+          <attvalue for="att2" value="3"/>
+        </attvalues>
+      </node>
+      <node id="4" label="carlos">
+        <attvalues>
+          <attvalue for="att1" value="a word"/>
+          <attvalue for="att2" value="4"/>
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="a"/>
+          <attvalue for="att2" value="1"/>
+        </attvalues>
+      </edge>
+      <edge id="1" source="1" target="2" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="b"/>
+          <attvalue for="att2" value="2"/>
+        </attvalues>
+      </edge>
+      <edge id="2" source="1" target="3" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="c"/>
+          <attvalue for="att2" value="3"/>
+        </attvalues>
+      </edge>
+      <edge id="3" source="2" target="3" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="d"/>
+          <attvalue for="att2" value="4"/>
+        </attvalues>
+      </edge>
+      <edge id="4" source="3" target="4" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="e"/>
+          <attvalue for="att2" value="5"/>
+        </attvalues>
+      </edge>
+      <edge id="5" source="4" target="2" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="f"/>
+          <attvalue for="att2" value="6"/>
+        </attvalues>
+      </edge>
+      <edge id="6" source="2" target="4" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="g"/>
+          <attvalue for="att2" value="7"/>
+        </attvalues>
+      </edge>
+      <edge id="7" source="4" target="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="h"/>
+          <attvalue for="att2" value="8"/>
+        </attvalues>
+      </edge>
+      <edge id="8" source="4" target="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="i"/>
+          <attvalue for="att2" value="9"/>
+        </attvalues>
+      </edge>
+    </edges>
+  </graph>
+</gexf>
+
+> ################################################################################
+> demo(gexfbasic)
+
+
+	demo(gexfbasic)
+	---- ~~~~~~~~~
+
+> ################################################################################
+> # Demo of gexf function - basic example 
+> # Author: Jorge Fabrega
+> ################################################################################
+> 
+> pause <- function() {  
++   invisible(readline("\nPress <return> to continue: ")) 
++ }
+
+> pause()
+
+Press <return> to continue: 
+
+> ## Demos for rgexf - Basic example.
+> ## The basic function of rgexf requires: 
+> ## 1. A matrix of nodes 
+> ## 2. A matrix of edges
+> 
+> # Defining a matrix of nodes
+> people <- data.frame(matrix(c(1:4, 'juan', 'pedro', 'matthew', 'carlos'),
++                             ncol=2))
+
+> people
+  X1      X2
+1  1    juan
+2  2   pedro
+3  3 matthew
+4  4  carlos
+
+> # Defining a matrix of edges
+> relations <- data.frame(matrix(c(1,4,1,2,1,3,2,3,3,4,4,2,2,4,4,1,4,1), 
++                                ncol=2, byrow=T))
+
+> relations
+  X1 X2
+1  1  4
+2  1  2
+3  1  3
+4  2  3
+5  3  4
+6  4  2
+7  2  4
+8  4  1
+9  4  1
+
+> pause()
+
+Press <return> to continue: 
+
+> ################################################################################
+> # Basic network
+> # you create a .gexf archive by adding the expression:
+> #
+> #                       ,output="yourgraph.gexf" 
+> #
+> # before the last closing 
+> # parenthesis in the following function
+> 
+> write.gexf(nodes=people, edges=relations)
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="static" defaultedgetype="undirected">
+    <nodes>
+      <node id="1" label="juan"/>
+      <node id="2" label="pedro"/>
+      <node id="3" label="matthew"/>
+      <node id="4" label="carlos"/>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" weight="1"/>
+      <edge id="1" source="1" target="2" weight="1"/>
+      <edge id="2" source="1" target="3" weight="1"/>
+      <edge id="3" source="2" target="3" weight="1"/>
+      <edge id="4" source="3" target="4" weight="1"/>
+      <edge id="5" source="4" target="2" weight="1"/>
+      <edge id="6" source="2" target="4" weight="1"/>
+      <edge id="7" source="4" target="1" weight="1"/>
+      <edge id="8" source="4" target="1" weight="1"/>
+    </edges>
+  </graph>
+</gexf>
+
+> ################################################################################  
+> demo(gexfbuildfromscratch)
+
+
+	demo(gexfbuildfromscratch)
+	---- ~~~~~~~~~~~~~~~~~~~~
+
+> ################################################################################
+> # Demo of gexf functions - Building a graph from scratch
+> # Author: George Vega
+> ################################################################################
+> 
+> pause <- function() {  
++   invisible(readline("\nPress <return> to continue: ")) 
++ }
+
+> pause()
+
+Press <return> to continue: 
+
+> # Creating a new gexf object
+> mygraph <- new.gexf.graph()
+
+> mygraph
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using 'rgexf'</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="static">
+    <nodes/>
+    <edges/>
+  </graph>
+</gexf>
+
+> pause()
+
+Press <return> to continue: 
+
+> # Adding nodes
+> mygraph <- add.gexf.node(mygraph,1,"george", vizAtt=list(size=10))
+
+> mygraph <- add.gexf.node(mygraph,2,"valita", vizAtt=list(color=data.frame(20,20,20,1)))
+
+> mygraph <- add.gexf.node(mygraph,3,"pedro")
+
+> # Adding a node with node with attributes
+> mygraph <- add.gexf.node(mygraph,4,"diego")
+
+> pause()
+
+Press <return> to continue: 
+
+> # Adding spells
+> mygraph <- add.node.spell(mygraph, 2, start=0, end=10)
+
+> mygraph <- add.node.spell(mygraph, 2, start=15)
+
+> mygraph <- add.node.spell(mygraph, 4, start=18)
+
+> pause()
+
+Press <return> to continue: 
+
+> # Adding edges
+> mygraph <- add.gexf.edge(mygraph,1,2)
+
+> mygraph <- add.gexf.edge(mygraph,3,1)
+
+> mygraph <- add.gexf.edge(mygraph,4,1)
+
+> mygraph <- add.gexf.edge(mygraph,4,3)
+
+> mygraph <- add.gexf.edge(mygraph,4,2)
+
+> pause()
+
+Press <return> to continue: 
+
+> # Checking it out
+> mygraph
+<?xml version="1.0"?>
+<gexf schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2" xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <meta lastmodifieddate="2015-06-13">
+  <creator>NodosChile</creator>
+  <description>A graph file writing in R using &apos;rgexf&apos;</description>
+  <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+ </meta>
+ <graph mode="static">
+  <nodes>
+   <node id="1" label="george">
+    <viz:size value="10"/>
+   </node>
+   <node id="2" label="valita">
+    <viz:color r="20" g="20" b="20" a="1"/>
+    <spells>
+     <spell start="0" end="10"/>
+     <spell start="15"/>
+    </spells>
+   </node>
+   <node id="3" label="pedro"/>
+   <node id="4" label="diego">
+    <spells>
+     <spell start="18"/>
+    </spells>
+   </node>
+  </nodes>
+  <edges>
+   <edge id="1" source="1" target="2" weight="1"/>
+   <edge id="2" source="3" target="1" weight="1"/>
+   <edge id="3" source="4" target="1" weight="1"/>
+   <edge id="4" source="4" target="3" weight="1"/>
+   <edge id="5" source="4" target="2" weight="1"/>
+  </edges>
+ </graph>
+</gexf>
+> pause()
+
+Press <return> to continue: 
+
+> # Removing a specific node and all the edges of it
+> mygraph <- rm.gexf.node(mygraph, id="1", rm.edges=T)
+
+> mygraph
+<?xml version="1.0"?>
+<gexf schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2" xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <meta lastmodifieddate="2015-06-13">
+  <creator>NodosChile</creator>
+  <description>A graph file writing in R using &apos;rgexf&apos;</description>
+  <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+ </meta>
+ <graph mode="static">
+  <nodes>
+   <node id="2" label="valita">
+    <viz:color r="20" g="20" b="20" a="1"/>
+    <spells>
+     <spell start="0" end="10"/>
+     <spell start="15"/>
+    </spells>
+   </node>
+   <node id="3" label="pedro"/>
+   <node id="4" label="diego">
+    <spells>
+     <spell start="18"/>
+    </spells>
+   </node>
+  </nodes>
+  <edges>
+   <edge id="2" source="3" target="1" weight="1"/>
+   <edge id="4" source="4" target="3" weight="1"/>
+  </edges>
+ </graph>
+</gexf>
+> pause()
+
+Press <return> to continue: 
+
+> # Removing edge number two
+> rm.gexf.edge(mygraph, number=2)
+<?xml version="1.0"?>
+<gexf schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2" xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <meta lastmodifieddate="2015-06-13">
+  <creator>NodosChile</creator>
+  <description>A graph file writing in R using &apos;rgexf&apos;</description>
+  <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+ </meta>
+ <graph mode="static">
+  <nodes>
+   <node id="2" label="valita">
+    <viz:color r="20" g="20" b="20" a="1"/>
+    <spells>
+     <spell start="0" end="10"/>
+     <spell start="15"/>
+    </spells>
+   </node>
+   <node id="3" label="pedro"/>
+   <node id="4" label="diego">
+    <spells>
+     <spell start="18"/>
+    </spells>
+   </node>
+  </nodes>
+  <edges>
+   <edge id="2" source="3" target="1" weight="1"/>
+  </edges>
+ </graph>
+</gexf>> demo(gexfdynamic)
+
+
+	demo(gexfdynamic)
+	---- ~~~~~~~~~~~
+
+> ################################################################################
+> # Demo of gexf function
+> # Author: Jorge Fabrega
+> ################################################################################
+> 
+> pause <- function() {  
++   invisible(readline("\nPress <return> to continue: ")) 
++ }
+
+> pause()
+
+Press <return> to continue: 
+
+> ## Demos for rgexf - Nodes and edges with attributes.
+> ## 1. A matrix of nodes 
+> ## 2. A matrix of edges
+> ## 3. A matrix indicating the active period of each node 
+> ## 4. A matrix indicating the active period of each edge
+> 
+> # Defining a matrix of nodes
+> people <- matrix(c(1:4, 'juan', 'pedro', 'matthew', 'carlos'),ncol=2)
+
+> people
+     [,1] [,2]     
+[1,] "1"  "juan"   
+[2,] "2"  "pedro"  
+[3,] "3"  "matthew"
+[4,] "4"  "carlos" 
+
+> # Defining a matrix of edges
+> relations <- matrix(c(1,4,1,2,1,3,2,3,3,4,4,2,2,4,4,1,4,1), ncol=2, byrow=T)
+
+> relations
+      [,1] [,2]
+ [1,]    1    4
+ [2,]    1    2
+ [3,]    1    3
+ [4,]    2    3
+ [5,]    3    4
+ [6,]    4    2
+ [7,]    2    4
+ [8,]    4    1
+ [9,]    4    1
+
+> # Defining a matrix of dynamics (start, end) for nodes and edges
+> time.nodes<-matrix(c(10.0,13.3,2.5,2.0,12.0,rep(NA,3)), nrow=4, ncol=2)
+
+> time.edges<-matrix(c(10.0,13.0,2.0,2.0,12.0,1,5,rep(NA,5),rep(c(0,1),3)), ncol=2)
+
+> # In this example, the active period of each node is:
+> time.nodes
+     [,1] [,2]
+[1,] 10.0   12
+[2,] 13.3   NA
+[3,]  2.5   NA
+[4,]  2.0   NA
+
+> # And for the edges are:
+> time.edges
+      [,1] [,2]
+ [1,]   10   NA
+ [2,]   13   NA
+ [3,]    2   NA
+ [4,]    2    0
+ [5,]   12    1
+ [6,]    1    0
+ [7,]    5    1
+ [8,]   NA    0
+ [9,]   NA    1
+
+> ################################################################################
+> # Dynamic network in gexf:
+> # you create a .gexf archive by adding the expression:
+> #
+> #                       ,output="yourgraph.gexf" 
+> #
+> # before the last closing 
+> # parenthesis in the following function
+> 
+> pause()
+
+Press <return> to continue: 
+
+> write.gexf(nodes=people, edges=relations, nodeDynamic=time.nodes)
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="dynamic" start="10" end="2.5" timeformat="double" defaultedgetype="undirected">
+    <nodes>
+      <node id="1" label="juan" start="10" end="12"/>
+      <node id="2" label="pedro" start="13.3" end="2.5"/>
+      <node id="3" label="matthew" start="2.5" end="2.5"/>
+      <node id="4" label="carlos" start="2" end="2.5"/>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" weight="1"/>
+      <edge id="1" source="1" target="2" weight="1"/>
+      <edge id="2" source="1" target="3" weight="1"/>
+      <edge id="3" source="2" target="3" weight="1"/>
+      <edge id="4" source="3" target="4" weight="1"/>
+      <edge id="5" source="4" target="2" weight="1"/>
+      <edge id="6" source="2" target="4" weight="1"/>
+      <edge id="7" source="4" target="1" weight="1"/>
+      <edge id="8" source="4" target="1" weight="1"/>
+    </edges>
+  </graph>
+</gexf>
+> demo(gexfdynamicandatt)
+
+
+	demo(gexfdynamicandatt)
+	---- ~~~~~~~~~~~~~~~~~
+
+> ################################################################################
+> # Demo of gexf function - Dynamic network with nodes and edges attributes 
+> # Author: Jorge Fabrega
+> ################################################################################
+> 
+> pause <- function() {  
++   invisible(readline("\nPress <return> to continue: ")) 
++ }
+
+> pause()
+
+Press <return> to continue: 
+
+> ## Demos for rgexf - Nodes and edges with attributes.
+> ## 1. A matrix of nodes 
+> ## 2. A matrix of edges
+> ## 3. A matrix of nodes attributes
+> ## 4. A matrix of edges attributes
+> ## 5. A matrix indicating the active period of each node 
+> ## 6. A matrix indicating the active period of each edge
+> 
+> # Defining a matrix of nodes
+> people <- matrix(c(1:4, 'juan', 'pedro', 'matthew', 'carlos'),ncol=2)
+
+> people
+     [,1] [,2]     
+[1,] "1"  "juan"   
+[2,] "2"  "pedro"  
+[3,] "3"  "matthew"
+[4,] "4"  "carlos" 
+
+> # Defining a matrix of edges
+> relations <- matrix(c(1,4,1,2,1,3,2,3,3,4,4,2,2,4,4,1,4,1), ncol=2, byrow=T)
+
+> relations
+      [,1] [,2]
+ [1,]    1    4
+ [2,]    1    2
+ [3,]    1    3
+ [4,]    2    3
+ [5,]    3    4
+ [6,]    4    2
+ [7,]    2    4
+ [8,]    4    1
+ [9,]    4    1
+
+> # Defining two dataframes with attributes for nodes and edges, respectively.
+> node.att <- data.frame(attributes=c(letters[1:3],"a word"), numbers=1:4, stringsAsFactors=F)
+
+> node.att
+  attributes numbers
+1          a       1
+2          b       2
+3          c       3
+4     a word       4
+
+> edge.att <- data.frame(attributes=letters[1:9], numbers=1:9, stringsAsFactors=F)
+
+> edge.att
+  attributes numbers
+1          a       1
+2          b       2
+3          c       3
+4          d       4
+5          e       5
+6          f       6
+7          g       7
+8          h       8
+9          i       9
+
+> # Defining a matrix of dynamics (start, end) for nodes and edges
+> time.nodes<-matrix(c(10.0,13.0,2.0,2.0,12.0,rep(NA,3)), nrow=4, ncol=2)
+
+> time.edges<-matrix(c(10.0,13.0,2.0,2.0,12.0,1,5,rep(NA,5),rep(c(0,1),3)), ncol=2)
+
+> # In this example, the active period of each node is:
+> time.nodes
+     [,1] [,2]
+[1,]   10   12
+[2,]   13   NA
+[3,]    2   NA
+[4,]    2   NA
+
+> # And for the edges are:
+> time.edges
+      [,1] [,2]
+ [1,]   10   NA
+ [2,]   13   NA
+ [3,]    2   NA
+ [4,]    2    0
+ [5,]   12    1
+ [6,]    1    0
+ [7,]    5    1
+ [8,]   NA    0
+ [9,]   NA    1
+
+> ################################################################################
+> # Dynamic network with nodes and edges attributes
+> 
+> # you create a .gexf archive by adding the expression:
+> #
+> #                       ,output="yourgraph.gexf" 
+> #
+> # before the last closing 
+> # parenthesis in the following function
+> 
+> pause()
+
+Press <return> to continue: 
+
+> write.gexf(nodes=people, edges=relations, edgeDynamic=time.edges, edgesAtt=edge.att,
++      nodeDynamic=time.nodes, nodesAtt=node.att)
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="dynamic" start="0" end="5" timeformat="double" defaultedgetype="undirected">
+    <attributes class="node" mode="static">
+      <attribute id="att1" title="attributes" type="string"/>
+      <attribute id="att2" title="numbers" type="integer"/>
+    </attributes>
+    <attributes class="edge" mode="static">
+      <attribute id="att1" title="attributes" type="string"/>
+      <attribute id="att2" title="numbers" type="integer"/>
+    </attributes>
+    <nodes>
+      <node id="1" label="juan" start="10" end="12">
+        <attvalues>
+          <attvalue for="att1" value="a"/>
+          <attvalue for="att2" value="1"/>
+        </attvalues>
+      </node>
+      <node id="2" label="pedro" start="13" end="5">
+        <attvalues>
+          <attvalue for="att1" value="b"/>
+          <attvalue for="att2" value="2"/>
+        </attvalues>
+      </node>
+      <node id="3" label="matthew" start="2" end="5">
+        <attvalues>
+          <attvalue for="att1" value="c"/>
+          <attvalue for="att2" value="3"/>
+        </attvalues>
+      </node>
+      <node id="4" label="carlos" start="2" end="5">
+        <attvalues>
+          <attvalue for="att1" value="a word"/>
+          <attvalue for="att2" value="4"/>
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" start="10" end="5" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="a"/>
+          <attvalue for="att2" value="1"/>
+        </attvalues>
+      </edge>
+      <edge id="1" source="1" target="2" start="13" end="5" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="b"/>
+          <attvalue for="att2" value="2"/>
+        </attvalues>
+      </edge>
+      <edge id="2" source="1" target="3" start="2" end="5" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="c"/>
+          <attvalue for="att2" value="3"/>
+        </attvalues>
+      </edge>
+      <edge id="3" source="2" target="3" start="2" end="0" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="d"/>
+          <attvalue for="att2" value="4"/>
+        </attvalues>
+      </edge>
+      <edge id="4" source="3" target="4" start="12" end="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="e"/>
+          <attvalue for="att2" value="5"/>
+        </attvalues>
+      </edge>
+      <edge id="5" source="4" target="2" start="1" end="0" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="f"/>
+          <attvalue for="att2" value="6"/>
+        </attvalues>
+      </edge>
+      <edge id="6" source="2" target="4" start="5" end="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="g"/>
+          <attvalue for="att2" value="7"/>
+        </attvalues>
+      </edge>
+      <edge id="7" source="4" target="1" start="0" end="0" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="h"/>
+          <attvalue for="att2" value="8"/>
+        </attvalues>
+      </edge>
+      <edge id="8" source="4" target="1" start="0" end="1" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="i"/>
+          <attvalue for="att2" value="9"/>
+        </attvalues>
+      </edge>
+    </edges>
+  </graph>
+</gexf>
+> demo(gexffull)
+
+
+	demo(gexffull)
+	---- ~~~~~~~~
+
+> ################################################################################
+> # Demo of gexf function - Dynamic network with:
+> #                               nodes and edges attributes, 
+> #                               and attributes for visualizations,
+> #                               images instead of standard nodes,
+> #                               shapes of nodes and,
+> #                               color attributes for nodes and edges
+> # Author: Jorge Fabrega
+> ################################################################################
+> 
+> pause <- function() {  
++   invisible(readline("\nPress <return> to continue: ")) 
++ }
+
+> pause()
+
+Press <return> to continue: 
+
+> ## Demos for rgexf - Nodes and edges with attributes.
+> ## 1. A matrix of nodes 
+> ## 2. A matrix of edges
+> ## 3. A matrix of nodes attributes
+> ## 4. A matrix of edges attributes
+> ## 5. A matrix indicating the active period of each node 
+> ## 6. A matrix indicating the active period of each edge
+> 
+> # Defining a matrix of nodes
+> people <- matrix(c(1:4, 'juan', 'pedro', 'matthew', 'carlos'),ncol=2)
+
+> people
+     [,1] [,2]     
+[1,] "1"  "juan"   
+[2,] "2"  "pedro"  
+[3,] "3"  "matthew"
+[4,] "4"  "carlos" 
+
+> # Defining a matrix of edges
+> relations <- matrix(c(1,4,1,2,1,3,2,3,3,4,4,2,2,4,4,1,4,1), ncol=2, byrow=T)
+
+> relations
+      [,1] [,2]
+ [1,]    1    4
+ [2,]    1    2
+ [3,]    1    3
+ [4,]    2    3
+ [5,]    3    4
+ [6,]    4    2
+ [7,]    2    4
+ [8,]    4    1
+ [9,]    4    1
+
+> # Defining two dataframes with attributes for nodes and edges, respectively.
+> node.att <- data.frame(attributes=c(letters[1:3],"a word"), numbers=1:4, stringsAsFactors=F)
+
+> node.att
+  attributes numbers
+1          a       1
+2          b       2
+3          c       3
+4     a word       4
+
+> edge.att <- data.frame(attributes=letters[1:9], numbers=1:9, stringsAsFactors=F)
+
+> edge.att
+  attributes numbers
+1          a       1
+2          b       2
+3          c       3
+4          d       4
+5          e       5
+6          f       6
+7          g       7
+8          h       8
+9          i       9
+
+> # Defining a matrix of dynamics (start, end) for nodes and edges
+> time.nodes<-matrix(c(10.0,13.0,2.0,2.0,12.0,rep(NA,3)), nrow=4, ncol=2)
+
+> time.edges<-matrix(c(10.0,13.0,2.0,2.0,12.0,1,5,rep(NA,5),rep(c(0,1),3)), ncol=2)
+
+> # In this example, the active period of each node is:
+> time.nodes
+     [,1] [,2]
+[1,]   10   12
+[2,]   13   NA
+[3,]    2   NA
+[4,]    2   NA
+
+> # And for the edges are:
+> time.edges
+      [,1] [,2]
+ [1,]   10   NA
+ [2,]   13   NA
+ [3,]    2   NA
+ [4,]    2    0
+ [5,]   12    1
+ [6,]    1    0
+ [7,]    5    1
+ [8,]   NA    0
+ [9,]   NA    1
+
+> # Images instead of stardard nodes
+> imagee <- data.frame(image=rbind(
++   "Yellow_solid_sphere.png",
++   "Yellow_solid_sphere.png",
++   "Yellow_solid_sphere.png",
++   "Yellow_solid_sphere.png"), stringsAsFactors=F)
+
+> # Shapes
+> shapes<-c("rectangle", "square", "triangle", "diamond")
+
+> # position
+> pos<-matrix(1:12,nrow=4)
+
+> #colors
+> color<-cbind(t(col2rgb(1:4)), 1)
+
+> #Edges thickness
+> thick<-1:9
+
+> ################################################################################
+> # Dynamic network with nodes and edges attributes
+> 
+> # you create a .gexf archive by adding the expression:
+> #
+> #                       ,output="yourgraph.gexf" 
+> #
+> # before the last closing 
+> # parenthesis in the following function
+> 
+> pause()
+
+Press <return> to continue: 
+
+> write.gexf(nodes=people, edgesWeight=thick, edges=relations,
++            edgeDynamic=time.edges, edgesAtt=edge.att, nodeDynamic=time.nodes,
++            nodesAtt=node.att,
++            nodesVizAtt = list(
++              shape=shapes, 
++              position=pos, 
++              image=imagee, 
++              color=color)
++            )
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2015-06-13">
+    <creator>NodosChile</creator>
+    <description>A graph file writing in R using "rgexf"</description>
+    <keywords>gexf graph, NodosChile, R, rgexf</keywords>
+  </meta>
+  <graph mode="dynamic" start="0" end="5" timeformat="double" defaultedgetype="undirected">
+    <attributes class="node" mode="static">
+      <attribute id="att1" title="attributes" type="string"/>
+      <attribute id="att2" title="numbers" type="integer"/>
+    </attributes>
+    <attributes class="edge" mode="static">
+      <attribute id="att1" title="attributes" type="string"/>
+      <attribute id="att2" title="numbers" type="integer"/>
+    </attributes>
+    <nodes>
+      <node id="1" label="juan" start="10" end="12">
+        <attvalues>
+          <attvalue for="att1" value="a"/>
+          <attvalue for="att2" value="1"/>
+        </attvalues>
+        <viz:color r="0" g="0" b="0" a="1"/>
+        <viz:position x="1" y="5" z="9"/>
+        <viz:shape value="rectangle"/>
+        <viz:shape value="image" uri="Yellow_solid_sphere.png"/>
+      </node>
+      <node id="2" label="pedro" start="13" end="5">
+        <attvalues>
+          <attvalue for="att1" value="b"/>
+          <attvalue for="att2" value="2"/>
+        </attvalues>
+        <viz:color r="255" g="0" b="0" a="1"/>
+        <viz:position x="2" y="6" z="10"/>
+        <viz:shape value="square"/>
+        <viz:shape value="image" uri="Yellow_solid_sphere.png"/>
+      </node>
+      <node id="3" label="matthew" start="2" end="5">
+        <attvalues>
+          <attvalue for="att1" value="c"/>
+          <attvalue for="att2" value="3"/>
+        </attvalues>
+        <viz:color r="0" g="205" b="0" a="1"/>
+        <viz:position x="3" y="7" z="11"/>
+        <viz:shape value="triangle"/>
+        <viz:shape value="image" uri="Yellow_solid_sphere.png"/>
+      </node>
+      <node id="4" label="carlos" start="2" end="5">
+        <attvalues>
+          <attvalue for="att1" value="a word"/>
+          <attvalue for="att2" value="4"/>
+        </attvalues>
+        <viz:color r="0" g="0" b="255" a="1"/>
+        <viz:position x="4" y="8" z="12"/>
+        <viz:shape value="diamond"/>
+        <viz:shape value="image" uri="Yellow_solid_sphere.png"/>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="4" start="10" end="5" weight="1">
+        <attvalues>
+          <attvalue for="att1" value="a"/>
+          <attvalue for="att2" value="1"/>
+        </attvalues>
+      </edge>
+      <edge id="1" source="1" target="2" start="13" end="5" weight="2">
+        <attvalues>
+          <attvalue for="att1" value="b"/>
+          <attvalue for="att2" value="2"/>
+        </attvalues>
+      </edge>
+      <edge id="2" source="1" target="3" start="2" end="5" weight="3">
+        <attvalues>
+          <attvalue for="att1" value="c"/>
+          <attvalue for="att2" value="3"/>
+        </attvalues>
+      </edge>
+      <edge id="3" source="2" target="3" start="2" end="0" weight="4">
+        <attvalues>
+          <attvalue for="att1" value="d"/>
+          <attvalue for="att2" value="4"/>
+        </attvalues>
+      </edge>
+      <edge id="4" source="3" target="4" start="12" end="1" weight="5">
+        <attvalues>
+          <attvalue for="att1" value="e"/>
+          <attvalue for="att2" value="5"/>
+        </attvalues>
+      </edge>
+      <edge id="5" source="4" target="2" start="1" end="0" weight="6">
+        <attvalues>
+          <attvalue for="att1" value="f"/>
+          <attvalue for="att2" value="6"/>
+        </attvalues>
+      </edge>
+      <edge id="6" source="2" target="4" start="5" end="1" weight="7">
+        <attvalues>
+          <attvalue for="att1" value="g"/>
+          <attvalue for="att2" value="7"/>
+        </attvalues>
+      </edge>
+      <edge id="7" source="4" target="1" start="0" end="0" weight="8">
+        <attvalues>
+          <attvalue for="att1" value="h"/>
+          <attvalue for="att2" value="8"/>
+        </attvalues>
+      </edge>
+      <edge id="8" source="4" target="1" start="0" end="1" weight="9">
+        <attvalues>
+          <attvalue for="att1" value="i"/>
+          <attvalue for="att2" value="9"/>
+        </attvalues>
+      </edge>
+    </edges>
+  </graph>
+</gexf>
+> demo(gexftwitter)
+
+
+	demo(gexftwitter)
+	---- ~~~~~~~~~~~
+
+> ################################################################################
+> # Demo of gexf function - An example with real data
+> # Author: Jorge Fabrega
+> ################################################################################
+> 
+> pause <- function() {  
++   invisible(readline("\nPress <return> to continue: ")) 
++ }
+
+> # Example to be used as a demo for rgexf
+> # This example uses follower-following relationships among chilean politicians,
+> # journalists and political analysists on Twitter (sample) by december 2011. 
+> # Source: Fabrega and Paredes (2012): 'La politica en 140 caracteres'
+> # en Intermedios: medios de comunicacion y democracia en Chile. Ediciones UDP
+> 
+> pause()
+
+Press <return> to continue: 
+
+> # inputs: twitter accounts of chilean politicians and the list of following relationships
+> # among them in the online social network Twitter.
+> # for more information about Twitter, please visit: www.twitter.com
+> 
+> data(twitteraccounts)
+
+> data(followers)
+
+> # preparing data 
+> nodos <- data.frame(id=1:NROW(twitteraccounts), label=twitteraccounts$label)
+
+> nodos.att <- subset(twitteraccounts, select=c(cargo, partido, sector, categoria))
+
+> relations<- subset(followers, select=c(source, target))
+
+> # Creating the follower-following network in gexf format with some nodes' attribute
+> pause()
+
+Press <return> to continue: 
+
+> x1 <- write.gexf(nodos, relations, keepFactors=F, nodesAtt=nodos.att)
+
+> summary(x1)
+GEXF graph object
+$`N of nodes`
+[1] 148
+
+$`N of edges`
+[1] 6064
+
+$`Node Attrs`
+NULL
+
+$`Edge Attrs`
+NULL
+
+> demo(gexfigraph)
+
+
+	demo(gexfigraph)
+	---- ~~~~~~~~~~
+
+> gexf1 <- read.gexf(system.file("gexf-graphs/lesmiserables.gexf", package="rgexf"))
+
+> igraph1 <- gexf.to.igraph(gexf1)
+
+> gexf2 <- igraph.to.gexf(igraph1)
+> 
+> g <- graph.ring(10)
+> g <- set.graph.attribute(g, "name", "RING")
+> 
+> # Colors
+> g <- set.vertex.attribute(g, "color", value=c("red", "green"))
+> 
+> # Weight
+> g <- set.edge.attribute(g, "weight", value=runif(ecount(g)))
+> 
+> g2 <- igraph.to.gexf(g)
+> #plot(g)
+> #plot(g2)
+> g3 <- gexf.to.igraph(g2)
+> 
+> proc.time()
+   user  system elapsed 
+  6.948   0.071   7.015 

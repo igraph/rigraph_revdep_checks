@@ -1,0 +1,1140 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "qgraph"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "qgraph-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('qgraph')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("EBICglasso")
+> ### * EBICglasso
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: EBICglasso
+> ### Title: Compute Gaussian graphical model using graphical lasso based on
+> ###   extended BIC criterium.
+> ### Aliases: EBICglasso
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D ### Using bfi dataset from psych ###
+> ##D library("psych")
+> ##D data(bfi)
+> ##D 
+> ##D # Compute correlations:
+> ##D CorMat <- cor_auto(bfi[,1:25])
+> ##D 
+> ##D # Compute graph with tuning = 0 (BIC):
+> ##D BICgraph <- EBICglasso(CorMat, nrow(bfi), 0)
+> ##D 
+> ##D # Compute graph with tuning = 0.5 (EBIC)
+> ##D EBICgraph <- EBICglasso(CorMat, nrow(bfi), 0.5)
+> ##D 
+> ##D # Plot both:
+> ##D layout(t(1:2))
+> ##D BICgraph <- qgraph(BICgraph, layout = "spring", title = "BIC", details = TRUE)
+> ##D EBICgraph <- qgraph(EBICgraph, layout = "spring", title = "EBIC")
+> ##D 
+> ##D # Compare centrality and clustering:
+> ##D layout(1)
+> ##D centralityPlot(list(BIC = BICgraph, EBIC = EBICgraph))
+> ##D clusteringPlot(list(BIC = BICgraph, EBIC = EBICgraph))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("EBICglasso", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("FDRnetwork")
+> ### * FDRnetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: FDRnetwork
+> ### Title: Model selection using local False Discovery Rate
+> ### Aliases: FDRnetwork
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D ### Using bfi dataset from psych ###
+> ##D library("psych")
+> ##D data(bfi)
+> ##D 
+> ##D ### CORRELATIONS ###
+> ##D # Compute correlations:
+> ##D CorMat <- cor_auto(bfi[,1:25])
+> ##D 
+> ##D # Run local FDR:
+> ##D CorMat_FDR <- FDRnetwork(CorMat)
+> ##D 
+> ##D # Number of edges remaining:
+> ##D mean(CorMat_FDR[upper.tri(CorMat_FDR,diag=FALSE)]!=0)
+> ##D 
+> ##D # None, so might use different criterion:
+> ##D CorMat_FDR <- FDRnetwork(CorMat, method = "pval")
+> ##D 
+> ##D 
+> ##D # Compare:
+> ##D L <- averageLayout(CorMat, CorMat_FDR)
+> ##D 
+> ##D layout(t(1:2))
+> ##D qgraph(CorMat, layout = L, title = "Correlation network", 
+> ##D        maximum = 1, cut = 0.1, minimum = 0, esize = 20)
+> ##D qgraph(CorMat_FDR, layout = L, title = "Local FDR correlation network", 
+> ##D        maximum = 1, cut = 0.1, minimum = 0, esize = 20)
+> ##D 
+> ##D # Centrality:
+> ##D centralityPlot(list(cor=CorMat, fdr = CorMat_FDR))
+> ##D 
+> ##D 
+> ##D ### PARTIAL CORRELATIONS ###
+> ##D # Partial correlation matrix:
+> ##D library("parcor")
+> ##D PCorMat <- cor2pcor(CorMat)
+> ##D 
+> ##D # Run local FDR:
+> ##D PCorMat_FDR <- FDRnetwork(PCorMat, cutoff = 0.1, method = "pval")
+> ##D 
+> ##D # Number of edges remaining:
+> ##D mean(PCorMat_FDR[upper.tri(PCorMat_FDR,diag=FALSE)]!=0)
+> ##D 
+> ##D # Compare:
+> ##D L <- averageLayout(PCorMat, PCorMat_FDR)
+> ##D 
+> ##D layout(t(1:2))
+> ##D qgraph(PCorMat, layout = L, title = "Partial correlation network", 
+> ##D           maximum = 1, cut = 0.1, minimum = 0, esize = 20)
+> ##D qgraph(PCorMat_FDR, layout = L, title = "Local FDR partial correlation network", 
+> ##D           maximum = 1, cut = 0.1, minimum = 0, esize = 20)
+> ##D 
+> ##D # Centrality:
+> ##D centralityPlot(list(cor=PCorMat, fdr = PCorMat_FDR))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("FDRnetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("centrality")
+> ### * centrality
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: centrality
+> ### Title: Centrality statistics of graphs
+> ### Aliases: centrality
+> ### Keywords: graphs
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> adj <- matrix(sample(0:1,10^2,TRUE,prob=c(0.8,0.2)),nrow=10,ncol=10)
+> Q <- qgraph(adj)
+> 
+> centrality(Q)
+$OutDegree
+ 1  2  3  4  5  6  7  8  9 10 
+ 3  2  0  2  1  2  2  1  2  2 
+
+$InDegree
+ 1  2  3  4  5  6  7  8  9 10 
+ 3  1  2  1  1  1  2  4  0  2 
+
+$Closeness
+ [1] 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.04 0.00
+
+$Betweenness
+ [1] 28 13  0 12 12 12 10 13  0 14
+
+$ShortestPathLengths
+      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+ [1,]    0    3    1    2    1    4    1    2  Inf     3
+ [2,]    2    0    3    4    3    1    3    1  Inf     5
+ [3,]  Inf  Inf    0  Inf  Inf  Inf  Inf  Inf  Inf   Inf
+ [4,]    1    3    2    0    2    4    2    2  Inf     1
+ [5,]    2    4    3    1    0    5    3    3  Inf     2
+ [6,]    1    2    2    3    2    0    2    1  Inf     4
+ [7,]    1    2    2    3    2    3    0    1  Inf     4
+ [8,]    3    1    4    5    4    2    4    0  Inf     6
+ [9,]    3    3    1    5    4    4    2    2    0     1
+[10,]    2    2    3    4    3    3    1    1  Inf     0
+
+$ShortestPaths
+      [,1]   [,2]   [,3]   [,4]   [,5]   [,6]   [,7]   [,8]   [,9]   [,10] 
+ [1,] List,0 List,1 List,1 List,1 List,1 List,1 List,1 List,1 List,0 List,1
+ [2,] List,1 List,0 List,1 List,1 List,1 List,1 List,1 List,1 List,0 List,1
+ [3,] List,0 List,0 List,0 List,0 List,0 List,0 List,0 List,0 List,0 List,0
+ [4,] List,1 List,1 List,1 List,0 List,1 List,1 List,2 List,1 List,0 List,1
+ [5,] List,1 List,1 List,1 List,1 List,0 List,1 List,2 List,1 List,0 List,1
+ [6,] List,1 List,1 List,1 List,1 List,1 List,0 List,1 List,1 List,0 List,1
+ [7,] List,1 List,1 List,1 List,1 List,1 List,1 List,0 List,1 List,0 List,1
+ [8,] List,1 List,1 List,1 List,1 List,1 List,1 List,1 List,0 List,0 List,1
+ [9,] List,1 List,1 List,1 List,1 List,1 List,1 List,1 List,1 List,0 List,1
+[10,] List,1 List,1 List,1 List,1 List,1 List,1 List,1 List,1 List,0 List,0
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("centrality", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("centrality_auto")
+> ### * centrality_auto
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: centrality_auto
+> ### Title: Automatic centrality statistics of graphs
+> ### Aliases: centrality_auto
+> ### Keywords: graphs centrality
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> adj <- matrix(sample(0:1,10^2,TRUE,prob=c(0.8,0.2)),nrow=10,ncol=10)
+> Q <- qgraph(adj)
+> centrality_auto(Q) 
+$node.centrality
+   Betweenness  Closeness InDegree OutDegree
+1           28 0.06250000        3         3
+2           13 0.05263158        1         2
+3            0         NA        2         0
+4           12 0.06666667        1         2
+5           12 0.05000000        1         1
+6           12 0.06666667        1         2
+7           10 0.06250000        2         2
+8           13 0.04000000        4         1
+9            0         NA        0         2
+10          14 0.06250000        2         2
+
+$edge.betweenness.centrality
+   from to edgebetweenness
+5     8  2              21
+10    1  5              20
+12    2  6              20
+16    5  4              20
+17    6  1              18
+15    4 10              14
+3     7  1              12
+9    10  8              12
+8    10  7              10
+1     1  3               8
+7     9 10               8
+11    1  7               8
+4     7  8               6
+14    4  1               6
+2     6  8               2
+6     9  3               1
+13    2  8               1
+
+$ShortestPathLengths
+     1   2 3   4   5   6   7   8   9  10
+1    0   3 1   2   1   4   1   2 Inf   3
+2    2   0 3   4   3   1   3   1 Inf   5
+3  Inf Inf 0 Inf Inf Inf Inf Inf Inf Inf
+4    1   3 2   0   2   4   2   2 Inf   1
+5    2   4 3   1   0   5   3   3 Inf   2
+6    1   2 2   3   2   0   2   1 Inf   4
+7    1   2 2   3   2   3   0   1 Inf   4
+8    3   1 4   5   4   2   4   0 Inf   6
+9    3   3 1   5   4   4   2   2   0   1
+10   2   2 3   4   3   3   1   1 Inf   0
+
+attr(,"class")
+[1] "list"            "centrality_auto"
+> # notice that a value NA is returned for the closeness centrality of nodes 3 and 9, which are not 
+> # strongly connected to the largest component of the network (3 cannot reach other nodes, 9 cannot 
+> # be reached).
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("centrality_auto", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("clustcoef_auto")
+> ### * clustcoef_auto
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clustcoef_auto
+> ### Title: Local clustering coefficients.
+> ### Aliases: clustcoef_auto clustWS clustZhang clustOnnela
+> ### Keywords: signed weighted clustering
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> # generate a random (directed) network:
+> net_ig <- igraph::erdos.renyi.game(n=8, p.or.m=.4, type="gnp", directed=TRUE) 
+> 
+> # convert it to an adjacency matrix:
+> net <- as.matrix(igraph:::get.adjacency(net_ig, type="both")) 
+> 
+> # convert it to a signed and weighted network:
+> net <- net*matrix(rnorm(ncol(net)^2), ncol=ncol(net)) 
+> 
+> # make it undirected:
+> net[upper.tri(net)] <- t(net)[upper.tri(net)] 
+> clustcoef_auto(net)
+    clustWS signed_clustWS clustZhang signed_clustZhang clustOnnela
+1 0.0000000      0.0000000 0.00000000        0.00000000  0.00000000
+2 0.3000000      0.1000000 0.05438561        0.01722044  0.08565427
+3 0.3333333     -0.3333333 0.25843334       -0.25843334  0.10413827
+4 0.0000000      0.0000000 0.00000000        0.00000000  0.00000000
+5 0.6666667      0.6666667 0.24768680        0.24768680  0.18137595
+6 1.0000000      1.0000000 0.14036980        0.14036980  0.37844734
+7 0.0000000      0.0000000 0.00000000        0.00000000  0.00000000
+8 0.3333333      0.0000000 0.10420660       -0.07715652  0.07968255
+  signed_clustOnnela clustBarrat
+1         0.00000000   0.0000000
+2         0.02317131   0.2223099
+3        -0.10413827   0.4538294
+4         0.00000000   0.0000000
+5         0.18137595   0.5572809
+6         0.37844734   1.0000000
+7         0.00000000   0.0000000
+8        -0.02445571   0.3511171
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("clustcoef_auto", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cor_auto")
+> ### * cor_auto
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cor_auto
+> ### Title: Automatically compute an apppropriate correlation matrix
+> ### Aliases: cor_auto
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D ### Examples from lavCor (lavaan): ###
+> ##D 
+> ##D library("lavaan")
+> ##D 
+> ##D # Holzinger and Swineford (1939) example
+> ##D HS9 <- HolzingerSwineford1939[,c("x1","x2","x3","x4","x5",
+> ##D                                  "x6","x7","x8","x9")]
+> ##D 
+> ##D # Pearson correlations
+> ##D cor_auto(HS9)
+> ##D 
+> ##D # ordinal version, with three categories
+> ##D HS9ord <- as.data.frame( lapply(HS9, cut, 3, labels=FALSE) )
+> ##D 
+> ##D # polychoric correlations, two-stage estimation
+> ##D cor_auto(HS9ord)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cor_auto", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph")
+> ### * qgraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph
+> ### Title: qgraph
+> ### Aliases: qgraph
+> ### Keywords: Graphs qgraph Correlations
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D   
+> ##D ### Correlations ###
+> ##D # Load big5 dataset:
+> ##D data(big5)
+> ##D data(big5groups)
+> ##D 
+> ##D # Compute correlation matrix:
+> ##D big5_cors <- cor_auto(big5, detectOrdinal = FALSE)
+> ##D 
+> ##D # Correlations:
+> ##D big5Graph <- qgraph(cor(big5),minimum=0.25,groups=big5groups,
+> ##D             legend=TRUE,borders=FALSE, title = "Big 5 correlations")
+> ##D 
+> ##D 
+> ##D   # Same graph with spring layout:
+> ##D   qgraph(big5Graph,layout="spring")
+> ##D   
+> ##D   # Same graph with different color scheme:
+> ##D   qgraph(big5Graph,posCol="blue",negCol="purple")
+> ##D  
+> ##D   ### Network analysis ###
+> ##D   ### Using bfi dataset from psych ###
+> ##D   library("psych")
+> ##D   data(bfi)
+> ##D   
+> ##D   # Compute correlations:
+> ##D   CorMat <- cor_auto(bfi[,1:25])
+> ##D   
+> ##D   # Compute graph with tuning = 0 (BIC):
+> ##D   BICgraph <- qgraph(CorMat, graph = "glasso", sampleSize = nrow(bfi),
+> ##D             tuning = 0, layout = "spring", title = "BIC", details = TRUE)
+> ##D   
+> ##D   # Compute graph with tuning = 0.5 (EBIC)
+> ##D   EBICgraph <- qgraph(CorMat, graph = "glasso", sampleSize = nrow(bfi),
+> ##D             tuning = 0.5, layout = "spring", title = "BIC", details = TRUE)
+> ##D   
+> ##D   # Compare centrality and clustering:
+> ##D   centralityPlot(list(BIC = BICgraph, EBIC = EBICgraph))
+> ##D   clusteringPlot(list(BIC = BICgraph, EBIC = EBICgraph))
+> ##D 
+> ##D   # Compute centrality and clustering:
+> ##D   centrality_auto(BICgraph)
+> ##D   clustcoef_auto(BICgraph)
+> ##D   
+> ##D   ### Directed unweighted graphs ###
+> ##D   set.seed(1)
+> ##D   adj=matrix(sample(0:1,10^2,TRUE,prob=c(0.8,0.2)),nrow=10,ncol=10)
+> ##D   qgraph(adj)
+> ##D   title("Unweighted and directed graphs",line=2.5)
+> ##D   
+> ##D   # Save plot to nonsquare pdf file:
+> ##D   qgraph(adj,filetype='pdf',height=5,width=10)
+> ##D   
+> ##D   #### EXAMPLES FOR EDGES UNDER DIFFERENT ARGUMENTS ###
+> ##D   # Create edgelist:
+> ##D   dat.3 <- matrix(c(1:15*2-1,1:15*2),,2)
+> ##D   dat.3 <- cbind(dat.3,round(seq(-0.7,0.7,length=15),1))
+> ##D   
+> ##D   # Create grid layout:
+> ##D   L.3 <- matrix(1:30,nrow=2)
+> ##D   
+> ##D   # Different esize:
+> ##D   qgraph(dat.3,layout=L.3,directed=FALSE,edge.labels=TRUE,esize=14)
+> ##D   
+> ##D   # Different esize, strongest edges omitted (note how 0.4 edge is now 
+> ##D   # just as wide as 0.7 edge in previous graph):
+> ##D   qgraph(dat.3[-c(1:3,13:15),],layout=L.3,nNodes=30,directed=FALSE,
+> ##D          edge.labels=TRUE,esize=14)
+> ##D   
+> ##D   # Different esize, with maximum:
+> ##D   qgraph(dat.3,layout=L.3,directed=FALSE,edge.labels=TRUE,esize=14,maximum=1)
+> ##D   title("maximum=1",line=2.5)
+> ##D   
+> ##D   qgraph(dat.3[-c(1:3,13:15),],layout=L.3,nNodes=30,directed=FALSE,edge.labels=TRUE,
+> ##D          esize=14,maximum=1)
+> ##D   title("maximum=1",line=2.5)
+> ##D   
+> ##D   # Different minimum
+> ##D   qgraph(dat.3,layout=L.3,directed=FALSE,edge.labels=TRUE,esize=14,minimum=0.1)
+> ##D   title("minimum=0.1",line=2.5)
+> ##D   
+> ##D   # With cutoff score:
+> ##D   qgraph(dat.3,layout=L.3,directed=FALSE,edge.labels=TRUE,esize=14,cut=0.4)
+> ##D   title("cut=0.4",line=2.5)
+> ##D   
+> ##D   # With details:
+> ##D   qgraph(dat.3,layout=L.3,directed=FALSE,edge.labels=TRUE,esize=14,minimum=0.1,
+> ##D          maximum=1,cut=0.4,details=TRUE)
+> ##D   title("details=TRUE",line=2.5)
+> ##D   
+> ##D   
+> ##D   # Trivial example of manually specifying edge color and widths:
+> ##D   E <- as.matrix(data.frame(from=rep(1:3,each=3),to=rep(1:3,3),width=1:9))
+> ##D   qgraph(E,mode="direct",edge.color=rainbow(9))
+> ##D   
+> ##D   
+> ##D   ### Input based on other R objects ###
+> ##D   
+> ##D   ## Exploratory factor analysis:
+> ##D   big5efa <- factanal(big5,factors=5,rotation="promax",scores="regression")
+> ##D   qgraph(big5efa,groups=big5groups,layout="circle",minimum=0.2,
+> ##D          cut=0.4,vsize=c(1.5,10),borders=FALSE,vTrans=200,title="Big 5 EFA")
+> ##D   
+> ##D   ## Principal component analysis:
+> ##D   library("psych")
+> ##D   big5pca <- principal(cor(big5),5,rotate="promax")
+> ##D   qgraph(big5pca,groups=big5groups,layout="circle",rotation="promax",minimum=0.2,
+> ##D          cut=0.4,vsize=c(1.5,10),borders=FALSE,vTrans=200,title="Big 5 PCA")
+> ##D   
+> ##D   ## pcalg
+> ##D   # Example from pcalg vignette:
+> ##D   library("pcalg")
+> ##D   data(gmI)
+> ##D   suffStat <- list(C = cor(gmI$x), n = nrow(gmI$x))
+> ##D   pc.fit <- pc(suffStat, indepTest=gaussCItest,
+> ##D                p = ncol(gmI$x), alpha = 0.01)
+> ##D   
+> ##D   qgraph(pc.fit)
+> ##D   
+> ##D   ## glasso:
+> ##D   # Using bfi dataset from psych:
+> ##D   library("psych")
+> ##D   data(bfi)
+> ##D   cor_bfi <- cor_auto(bfi[,1:25])
+> ##D   
+> ##D   # Run qgraph:
+> ##D   library("glasso")
+> ##D   bfi_glasso <- glasso(cor_bfi, 0.1)
+> ##D   
+> ##D   # Plot:
+> ##D   qgraph(bfi_glasso, layout = "spring")
+> ##D   
+> ##D   
+> ##D   ## Huge (glasso):
+> ##D   library("huge")
+> ##D   bfi_huge <- huge(huge.npn(bfi[,1:25]), method="glasso")
+> ##D   
+> ##D   # Auto select optimal and plot:
+> ##D   qgraph(bfi_huge, layout = "spring")
+> ##D   
+> ##D   # Manual select and plot:
+> ##D   sel <- huge.select(bfi_huge)
+> ##D   qgraph(sel, layout = "spring")
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph.animate")
+> ### * qgraph.animate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph.animate
+> ### Title: Animate a growing network
+> ### Aliases: qgraph.animate
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D ## For these examples, first generate a scale free network using preferential attachment:
+> ##D 
+> ##D # Number of nodes:
+> ##D n <- 100
+> ##D # Empty vector with Degrees:
+> ##D Degs <- rep(0, n)
+> ##D # Empty Edgelist:
+> ##D E <- matrix(NA, n - 1, 2)
+> ##D # Add and connect nodes 1 and 2:
+> ##D E[1, ] <- 1:2
+> ##D Degs[1:2] <- 1
+> ##D # For each node, add it with probability proportional to degree:
+> ##D for (i in 2:(n - 1))
+> ##D {
+> ##D E[i, 2] <- i + 1
+> ##D con <- sample(1:i, 1, prob = Degs[1:i]/sum(Degs[1:i]),i)
+> ##D Degs[c(con,i+1)] <- Degs[c(con,i+1)] + 1
+> ##D E[i, 1] <- con
+> ##D }
+> ##D 
+> ##D # Because this is an edgelist we need a function to convert this to an adjacency matrix:
+> ##D E2adj <- function(E,n)
+> ##D {
+> ##D   adj <- matrix(0,n,n)
+> ##D   for (i in 1:nrow(E))
+> ##D   {
+> ##D       adj[E[i,1],E[i,2]]  <- 1
+> ##D   }
+> ##D   adj <- adj + t(adj)
+> ##D   return(adj)
+> ##D }
+> ##D 
+> ##D 
+> ##D 
+> ##D ### EXAMPLE 1: Animation of construction algorithm: ###
+> ##D adjs <- lapply(1:nrow(E),function(i) E2adj(E[1:i,,drop=FALSE],n))
+> ##D qgraph.animate(adjs,color="black",labels=FALSE,sleep=0.1, smooth = FALSE)
+> ##D rm(adjs)
+> ##D 
+> ##D ### EXAMPLE 2: Add nodes by final degree: ###
+> ##D adj <- E2adj(E,n)
+> ##D qgraph.animate(E2adj(E,n),color="black",labels=FALSE,constraint=100,sleep=0.1)
+> ##D 
+> ##D ### EXAMPLE 3: Changing edge weights: ###
+> ##D adjW <- adj*rnorm(n^2)
+> ##D adjW <- (adjW + t(adjW))/2
+> ##D adjs <- list(adjW)
+> ##D for (i in 2:100)
+> ##D {
+> ##D   adjW <- adj*rnorm(n^2)
+> ##D   adjW <- (adjW + t(adjW))/2
+> ##D   adjs[[i]] <- adjs[[i-1]] + adjW
+> ##D }
+> ##D qgraph.animate(adjs,color="black",labels=FALSE,constraint=100,sleep=0.1)
+> ##D 
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph.animate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph.cfa")
+> ### * qgraph.cfa
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph.cfa
+> ### Title: CFA using Structural Equation Modelling
+> ### Aliases: qgraph.cfa
+> ### Keywords: qgraph sem cfa
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Simulate dataset:
+> ##D set.seed(2)
+> ##D eta<-matrix(rnorm(200*5),ncol=5)
+> ##D lam<-matrix(rnorm(50*5,0,0.15),50,5)
+> ##D lam[apply(diag(5)==1,1,rep,each=10)]<-rnorm(50,0.7,0.3)
+> ##D th<-matrix(rnorm(200*50),ncol=50)
+> ##D Y<-eta%*%t(lam)+th
+> ##D 
+> ##D # Create groupslist
+> ##D gr<-list(1:10,11:20,21:30,31:40,41:50)
+> ##D 
+> ##D # Using "lavaan" package:
+> ##D res <- qgraph.cfa(cov(Y),N=200,groups=gr,pkg="lavaan",vsize.man=2,vsize.lat=10)
+> ##D 
+> ##D qgraph.lavaan(res,filename="lavaan",legend=FALSE,groups=gr,edge.label.cex=0.6)
+> ##D 
+> ##D # Using "sem" package:
+> ##D res <- qgraph.cfa(cov(Y),N=200,groups=gr,pkg="sem",vsize.man=2,vsize.lat=10,fun=qgraph.loadings)
+> ##D 
+> ##D qgraph.semModel(res,edge.label.cex=0.6)
+> ##D 
+> ##D qgraph(res,edge.label.cex=0.6)
+> ##D 
+> ##D qgraph.sem(res,filename="sem",legend=FALSE,groups=gr,edge.label.cex=0.6)
+> ##D 
+> ##D ### Big 5 dataset ###
+> ##D data(big5)
+> ##D data(big5groups)
+> ##D 
+> ##D fit <- qgraph.cfa(cov(big5),nrow(big5),big5groups,pkg="lavaan",opts=list(se="none"),
+> ##D 	vsize.man=1,vsize.lat=6,edge.label.cex=0.5)
+> ##D print(fit)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph.cfa", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph.lavaan")
+> ### * qgraph.lavaan
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph.lavaan
+> ### Title: qgraph: Structural Equation Modelling
+> ### Aliases: qgraph.lavaan
+> ### Keywords: lavaan cfa SEM path diagram graph qgraph
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D ## The industrialization and Political Democracy Example 
+> ##D # Example from lavaan::sem help file:
+> ##D require("lavaan")
+> ##D      ## Bollen (1989), page 332
+> ##D      model <- ' 
+> ##D        # latent variable definitions
+> ##D           ind60 =~ x1 + x2 + x3
+> ##D           dem60 =~ y1 + y2 + y3 + y4
+> ##D           dem65 =~ y5 + equal("dem60=~y2")*y6 
+> ##D                       + equal("dem60=~y3")*y7 
+> ##D                       + equal("dem60=~y4")*y8
+> ##D      
+> ##D        # regressions
+> ##D          dem60 ~ ind60
+> ##D          dem65 ~ ind60 + dem60
+> ##D      
+> ##D        # residual correlations
+> ##D          y1 ~~ y5
+> ##D          y2 ~~ y4 + y6
+> ##D          y3 ~~ y7
+> ##D          y4 ~~ y8
+> ##D          y6 ~~ y8
+> ##D      '
+> ##D      
+> ##D      fit <- sem(model, data=PoliticalDemocracy)
+> ##D 
+> ##D # Plot standardized model (numerical):
+> ##D qgraph.lavaan(fit,layout="tree",vsize.man=5,vsize.lat=10,
+> ##D 	filetype="",include=4,curve=-0.4,edge.label.cex=0.6)
+> ##D 
+> ##D # Plot standardized model (graphical):
+> ##D qgraph.lavaan(fit,layout="tree",vsize.man=5,vsize.lat=10,
+> ##D 	filetype="",include=8,curve=-0.4,edge.label.cex=0.6)
+> ##D 
+> ##D # Create output document:
+> ##D qgraph.lavaan(fit,layout="spring",vsize.man=5,vsize.lat=10,
+> ##D 	filename="lavaan")
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph.lavaan", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph.layout.fruchtermanreingold")
+> ### * qgraph.layout.fruchtermanreingold
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph.layout.fruchtermanreingold
+> ### Title: qgraph.layout.fruchtermanreingold
+> ### Aliases: qgraph.layout.fruchtermanreingold
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # This example makes a multipage PDF that contains images
+> ##D # Of a building network using soft constraints.
+> ##D 
+> ##D # Each step one node is added with one edge. The max.delta
+> ##D # decreases the longer nodes are present in the network.
+> ##D 
+> ##D pdf("Soft Constraints.pdf",width=10,height=5)
+> ##D 
+> ##D adj=adjO=matrix(0,nrow=3,ncol=3)
+> ##D adj[upper.tri(adj)]=1
+> ##D Q=qgraph(adj,vsize=3,height=5,width=10,layout="spring",
+> ##D 	esize=1,filetype='',directed=T)
+> ##D cons=Q$layout
+> ##D for (i in 1:20)
+> ##D {
+> ##D 	x=nrow(adj)
+> ##D 	adjN=matrix(0,nrow=x+1,ncol=x+1)
+> ##D 	adjN[1:x,1:x]=adj
+> ##D 	consN=matrix(NA,nrow=x+1,ncol=2)
+> ##D 	consN[1:x,]=cons[1:x,]
+> ##D 	layout.par=list(init=rbind(cons,c(0,0)),
+> ##D 	max.delta=10/(x+1):1,area=10^2,repulse.rad=10^3)
+> ##D 	y=sample(c(x,sample(1:(x),1)),1)
+> ##D 	adjN[y,x+1]=1
+> ##D 	Q=qgraph(adjN,Q,layout="spring",layout.par=layout.par)
+> ##D 	cons=Q$layout
+> ##D 	adj=adjN
+> ##D } 
+> ##D dev.off()
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph.layout.fruchtermanreingold", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph.panel")
+> ### * qgraph.panel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph.panel
+> ### Title: qgraph.panel
+> ### Aliases: qgraph.panel
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(big5)
+> ##D data(big5groups)
+> ##D 
+> ##D qgraph.panel(cor(big5),groups=big5groups,minimum=0.2,borders=FALSE,vsize=1,cut=0.3)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph.panel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph.semModel")
+> ### * qgraph.semModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph.semModel
+> ### Title: qgraph: SEM model pathdiagram
+> ### Aliases: qgraph.semModel
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D require('sem')
+> ##D 
+> ##D # This example is taken from the examples of the sem function. 
+> ##D # Only names were changed to better suit the path diagram.
+> ##D 
+> ##D # ----------------------- Thurstone data ---------------------------------------
+> ##D #  Second-order confirmatory factor analysis, from the SAS manual for PROC CALIS
+> ##D 
+> ##D R.thur <- readMoments(diag=FALSE, names=c('Sen','Voc',
+> ##D         'SC','FL','4LW','Suf',
+> ##D         'LS','Ped', 'LG'))
+> ##D     .828                                              
+> ##D     .776   .779                                        
+> ##D     .439   .493    .46                                 
+> ##D     .432   .464    .425   .674                           
+> ##D     .447   .489    .443   .59    .541                    
+> ##D     .447   .432    .401   .381    .402   .288              
+> ##D     .541   .537    .534   .35    .367   .32   .555        
+> ##D     .38   .358    .359   .424    .446   .325   .598   .452  
+> ##D             
+> ##D model.thur <- specifyModel()
+> ##D     F1 -> Sen,               *l11, NA
+> ##D     F1 -> Voc,               *l21, NA
+> ##D     F1 -> SC,                *l31, NA
+> ##D     F2 -> FL,                *l41, NA
+> ##D     F2 -> 4LW,               *l52, NA
+> ##D     F2 -> Suf,               *l62, NA
+> ##D     F3 -> LS,                *l73, NA
+> ##D     F3 -> Ped,               *l83, NA
+> ##D     F3 -> LG,                *l93, NA
+> ##D     F4 -> F1,                *g1,  NA
+> ##D     F4 -> F2,                *g2,  NA
+> ##D     F4 -> F3,                *g3,  NA 
+> ##D     Sen <-> Sen,             q*1,   NA
+> ##D     Voc<-> Voc,              q*2,   NA
+> ##D     SC <-> SC,               q*3,   NA
+> ##D     FL <-> FL,               q*4,   NA
+> ##D     4LW <-> 4LW,             q*5,   NA
+> ##D     Suf<-> Suf,              q*6,   NA
+> ##D     LS <-> LS,               q*7,   NA
+> ##D     Ped<-> Ped,              q*8,   NA
+> ##D     LG <-> LG,               q*9,   NA
+> ##D     F1 <-> F1,               NA,     1
+> ##D     F2 <-> F2,               NA,     1
+> ##D     F3 <-> F3,               NA,     1
+> ##D     F4 <-> F4,               NA,     1
+> ##D 
+> ##D 
+> ##D 
+> ##D # Run qgraph:
+> ##D qgraph(model.thur)
+> ##D 
+> ##D # Tree layout:
+> ##D qgraph(model.thur,layout="tree",manifest=c('Sen','Voc','SC','FL','4LW','Suf','LS','Ped', 'LG'))
+> ##D 
+> ## End(Not run)
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph.semModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph_efa")
+> ### * qgraph_efa
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph.efa
+> ### Title: qgraph.efa
+> ### Aliases: qgraph.efa
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(big5)
+> ##D data(big5groups)
+> ##D 
+> ##D qgraph.efa(big5,5,groups=big5groups,rotation="promax",minimum=0.2,cut=0.4,
+> ##D 		   vsize=c(1,7),borders=FALSE,vTrans=200)
+> ##D 
+> ##D # Tree layout:
+> ##D qgraph.efa(big5,5,groups=big5groups,rotation="promax",minimum=0.2,cut=0.4,
+> ##D 		   vsize=c(1,7),borders=FALSE,layout="tree",width=20,filetype="R")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph_efa", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph_loadings")
+> ### * qgraph_loadings
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph.loadings
+> ### Title: qgraph.loadings
+> ### Aliases: qgraph.loadings
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Load big5 dataset:
+> ##D data(big5)
+> ##D data(big5groups)
+> ##D 
+> ##D big5efa <- factanal(big5,factors=5,rotation="promax",scores="regression")
+> ##D big5loadings <- loadings(big5efa)
+> ##D qgraph.loadings(big5loadings,groups=big5groups,rotation="promax",minimum=0.2,
+> ##D 				cut=0.4,vsize=c(1.5,15),borders=FALSE,vTrans=200)
+> ##D 
+> ##D # Tree layout:
+> ##D qgraph.loadings(big5loadings,groups=big5groups,rotation="promax",minimum=0.2,
+> ##D 				cut=0.4,vsize=c(1.5,15),borders=FALSE,vTrans=200,
+> ##D 				layout="tree",width=20,filetype="R")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph_loadings", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph_pca")
+> ### * qgraph_pca
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph.pca
+> ### Title: qgraph.pca
+> ### Aliases: qgraph.pca
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(big5)
+> ##D data(big5groups)
+> ##D 
+> ##D qgraph.pca(cor(big5),5,groups=big5groups,rotation="promax",minimum=0.2,
+> ##D 			cut=0.4,vsize=c(1,7),borders=FALSE,vTrans=200)
+> ##D 
+> ##D # Tree layout:
+> ##D qgraph.pca(cor(big5), 5,groups=big5groups, rotation="promax", minimum=0.2, 
+> ##D   cut=0.4, vsize=c(1.5,7), borders=FALSE, layout="tree", width=20, filetype="R")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph_pca", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph_sem")
+> ### * qgraph_sem
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph.sem
+> ### Title: qgraph: Structural Equation Modelling
+> ### Aliases: qgraph.sem
+> ### Keywords: SEM path diagram graph qgraph
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D require('sem')
+> ##D 
+> ##D # This example is taken from the examples of the sem function. 
+> ##D # Only names were changed to better suit the path diagram.
+> ##D 
+> ##D # ----------------------- Thurstone data ---------------------------------------
+> ##D #  Second-order confirmatory factor analysis, from the SAS manual for PROC CALIS
+> ##D 
+> ##D R.thur <- readMoments(diag=FALSE, names=c('Sen','Voc',
+> ##D         'SC','FL','4LW','Suf',
+> ##D         'LS','Ped', 'LG'))
+> ##D     .828                                              
+> ##D     .776   .779                                        
+> ##D     .439   .493    .46                                 
+> ##D     .432   .464    .425   .674                           
+> ##D     .447   .489    .443   .59    .541                    
+> ##D     .447   .432    .401   .381    .402   .288              
+> ##D     .541   .537    .534   .35    .367   .32   .555        
+> ##D     .38   .358    .359   .424    .446   .325   .598   .452  
+> ##D             
+> ##D model.thur <- specifyModel()
+> ##D     F1 -> Sen,               *l11, NA
+> ##D     F1 -> Voc,               *l21, NA
+> ##D     F1 -> SC,                *l31, NA
+> ##D     F2 -> FL,                *l41, NA
+> ##D     F2 -> 4LW,               *l52, NA
+> ##D     F2 -> Suf,               *l62, NA
+> ##D     F3 -> LS,                *l73, NA
+> ##D     F3 -> Ped,               *l83, NA
+> ##D     F3 -> LG,                *l93, NA
+> ##D     F4 -> F1,                *g1,  NA
+> ##D     F4 -> F2,                *g2,  NA
+> ##D     F4 -> F3,                *g3,  NA 
+> ##D     Sen <-> Sen,             q*1,   NA
+> ##D     Voc<-> Voc,              q*2,   NA
+> ##D     SC <-> SC,               q*3,   NA
+> ##D     FL <-> FL,               q*4,   NA
+> ##D     4LW <-> 4LW,             q*5,   NA
+> ##D     Suf<-> Suf,              q*6,   NA
+> ##D     LS <-> LS,               q*7,   NA
+> ##D     Ped<-> Ped,              q*8,   NA
+> ##D     LG <-> LG,               q*9,   NA
+> ##D     F1 <-> F1,               NA,     1
+> ##D     F2 <-> F2,               NA,     1
+> ##D     F3 <-> F3,               NA,     1
+> ##D     F4 <-> F4,               NA,     1
+> ##D 
+> ##D sem.thur <- sem(model.thur, R.thur, 213)
+> ##D 
+> ##D # Run qgraph:
+> ##D qgraph.sem(sem.thur,filename="Thurstone tree",layout="tree",edge.label.cex=0.6,
+> ##D   curve=0.4,width=8,height=5)
+> ##D 
+> ##D # Spring layout:
+> ##D qgraph.sem(sem.thur,filename="Thurstone spring",layout="spring",residuals=FALSE,
+> ##D   width=5,height=5)
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph_sem", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qgraph_svg")
+> ### * qgraph_svg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qgraph.svg
+> ### Title: qgraph.svg
+> ### Aliases: qgraph.svg
+> ### Keywords: qgraph SVG
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #### VISUALIZE CORRELATION MATRIX ###
+> ##D eta=matrix(rnorm(200*5),ncol=5)
+> ##D lam=matrix(0,nrow=100,ncol=5)
+> ##D for (i in 1:5) lam[(20*i-19):(20*i),i]=rnorm(20,0.7,0.3)
+> ##D eps=matrix(rnorm(200*100),ncol=100)
+> ##D Y=eta%*%t(lam)+eps
+> ##D 
+> ##D tooltips=paste("item",1:100)
+> ##D groups=list(1:20,21:40,41:60,61:80,81:100)
+> ##D names(groups)=paste("Factor",LETTERS[1:5])
+> ##D # Run qgraph:
+> ##D qgraph.svg(cor(Y),groups=groups,tooltips=tooltips,vsize=3)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qgraph_svg", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("smallworldness")
+> ### * smallworldness
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: smallworldness
+> ### Title: Compute the small-worldness index.
+> ### Aliases: smallworldness
+> ### Keywords: smallworld transitivity
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> # a regular lattice. Even if the small-worldness is higher than three, the average path length is 
+> # much higher than that of random networks.
+> regnet<-igraph::watts.strogatz.game(dim=1, size=1000, nei=10, p=0, loops=FALSE, multiple=FALSE)
+> smallworldness(regnet, B=10)
+      smallworldness         trans_target averagelength_target 
+          4.08607527           0.71052632          25.47547548 
+         trans_rnd_M         trans_rnd_lo         trans_rnd_up 
+          0.01805368           0.01680268           0.01875576 
+ averagelength_rnd_M averagelength_rnd_lo averagelength_rnd_up 
+          2.64493093           2.64431084           2.64529176 
+> 
+> ## Not run: 
+> ##D # a small-world network: the transitivity is much higher than random, the average path length is 
+> ##D # close to that of random networks
+> ##D swnet<-igraph::watts.strogatz.game(dim=1, size=1000, nei=10, p=.1, loops=FALSE, multiple=FALSE)
+> ##D smallworldness(swnet, B=10)
+> ##D 
+> ##D # a pseudorandom network: both the average path length and the transitivity are similar to random 
+> ##D # networks.
+> ##D rndnet<-igraph::watts.strogatz.game(dim=1, size=1000, nei=10, p=1, loops=FALSE, multiple=FALSE)
+> ##D smallworldness(rndnet, B=10)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("smallworldness", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  4.651 0.75 5.344 0.002 0.002 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

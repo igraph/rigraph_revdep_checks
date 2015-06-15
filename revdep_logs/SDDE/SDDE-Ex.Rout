@@ -1,0 +1,380 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "SDDE"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "SDDE-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('SDDE')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: doParallel
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: parallel
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("Eukaryote_nonphoto")
+> ### * Eukaryote_nonphoto
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Eukaryote_nonphoto
+> ### Title: An original and an augmented real genomic networks
+> ### Aliases: Eukaryote_nonphoto
+> ### Keywords: dataset
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(Eukaryote_nonphoto)
+> ##D info_network(g1,g2)
+> ## End(Not run)
+> ## Network characteristics:
+> ## Total of new nodes in network Y: 19 
+> ## Number of edges in network Y: 1845 
+> ## Number of nodes in network Y: 345 
+> ## Number of nodes in network X: 326 
+> ## Total of pathways to investigate: 52975 
+> ## Clustering coefficient network Y: 0.8655372 
+> ## Clustering coefficient network X: 0.8643119 
+> ## Average degree + std in network Y: 10.69565 + 8.366434 
+> ## Average degree + std in network X: 10.45399 + 8.502816 
+> ## Average path length in network Y: 5.287595 
+> ## Average path length in network X: 4.915441 
+> ## Number of clusters in network Y: 22 
+> ## Number of clusters in network X: 22 
+> ## Average cluster size + std in network Y: 15.68182 + 28.92583 
+> ## Average cluster size + std in network X: 14.81818 + 25.1711 
+> ## Nodes distribution in network Y (first row taxa, second row count):
+> ##           archaea         eubacteria eukaryote_nonphoto 
+> ##               145                181                 19 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Eukaryote_nonphoto", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Eukaryote_photo")
+> ### * Eukaryote_photo
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Eukaryote_photo
+> ### Title: An original and an augmented real genomic networks
+> ### Aliases: Eukaryote_photo
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(Eukaryote_photo)
+> ##D info_network(g1,g2)
+> ## End(Not run)
+> ## Network characteristics:
+> ## Total of new nodes in network Y: 19 
+> ## Number of edges in network Y: 2014 
+> ## Number of nodes in network Y: 345 
+> ## Number of nodes in network X: 326 
+> ## Total of pathways to investigate: 52975 
+> ## Clustering coefficient network Y: 0.866758 
+> ## Clustering coefficient network X: 0.8643119 
+> ## Average degree + std in network Y: 11.67536 + 9.600091 
+> ## Average degree + std in network X: 10.45399 + 8.502816 
+> ## Average path length in network Y: 5.972801 
+> ## Average path length in network X: 4.915441 
+> ## Number of clusters in network Y: 21 
+> ## Number of clusters in network X: 22 
+> ## Average cluster size + std in network Y: 16.42857 + 32.51857 
+> ## Average cluster size + std in network X: 14.81818 + 25.1711 
+> ## Nodes distribution in network Y (first row taxa, second row count):
+> ##        archaea      eubacteria eukaryote_photo 
+> ##            145             181              19 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Eukaryote_photo", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Plasmids")
+> ### * Plasmids
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Plasmids
+> ### Title: An original and an augmented real genomic networks
+> ### Aliases: Plasmids
+> ### Keywords: dataset
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 	data(Plasmids)
+> ##D 	info_network(g1,g2)
+> ## End(Not run)
+> ## Network characteristics:
+> ## Total of new nodes in network Y: 3522 
+> ## Number of edges in network Y: 187848 
+> ## Number of nodes in network Y: 3848 
+> ## Number of nodes in network X: 326 
+> ## Total of pathways to investigate: 52975 
+> ## Clustering coefficient network Y: 0.5591526 
+> ## Clustering coefficient network X: 0.8643119 
+> ## Average degree + std in network Y: 97.6341 + 119.6407 
+> ## Average degree + std in network X: 10.45399 + 8.502816 
+> ## Average path length in network Y: 2.903052 
+> ## Average path length in network X: 4.915441 
+> ## Number of clusters in network Y: 74 
+> ## Number of clusters in network X: 22 
+> ## Average cluster size + std in network Y: 52 + 417.644 
+> ## Average cluster size + std in network X: 14.81818 + 25.1711 
+> ## Nodes distribution in network Y (first row taxa, second row count):
+> ##   archaea eubacteria    plasmid 
+> ##       152        217       3479 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Plasmids", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Sample_1")
+> ### * Sample_1
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Sample_1
+> ### Title: An original network X with 11 nodes and an augmented network Y
+> ###   of 14 nodes
+> ### Aliases: Sample_1
+> ### Keywords: dataset
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 	data(Sample_1)
+> ##D 	complete_network(g1,g2);
+> ## End(Not run)
+> ##        disconnected nodes shortcuts equals detours dead ends
+> ##                        18         4      5      26         2
+> ##        Dead ends or detour total user time system time real time
+> ##                          0    55     0.807       0.081     1.889
+> ## (log.txt with the verbose option)  
+> # Total new nodes in g2:	3	
+> # Number of edges in g2:	17	
+> # Number of nodes in g2:	14	
+> # Number of nodes in g1:	11	
+> # ====================================
+> # x3	x1	Detour
+> # x4	x2	Detour
+> # x2	x1	Detour
+> # x7	x1	Detour
+> # x7	x3	Detour
+> # x3	x2	Detour
+> # x5	x2	Detour
+> # x4	x1	Detour
+> # x4	x3	Detour
+> # x5	x4	Detour
+> # x7	x2	Detour
+> # x9	x1	Equal
+> # x7	x4	Dead
+> # x9	x3	Detour
+> # x5	x1	Detour
+> # x9	x7	Detour
+> # x10	x2	Disconnected nodes 
+> # x10	x4	Disconnected nodes 
+> # x10	x5	Disconnected nodes 
+> # x5	x3	Detour
+> # x6	x1	Equal
+> # x6	x3	Detour
+> # x5	x7	Detour
+> # x9	x2	Equal
+> # x6	x7	Detour
+> # x6	x9	Detour
+> # x8	x2	Shortcut
+> # x9	x4	Detour
+> # x8	x4	Equal
+> # x9	x5	Detour
+> # x10	x1	Disconnected nodes 
+> # x10	x3	Disconnected nodes 
+> # x10	x7	Disconnected nodes 
+> # x10	x9	Disconnected nodes 
+> # x6	x2	Detour
+> # x8	x5	Detour
+> # x8	x10	Disconnected nodes 
+> # x11	x1	Disconnected nodes 
+> # x11	x3	Disconnected nodes 
+> # x11	x7	Disconnected nodes 
+> # x11	x9	Disconnected nodes 
+> # x11	x6	Disconnected nodes 
+> # x6	x4	Detour
+> # x6	x5	Detour
+> # x6	x10	Disconnected nodes 
+> # x8	x1	Shortcut
+> # x8	x3	Shortcut
+> # x8	x7	Equal
+> # x8	x9	Detour
+> # x8	x6	Shortcut
+> # x11	x2	Disconnected nodes 
+> # x11	x4	Disconnected nodes 
+> # x11	x5	Disconnected nodes 
+> # x11	x10	Dead end
+> # x11	x8	Disconnected nodes 
+> # ====================================
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Sample_1", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Sample_2")
+> ### * Sample_2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Sample_2
+> ### Title: An network X of 6 nodes and an augmented network Y with 7 nodes
+> ### Aliases: Sample_2
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 	data(Sample_2)
+> ##D 	complete_network(g1,g2)
+> ## End(Not run)
+> ##          disconnected nodes shortcuts equals detours dead ends
+> ##                           0         0      1       8         6
+> ##          Dead ends or detour total user time system time real time
+> ##                            0    15     0.656       0.049     1.023
+> # Total new nodes in g2:	1	
+> # Number of edges in g2:	7	
+> # Number of nodes in g2:	7	
+> # Number of nodes in g1:	6	
+> # ====================================
+> # x2	x1	Dead
+> # x3	x2	Dead
+> # x4	x2	Dead
+> # x5	x2	Detour
+> # x3	x1	Dead
+> # x5	x4	Detour
+> # x6	x2	Detour
+> # x4	x1	Dead
+> # x6	x4	Detour
+> # x4	x3	Dead
+> # x5	x1	Detour
+> # x5	x3	Detour
+> # x6	x1	Detour
+> # x6	x3	Detour
+> # x6	x5	Equal
+> #====================================        
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Sample_2", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Viruses")
+> ### * Viruses
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Viruses
+> ### Title: An original and an augmented real genomic networks
+> ### Aliases: Viruses
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 	data(Viruses)
+> ##D 	info_network(g1,g2)
+> ## End(Not run)
+> ## Network characteristics:
+> ## Total of new nodes in network Y: 1658 
+> ## Number of edges in network Y: 12054 
+> ## Number of nodes in network Y: 1984 
+> ## Number of nodes in network X: 326 
+> ## Total of pathways to investigate: 52975 
+> ## Clustering coefficient network Y: 0.8010996 
+> ## Clustering coefficient network X: 0.8643119 
+> ## Average degree + std in network Y: 12.15121 + 15.62558 
+> ## Average degree + std in network X: 10.45399 + 8.502816 
+> ## Average path length in network Y: 5.233931 
+> ## Average path length in network X: 4.915441 
+> ## Number of clusters in network Y: 320 
+> ## Number of clusters in network X: 22 
+> ## Average cluster size + std in network Y: 6.2 + 20.8493 
+> ## Average cluster size + std in network X: 14.81818 + 25.1711 
+> ## Nodes distribution in network Y (first row taxa, second row count):
+> ##   archaea eubacteria      virus 
+> ##       145        181       1658 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Viruses", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("complete_network")
+> ### * complete_network
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: complete_network
+> ### Title: compare two given networks (original and augmented, presented as
+> ###   undirected graphs) using a path analysis
+> ### Aliases: complete_network
+> 
+> ### ** Examples
+> 
+> ## Searching the sample data (containing 11 original nodes and 3 augmented nodes)
+> data(Sample_1)
+> result <- complete_network(g1, g2)
+Error in check_version(graph) : 
+  This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+Calls: complete_network -> V -> update_vs_ref -> check_version
+Execution halted

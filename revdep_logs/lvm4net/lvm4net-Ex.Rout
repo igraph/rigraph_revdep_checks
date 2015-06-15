@@ -1,0 +1,440 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "lvm4net"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "lvm4net-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('lvm4net')
+Loading required package: MASS
+Loading required package: ergm
+Loading required package: statnet.common
+Loading required package: network
+network: Classes for Relational Data
+Version 1.12.0 created on 2015-03-04.
+copyright (c) 2005, Carter T. Butts, University of California-Irvine
+                    Mark S. Handcock, University of California -- Los Angeles
+                    David R. Hunter, Penn State University
+                    Martina Morris, University of Washington
+                    Skye Bender-deMoll, University of Washington
+ For citation information, type citation("network").
+ Type help("network-package") to get started.
+
+
+ergm: version 3.2.4, created on 2014-12-13
+Copyright (c) 2014, Mark S. Handcock, University of California -- Los Angeles
+                    David R. Hunter, Penn State University
+                    Carter T. Butts, University of California -- Irvine
+                    Steven M. Goodreau, University of Washington
+                    Pavel N. Krivitsky, University of Wollongong
+                    Martina Morris, University of Washington
+                    with contributions from
+                    Li Wang
+                    Kirk Li, University of Washington
+Based on "statnet" project software (statnet.org).
+For license and citation information see statnet.org/attribution
+or type citation("ergm").
+
+NOTE: If you use custom ERGM terms based on ‘ergm.userterms’ version
+prior to 3.1, you will need to perform a one-time update of the package
+boilerplate files (the files that you did not write or modify) from
+‘ergm.userterms’ 3.1 or later. See help('eut-upgrade') for
+instructions.
+
+Loading required package: ellipse
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("boxroc")
+> ### * boxroc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: boxroc
+> ### Title: Boxplot and ROC Curves
+> ### Aliases: boxroc
+> 
+> ### ** Examples
+> 
+> N <- 20
+> Y <- network(N, directed = FALSE)[,]
+> 
+> modLSM <- lsm(Y, D = 2)
+> bp <- boxroc(Y,
++ 	EZ = modLSM$lsmEZ,
++ 	xiT = modLSM$xiT,
++ 	Lroc = 150,
++ 	ROC = TRUE,
++ 	BOXPLOT = TRUE)
+[1] 0.9742289
+> 
+> print(bp)
+$AUC
+[1] 0.9742289
+
+$statsboxplot
+$statsboxplot[[1]]
+             [,1]      [,2]
+[1,] 0.0000000000 0.2841530
+[2,] 0.0002828475 0.3463248
+[3,] 0.0125076921 0.3928546
+[4,] 0.0362133977 0.4004067
+[5,] 0.0897534899 0.4014637
+
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("boxroc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("goflsm")
+> ### * goflsm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: goflsm
+> ### Title: Goodness-of-Fit diagnostics for LSM model
+> ### Aliases: goflsm
+> 
+> ### ** Examples
+> 
+> Y <- network(15, directed = FALSE)[,]
+> 
+> modLSM <- lsm(Y, D = 2)
+> myGof <- goflsm(modLSM, Y = Y)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("goflsm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("lsjm")
+> ### * lsjm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: lsjm
+> ### Title: Latent Space Joint Model
+> ### Aliases: lsjm
+> 
+> ### ** Examples
+> 
+> ## Simulate Undirected Network
+>   N <- 20
+>   Ndata <- 2
+>    Y <- list()
+>    Y[[1]] <- network(N, directed = FALSE)[,]
+>    ### create a new view that is similar to the original
+> 
+>   for(nd in 2:Ndata){
++     Y[[nd]] <- Y[[nd - 1]] - sample(c(-1, 0, 1), N * N, replace = TRUE,
++    prob = c(.05, .85, .1))
++     Y[[nd]] <- 1 * (Y[[nd]]  > 0 )
++   diag(Y[[nd]]) <- 0
++    }
+> 
+> par(mfrow = c(1, 2))
+> z <- plotY(Y[[1]], verbose = TRUE, main = 'Network 1')
+> plotY(Y[[2]], EZ = z, main = 'Network 2')
+> par(mfrow = c(1, 1))
+> 
+> modLSJM <- lsjm(Y, D = 2)
+> plot(modLSJM, Y, drawCB = TRUE)
+> plot(modLSJM, Y, drawCB = TRUE, plotZtilde = TRUE)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("lsjm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("lsm")
+> ### * lsm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: lsm
+> ### Title: Latent Space Model
+> ### Aliases: lsm
+> 
+> ### ** Examples
+> 
+> ### Simulate Undirected Network
+> N <- 20
+> Y <- network(N, directed = FALSE)[,]
+> 
+> modLSM <- lsm(Y, D = 2)
+> plot(modLSM, Y)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("lsm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.gofobj")
+> ### * plot.gofobj
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.gofobj
+> ### Title: Plot GoF object
+> ### Aliases: plot.gofobj
+> 
+> ### ** Examples
+> 
+> Y <- network(20, directed = FALSE)[,]
+> 
+> modLSM <- lsm(Y, D = 2)
+> myGof <- goflsm(modLSM, Y = Y, doplot = FALSE)
+> plot(myGof)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.gofobj", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.lsjm")
+> ### * plot.lsjm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.lsjm
+> ### Title: Two dimensional plot of Latent Space Joint Model output
+> ### Aliases: plot.lsjm
+> 
+> ### ** Examples
+> 
+> ## Simulate Undirected Network
+>   N <- 20
+>   Ndata <- 2
+>    Y <- list()
+>    Y[[1]] <- network(N, directed = FALSE)[,]
+>    ### create a new view that is similar to the original
+>   for(nd in 2:Ndata){
++     Y[[nd]] <- Y[[nd - 1]] - sample(c(-1, 0, 1), N * N, replace = TRUE,
++     prob = c(.05, .85, .1))
++     Y[[nd]] <- 1 * (Y[[nd]]  > 0 )
++   diag(Y[[nd]]) <- 0
++    }
+> 
+> par(mfrow = c(1, 2))
+> z <- plotY(Y[[1]], verbose = TRUE, main = 'Network 1')
+> plotY(Y[[2]], EZ = z, main = 'Network 2')
+> par(mfrow = c(1, 1))
+> 
+> modLSJM <- lsjm(Y, D = 2)
+> plot(modLSJM, Y, drawCB = TRUE)
+> plot(modLSJM, Y, drawCB = TRUE, plotZtilde = TRUE)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.lsjm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("plot.lsm")
+> ### * plot.lsm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.lsm
+> ### Title: Two dimensional plot of the Latent Space Model output
+> ### Aliases: plot.lsm
+> 
+> ### ** Examples
+> 
+> N <- 20
+> Y <- network(N, directed = FALSE)[,]
+> 
+> modLSM <- lsm(Y, D = 2)
+> plot(modLSM, Y)
+> 
+> # Plot with 95% CB
+> plot(modLSM, Y, drawCB = TRUE)
+> # Plot with 99% CB
+> plot(modLSM, Y, drawCB = TRUE, LEVEL = .99)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.lsm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotY")
+> ### * plotY
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotY
+> ### Title: Plot the adjacency matrix of the network
+> ### Aliases: plotY
+> 
+> ### ** Examples
+> 
+> N <- 20
+> Y <- network(N, directed = FALSE)[,]
+> plotY(Y)
+> # Store the positions of nodes used to plot Y, in order to redraw the plot using
+> # the same positions
+> z <- plotY(Y, verbose = TRUE)
+> plotY(Y, EZ = z)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotY", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print.gofobj")
+> ### * print.gofobj
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.gofobj
+> ### Title: Print GoF object
+> ### Aliases: print.gofobj
+> 
+> ### ** Examples
+> 
+> Y <- network(20, directed = FALSE)[,]
+> 
+> modLSM <- lsm(Y, D = 2)
+> myGof <- goflsm(modLSM, Y = Y, doplot = FALSE)
+> print(myGof)
+
+Goodness-of-fit for degree 
+
+  obs min mean max MC p-value
+0   3   0 5.46  14       0.50
+1   9   3 6.70  14       0.46
+2   6   1 4.77   9       0.60
+3   1   0 2.04   7       0.86
+4   1   0 0.70   4       0.82
+5   0   0 0.28   4       1.00
+6   0   0 0.03   1       1.00
+7   0   0 0.02   1       1.00
+
+Goodness-of-fit for edge-wise shared partners 
+
+  obs min  mean max MC p-value
+0  14   2 10.34  19       0.28
+1   0   0  2.78  13       0.86
+2   0   0  0.29   5       1.00
+3   0   0  0.03   1       1.00
+
+Goodness-of-fit for dyad-wise shared partners 
+
+  obs min   mean max MC p-value
+0 175 139 172.98 189       0.94
+1  15   1  15.44  43       0.92
+2   0   0   1.47  11       1.00
+3   0   0   0.12   3       1.00
+
+Goodness-of-fit for triad census 
+
+  obs min   mean  max MC p-value
+0 903 729 915.69 1054       0.80
+1 222  83 207.85  357       0.78
+2  15   1  15.31   51       0.80
+3   0   0   1.15    7       0.86
+
+Goodness-of-fit for minimum geodesic distance 
+
+   obs min   mean max MC p-value
+1   14   5  13.44  26       0.86
+2   15   1  13.94  41       0.78
+3   11   0  11.36  43       0.92
+4   11   0   7.14  41       0.54
+5    6   0   4.23  25       0.60
+6    3   0   2.34  21       0.58
+7    2   0   1.22  16       0.46
+8    0   0   0.48   8       1.00
+9    0   0   0.12   3       1.00
+10   0   0   0.01   1       1.00
+NR 128   0 135.72 183       0.66
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.gofobj", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simulateLSM")
+> ### * simulateLSM
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simulateLSM
+> ### Title: Simulate from LSM model
+> ### Aliases: simulateLSM
+> 
+> ### ** Examples
+> 
+> n <- 20
+> Y <- network(n, directed = FALSE)[,]
+> 
+> modLSM <- lsm(Y, D = 2)
+> 
+> Ysim <- simulateLSM(modLSM, Y = Y, nsim = 8)
+> # store EZ, to keep the nodes in the same positions
+> # and compare the networks
+> EZ <- modLSM$lsmEZ
+> par(mfrow = c(3,3))
+> plotY(Y, EZ = EZ, main = "Original Data")
+> for(i in 1:8) plotY(Ysim[[i]], EZ = EZ, main = paste("Simulation" , i))
+> par(mfrow = c(1,1))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simulateLSM", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  6.952 0.115 7.104 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

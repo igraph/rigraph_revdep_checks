@@ -1,0 +1,63 @@
+* installing *source* package ‘TDA’ ...
+** package ‘TDA’ successfully unpacked and MD5 sums checked
+** libs
+clang++ -std=c++11 -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include   -I . -fPIC  -Wall -mtune=core2 -g -O2 -c diag.cpp -o diag.o
+In file included from diag.cpp:6:
+In file included from ./tdautils/ripsL2.h:1:
+In file included from ./topology/rips.h:6:
+In file included from ./topology/simplex.h:221:
+./topology/simplex.hpp:11:1: warning: 'BoundaryIterator' defined as a struct here but previously declared as a class [-Wmismatched-tags]
+struct Simplex<V,T>::BoundaryIterator: public boost::iterator_adaptor<BoundaryIterator,                                 // Derived
+^
+./topology/simplex.h:47:9: note: did you mean struct here?
+        class BoundaryIterator;
+        ^~~~~
+        struct
+In file included from diag.cpp:6:
+In file included from ./tdautils/ripsL2.h:1:
+./topology/rips.h:158:1: warning: 'ComparePair' defined as a struct here but previously declared as a class [-Wmismatched-tags]
+struct Rips<Distances_, Simplex_>::ComparePair: 
+^
+./topology/rips.h:35:9: note: did you mean struct here?
+        class               ComparePair;       
+        ^~~~~
+        struct
+In file included from diag.cpp:10:
+./tdautils/gridUtils.h:182:35: warning: unused variable 'end' [-Wunused-variable]
+     VertexVector::const_iterator end = vertices.end();
+                                  ^
+./tdautils/gridUtils.h:329:18: warning: unused variable 'idxCur' [-Wunused-variable]
+    unsigned int idxCur, idxDim;
+                 ^
+./tdautils/gridUtils.h:329:26: warning: unused variable 'idxDim' [-Wunused-variable]
+    unsigned int idxCur, idxDim;
+                         ^
+diag.cpp:271:31: warning: unused variable 'cycle' [-Wunused-variable]
+                        const PersistenceR::Cycle& cycle = cur->cycle;
+                                                   ^
+diag.cpp:361:31: warning: unused variable 'cycle' [-Wunused-variable]
+                        const PersistenceR::Cycle& cycle = cur->cycle;
+                                                   ^
+In file included from diag.cpp:19:
+In file included from ./tdautils/gudhiUtils.h:7:
+In file included from ./gudhi/Simplex_tree.h:35:
+./gudhi/Persistent_cohomology.h:252:15: warning: unused variable 'cell_ref' [-Wunused-variable]
+    for(auto &cell_ref : cam_ref.col_) {
+              ^
+diag.cpp:632:54: note: in instantiation of member function 'Persistent_cohomology<Simplex_tree<linear_indexing_tag, double, int, int>, Field_Zp>::~Persistent_cohomology' requested here
+          Persistent_cohomology< Simplex_tree<>, Field_Zp > pcoh( st );
+                                                            ^
+8 warnings generated.
+clang++ -std=c++11 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o TDA.so diag.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/TDA.Rcheck/TDA/libs
+** R
+** inst
+** preparing package for lazy loading
+Warning: replacing previous import by ‘igraph::knn’ when loading ‘TDA’
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+Warning: replacing previous import by ‘igraph::knn’ when loading ‘TDA’
+* DONE (TDA)

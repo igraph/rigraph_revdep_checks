@@ -1,0 +1,1052 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "TDA"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "TDA-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('TDA')
+Loading required package: FNN
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:FNN’:
+
+    knn
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: parallel
+Loading required package: scales
+Warning: replacing previous import by ‘igraph::knn’ when loading ‘TDA’
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("bootstrapBand")
+> ### * bootstrapBand
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bootstrapBand
+> ### Title: Bootstrap Confidence Band
+> ### Aliases: bootstrapBand
+> ### Keywords: nonparametric htest
+> 
+> ### ** Examples
+> 
+> # Generate data from mixture of 2 normals.
+> n = 2000
+> X = c(rnorm(n/2), rnorm(n/2, mean=3, sd=1.2))
+> 
+> # Construct a grid of points over which we evaluate the function
+> by=0.02
+> Grid=seq(-3, 6, by=by)
+> 
+> ## bandwidth for kernel density estimator
+> h=0.3  
+> ## Bootstrap confidence band
+> band= bootstrapBand(X, kde, Grid, B=80, parallel=FALSE, alpha=0.05, h=h)
+> 
+> plot(Grid,band$fun, type="l", lwd=2, ylim=c(0, max(band$band)), 
++      main="kde with 0.95 confidence band")
+> lines(Grid, pmax(band$band[,1],0), col=2, lwd=2)
+> lines(Grid, band$band[,2], col=2, lwd=2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bootstrapBand", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bootstrapDiagram")
+> ### * bootstrapDiagram
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bootstrapDiagram
+> ### Title: Bootstrapped Confidence Set for a Persistence Diagram, using the
+> ###   Bottleneck Distance (or the Wasserstein distance).
+> ### Aliases: bootstrapDiagram
+> ### Keywords: nonparametric htest
+> 
+> ### ** Examples
+> 
+> ## confidence set for the Kernel Density Diagram
+> 
+> # input data
+> n = 400
+> XX = circleUnif(n)
+> 
+> ## Ranges of the grid
+> Xlim=c(-1.8,1.8)
+> Ylim=c(-1.6,1.6)
+> lim=cbind(Xlim, Ylim)
+> by=0.05
+> 
+> h = .3  #bandwidth for the function kde
+> 
+> #Kernel Density Diagram of the superlevel sets
+> Diag=gridDiag(XX, kde, lim=lim, by=by, sublevel=FALSE, printProgress=TRUE, h=h) 
+# Generated complex of size: 27921 
+0   10   20   30   40   50   60   70   80   90   100
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+> 
+> # confidence set
+> B=10         ## the number of bootstrap iterations should be higher! 
+>              ## this is just an example
+> alpha=0.05
+> 
+> cc=bootstrapDiagram(XX, kde, lim=lim, by=by, sublevel=FALSE, B=B, alpha=alpha, 
++    dimension=1, printProgress=TRUE, h=h)
+Bootstrap: 1  2  3  4  5  6  7  8  9  10  
+> 
+> plot(Diag$diagram, band=2*cc)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bootstrapDiagram", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bottleneck")
+> ### * bottleneck
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bottleneck
+> ### Title: Bottleneck distance between two persistence diagrams
+> ### Aliases: bottleneck
+> ### Keywords: methods optimize
+> 
+> ### ** Examples
+> 
+> XX1 = circleUnif(20)
+> XX2 = circleUnif(20, r=0.2)
+> 
+> DiagLim=5
+> maxdimension=1
+> 
+> Diag1=ripsDiag(XX1,maxdimension,DiagLim, printProgress=FALSE)$diagram
+> Diag2=ripsDiag(XX2,maxdimension,DiagLim, printProgress=FALSE)$diagram
+> 
+> bottleneckDist=bottleneck(Diag1, Diag2, dimension=1)
+> print(bottleneckDist)
+[1] 0.5116585
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bottleneck", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("circleUnif")
+> ### * circleUnif
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: circleUnif
+> ### Title: Uniform Sample From The Circle
+> ### Aliases: circleUnif
+> ### Keywords: datagen
+> 
+> ### ** Examples
+> 
+> X=circleUnif(100)
+> plot(X)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("circleUnif", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("clusterTree")
+> ### * clusterTree
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clusterTree
+> ### Title: Density clustering: the cluster tree
+> ### Aliases: clusterTree print.clusterTree
+> ### Keywords: nonparametric
+> 
+> ### ** Examples
+> 
+> ## Generate data: 3 clusters
+> n=1200    #sample size
+> Neach=floor(n/4) 
+> X1=cbind(rnorm(Neach,1,.8),rnorm(Neach,5,0.8))
+> X2=cbind(rnorm(Neach,3.5,.8),rnorm(Neach,5,0.8))
+> X3=cbind(rnorm(Neach,6,1),rnorm(Neach,1,1))
+> X=rbind(X1,X2,X3)
+> 
+> k=100     #parameter of knn
+> 
+> ## Density clustering using knn and kde
+> Tree=clusterTree(X,k, density="knn")
+> TreeKDE=clusterTree(X,k,h=0.3, density="kde")
+> 
+> par(mfrow=c(2,3))
+> plot(X, pch=19, cex=0.6)
+> # plot lambda trees
+> plot(Tree, type="lambda", main="lambda Tree (knn)")
+> plot(TreeKDE, type="lambda", main="lambda Tree (kde)")
+> # plot clusters
+> plot(X, pch=19, cex=0.6, main="cluster labels")
+> for (i in Tree$id){
++ 	points(matrix(X[Tree$DataPoints[[i]],],ncol=2), col=i, pch=19, cex=0.6)
++ }
+> #plot kappa trees
+> plot(Tree, type="kappa", main="kappa Tree (knn)")
+> plot(TreeKDE, type="kappa", main="kappa Tree (kde)")
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("clusterTree", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("distFct")
+> ### * distFct
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: distFct
+> ### Title: Distance function
+> ### Aliases: distFct
+> ### Keywords: nonparametric
+> 
+> ### ** Examples
+> 
+> ## Generate Data from the unit circle
+> n = 300
+> X = circleUnif(n)
+> 
+> ## Construct a grid of points over which we evaluate the function
+> by=0.065
+> Xseq=seq(-1.6, 1.6, by=by)
+> Yseq=seq(-1.7, 1.7, by=by)
+> Grid=expand.grid(Xseq,Yseq)
+> 
+> ## distance fct
+> distance= distFct(X, Grid)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("distFct", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dtm")
+> ### * dtm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dtm
+> ### Title: Distance to Measure Function
+> ### Aliases: dtm
+> ### Keywords: nonparametric
+> 
+> ### ** Examples
+> 
+> ## Generate Data from the unit circle
+> n = 300
+> X = circleUnif(n)
+> 
+> ## Construct a grid of points over which we evaluate the function
+> by=0.065
+> Xseq=seq(-1.6, 1.6, by=by)
+> Yseq=seq(-1.7, 1.7, by=by)
+> Grid=expand.grid(Xseq,Yseq)
+> 
+> ## distance to measure
+> m0=0.1
+> DTM=dtm(X, Grid, m0)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dtm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gridDiag")
+> ### * gridDiag
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gridDiag
+> ### Title: Persistence Diagram of a function over a Grid
+> ### Aliases: gridDiag
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> ## Distance Function Diagram and Kernel Density Diagram
+> 
+> # input data
+> n = 300
+> XX = circleUnif(n)
+> 
+> ## Ranges of the grid
+> Xlim=c(-1.8,1.8)
+> Ylim=c(-1.6,1.6)
+> lim=cbind(Xlim, Ylim)
+> by=0.05
+> 
+> h = .3  #bandwidth for the function kde
+> 
+> #Distance Function Diagram of the sublevel sets
+> Diag1=gridDiag(XX,distFct, lim=lim, by=by, sublevel=TRUE, printProgress=TRUE) 
+# Generated complex of size: 27921 
+0   10   20   30   40   50   60   70   80   90   100
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+> 
+> #Kernel Density Diagram of the superlevel sets
+> Diag2=gridDiag(XX, kde, lim=lim, by=by, sublevel=FALSE, location=TRUE, printProgress=TRUE, h=h) 
+# Generated complex of size: 27921 
+0   10   20   30   40   50   60   70   80   90   100
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+> 
+> #plot
+> par(mfrow=c(2,2))
+> plot(XX,cex=0.5, pch=19)
+> title(main="Data")
+> plot(Diag1$diagram)
+> title(main="Distance Function Diagram")
+> plot(Diag2$diagram)
+> title(main="Density Persistence Diagram")
+> 
+> one=which(Diag2$diag[,1]==1)
+> plot(XX, col=2, main="Representative loop of grid points")
+> for (i in 1:length(one))
++ {
++ 	points(Diag2$birth[one[i],], pch=15, cex=3, col=i)
++ 	points(Diag2$death[one[i],], pch=17, cex=3, col=i)
++ 	points(Diag2$cycleLocation[[one[i]]], pch=19, cex=1, col=i)
++ }
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gridDiag", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("hausdInterval")
+> ### * hausdInterval
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: hausdInterval
+> ### Title: Subsampling Confidence Interval for the Hausdorff Distance
+> ###   between a Manifold and a Sample
+> ### Aliases: hausdInterval
+> ### Keywords: nonparametric htest
+> 
+> ### ** Examples
+> 
+> X= circleUnif(1000)
+> interval= hausdInterval(X, m=800)
+> print(interval)
+       95% 
+0.05781914 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("hausdInterval", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("kde")
+> ### * kde
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: kde
+> ### Title: Kernel Density Estimator over a Grid of Points
+> ### Aliases: kde
+> ### Keywords: nonparametric
+> 
+> ### ** Examples
+> 
+> ## Generate Data from the unit circle
+> n = 300
+> X = circleUnif(n)
+> 
+> ## Construct a grid of points over which we evaluate the function
+> by=0.065
+> Xseq=seq(-1.6, 1.6, by=by)
+> Yseq=seq(-1.7, 1.7, by=by)
+> Grid=expand.grid(Xseq,Yseq)
+> 
+> ## kernel density estimator
+> h=0.3
+> KDE= kde(X, Grid, h)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("kde", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("kernelDist")
+> ### * kernelDist
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: kernelDist
+> ### Title: Kernel distance over a Grid of Points
+> ### Aliases: kernelDist
+> ### Keywords: nonparametric
+> 
+> ### ** Examples
+> 
+> ## Generate Data from the unit circle
+> n = 300
+> X = circleUnif(n)
+> 
+> ## Construct a grid of points over which we evaluate the functions
+> by=0.065
+> Xseq=seq(-1.6, 1.6, by=by)
+> Yseq=seq(-1.7, 1.7, by=by)
+> Grid=expand.grid(Xseq,Yseq)
+> 
+> ## kernel distance estimator
+> h=0.3
+> Kdist= kernelDist(X, Grid, h)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("kernelDist", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("knnDE")
+> ### * knnDE
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: knnDE
+> ### Title: k Nearest Neighbors Density Estimator over a Grid of Points
+> ### Aliases: knnDE
+> ### Keywords: nonparametric
+> 
+> ### ** Examples
+> 
+> ## Generate Data from the unit circle
+> n = 300
+> X = circleUnif(n)
+> 
+> ## Construct a grid of points over which we evaluate the function
+> by=0.065
+> Xseq=seq(-1.6, 1.6, by=by)
+> Yseq=seq(-1.7, 1.7, by=by)
+> Grid=expand.grid(Xseq,Yseq)
+> 
+> ## kernel density estimator
+> k=50
+> KNN= knnDE(X, Grid, k)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("knnDE", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("landscape")
+> ### * landscape
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: landscape
+> ### Title: The Persistence Landscape Function
+> ### Aliases: landscape
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> Diag=matrix(c(0,0,10,1,0,3,1,3,8), ncol=3, byrow=TRUE)
+> DiagLim=10
+> colnames(Diag)=c("dim", "Birth", "Death")
+> 
+> #persistence landscape
+> tseq=seq(0,DiagLim, length=1000)
+> Land= landscape(Diag, dimension=1, KK=1, tseq)
+> 
+> par(mfrow=c(1,2))
+> plot.diagram(Diag)
+> plot(tseq, Land, type="l", xlab="t", ylab="landscape", asp=1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("landscape", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("maxPersistence")
+> ### * maxPersistence
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: maxPersistence
+> ### Title: Maximal Persistence Method
+> ### Aliases: maxPersistence print.maxPersistence summary.maxPersistence
+> ###   print.summary.maxPersistence
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> ## input data: circle with clutter noise
+> n=600
+> percNoise=0.1
+> XX1 = circleUnif(n)
+> noise=cbind(runif(percNoise*n, -2,2),runif(percNoise*n, -2,2))
+> X=rbind(XX1,noise)
+> 
+> ## limits of the Gird at which the density estimator is evaluated
+> Xlim=c(-2,2)
+> Ylim=c(-2,2)
+> lim=cbind(Xlim,Ylim)
+> by=0.2
+> 
+> B=80
+> alpha=0.05
+> 
+> ## candidates
+> parametersKDE=seq(0.1,0.5, by=0.2)
+> 
+> maxKDE=maxPersistence(kde, parametersKDE, X, lim=lim, by=by, 
++                   bandFUN="bootstrapBand",B=B, alpha=alpha,
++                   parallel=FALSE, printProgress = TRUE)
+0   10   20   30   40   50   60   70   80   90   100
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+> print(summary(maxKDE))
+Call: 
+maxPersistence(FUN = kde, parameters = parametersKDE, X = X, 
+    lim = lim, by = by, B = B, alpha = alpha, bandFUN = "bootstrapBand", 
+    parallel = FALSE, printProgress = TRUE)
+
+The number of significant features is maximized by 
+[1] 0.3
+
+The total significant persistence is maximized by 
+[1] 0.3
+> 
+> par(mfrow=c(1,2))
+> plot(X, pch=16, cex=0.5, main="Circle")
+> plot(maxKDE)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("maxPersistence", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("multipBootstrap")
+> ### * multipBootstrap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: multipBootstrap
+> ### Title: Multiplier Bootstrap for Persistence Landscapes and Silhouettes
+> ### Aliases: multipBootstrap
+> ### Keywords: nonparametric htest
+> 
+> ### ** Examples
+> 
+> nn=3000  #large sample size
+> mm=50   #small subsample size
+> NN=5    #we will compute NN diagrams using subsamples of size mm
+> 
+> XX = circleUnif(nn)  ## large sample from the unit circle
+> 
+> DiagLim=2
+> maxdimension=1
+> tseq=seq(0,DiagLim, length=1000)
+> 
+> Diags=list()    #here we will store the NN rips diagrams
+>                 #constructed using different subsamples of mm points
+> Lands=matrix(0,nrow=NN, ncol=length(tseq))  #here we'll store the landscapes
+> 
+> for (i in 1:NN){
++ 	subXX=XX[sample(1:nn,mm),]
++ 	Diags[[i]]=ripsDiag(subXX,maxdimension,DiagLim)$diagram
++ 	Lands[i,]=landscape(Diags[[i]], dimension=1, KK=1, tseq )
++ }
+> 
+> ## now we use the NN landscapes to construct a confidence band
+> B=50
+> alpha=0.05
+> boot=multipBootstrap(Lands,B,alpha)
+> 
+> LOWband=boot$band[,1]
+> UPband=boot$band[,2]
+> MeanLand=boot$mean
+> 
+> plot(tseq, MeanLand, type="l", lwd=2, xlab=" ", ylab="" ,
++      main="Mean Landscape with band", ylim=c(0,1.2))
+> polygon(c(tseq, rev(tseq)), c(LOWband,rev(UPband)), col="pink")
+> lines(tseq, MeanLand, lwd=1, col=2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("multipBootstrap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.clusterTree")
+> ### * plot.clusterTree
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.clusterTree
+> ### Title: Plots the Cluster Tree
+> ### Aliases: plot.clusterTree
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## Generate data: 3 clusters
+> n=1200    #sample size
+> Neach=floor(n/4) 
+> X1=cbind(rnorm(Neach,1,.8),rnorm(Neach,5,0.8))
+> X2=cbind(rnorm(Neach,3.5,.8),rnorm(Neach,5,0.8))
+> X3=cbind(rnorm(Neach,6,1),rnorm(Neach,1,1))
+> XX=rbind(X1,X2,X3)
+> 
+> k=100     #parameter of knn
+> 
+> ## Density clustering using knn and kde
+> Tree=clusterTree(XX,k, density="knn")
+> TreeKDE=clusterTree(XX,k,h=0.3, density="kde")
+> 
+> par(mfrow=c(2,3))
+> plot(XX, pch=19, cex=0.6)
+> # plot lambda trees
+> plot(Tree, type="lambda", main="lambda Tree (knn)")
+> plot(TreeKDE, type="lambda", main="lambda Tree (kde)")
+> # plot clusters
+> plot(XX, pch=19, cex=0.6, main="cluster labels")
+> for (i in Tree$id){
++ 	points(matrix(XX[Tree$DataPoints[[i]],],ncol=2), col=i, pch=19, cex=0.6)
++ }
+> #plot kappa trees
+> plot(Tree, type="kappa", main="kappa Tree (knn)")
+> plot(TreeKDE, type="kappa", main="kappa Tree (kde)")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.clusterTree", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("plot.diagram")
+> ### * plot.diagram
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.diagram
+> ### Title: Plot the Persistence Diagram
+> ### Aliases: plot.diagram
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> XX1 = circleUnif(30)
+> XX2 = circleUnif(30, r=2) +3
+> XX=rbind(XX1,XX2)
+> 
+> DiagLim=5
+> maxdimension=1
+> 
+> ## rips diagram
+> Diag=ripsDiag(XX,maxdimension,DiagLim, printProgress=TRUE)$diagram
+# Generated complex of size: 26250 
+> 
+> #plot
+> par(mfrow=c(1,3))
+> plot(Diag)
+> plot(Diag, rotated=TRUE)
+> plot(Diag, barcode=TRUE)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.diagram", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("plot.maxPersistence")
+> ### * plot.maxPersistence
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.maxPersistence
+> ### Title: Summary plot for the maxPersistence function
+> ### Aliases: plot.maxPersistence
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## input data: circle with clutter noise
+> n=600
+> percNoise=0.1
+> XX1 = circleUnif(n)
+> noise=cbind(runif(percNoise*n, -2,2),runif(percNoise*n, -2,2))
+> X=rbind(XX1,noise)
+> 
+> ## limits of the Gird at which the density estimator is evaluated
+> Xlim=c(-2,2)
+> Ylim=c(-2,2)
+> lim=cbind(Xlim,Ylim)
+> by=0.2
+> 
+> B=80
+> alpha=0.05
+> 
+> ## candidates
+> parametersKDE=seq(0.1,0.5, by=0.2)
+> 
+> maxKDE=maxPersistence(kde, parametersKDE, X, lim=lim, by=by, 
++                   bandFUN="bootstrapBand",B=B, alpha=alpha,
++                   parallel=FALSE, printProgress = TRUE)
+0   10   20   30   40   50   60   70   80   90   100
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+> print(summary(maxKDE))
+Call: 
+maxPersistence(FUN = kde, parameters = parametersKDE, X = X, 
+    lim = lim, by = by, B = B, alpha = alpha, bandFUN = "bootstrapBand", 
+    parallel = FALSE, printProgress = TRUE)
+
+The number of significant features is maximized by 
+[1] 0.3
+
+The total significant persistence is maximized by 
+[1] 0.3
+> 
+> par(mfrow=c(1,2))
+> plot(X, pch=16, cex=0.5, main="Circle")
+> plot(maxKDE)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.maxPersistence", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("ripsDiag")
+> ### * ripsDiag
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ripsDiag
+> ### Title: Rips Persistence Diagram
+> ### Aliases: ripsDiag
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> ## EXAMPLE 1: rips diagram for circles (euclidean distance)
+> XX = circleUnif(30)
+> maxscale=5
+> maxdimension=1
+> ## note that the input XX is a point cloud
+> Diag=ripsDiag(XX,maxdimension,maxscale, printProgress=TRUE)
+# Generated complex of size: 4525 
+> 
+> 
+> ## EXAMPLE 2: rips diagram with arbitrary distance
+> ## distance matrix for triangle with edges of length: 1,2,4
+> distX=matrix(c(0,1,2,1,0,4,2,4,0), ncol=3)
+> maxscale=5
+> maxdimension=1
+> ## note that the input distXX is a distance matrix
+> DiagTri=ripsDiag(distX,maxdimension,maxscale, dist="arbitrary", printProgress=TRUE)
+# Generated complex of size: 7 
+0   10   20   30   40   50   60   70   80   90   100
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+# Persistence timer: Elapsed time [ 0.000094 ] seconds
+> #points with lifetime=0 are not shown. e.g. the loop of the triangle.
+> print(DiagTri$diagram)
+     dimension Birth Death
+[1,]         0     0     5
+[2,]         0     0     1
+[3,]         0     0     2
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ripsDiag", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("silhouette")
+> ### * silhouette
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: silhouette
+> ### Title: The Persistence Silhouette Function
+> ### Aliases: silhouette
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+> Diag=matrix(c(0,0,10,1,0,3,1,3,8), ncol=3, byrow=TRUE)
+> DiagLim=10
+> colnames(Diag)=c("dim", "Birth", "Death")
+> 
+> #persistence silhouette
+> tseq=seq(0,DiagLim, length=1000)
+> Sil=silhouette(Diag, p=1,  dimension=1, tseq)
+> 
+> par(mfrow=c(1,2))
+> plot.diagram(Diag)
+> plot(tseq, Sil, type="l", xlab="t", ylab="silhouette", asp=1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("silhouette", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("sphereUnif")
+> ### * sphereUnif
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sphereUnif
+> ### Title: Uniform Sample From The Sphere S^d
+> ### Aliases: sphereUnif
+> ### Keywords: datagen
+> 
+> ### ** Examples
+> 
+> X=sphereUnif(100,1)
+> plot(X)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sphereUnif", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.diagram")
+> ### * summary.diagram
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.diagram
+> ### Title: 'print' and 'summary' for 'diagram'
+> ### Aliases: summary.diagram print.summary.diagram print.diagram
+> 
+> ### ** Examples
+> 
+> # Generate data from 2 circles
+> XX1 = circleUnif(30)
+> XX2 = circleUnif(30, r=2) +3
+> XX=rbind(XX1,XX2)
+> 
+> DiagLim=5            # limit of the filtration
+> maxdimension=1       # computes betti0 and betti1
+> 
+> Diag=ripsDiag(XX,maxdimension,DiagLim, printProgress=TRUE)$diagram
+# Generated complex of size: 26250 
+> 
+> print(Diag)
+      dimension    Birth      Death
+ [1,]         0 0.000000 5.00000000
+ [2,]         1 1.950340 3.49528000
+ [3,]         0 0.000000 1.29248000
+ [4,]         0 0.000000 1.12270000
+ [5,]         1 0.686838 1.76508000
+ [6,]         0 0.000000 0.97373700
+ [7,]         0 0.000000 0.89064600
+ [8,]         0 0.000000 0.73198600
+ [9,]         0 0.000000 0.63342000
+[10,]         0 0.000000 0.59462000
+[11,]         0 0.000000 0.59279900
+[12,]         0 0.000000 0.58262700
+[13,]         0 0.000000 0.57151800
+[14,]         0 0.000000 0.49052100
+[15,]         0 0.000000 0.46783200
+[16,]         0 0.000000 0.45544800
+[17,]         0 0.000000 0.42439700
+[18,]         0 0.000000 0.39799700
+[19,]         0 0.000000 0.38868400
+[20,]         0 0.000000 0.36125700
+[21,]         0 0.000000 0.35165900
+[22,]         0 0.000000 0.33666500
+[23,]         0 0.000000 0.33520900
+[24,]         0 0.000000 0.33374100
+[25,]         0 0.000000 0.32665600
+[26,]         0 0.000000 0.31908300
+[27,]         0 0.000000 0.31500100
+[28,]         0 0.000000 0.30462500
+[29,]         0 0.000000 0.30291000
+[30,]         0 0.000000 0.29567200
+[31,]         0 0.000000 0.29274500
+[32,]         0 0.000000 0.19931600
+[33,]         0 0.000000 0.19194200
+[34,]         0 0.000000 0.18773400
+[35,]         0 0.000000 0.18007600
+[36,]         0 0.000000 0.16629600
+[37,]         0 0.000000 0.16459100
+[38,]         0 0.000000 0.15770200
+[39,]         0 0.000000 0.14399400
+[40,]         0 0.000000 0.14162800
+[41,]         0 0.000000 0.13927400
+[42,]         0 0.000000 0.13488700
+[43,]         0 0.000000 0.10809300
+[44,]         0 0.000000 0.10651800
+[45,]         0 0.000000 0.08119410
+[46,]         0 0.000000 0.08075890
+[47,]         0 0.000000 0.08071420
+[48,]         0 0.000000 0.06263340
+[49,]         0 0.000000 0.06167920
+[50,]         0 0.000000 0.06136710
+[51,]         0 0.000000 0.05732010
+[52,]         0 0.000000 0.05605040
+[53,]         0 0.000000 0.05584620
+[54,]         0 0.000000 0.04970290
+[55,]         0 0.000000 0.04777150
+[56,]         0 0.000000 0.03875190
+[57,]         0 0.000000 0.02697070
+[58,]         0 0.000000 0.01478280
+[59,]         0 0.000000 0.01263150
+[60,]         0 0.000000 0.01078040
+[61,]         0 0.000000 0.01075680
+[62,]         0 0.000000 0.00489532
+> print(summary(Diag))
+Call: 
+ripsL2Diag(X = X, maxdimension = maxdimension, maxscale = maxscale, 
+    library = library, printProgress = printProgress)
+
+Number of features: 
+[1] 62
+
+Max dimension: 
+[1] 1
+
+Scale: 
+[1] 0 5
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.diagram", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("torusUnif")
+> ### * torusUnif
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: torusUnif
+> ### Title: Uniform Sample From The 3D Torus
+> ### Aliases: torusUnif
+> ### Keywords: datagen
+> 
+> ### ** Examples
+> 
+> X=torusUnif(300, a=1.8, c=5)
+> plot(X)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("torusUnif", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("wasserstein")
+> ### * wasserstein
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: wasserstein
+> ### Title: Wasserstein distance between two persistence diagrams
+> ### Aliases: wasserstein
+> ### Keywords: methods optimize
+> 
+> ### ** Examples
+> 
+> XX1 = circleUnif(20)
+> XX2 = circleUnif(20, r=0.2)
+> 
+> DiagLim=5
+> maxdimension=1
+> 
+> Diag1=ripsDiag(XX1,maxdimension,DiagLim, printProgress=FALSE)$diagram
+> Diag2=ripsDiag(XX2,maxdimension,DiagLim, printProgress=FALSE)$diagram
+> 
+> wassersteinDist=wasserstein(Diag1, Diag2, p=1, dimension=1)
+> print(wassersteinDist)
+[1] 0.620036
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("wasserstein", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  12.45 0.885 13.364 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

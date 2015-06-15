@@ -1,0 +1,11 @@
+* installing *source* package ‘modMax’ ...
+** package ‘modMax’ successfully unpacked and MD5 sums checked
+** R
+** preparing package for lazy loading
+Warning: replacing previous import by ‘gtools::permute’ when loading ‘modMax’
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+Warning: replacing previous import by ‘gtools::permute’ when loading ‘modMax’
+* DONE (modMax)

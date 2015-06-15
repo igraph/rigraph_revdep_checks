@@ -1,0 +1,359 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "miniCRAN"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "miniCRAN-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('miniCRAN')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("addOldPackage")
+> ### * addOldPackage
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: addOldPackage
+> ### Title: Add old package versions to a miniCRAN repository.
+> ### Aliases: addOldPackage
+> 
+> ### ** Examples
+> 
+> ### `checkVersions` and `add.packages.miniCRAN` require an existing miniCRAN repo
+> 
+> # Specify list of packages to download
+> revolution <- c(CRAN="http://cran.revolutionanalytics.com")
+> pkgs <- c("foreach")
+> 
+> pdb <- cranJuly2014
+> 
+> ## Not run: 
+> ##D   pdb <- pkgAvail(repos=revolution, type="source")
+> ## End(Not run)
+> 
+> pkgList <- pkgDep(pkgs, availPkgs=pdb, repos=revolution, type="source", suggests=FALSE)
+> pkgList
+[1] "foreach"   "codetools" "iterators"
+> 
+> ## Not run: 
+> ##D   # Create temporary folder for miniCRAN
+> ##D   dir.create(pth <- file.path(tempdir(), "miniCRAN"))
+> ##D 
+> ##D   # Make repo for source and win.binary
+> ##D   makeRepo(pkgList, path=pth, repos=revolution, type="source")
+> ##D   makeRepo(pkgList, path=pth, repos=revolution, type="win.binary")
+> ##D 
+> ##D   # Add other versions of a package (and assume these were added previously)
+> ##D   oldVers <- data.frame(package=c("foreach", "codetools", "iterators"),
+> ##D                         version=c("1.4.0", "0.2-7", "1.0.5"),
+> ##D                         stringsAsFactors=FALSE)
+> ##D   pkgs <- oldVers$package
+> ##D   addOldPackage(pkgs, path=pth, vers=oldVers$version, repos=revolution, type="source")
+> ##D   # NOTE: older binary versions would need to be build from source
+> ##D 
+> ##D   # List package versions in the miniCRAN repo (produces warning about duplicates)
+> ##D   pkgVersionsSrc <- checkVersions(pkgs, path=pth, type="source")
+> ##D   pkgVersionsBin <- checkVersions(pkgs, path=pth, type="win.binary")
+> ##D 
+> ##D   # After inspecting package versions, remove old versions
+> ##D   basename(pkgVersionsSrc) # "foreach_1.4.0.tar.gz"  "foreach_1.4.2.tar.gz"
+> ##D   basename(pkgVersionsBin) # "foreach_1.4.0.zip"     "foreach_1.4.2.zip"
+> ##D   file.remove(c(pkgVersionsSrc[1], pkgVersionsBin[1]))
+> ##D 
+> ##D   # Rebuild package index after adding/removing files
+> ##D   updateRepoIndex(pth, type=c("source", "win.binary"), Rversion=R.version)
+> ##D   
+> ##D   pkgAvail(pth, type="source")
+> ##D 
+> ##D   # Add new packages (from CRAN) to the miniCRAN repo
+> ##D   addPackage("Matrix", path=pth, repos=revolution, type="source")
+> ##D   addPackage("Matrix", path=pth, repos=revolution, type="win.binary")
+> ##D 
+> ##D   # Delete temporary folder
+> ##D   unlink(pth, recursive=TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("addOldPackage", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("addPackage")
+> ### * addPackage
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: addPackage
+> ### Title: Add packages to a miniCRAN repository.
+> ### Aliases: addPackage
+> 
+> ### ** Examples
+> 
+> ### `checkVersions` and `add.packages.miniCRAN` require an existing miniCRAN repo
+> 
+> # Specify list of packages to download
+> revolution <- c(CRAN="http://cran.revolutionanalytics.com")
+> pkgs <- c("foreach")
+> 
+> pdb <- cranJuly2014
+> 
+> ## Not run: 
+> ##D   pdb <- pkgAvail(repos=revolution, type="source")
+> ## End(Not run)
+> 
+> pkgList <- pkgDep(pkgs, availPkgs=pdb, repos=revolution, type="source", suggests=FALSE)
+> pkgList
+[1] "foreach"   "codetools" "iterators"
+> 
+> ## Not run: 
+> ##D   # Create temporary folder for miniCRAN
+> ##D   dir.create(pth <- file.path(tempdir(), "miniCRAN"))
+> ##D 
+> ##D   # Make repo for source and win.binary
+> ##D   makeRepo(pkgList, path=pth, repos=revolution, type="source")
+> ##D   makeRepo(pkgList, path=pth, repos=revolution, type="win.binary")
+> ##D 
+> ##D   # Add other versions of a package (and assume these were added previously)
+> ##D   oldVers <- data.frame(package=c("foreach", "codetools", "iterators"),
+> ##D                         version=c("1.4.0", "0.2-7", "1.0.5"),
+> ##D                         stringsAsFactors=FALSE)
+> ##D   pkgs <- oldVers$package
+> ##D   addOldPackage(pkgs, path=pth, vers=oldVers$version, repos=revolution, type="source")
+> ##D   # NOTE: older binary versions would need to be build from source
+> ##D 
+> ##D   # List package versions in the miniCRAN repo (produces warning about duplicates)
+> ##D   pkgVersionsSrc <- checkVersions(pkgs, path=pth, type="source")
+> ##D   pkgVersionsBin <- checkVersions(pkgs, path=pth, type="win.binary")
+> ##D 
+> ##D   # After inspecting package versions, remove old versions
+> ##D   basename(pkgVersionsSrc) # "foreach_1.4.0.tar.gz"  "foreach_1.4.2.tar.gz"
+> ##D   basename(pkgVersionsBin) # "foreach_1.4.0.zip"     "foreach_1.4.2.zip"
+> ##D   file.remove(c(pkgVersionsSrc[1], pkgVersionsBin[1]))
+> ##D 
+> ##D   # Rebuild package index after adding/removing files
+> ##D   updateRepoIndex(pth, type=c("source", "win.binary"), Rversion=R.version)
+> ##D   
+> ##D   pkgAvail(pth, type="source")
+> ##D 
+> ##D   # Add new packages (from CRAN) to the miniCRAN repo
+> ##D   addPackage("Matrix", path=pth, repos=revolution, type="source")
+> ##D   addPackage("Matrix", path=pth, repos=revolution, type="win.binary")
+> ##D 
+> ##D   # Delete temporary folder
+> ##D   unlink(pth, recursive=TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("addPackage", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("addPackageListingGithub")
+> ### * addPackageListingGithub
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: addPackageListingGithub
+> ### Title: Add DESCRIPTION information from package on github.
+> ### Aliases: addPackageListingGithub
+> 
+> ### ** Examples
+> 
+> # Create package database
+> pdb <- cranJuly2014
+> 
+> ## Not run: 
+> ##D   pdb <- pkgAvail(repos=c(CRAN="http://cran.revolutionanalytics.com"))
+> ##D   
+> ##D   
+> ##D   # Overwrite pdb with development version of miniCRAN at github
+> ##D   newpdb <- addPackageListingGithub(pdb=pdb, "andrie/miniCRAN")
+> ##D   newpdb["miniCRAN", ]
+> ##D   
+> ##D   
+> ##D   # Add package from github that's not currently on CRAN
+> ##D   newpdb <- addPackageListingGithub(pdb=pdb, repo="RevolutionAnalytics/checkpoint")
+> ##D   newpdb["checkpoint", ]
+> ##D   
+> ##D   set.seed(1)
+> ##D   plot(makeDepGraph("checkpoint", availPkgs = newpdb, suggests=TRUE))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("addPackageListingGithub", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("checkVersions")
+> ### * checkVersions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: checkVersions
+> ### Title: Check for previous versions of packages in a miniCRAN
+> ###   repository.
+> ### Aliases: checkVersions
+> 
+> ### ** Examples
+> 
+> ### `checkVersions` and `add.packages.miniCRAN` require an existing miniCRAN repo
+> 
+> # Specify list of packages to download
+> revolution <- c(CRAN="http://cran.revolutionanalytics.com")
+> pkgs <- c("foreach")
+> 
+> pdb <- cranJuly2014
+> 
+> ## Not run: 
+> ##D   pdb <- pkgAvail(repos=revolution, type="source")
+> ## End(Not run)
+> 
+> pkgList <- pkgDep(pkgs, availPkgs=pdb, repos=revolution, type="source", suggests=FALSE)
+> pkgList
+[1] "foreach"   "codetools" "iterators"
+> 
+> ## Not run: 
+> ##D   # Create temporary folder for miniCRAN
+> ##D   dir.create(pth <- file.path(tempdir(), "miniCRAN"))
+> ##D 
+> ##D   # Make repo for source and win.binary
+> ##D   makeRepo(pkgList, path=pth, repos=revolution, type="source")
+> ##D   makeRepo(pkgList, path=pth, repos=revolution, type="win.binary")
+> ##D 
+> ##D   # Add other versions of a package (and assume these were added previously)
+> ##D   oldVers <- data.frame(package=c("foreach", "codetools", "iterators"),
+> ##D                         version=c("1.4.0", "0.2-7", "1.0.5"),
+> ##D                         stringsAsFactors=FALSE)
+> ##D   pkgs <- oldVers$package
+> ##D   addOldPackage(pkgs, path=pth, vers=oldVers$version, repos=revolution, type="source")
+> ##D   # NOTE: older binary versions would need to be build from source
+> ##D 
+> ##D   # List package versions in the miniCRAN repo (produces warning about duplicates)
+> ##D   pkgVersionsSrc <- checkVersions(pkgs, path=pth, type="source")
+> ##D   pkgVersionsBin <- checkVersions(pkgs, path=pth, type="win.binary")
+> ##D 
+> ##D   # After inspecting package versions, remove old versions
+> ##D   basename(pkgVersionsSrc) # "foreach_1.4.0.tar.gz"  "foreach_1.4.2.tar.gz"
+> ##D   basename(pkgVersionsBin) # "foreach_1.4.0.zip"     "foreach_1.4.2.zip"
+> ##D   file.remove(c(pkgVersionsSrc[1], pkgVersionsBin[1]))
+> ##D 
+> ##D   # Rebuild package index after adding/removing files
+> ##D   updateRepoIndex(pth, type=c("source", "win.binary"), Rversion=R.version)
+> ##D   
+> ##D   pkgAvail(pth, type="source")
+> ##D 
+> ##D   # Add new packages (from CRAN) to the miniCRAN repo
+> ##D   addPackage("Matrix", path=pth, repos=revolution, type="source")
+> ##D   addPackage("Matrix", path=pth, repos=revolution, type="win.binary")
+> ##D 
+> ##D   # Delete temporary folder
+> ##D   unlink(pth, recursive=TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("checkVersions", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getCranDescription")
+> ### * getCranDescription
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getCranDescription
+> ### Title: Scrape DESCRIPTION from CRAN for each pkg.
+> ### Aliases: getCranDescription
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D getCranDescription(c("igraph", "ggplot2", "XML"), 
+> ##D   repos=c(CRAN="http://cran.revolutionanalytics.com")
+> ##D )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getCranDescription", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("makeDepGraph")
+> ### * makeDepGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: makeDepGraph
+> ### Title: Create dependency graph from available packages.
+> ### Aliases: makeDepGraph
+> 
+> ### ** Examples
+> 
+> 
+> 
+> 
+> availPkgs <- cranJuly2014
+> 
+> ## Not run: 
+> ##D availPkgs <- pkgAvail(
+> ##D   repos = c(CRAN="http://cran.revolutionanalytics.com"),
+> ##D   type="source"
+> ##D   )
+> ## End(Not run)
+> 
+> 
+> # Create dependency graph using stored database of available packages
+> p <- makeDepGraph(
++   c("ggplot2", "forecast"), 
++   availPkgs = availPkgs
++ )
+Loading required namespace: igraph
+> 
+> if(require(igraph)) plot(p)
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Error: 'plot.igraph' is not an exported object from 'namespace:igraph'
+Execution halted

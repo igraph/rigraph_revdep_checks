@@ -1,0 +1,26 @@
+* installing *source* package ‘PBC’ ...
+** package ‘PBC’ successfully unpacked and MD5 sums checked
+** libs
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c Compute.cpp -o Compute.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c Derivatives.cpp -o Derivatives.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c Gradient.cpp -o Gradient.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c Optim.cpp -o Optim.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c PBC.cpp -o PBC.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c lbfgsb.cpp -o lbfgsb.o
+lbfgsb.cpp:3994:1: warning: '/*' within block comment [-Wcomment]
+/*
+^
+1 warning generated.
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c miwa.cpp -o miwa.o
+clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o PBC.so Compute.o Derivatives.o Gradient.o Optim.o PBC.o lbfgsb.o miwa.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/PBC.Rcheck/PBC/libs
+** R
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+   ‘PBC.Rnw’ 
+** testing if installed package can be loaded
+* DONE (PBC)

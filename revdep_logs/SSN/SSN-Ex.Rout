@@ -1,0 +1,1263 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "SSN"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "SSN-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('SSN')
+Loading required package: RSQLite
+Loading required package: DBI
+Loading required package: sp
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("AIC.glmssn")
+> ### * AIC.glmssn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: AIC
+> ### Title: AIC for glmssn objects
+> ### Aliases: AIC.glmssn
+> 
+> ### ** Examples
+> 
+> 
+> library(SSN)
+> # NOT RUN 
+> #mf04p <- importSSN(system.file("lsndata/MiddleFork04.ssn", 
+> #  package = "SSN"), predpts = "pred1km", o.write = TRUE)
+> #  use SpatialStreamNetwork object mf04p that was already created
+> data(mf04p)
+> # for examples, copy MiddleFork04.ssn directory to R's temporary directory
+> copyLSN2temp()
+> #make sure mf04p has the correct path, will vary for each users installation
+> mf04p <- updatePath(mf04p, paste0(tempdir(),'/MiddleFork04.ssn'))
+[1] "SSN path updated to /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpQdnm2P/MiddleFork04.ssn"
+>    
+> # get some model fits stored as data objects
+> data(modelFits)
+> #NOT RUN use this one
+> #fitSp <- glmssn(Summer_mn ~ ELEV_DEM + netID,
+> #    ssn.object = mf04p, EstMeth = "REML", family = "Gaussian",
+> #    CorModels = c("Exponential.tailup","Exponential.taildown",
+> #    "Exponential.Euclid"), addfunccol = "afvArea")
+> #make sure fitSP has the correct path, will vary for each users installation
+> fitSp$ssn@path <- paste0(tempdir(),'/MiddleFork04.ssn')
+> 
+> #note the model was fitted using REML, so fixed effects have 
+> # been integrated out
+> summary(fitSp)
+
+Call:
+glmssn(formula = Summer_mn ~ ELEV_DEM + netID, ssn.object = mf04p, 
+    family = "Gaussian", CorModels = c("Exponential.tailup", 
+        "Exponential.taildown", "Exponential.Euclid"), addfunccol = "afvArea", 
+    EstMeth = "REML")
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-3.355288 -1.605117 -0.469328  0.005475  1.512467 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 64.497620  12.499342   5.160    1e-05 ***
+ELEV_DEM    -0.025381   0.006396  -3.968  0.00028 ***
+netID1       0.000000         NA      NA       NA    
+netID2      -0.766713   0.833228  -0.920  0.36274    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Covariance Parameters:
+     Covariance.Model Parameter     Estimate
+   Exponential.tailup   parsill      1.85242
+   Exponential.tailup     range 117788.21699
+ Exponential.taildown   parsill      0.01704
+ Exponential.taildown     range  65496.89089
+   Exponential.Euclid   parsill      0.01274
+   Exponential.Euclid     range  51212.31006
+               Nugget   parsill      0.00731
+
+Residual standard error: 1.374598
+Generalized R-squared: 0.4270791
+> AIC(fitSp)
+[1] 76.74842
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("AIC.glmssn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BLUP")
+> ### * BLUP
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BLUP
+> ### Title: Compute the joint mean, variance and covariance of any random
+> ###   effects in a glmssn model conditional on the data
+> ### Aliases: BLUP
+> 
+> ### ** Examples
+> 
+> 
+> library(SSN)
+> # NOT RUN 
+> # mf04 <- importSSN(system.file("lsndata/MiddleFork04.ssn", 
+> #	        package = "SSN"), o.write = TRUE)
+> # use SpatialStreamNetwork object mf04 that was already created
+> data(mf04)
+> # for examples, copy MiddleFork04.ssn directory to R's temporary directory
+> copyLSN2temp()
+> #make sure mf04p has the correct path, will vary for each users installation
+> mf04 <- updatePath(mf04, paste0(tempdir(),'/MiddleFork04.ssn'))
+[1] "SSN path updated to /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpQdnm2P/MiddleFork04.ssn"
+> 
+> ## NOT RUN Distance Matrix has already been created
+> ## createDistMat(mf04)
+> 
+> # The models take a little time to fit, so they are NOT RUN 
+> # Uncomment the code to run them
+> # Alternatively, you can load the fitted models first to look at results
+> data(modelFits)
+> 
+> ## Random effect model using STREAMNAME as our random effect
+> #fitRE <- glmssn(Summer_mn ~ ELEV_DEM + netID,
+> #    ssn.object = mf04, EstMeth = "REML", family = "Gaussian",
+> #    CorModels = c("STREAMNAME"))
+> summary(fitRE)
+
+Call:
+glmssn(formula = Summer_mn ~ ELEV_DEM + netID, ssn.object = mf04p, 
+    family = "Gaussian", CorModels = c("STREAMNAME"), EstMeth = "REML")
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.8560 -0.2351  0.2608  0.9792  3.2038 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 44.614770   6.305444   7.076   <2e-16 ***
+ELEV_DEM    -0.015274   0.003195  -4.781    2e-05 ***
+netID1       0.000000         NA      NA       NA    
+netID2      -2.941417   1.250327  -2.353   0.0234 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Covariance Parameters:
+ Covariance.Model Parameter Estimate
+       STREAMNAME   parsill    2.202
+           Nugget   parsill    0.207
+
+Residual standard error: 1.551994
+Generalized R-squared: 0.449845
+> ## random effects details
+> fitREBLUP <- BLUP(fitRE)
+> str(fitREBLUP)
+List of 3
+ $ Mean      : Named num [1:8] -1.6968 -0.0427 0.7901 -0.9336 -1.3383 ...
+  ..- attr(*, "names")= chr [1:8] "STREAMNAME.data[ind.allxy, REnames[ii]]Banner" "STREAMNAME.data[ind.allxy, REnames[ii]]Bear Valley" "STREAMNAME.data[ind.allxy, REnames[ii]]Beaver" "STREAMNAME.data[ind.allxy, REnames[ii]]Cape Horn" ...
+ $ Variance  : Named num [1:8] 0.1888 0.0255 0.0171 0.0255 0.1888 ...
+  ..- attr(*, "names")= chr [1:8] "STREAMNAME.data[ind.allxy, REnames[ii]]Banner" "STREAMNAME.data[ind.allxy, REnames[ii]]Bear Valley" "STREAMNAME.data[ind.allxy, REnames[ii]]Beaver" "STREAMNAME.data[ind.allxy, REnames[ii]]Cape Horn" ...
+ $ Covariance: num [1:8, 1:8] 0.189 0 0 0 0 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:8] "STREAMNAME.data[ind.allxy, REnames[ii]]Banner" "STREAMNAME.data[ind.allxy, REnames[ii]]Bear Valley" "STREAMNAME.data[ind.allxy, REnames[ii]]Beaver" "STREAMNAME.data[ind.allxy, REnames[ii]]Cape Horn" ...
+  .. ..$ : chr [1:8] "STREAMNAME.data[ind.allxy, REnames[ii]]Banner" "STREAMNAME.data[ind.allxy, REnames[ii]]Bear Valley" "STREAMNAME.data[ind.allxy, REnames[ii]]Beaver" "STREAMNAME.data[ind.allxy, REnames[ii]]Cape Horn" ...
+> fitREBLUP$Mean
+     STREAMNAME.data[ind.allxy, REnames[ii]]Banner 
+                                       -1.69681896 
+STREAMNAME.data[ind.allxy, REnames[ii]]Bear Valley 
+                                       -0.04268611 
+     STREAMNAME.data[ind.allxy, REnames[ii]]Beaver 
+                                        0.79005364 
+  STREAMNAME.data[ind.allxy, REnames[ii]]Cape Horn 
+                                       -0.93357728 
+    STREAMNAME.data[ind.allxy, REnames[ii]]Crystal 
+                                       -1.33825713 
+        STREAMNAME.data[ind.allxy, REnames[ii]]Elk 
+                                        0.04268611 
+      STREAMNAME.data[ind.allxy, REnames[ii]]Knapp 
+                                        2.46111955 
+      STREAMNAME.data[ind.allxy, REnames[ii]]Marsh 
+                                        0.71748018 
+> 
+> ## spatial stream model with a random effect
+> #fitSpRE1 <- glmssn(Summer_mn ~ ELEV_DEM + netID,
+> #    ssn.object = mf04, EstMeth = "REML", family = "Gaussian",
+> #    CorModels = c("STREAMNAME","Exponential.tailup"),
+> #    addfunccol = "afvArea")
+> fitRE1BLUP <- BLUP(fitSpRE1)
+> str(fitRE1BLUP)
+List of 3
+ $ Mean      : Named num [1:8] -0.19105 -0.00673 0.14538 -0.11292 -0.27338 ...
+  ..- attr(*, "names")= chr [1:8] "STREAMNAME.data[ind.allxy, REnames[ii]]Banner" "STREAMNAME.data[ind.allxy, REnames[ii]]Bear Valley" "STREAMNAME.data[ind.allxy, REnames[ii]]Beaver" "STREAMNAME.data[ind.allxy, REnames[ii]]Cape Horn" ...
+ $ Variance  : Named num [1:8] 0.2129 0.0845 0.091 0.1026 0.1362 ...
+  ..- attr(*, "names")= chr [1:8] "STREAMNAME.data[ind.allxy, REnames[ii]]Banner" "STREAMNAME.data[ind.allxy, REnames[ii]]Bear Valley" "STREAMNAME.data[ind.allxy, REnames[ii]]Beaver" "STREAMNAME.data[ind.allxy, REnames[ii]]Cape Horn" ...
+ $ Covariance: num [1:8, 1:8] 0.212884 0.000643 0.007817 0.065418 0.007531 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:8] "STREAMNAME.data[ind.allxy, REnames[ii]]Banner" "STREAMNAME.data[ind.allxy, REnames[ii]]Bear Valley" "STREAMNAME.data[ind.allxy, REnames[ii]]Beaver" "STREAMNAME.data[ind.allxy, REnames[ii]]Cape Horn" ...
+  .. ..$ : chr [1:8] "STREAMNAME.data[ind.allxy, REnames[ii]]Banner" "STREAMNAME.data[ind.allxy, REnames[ii]]Bear Valley" "STREAMNAME.data[ind.allxy, REnames[ii]]Beaver" "STREAMNAME.data[ind.allxy, REnames[ii]]Cape Horn" ...
+> fitRE1BLUP$Mean
+     STREAMNAME.data[ind.allxy, REnames[ii]]Banner 
+                                      -0.191045799 
+STREAMNAME.data[ind.allxy, REnames[ii]]Bear Valley 
+                                      -0.006733998 
+     STREAMNAME.data[ind.allxy, REnames[ii]]Beaver 
+                                       0.145383440 
+  STREAMNAME.data[ind.allxy, REnames[ii]]Cape Horn 
+                                      -0.112916128 
+    STREAMNAME.data[ind.allxy, REnames[ii]]Crystal 
+                                      -0.273380896 
+        STREAMNAME.data[ind.allxy, REnames[ii]]Elk 
+                                       0.006733998 
+      STREAMNAME.data[ind.allxy, REnames[ii]]Knapp 
+                                       0.348664919 
+      STREAMNAME.data[ind.allxy, REnames[ii]]Marsh 
+                                       0.083294464 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BLUP", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("BlockPredict")
+> ### * BlockPredict
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: BlockPredict
+> ### Title: Block Predicton for Streams Data
+> ### Aliases: BlockPredict
+> 
+> ### ** Examples
+> 
+> 
+> ## Not run: 
+> ##D # NOT RUN 
+> ##D library(SSN)
+> ##D # use SpatialStreamNetwork object mf04 that was already created
+> ##D data(mf04p)
+> ##D # for examples, copy MiddleFork04.ssn directory to R's temporary directory
+> ##D copyLSN2temp()
+> ##D #make sure mf04p has the correct path; R's tmp directory
+> ##D mf04p <- updatePath(mf04p, paste0(tempdir(),'/MiddleFork04.ssn'))
+> ##D 
+> ##D # Not needed: already added,
+> ##D # add densely gridded prediction points for two stream segments
+> ##D # mf04p <- importPredpts(mf04p, "Knapp", "ssn")
+> ##D # mf04p <- importPredpts(mf04p, "CapeHorn", "ssn")
+> ##D names(mf04p)
+> ##D 
+> ##D # see densely gridded prediction points on stream
+> ##D plot(mf04p, PredPointsID = "Knapp")
+> ##D 
+> ##D #  you could fit the model
+> ##D #fitSpBk <- glmssn(Summer_mn ~ ELEV_DEM + netID,
+> ##D #    ssn.object = mf04p, EstMeth = "REML", family = "Gaussian",
+> ##D #    CorModels = c("Exponential.tailup","Exponential.taildown",
+> ##D #    "Exponential.Euclid"), addfunccol = "afvArea")
+> ##D 
+> ##D # or load the pre-fit model
+> ##D data(modelFits)
+> ##D fitSpBk$ssn.object <- updatePath(fitSpBk$ssn.object, 
+> ##D 	paste0(tempdir(),'/MiddleFork04.ssn'))
+> ##D 
+> ##D # one-at-a-time predictions for CapeHorn stream
+> ##D ## NOTE: need the amongpreds distance matrices for block prediction
+> ##D createDistMat(mf04p, predpts = "CapeHorn", o.write = TRUE, amongpreds = TRUE)
+> ##D fitSpPredC <- predict(fitSpBk, "CapeHorn")
+> ##D # plot densely gridded prediction points on stream
+> ##D plot(fitSpPredC, "Summer_mn")
+> ##D # block prediction for CapeHorn stream
+> ##D BlockPredict(fitSpBk, "CapeHorn")
+> ##D 
+> ##D ## Another example
+> ##D # one-at-a-time predictions for Knapp stream
+> ##D createDistMat(mf04p, predpts = "Knapp", o.write = TRUE, amongpreds = TRUE)
+> ##D fitSpPredK <- predict(fitSpBk, "Knapp")
+> ##D # plot densely gridded prediction points on stream
+> ##D plot(fitSpPredK, "Summer_mn")
+> ##D # block prediction for Knapp stream
+> ##D BlockPredict(fitSpBk, "Knapp")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("BlockPredict", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CrossValidationSSN")
+> ### * CrossValidationSSN
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CrossValidationSSN
+> ### Title: Compute Crossvalidation Values for glmssn Objects
+> ### Aliases: CrossValidationSSN
+> 
+> ### ** Examples
+> 
+> 
+> library(SSN)
+> # NOT RUN 
+> # mf04 <- importSSN(system.file("lsndata/MiddleFork04.ssn", 
+> #	        package = "SSN"), o.write = TRUE)
+> # use SpatialStreamNetwork object mf04 that was already created
+> data(mf04)
+> # for examples, copy MiddleFork04.ssn directory to R's temporary directory
+> copyLSN2temp()
+> #make sure mf04p has the correct path, will vary for each users installation
+> mf04 <- updatePath(mf04, paste0(tempdir(),'/MiddleFork04.ssn'))
+[1] "SSN path updated to /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpQdnm2P/MiddleFork04.ssn"
+> 
+> ## NOT RUN Distance Matrix has already been created
+> ## createDistMat(mf04)
+> 
+> # The models take a little time to fit, so they are NOT RUN 
+> # Uncomment the code to run them
+> # Alternatively, you can load the fitted models first to look at results
+> data(modelFits)
+> 
+> ## 3 component spatial model
+> #fitSp <- glmssn(Summer_mn ~ ELEV_DEM + netID,
+> #    ssn.object = mf04, EstMeth = "REML", family = "Gaussian",
+> #    CorModels = c("Exponential.tailup","Exponential.taildown",
+> #    "Exponential.Euclid"), addfunccol = "afvArea")
+> 
+> fitSpCrVal <- CrossValidationSSN(fitSp)
+> str(fitSpCrVal)
+'data.frame':	45 obs. of  2 variables:
+ $ cv.pred: num  14.6 14.8 14.8 14.7 15.1 ...
+ $ cv.se  : num  0.258 0.391 0.23 0.305 0.289 ...
+> # NOT RUN
+> # data are sorted by netID, then pid within netID.  This is different that
+> # the original data order, so get the sorted values of the response variable
+> # plot(fitSp$sampinfo$z, fitSpCrVal[,"cv.pred"], pch = 19)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CrossValidationSSN", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CrossValidationStatsSSN")
+> ### * CrossValidationStatsSSN
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CrossValidationStatsSSN
+> ### Title: Compute Summary Statistics on Crossvalidation Values for glmssn
+> ###   Objects
+> ### Aliases: CrossValidationStatsSSN
+> 
+> ### ** Examples
+> 
+> 
+> library(SSN)
+> # NOT RUN 
+> # mf04 <- importSSN(system.file("lsndata/MiddleFork04.ssn", 
+> #	        package = "SSN"), o.write = TRUE)
+> # use SpatialStreamNetwork object mf04 that was already created
+> data(mf04)
+> # for examples, copy MiddleFork04.ssn directory to R's temporary directory
+> copyLSN2temp()
+> #make sure mf04p has the correct path, will vary for each users installation
+> mf04 <- updatePath(mf04, paste0(tempdir(),'/MiddleFork04.ssn'))
+[1] "SSN path updated to /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpQdnm2P/MiddleFork04.ssn"
+> 
+> 
+> 
+> ## NOT RUN Distance Matrix has already been created
+> ## createDistMat(mf04)
+> 
+> # The models take a little time to fit, so they are NOT RUN 
+> # Uncomment the code to run them
+> # Alternatively, you can load the fitted models first to look at results
+> data(modelFits)
+> 
+> ## 3 component spatial model
+> #fitSp <- glmssn(Summer_mn ~ ELEV_DEM + netID,
+> #    ssn.object = mf04, EstMeth = "REML", family = "Gaussian",
+> #    CorModels = c("Exponential.tailup","Exponential.taildown",
+> #    "Exponential.Euclid"), addfunccol = "afvArea")
+> CrossValidationStatsSSN(fitSp)
+        bias   std.bias     RMSPE       RAV std.MSPE    cov.80    cov.90
+1 0.08031083 0.07612684 0.5713268 0.3925891 1.243911 0.7777778 0.8888889
+     cov.95
+1 0.9111111
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CrossValidationStatsSSN", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("EmpiricalSemivariogram")
+> ### * EmpiricalSemivariogram
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: EmpiricalSemivariogram
+> ### Title: Empirical Semivariogram Based on Euclidean Distance
+> ### Aliases: EmpiricalSemivariogram
+> 
+> ### ** Examples
+> 
+> 
+> library(SSN)
+> # NOT RUN 
+> # mf04 <- importSSN(system.file("lsndata/MiddleFork04.ssn", 
+> #	        package = "SSN"), o.write = TRUE)
+> # use SpatialStreamNetwork object mf04 that was already created
+> data(mf04)
+> #make sure mf04 has the correct path, will vary for each users installation
+> mf04 <- updatePath(mf04, system.file("lsndata/MiddleFork04.ssn", package = "SSN"))
+[1] "SSN path updated to /Users/gaborcsardi/works/igraph/revdep_check/SSN.Rcheck/SSN/lsndata/MiddleFork04.ssn"
+>     
+> # Compute the empirical semivariogram for the raw data. 
+> # the number of pairs used to estimate the semivariance
+> EVout <- EmpiricalSemivariogram(mf04, "Summer_mn", directions = 0, tolerance = 180,
++     nlag = 10)
+> # Plot it and set the point size relative to the number of pairs used to estimate
+> # the semivariance
+> plot(EVout$distance, EVout$gamma, pch = 19, cex = EVout$np/100, ylim = c(0,6),
++     ylab = "Gamma", xlab = "Distance", col = "blue", 
++     main = "Empirical Semivariogram - Raw Data")
+> 
+> # generate and plot an empirical semivariogram based on model residuals
+> data(modelFits)
+> #make sure fitSP has the correct path, will vary for each users installation
+> fitSp$ssn@path <- system.file("lsndata/MiddleFork04.ssn", package = "SSN")
+> fitSpRes <- residuals(fitSp)
+> names(getSSNdata.frame(fitSpRes))
+ [1] "pid"              "NCEASID"          "STREAMNAME"       "HUC3"            
+ [5] "HUC4"             "COMID"            "CUMDRAINAG"       "AREAWTMAP"       
+ [9] "MAXELEVSMO"       "SLOPE"            "NCEASID_"         "ELEV_DEM"        
+[13] "Deployment"       "SampleYear"       "NumberOfDa"       "OriginalID"      
+[17] "Source"           "Summer_mn"        "MaxOver20"        "C16"             
+[21] "C20"              "C24"              "FlowCMS"          "AirMEANc"        
+[25] "AirMWMTc"         "NEAR_FID"         "NEAR_DIST"        "NEAR_X"          
+[29] "NEAR_Y"           "NEAR_ANGLE"       "rid"              "ratio"           
+[33] "afvArea"          "upDist"           "locID"            "netID"           
+[37] "obsval"           "_fit_"            "_resid_"          "_resid.stand_"   
+[41] "_resid.student_"  "_leverage_"       "_CooksD_"         "_resid.crossv_"  
+[45] "_CrossValPred_"   "_CrossValStdErr_"
+> EVresid <- EmpiricalSemivariogram(fitSpRes, "_resid_", directions = 0, 
++     tolerance = 180, nlag = 7,	maxlag = 15000,)
+> plot(EVresid$distance, EVresid$gamma, pch = 19, cex = EVresid$np/50, ylim = c(0,6),
++     ylab = "Gamma", xlab = "Distance", main = "Empirical Semivariogram - Residuals")
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("EmpiricalSemivariogram", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("GR2")
+> ### * GR2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: GR2
+> ### Title: Generalised R2
+> ### Aliases: GR2
+> 
+> ### ** Examples
+> 
+> 
+> library(SSN)
+> # NOT RUN 
+> #mf04p <- importSSN(system.file("lsndata/MiddleFork04.ssn", 
+> #  package = "SSN"), predpts = "pred1km", o.write = TRUE)
+> #  use SpatialStreamNetwork object mf04p that was already created
+> data(mf04p)
+> #make sure mf04p has the correct path, will vary for each users installation
+> mf04p@path <- system.file("lsndata/MiddleFork04.ssn", package = "SSN")
+>     
+> # get some model fits stored as data objects
+> data(modelFits)
+> #NOT RUN use this one
+> #fitSp <- glmssn(Summer_mn ~ ELEV_DEM + netID,
+> #    ssn.object = mf04p, EstMeth = "REML", family = "Gaussian",
+> #    CorModels = c("Exponential.tailup","Exponential.taildown",
+> #    "Exponential.Euclid"), addfunccol = "afvArea")
+> #make sure fitSP has the correct path, will vary for each users installation
+> fitSp$ssn@path <- system.file("lsndata/MiddleFork04.ssn", package = "SSN")
+> 
+> GR2(fitSp)
+          [,1]
+[1,] 0.4270791
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("GR2", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("InfoCritCompare")
+> ### * InfoCritCompare
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: InfoCritCompare
+> ### Title: Compare 'glmssn' Information Criteria
+> ### Aliases: InfoCritCompare
+> 
+> ### ** Examples
+> 
+> 
+> 	library(SSN)
+> 	data(modelFits)
+> 
+>   compare.models <- InfoCritCompare(list(fitNS, fitRE, fitSp, fitSpRE1, fitSpRE2))
+>   
+>   # Examine the model criteria
+>   compare.models
+                       formula EstMethod
+1 Summer_mn ~ ELEV_DEM + netID      REML
+2 Summer_mn ~ ELEV_DEM + netID      REML
+3 Summer_mn ~ ELEV_DEM + netID      REML
+4 Summer_mn ~ ELEV_DEM + netID      REML
+5 Summer_mn ~ ELEV_DEM + netID      REML
+                                                      Variance_Components
+1                                                                  Nugget
+2                                                     STREAMNAME + Nugget
+3 Exponential.tailup + Exponential.taildown + Exponential.Euclid + Nugget
+4                                Exponential.Euclid + STREAMNAME + Nugget
+5                                Exponential.tailup + STREAMNAME + Nugget
+   neg2LogL       AIC         bias     std.bias     RMSPE       RAV  std.MSPE
+1 146.56304 148.56304 -0.002919633 -0.002025189 1.1553004 1.1823578 0.9774513
+2  91.19597  95.19597  0.084081339  0.060817486 0.6543995 0.6028884 1.0476868
+3  62.74842  76.74842  0.080310830  0.076126839 0.5713268 0.3925891 1.2439113
+4  77.86038  85.86038  0.114013305  0.091723583 0.6095957 0.5225528 1.0994987
+5  52.56791  60.56791  0.069013257  0.068404616 0.4007049 0.3936925 1.0666577
+     cov.80    cov.90    cov.95
+1 0.7777778 0.8666667 0.9333333
+2 0.7555556 0.8666667 0.9333333
+3 0.7777778 0.8888889 0.9111111
+4 0.7777778 0.8444444 0.9111111
+5 0.7555556 0.8666667 0.9111111
+> 
+>   # Compare the AIC values for all models with random effects
+>   compare.models[c(2,4,5),c("Variance_Components","AIC")]
+                       Variance_Components      AIC
+2                      STREAMNAME + Nugget 95.19597
+4 Exponential.Euclid + STREAMNAME + Nugget 85.86038
+5 Exponential.tailup + STREAMNAME + Nugget 60.56791
+>   
+>   # Compare the RMSPE for the spatial models
+>   compare.models[c(3,4,5),c("Variance_Components","RMSPE")]
+                                                      Variance_Components
+3 Exponential.tailup + Exponential.taildown + Exponential.Euclid + Nugget
+4                                Exponential.Euclid + STREAMNAME + Nugget
+5                                Exponential.tailup + STREAMNAME + Nugget
+      RMSPE
+3 0.5713268
+4 0.6095957
+5 0.4007049
+>   
+>   # Compare the RMSPE between spatial and non-spatial models
+>   compare.models[c(1,3),c("formula","Variance_Components", "RMSPE")]
+                       formula
+1 Summer_mn ~ ELEV_DEM + netID
+3 Summer_mn ~ ELEV_DEM + netID
+                                                      Variance_Components
+1                                                                  Nugget
+3 Exponential.tailup + Exponential.taildown + Exponential.Euclid + Nugget
+      RMSPE
+1 1.1553004
+3 0.5713268
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("InfoCritCompare", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("MiddleFork04.ssn")
+> ### * MiddleFork04.ssn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MiddleFork04.ssn
+> ### Title: MiddleFork04.ssn data folder
+> ### Aliases: MiddleFork04.ssn
+> 
+> ### ** Examples
+> 
+> 	library(SSN)
+> 	mf04p <- importSSN(system.file("lsndata/MiddleFork04.ssn", package = "SSN"),
++ 		  predpts = "pred1km")
+binaryID.db already exists - no changes were made to binaryID.db table
+> 	mf04p <- importPredpts(target = mf04p, predpts = "CapeHorn", obj.type = "ssn")
+> 	mf04p <- importPredpts(target = mf04p, predpts = "Knapp", obj.type = "ssn")
+> 	names(mf04p)
+$Obs
+ [1] "STREAMNAME" "HUC3"       "HUC4"       "COMID"      "CUMDRAINAG"
+ [6] "AREAWTMAP"  "MAXELEVSMO" "SLOPE"      "NCEASID_"   "ELEV_DEM"  
+[11] "Deployment" "SampleYear" "NumberOfDa" "OriginalID" "Source"    
+[16] "Summer_mn"  "MaxOver20"  "C16"        "C20"        "C24"       
+[21] "FlowCMS"    "AirMEANc"   "AirMWMTc"   "NEAR_FID"   "NEAR_DIST" 
+[26] "NEAR_X"     "NEAR_Y"     "NEAR_ANGLE" "rid"        "ratio"     
+[31] "afvArea"    "upDist"     "locID"      "netID"      "pid"       
+
+$pred1km
+ [1] "COMID"      "GNIS_NAME"  "CUMDRAINAG" "HUC3"       "HUC4"      
+ [6] "AREAWTMAP"  "MAXELEVSMO" "SLOPE"      "COMID_"     "ELEV_DEM"  
+[11] "FlowCMS"    "AirMEANc"   "AirMWMTc"   "SampleYear" "NEAR_FID"  
+[16] "NEAR_DIST"  "NEAR_X"     "NEAR_Y"     "NEAR_ANGLE" "rid"       
+[21] "ratio"      "afvArea"    "upDist"     "locID"      "netID"     
+[26] "pid"       
+
+$CapeHorn
+ [1] "COMID"      "GNIS_NAME"  "CUMDRAINAG" "HUC3"       "HUC4"      
+ [6] "AREAWTMAP"  "MAXELEVSMO" "SLOPE"      "COMID_"     "ELEV_DEM"  
+[11] "FlowCMS"    "AirMEANc"   "AirMWMTc"   "SampleYear" "NEAR_FID"  
+[16] "NEAR_DIST"  "NEAR_X"     "NEAR_Y"     "NEAR_ANGLE" "rid"       
+[21] "ratio"      "afvArea"    "upDist"     "locID"      "netID"     
+[26] "pid"       
+
+$Knapp
+ [1] "COMID"      "GNIS_NAME"  "CUMDRAINAG" "HUC3"       "HUC4"      
+ [6] "AREAWTMAP"  "MAXELEVSMO" "SLOPE"      "COMID_"     "ELEV_DEM"  
+[11] "FlowCMS"    "AirMEANc"   "AirMWMTc"   "SampleYear" "NEAR_FID"  
+[16] "NEAR_DIST"  "NEAR_X"     "NEAR_Y"     "NEAR_ANGLE" "rid"       
+[21] "ratio"      "afvArea"    "upDist"     "locID"      "netID"     
+[26] "pid"       
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("MiddleFork04.ssn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("SimulateOnSSN")
+> ### * SimulateOnSSN
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: SimulateOnSSN
+> ### Title: Simulating Data on Spatial Stream Networks
+> ### Aliases: SimulateOnSSN
+> 
+> ### ** Examples
+> 
+> #######################################
+> ## example 1: Gaussian data, 2 networks
+> #######################################
+> 
+> library(SSN)
+> set.seed(101)
+> ## simulate a SpatialStreamNetwork object
+> raw1.ssn <- createSSN(n = c(10,10),
++     obsDesign = binomialDesign(c(50,50)), predDesign = binomialDesign(c(100,100)),
++ 	importToR = TRUE, path = paste(tempdir(),"/sim1", sep = ""))
+> plot(raw1.ssn)
+> 
+> ## create distance matrices, including between predicted and observed
+> createDistMat(raw1.ssn, "preds", o.write=TRUE, amongpred = TRUE)
+> 
+> ## look at the column names of each of the data frames
+> names(raw1.ssn)
+$Obs
+ [1] "locID"      "upDist"     "pid"        "netID"      "rid"       
+ [6] "ratio"      "shreve"     "addfunccol" "NEAR_X"     "NEAR_Y"    
+
+$preds
+ [1] "locID"      "upDist"     "pid"        "netID"      "rid"       
+ [6] "ratio"      "shreve"     "addfunccol" "NEAR_X"     "NEAR_Y"    
+
+> 
+> ## extract the observed and predicted data frames
+> raw1DFobs <- getSSNdata.frame(raw1.ssn, "Obs")
+> raw1DFpred <- getSSNdata.frame(raw1.ssn, "preds")
+> 
+> ## add a continuous covariate randomly
+> raw1DFobs[,"X1"] <- rnorm(length(raw1DFobs[,1]))
+> raw1DFpred[,"X1"] <- rnorm(length(raw1DFpred[,1]))
+> 
+> ## add a categorical covariate randomly
+> raw1DFobs[,"F1"] <- as.factor(sample.int(3,length(raw1DFobs[,1]), replace = TRUE))
+> raw1DFpred[,"F1"] <- as.factor(sample.int(3,length(raw1DFpred[,1]), replace = TRUE))
+> 
+> ## simulate Gaussian data
+> sim1.out <- SimulateOnSSN(raw1.ssn,
++ 	ObsSimDF = raw1DFobs,
++ 	PredSimDF = raw1DFpred,
++ 	PredID = "preds",
++ 	formula = ~ X1 + F1,
++ 	coefficients = c(1, .5, -1, 1),
++ 	CorModels = c("Exponential.tailup", "Exponential.taildown"),
++ 	use.nugget = TRUE,
++ 	use.anisotropy = FALSE,
++ 	CorParms = c(2, 5, 2, 5, 0.1),
++ 	addfunccol = "addfunccol")
+> 
+> ## Columns of design matrix, coefficients argument applied to these
+> sim1.out$FixedEffects
+       Xnames Coefficient
+1 (Intercept)         1.0
+2          X1         0.5
+3         F12        -1.0
+4         F13         1.0
+> 
+> ## extract the ssn.object
+> sim1.ssn <- sim1.out$ssn.object
+> 
+> ## extract the observed and predicted data frames, now with simulated values
+> sim1DFobs <- getSSNdata.frame(sim1.ssn, "Obs")
+> sim1DFobs[,"Sim_Values"]
+  [1] -1.22221603  4.63912013  2.61728318  2.08787430  2.79048827  1.64033148
+  [7]  3.49540946  1.99945533  5.72195878  1.20537606  2.99037210  1.67877369
+ [13] -0.51200212  1.35291928  3.99476133  0.70740751  1.01256425  5.38907795
+ [19]  2.76542504  3.36835225  1.51621684  1.96676706  1.81892768 -0.80520080
+ [25]  0.05693503  0.69611890  0.07005844  2.86270046  1.93813656  1.66973468
+ [31]  3.95391369  1.16850219  0.36026058 -1.10791594  0.12566414 -1.43834661
+ [37]  0.69236606  2.59446507  1.69784809  3.52564693  1.06980961 -0.30536485
+ [43] -0.09252584  1.58185562  1.97110922  2.39896065  2.70699895  2.89575511
+ [49]  2.82499131  2.98420754 -0.22938636  1.20469100  1.94339172  1.50021304
+ [55]  2.30724767  1.63846283  0.65354338 -0.36399753  2.19599708 -0.55693252
+ [61] -2.45291734  3.19421460 -2.26737820  0.99835279  0.37491736 -0.88000103
+ [67]  1.34138560  3.01037830  0.96254576  0.23918404  3.32474447  2.23326315
+ [73]  1.87103880  2.48801876  0.23901987 -1.20189523  1.45746703 -1.45504862
+ [79] -2.47756017  0.81722022  0.98496416 -2.40688920  1.09409146 -1.14140862
+ [85]  2.80984996 -0.15283142  2.76631989 -1.49042589  2.55362768 -1.07074101
+ [91]  0.53528971  2.61915527 -2.89275396  0.09577112  0.46590269  1.39517740
+ [97]  1.42268596  0.59728284 -2.95525195  4.57564676
+> sim1DFpred <- getSSNdata.frame(sim1.ssn, "preds")
+> sim1DFpred[,"Sim_Values"]
+  [1]  0.90022179 -0.41282611  4.04054785  3.29128707  3.33055418  2.84417972
+  [7] -2.78260315  2.07483716  3.17869484 -0.60004571  2.90952775 -0.64288100
+ [13] -0.03491546  4.67513772  4.76810022  3.68529578  1.13991597  1.70658724
+ [19]  1.12762684  1.41887483  0.45311675  0.88622539  5.46857129  1.32914323
+ [25]  0.64484278  3.34303984  0.15421007  2.18519934  1.36442289  4.87824147
+ [31]  1.65248755  2.43422956  0.71373275  1.94060359  1.92271221  3.53886042
+ [37]  3.16735849  1.68087713  1.91498299  0.42178747  0.57373418  2.73271917
+ [43] -0.32626370  0.77176114  1.01788214  2.41854045  6.32744102  1.37179285
+ [49] -0.70787537 -1.40514483  0.63303383 -0.48877376 -0.52145761  3.05408689
+ [55] -0.28282582  2.71714904  3.86713443  4.76398834  0.21383758  2.16347844
+ [61]  4.25314770  3.84701713  3.50128009  3.77780398  0.43647427  1.31199011
+ [67] -1.22953430  2.74217901  0.26494851  2.49376613  0.91615371  2.35073005
+ [73]  1.77085946  0.46187341  1.37541422  0.08820810  4.51074452 -0.44896499
+ [79]  1.72817983 -1.13197006  3.10548018  4.49461712  2.10152842  4.69690834
+ [85]  3.39922575  3.16603618 -1.12129236  3.75663566  1.58317379  4.26059766
+ [91]  0.91838379  1.91024851  4.09803929  2.14609306  0.98833217  2.75162381
+ [97]  1.81045836  0.87533777  0.63199948  0.18344066 -1.54025210  0.23425787
+[103]  0.80153991  0.94887259  0.06943306  2.39996953 -1.41065690  1.00739854
+[109] -3.83899461 -0.53752253 -0.28800064 -0.25210009  0.31297603  1.78450093
+[115]  5.05302283  2.48839069 -1.30079354 -0.62959345  0.62667206  4.95014964
+[121]  1.95043133  0.14525495  3.01857698  0.35436941  0.78416368  0.22548448
+[127]  2.04326741  0.06874216 -2.07524148 -0.88005153  2.30160356 -2.36412541
+[133]  2.19116972 -0.41121250  5.00110689  1.68382117  1.45023533  0.81779967
+[139] -0.84480430 -1.73482270  2.62198854 -2.61896318  3.42261897  4.26309575
+[145]  3.26525695  3.17263882  2.65645933  1.71130230  3.44862809  0.20268776
+[151]  1.15200580  0.44839442  1.36702546  0.11790512 -0.24375402  1.57702866
+[157]  1.77033570 -2.99595711  2.37607936  3.65182474  2.18867494  3.45299200
+[163]  0.26978345  4.53104868  1.87604903 -1.65134014  2.07875823  1.88976928
+[169]  1.20580964 -1.05023794  0.47757510  3.27415777  3.02438409 -0.16796632
+[175]  2.59291582  1.34009753  1.63429809 -1.09995260 -0.25282263  1.93945274
+[181]  2.84386817  3.66277324 -0.86760097  0.31237487  2.48537729  0.37393541
+[187] -1.54643205  5.08228036 -3.37771315 -0.08407991 -2.35993735  1.37779282
+[193]  1.79250206 -0.18933285 -0.37120536  1.14680133 -0.90535391 -0.76086874
+[199] -0.37739976  6.00019593
+> 
+> ## plot the simulated observed values
+> plot(sim1.ssn, "Sim_Values")
+> 
+> ## store simulated prediction values, and then create NAs in their place
+> sim1preds <- sim1DFpred[,"Sim_Values"]
+> sim1DFpred[,"Sim_Values"] <- NA
+> sim1.ssn <- putSSNdata.frame(sim1DFpred, sim1.ssn, "preds")
+> 
+> # NOT RUN, IT TAKES A MINUTE OR SO
+> ## fit a model to see how well we estimate simulation parameters
+> #fitSimGau <- glmssn(Sim_Values ~ X1 + F1, ssn.object = sim1.ssn,
+> #	 CorModels = c("Exponential.tailup", "Exponential.taildown"),
+> #	 addfunccol = "addfunccol")
+> # LOAD A STORED VERSION INSTEAD
+> data(modelFits)
+> #make sure fitSimGau has the correct path, will vary for each users installation
+> #predictions depend on distance matrix created earlier with createDistMat function
+> #path of this lsn directory was created with createSSN
+> fitSimGau$ssn.object@path <- paste(tempdir(),"/sim1", sep = "")
+> 
+> summary(fitSimGau)
+
+Call:
+glmssn(formula = Sim_Values ~ X1 + F1, ssn.object = sim1.ssn, 
+    CorModels = c("Exponential.tailup", "Exponential.taildown"), 
+    addfunccol = "addfunccol")
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.4017 -1.1714  0.4401  1.1060  4.6293 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.65419    0.45644  -1.433    0.155    
+X1           0.41216    0.06982   5.903   <2e-16 ***
+F11          0.00000         NA      NA       NA    
+F12         -1.09780    0.14820  -7.408   <2e-16 ***
+F13          1.27425    0.14291   8.917   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Covariance Parameters:
+     Covariance.Model Parameter Estimate
+   Exponential.tailup   parsill  3.22828
+   Exponential.tailup     range  4.24424
+ Exponential.taildown   parsill  0.00140
+ Exponential.taildown     range  9.09635
+               Nugget   parsill  0.08062
+
+Residual standard error: 1.81942
+Generalized R-squared: 0.7705965
+> 
+> ## make predictions
+> pred1.ssn <- predict(fitSimGau,"preds")
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+Warning in sqrt(vec[n + p + 1] - tlam %*% vec[1:n] + t(m) %*% vec[(n + 1):(n +  :
+  NaNs produced
+> par(bg = "grey60")
+> plot(pred1.ssn, color.palette = terrain.colors(10))
+Error in quantile.default(cexVals, seq(0, 1, by = 0.2)) : 
+  missing values and NaN's not allowed if 'na.rm' is FALSE
+Calls: plot ... plot.glmssn.predict -> quantile -> quantile.default
+Execution halted

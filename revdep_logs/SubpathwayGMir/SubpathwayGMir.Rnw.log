@@ -1,0 +1,52 @@
+
+> library(SubpathwayGMir)
+Loading required package: XML
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+> expMir2Tar <- GetK2riData("expMir2Tar")
+
+> expMir2Tar[1:6, ]
+      SourceDB         miRNA   Gene Species LowTHExps
+279  miRecords   cel-miR-273  die-1     cel       YES
+286 miRTarBase cel-miR-35-3p lin-23     cel       YES
+287 miRTarBase cel-miR-35-3p  gld-1     cel       YES
+303 miRTarBase cel-miR-84-5p let-60     cel       YES
+304 miRTarBase  cel-lin-4-5p lin-14     cel       YES
+305 miRTarBase  cel-lin-4-5p lin-14     cel       YES
+                                Experiments     PMID
+279                      GFP Activity Assay 15306811
+286      Luciferase reporter assay//qRT-PCR 21691303
+287      Luciferase reporter assay//qRT-PCR 21691303
+303                      GFP reporter assay 15766527
+304 Immunofluorescence//LacZ reporter assay  8252622
+305    qRT-PCR//Western blot//Northern blot 19155321
+
+> expMir2Tar <- GetK2riData("expMir2Tar")
+
+> row1 <- which(expMir2Tar[["LowTHExps"]] == "YES")
+
+> row2 <- which(expMir2Tar[["Species"]] == "hsa")
+
+> relations <- unique(expMir2Tar[intersect(row1, row2), 
++     c(2:3)])
+
+> DirectGraphList <- GetK2riData("MetabolicGEGEEMGraph")
+
+> DirectInteGraphList <- getInteGraphList(DirectGraphList, 
++     relations)
+
+  When sourcing ‘SubpathwayGMir.R’:
+Error: This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+Execution halted

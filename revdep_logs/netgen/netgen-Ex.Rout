@@ -1,0 +1,266 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "netgen"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "netgen-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('netgen')
+Loading required package: BBmisc
+Loading required package: mvtnorm
+Loading required package: lhs
+Loading required package: checkmate
+Warning: replacing previous import by ‘igraph::normalize’ when loading ‘netgen’
+Warning: replacing previous import by ‘stringr::%>%’ when loading ‘netgen’
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("autoplot.Network")
+> ### * autoplot.Network
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: autoplot.Network
+> ### Title: Autoplot function.
+> ### Aliases: autoplot.Network
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # here we have no depots ...
+> ##D x = generateClusteredNetwork(n.points = 30L, n.cluster = 2L)
+> ##D pl = autoplot(x, path = 1:3)
+> ##D # ... and here we have two depots: the path visits the depots in this case
+> ##D x = generateRandomNetwork(n.points = 30L, n.depots = 2L)
+> ##D pl = autoplot(x, path = 1:3, path.colour = "tomato")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("autoplot.Network", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dynamise")
+> ### * dynamise
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dynamise
+> ### Title: Add dynamic arrival times to nodes.
+> ### Aliases: dynamise
+> 
+> ### ** Examples
+> 
+> x = generateClusteredNetwork(n.points = 100L, n.cluster = 4L, upper = 100, n.depots = 2L)
+> x = dynamise(x, dyn.customers.ratio = 0.3, arrival.limit = 400)
+> print(x)
+Clustered 2-dimensional network.
+Name:               CLUSTERED_n_100_cl_4_d_2_lp5VPSW4nx
+Comment(s):         cl=4
+Number of nodes:    100
+Number of clusters: 4
+Number of depots:   2
+Head of coordinate matrix:
+        x1       x2 types membership
+1 59.50088 94.43613 depot          0
+2 94.24604 12.44248 depot          0
+3 89.89000  3.10000  node          1
+4 97.86000 12.13000  node          1
+5 94.13000 19.06000  node          1
+...
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dynamise", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generateClusteredNetwork")
+> ### * generateClusteredNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generateClusteredNetwork
+> ### Title: Function for generation of clustered networks
+> ### Aliases: generateClusteredNetwork
+> 
+> ### ** Examples
+> 
+> x = generateClusteredNetwork(n.points = 20L, n.cluster = 2L)
+> y = generateClusteredNetwork(n.points = 40L, n.cluster = 3L, n.depots = 2L)
+> z = generateClusteredNetwork(n.points = 200L, n.cluster = 10L, out.of.bounds.handling = "reset")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generateClusteredNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generateGridNetwork")
+> ### * generateGridNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generateGridNetwork
+> ### Title: Generates a grid network.
+> ### Aliases: generateGridNetwork
+> 
+> ### ** Examples
+> 
+> x = generateGridNetwork(n.points.per.dim = 10L, upper = 50)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generateGridNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generateRandomNetwork")
+> ### * generateRandomNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generateRandomNetwork
+> ### Title: Generates a random graph in a hypercube.
+> ### Aliases: generateRandomNetwork
+> 
+> ### ** Examples
+> 
+> x = generateRandomNetwork(n.points = 100L, n.depots = 2L, upper = 50)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generateRandomNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("morphInstances")
+> ### * morphInstances
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: morphInstances
+> ### Title: Morphing of two networks with a convex combination of the
+> ###   coordinates.
+> ### Aliases: morphInstances
+> 
+> ### ** Examples
+> 
+> x = generateRandomNetwork(n.points = 40L, n.depots = 2L)
+> y = generateClusteredNetwork(n.points = 40L, n.cluster = 2L, n.depots = 2L)
+> z = morphInstances(x, y, alpha = 0.2)
+Loading required package: lpSolve
+> ## Not run: 
+> ##D library(gridExtra)
+> ##D plot.list = list(autoplot(x), autoplot(z), autoplot(y))
+> ##D plot.list$nrow = 1
+> ##D do.call(grid.arrange, plot.list)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("morphInstances", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:lpSolve’
+
+> nameEx("rescaleNetwork")
+> ### * rescaleNetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rescaleNetwork
+> ### Title: Normalize coordinates to unit cube maintaining its geography.
+> ### Aliases: rescaleNetwork
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(gridExtra)
+> ##D x = generateClusteredNetwork(n.points = 100L, n.cluster = 4L, name = "Rescaling Demo")
+> ##D # here we "stretch" the instance x direction
+> ##D x$coordinates[, 1] = x$coordinates[, 1] * 10L
+> ##D x$upper = x$upper * 10L
+> ##D pls = list(
+> ##D     autoplot(x) + ggtitle("Original"),
+> ##D     autoplot(rescaleNetwork(x, method = "by.dimension")) + ggtitle("By dimension"),
+> ##D     autoplot(rescaleNetwork(x, method = "global")) + ggtitle("Global"),
+> ##D     autoplot(rescaleNetwork(x, method = "global2")) + ggtitle("Global2")
+> ##D )
+> ##D pls$nrow = 1L
+> ##D do.call(grid.arrange, pls)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rescaleNetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("visualizePointMatching")
+> ### * visualizePointMatching
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: visualizePointMatching
+> ### Title: Visualize point matching.
+> ### Aliases: visualizePointMatching
+> 
+> ### ** Examples
+> 
+> x = generateRandomNetwork(n.points = 20L, upper = 100)
+> y = generateClusteredNetwork(n.points = 20L, n.cluster = 2L, upper = 100)
+> ## Not run: 
+> ##D pm = getOptimalPointMatching(x$coordinates, y$coordinates)
+> ##D print(visualizePointMatching(x, y, pm, highlight.longest = 2L))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("visualizePointMatching", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.665 0.037 0.76 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

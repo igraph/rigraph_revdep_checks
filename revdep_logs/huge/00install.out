@@ -1,0 +1,32 @@
+* installing *source* package ‘huge’ ...
+** package ‘huge’ successfully unpacked and MD5 sums checked
+** libs
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c RIC.c -o RIC.o
+RIC.c:9:21: warning: unused variable 'tmp_j' [-Wunused-variable]
+    int tmp_r,tmp_i,tmp_j;
+                    ^
+RIC.c:9:15: warning: unused variable 'tmp_i' [-Wunused-variable]
+    int tmp_r,tmp_i,tmp_j;
+              ^
+2 warnings generated.
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c SFGen.c -o SFGen.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c SPMBgraph.c -o SPMBgraph.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c SPMBscr.c -o SPMBscr.o
+SPMBscr.c:10:15: warning: unused variable 'tmp_j' [-Wunused-variable]
+    int tmp_m,tmp_j,tmp_a;
+              ^
+1 warning generated.
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c hugeglasso.c -o hugeglasso.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c hugeglassoscr.c -o hugeglassoscr.o
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o huge.so RIC.o SFGen.o SPMBgraph.o SPMBscr.o hugeglasso.o hugeglassoscr.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/huge.Rcheck/huge/libs
+** R
+** data
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+* DONE (huge)

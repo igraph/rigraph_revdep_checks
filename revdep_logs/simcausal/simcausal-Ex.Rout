@@ -1,0 +1,2160 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "simcausal"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "simcausal-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('simcausal')
+simcausal
+Version: 0.2.0
+Package created on 2015-06-11
+
+Please note this package is still in its early stages of development. Check for updates and report bugs at http://github.com/osofr/simcausal.
+
+To see the vignette use vignette("simcausal_vignette", package="simcausal"). To see all available package documentation use help(package = "simcausal") and ?simcausal.
+
+To see the latest updates for this version, use news(package = "simcausal").
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("A")
+> ### * A
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: A
+> ### Title: Subsetting/Indexing Actions Defined for 'DAG' Object
+> ### Aliases: A
+> 
+> ### ** Examples
+> 
+> D <- DAG.empty()
+> D <- D + node(name="W1", distr="rbern", prob=plogis(-0.5))
+> D <- D + node(name="W2", distr="rbern", prob=plogis(-0.5 + 0.5*W1))
+> D <- D + node(name="A", distr="rbern", prob=plogis(-0.5 + 0.5*W1+ 0.5*W2))
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node A, order:3
+> # Define two actions, acting on node "A"
+> D <- D + action("A0", nodes=node("A", distr="rbern", prob=0))
+> D <- D + action("A1", nodes=node("A", distr="rbern", prob=1))
+> # Select both actions
+> A(D)
+$A0
+[1] "Action: A0"
+[1] "ActionNodes: A"
+[1] "ActionAttributes: "
+NULL
+
+$A1
+[1] "Action: A1"
+[1] "ActionNodes: A"
+[1] "ActionAttributes: "
+NULL
+
+> # Select action "A1" only
+> A(D)["A1"]
+$A1
+[1] "Action: A1"
+[1] "ActionNodes: A"
+[1] "ActionAttributes: "
+NULL
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("A", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("N")
+> ### * N
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: N
+> ### Title: Subsetting/Indexing 'DAG' Nodes
+> ### Aliases: N
+> 
+> ### ** Examples
+> 
+> D <- DAG.empty()
+> D <- D + node(name="W1", distr="rbern", prob=plogis(-0.5))
+> D <- D + node(name="W2", distr="rbern", prob=plogis(-0.5 + 0.5*W1))
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+> #Returns all nodes from DAG D
+> N(D)
+List of 2
+ $ W1:List of 4
+  ..$ name       : chr "W1"
+  ..$ distr      : chr "rbern"
+  ..$ dist_params:List of 1
+  .. ..$ prob: chr "plogis(-0.5)"
+  ..$ order      : num 1
+ $ W2:List of 4
+  ..$ name       : chr "W2"
+  ..$ distr      : chr "rbern"
+  ..$ dist_params:List of 1
+  .. ..$ prob: chr "plogis(-0.5 + 0.5 * W1)"
+  ..$ order      : num 2
+NULL
+> #Returns node W1 from DAG D
+> N(D)["W1"]
+$W1
+List of 6
+ $ name       : chr "W1"
+ $ t          : NULL
+ $ distr      : chr "rbern"
+ $ dist_params:List of 1
+  ..$ prob: chr "plogis(-0.5)"
+ $ EFU        : NULL
+ $ order      : num 1
+ - attr(*, "class")= chr "DAG.node"
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("N", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("add.action")
+> ### * add.action
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: add.action
+> ### Title: Define and Add Actions (Interventions)
+> ### Aliases: action add.action
+> 
+> ### ** Examples
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1: Showing two equivalent ways of defining an action for a simple DAG
+> #---------------------------------------------------------------------------------------
+> 
+> D <- DAG.empty()
+> D <- D + node(name="W1", distr="rbern", prob=plogis(-0.5))
+> D <- D + node(name="W2", distr="rbern", prob=plogis(-0.5 + 0.5*W1))
+> D <- D + node(name="A", distr="rbern", prob=plogis(-0.5 + 0.5*W1+ 0.5*W2))
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node A, order:3
+> 
+> # Syntax '+ action': define two actions, intervening on node "A", imputing order
+> D <- D + action("A0", nodes=node("A", distr="rbern", prob=0))
+> D <- D + action("A1", nodes=node("A", distr="rbern", prob=1))
+> 
+> # Equivalent syntax 'add.action': define two actions, intervening on node "A"
+> D <- add.action(D, "A0", nodes=node("A", distr="rbern", prob=0))
+> D <- add.action(D, "A1", nodes=node("A", distr="rbern", prob=1))
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 2: Adding named attributes that define (index) the action.
+> # Define intervention on A that is conditional on W1 crossing some threshold theta
+> #---------------------------------------------------------------------------------------
+> 
+> # Redefining node W1 as uniform [0,1]
+> D <- DAG.empty()
+> D <- D + node(name="W1", distr="runif", min=0, max=1)
+> D <- D + node(name="W2", distr="rbern", prob=plogis(-0.5 + 0.5*W1))
+> D <- D + node(name="A", distr="rbern", prob=plogis(-0.5 + 0.5*W1+ 0.5*W2))
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node A, order:3
+> 
+> # Define a node that is indexed by unknown variable theta
+> actN<-node("A",distr="rbern",prob=ifelse(W1 >= theta,1,0))
+> # Define 3 actions for theta=0.1, 0.5, 0.9
+> D <- D + action("A1th0.1", nodes=actN, theta=0.1)
+> D <- D + action("A1th0.5", nodes=actN, theta=0.5)
+> D <- D + action("A1th0.9", nodes=actN, theta=0.9)
+> 
+> # Simulate 50 observations per each action above
+> simfull(A(D), n=50)
+$A1th0.1
+   ID theta         W1 W2 A
+1   1   0.1 0.26750821  1 1
+2   2   0.1 0.21864528  1 1
+3   3   0.1 0.51679684  0 1
+4   4   0.1 0.26895059  1 1
+5   5   0.1 0.18116833  0 1
+6   6   0.1 0.51857614  0 1
+7   7   0.1 0.56278294  0 1
+8   8   0.1 0.12915685  0 1
+9   9   0.1 0.25636760  0 1
+10 10   0.1 0.71793528  1 1
+11 11   0.1 0.96140994  1 1
+12 12   0.1 0.10014085  0 1
+13 13   0.1 0.76322269  0 1
+14 14   0.1 0.94796635  1 1
+15 15   0.1 0.81863469  1 1
+16 16   0.1 0.30829233  0 1
+17 17   0.1 0.64957946  0 1
+18 18   0.1 0.95335545  1 1
+19 19   0.1 0.95373265  1 1
+20 20   0.1 0.33997920  0 1
+21 21   0.1 0.26247411  0 1
+22 22   0.1 0.16545393  0 1
+23 23   0.1 0.32216806  0 1
+24 24   0.1 0.51012521  0 1
+25 25   0.1 0.92396847  0 1
+26 26   0.1 0.51095970  0 1
+27 27   0.1 0.25762126  0 1
+28 28   0.1 0.04646089  0 0
+29 29   0.1 0.41785626  0 1
+30 30   0.1 0.85400150  1 1
+31 31   0.1 0.34723068  0 1
+32 32   0.1 0.13144232  0 1
+33 33   0.1 0.37448686  1 1
+34 34   0.1 0.63142023  0 1
+35 35   0.1 0.39007893  0 1
+36 36   0.1 0.68962785  0 1
+37 37   0.1 0.68941341  0 1
+38 38   0.1 0.55490062  0 1
+39 39   0.1 0.42962441  0 1
+40 40   0.1 0.45272006  0 1
+41 41   0.1 0.30644326  0 1
+42 42   0.1 0.57835394  0 1
+43 43   0.1 0.91037030  1 1
+44 44   0.1 0.14260408  0 1
+45 45   0.1 0.41504763  0 1
+46 46   0.1 0.21092575  1 1
+47 47   0.1 0.42875037  0 1
+48 48   0.1 0.13268998  0 1
+49 49   0.1 0.46009645  0 1
+50 50   0.1 0.94295706  1 1
+
+$A1th0.5
+   ID theta         W1 W2 A
+1   1   0.5 0.67371223  0 1
+2   2   0.5 0.09485786  0 0
+3   3   0.5 0.49259612  1 0
+4   4   0.5 0.46155184  0 0
+5   5   0.5 0.37521653  1 0
+6   6   0.5 0.99109922  0 1
+7   7   0.5 0.17635071  1 0
+8   8   0.5 0.81343521  0 1
+9   9   0.5 0.06844664  1 0
+10 10   0.5 0.40044975  0 0
+11 11   0.5 0.14114433  0 0
+12 12   0.5 0.19330986  0 0
+13 13   0.5 0.84135172  1 1
+14 14   0.5 0.71991399  0 1
+15 15   0.5 0.26721208  0 0
+16 16   0.5 0.49500164  1 0
+17 17   0.5 0.08311390  0 0
+18 18   0.5 0.35388424  1 0
+19 19   0.5 0.96920881  1 1
+20 20   0.5 0.62471419  0 1
+21 21   0.5 0.66461825  0 1
+22 22   0.5 0.31248966  0 0
+23 23   0.5 0.40568961  1 0
+24 24   0.5 0.99607737  0 1
+25 25   0.5 0.85508236  0 1
+26 26   0.5 0.95354840  0 1
+27 27   0.5 0.81230509  0 1
+28 28   0.5 0.78218212  1 1
+29 29   0.5 0.26787813  0 0
+30 30   0.5 0.76215153  0 1
+31 31   0.5 0.98631159  0 1
+32 32   0.5 0.29360555  0 0
+33 33   0.5 0.39935111  1 0
+34 34   0.5 0.81213152  1 1
+35 35   0.5 0.07715167  0 0
+36 36   0.5 0.36369681  0 0
+37 37   0.5 0.44259247  1 0
+38 38   0.5 0.15671413  1 0
+39 39   0.5 0.58220527  0 1
+40 40   0.5 0.97016218  1 1
+41 41   0.5 0.98949983  0 1
+42 42   0.5 0.17645204  0 0
+43 43   0.5 0.54213042  1 1
+44 44   0.5 0.38430389  0 0
+45 45   0.5 0.67616405  0 1
+46 46   0.5 0.26929378  0 0
+47 47   0.5 0.46925094  1 0
+48 48   0.5 0.17180008  0 0
+49 49   0.5 0.36918946  0 0
+50 50   0.5 0.72540527  0 1
+
+$A1th0.9
+   ID theta         W1 W2 A
+1   1   0.9 0.65887761  1 0
+2   2   0.9 0.18506996  0 0
+3   3   0.9 0.95437814  0 1
+4   4   0.9 0.89784849  0 0
+5   5   0.9 0.94369705  0 1
+6   6   0.9 0.72369075  1 0
+7   7   0.9 0.37035707  1 0
+8   8   0.9 0.78101754  1 0
+9   9   0.9 0.01114951  0 0
+10 10   0.9 0.94030871  0 1
+11 11   0.9 0.99374923  0 1
+12 12   0.9 0.35740575  0 0
+13 13   0.9 0.74763506  0 0
+14 14   0.9 0.79290902  0 0
+15 15   0.9 0.70585901  0 0
+16 16   0.9 0.47582504  1 0
+17 17   0.9 0.49465453  1 0
+18 18   0.9 0.30805245  0 0
+19 19   0.9 0.69501225  0 0
+20 20   0.9 0.82279331  1 0
+21 21   0.9 0.43471764  0 0
+22 22   0.9 0.51473265  1 0
+23 23   0.9 0.66301097  1 0
+24 24   0.9 0.14316659  0 0
+25 25   0.9 0.34448739  0 0
+26 26   0.9 0.40576358  0 0
+27 27   0.9 0.08531101  1 0
+28 28   0.9 0.93257193  0 1
+29 29   0.9 0.83838407  0 0
+30 30   0.9 0.87943330  1 0
+31 31   0.9 0.93571247  1 1
+32 32   0.9 0.07246063  0 0
+33 33   0.9 0.37875944  1 0
+34 34   0.9 0.53786492  1 0
+35 35   0.9 0.10505014  0 0
+36 36   0.9 0.80168771  0 0
+37 37   0.9 0.73964175  0 0
+38 38   0.9 0.05214901  0 0
+39 39   0.9 0.48216957  1 0
+40 40   0.9 0.92051784  0 1
+41 41   0.9 0.04152843  0 0
+42 42   0.9 0.29399180  1 0
+43 43   0.9 0.50085049  0 0
+44 44   0.9 0.60974894  0 0
+45 45   0.9 0.26424905  0 0
+46 46   0.9 0.42309861  0 0
+47 47   0.9 0.36656362  0 0
+48 48   0.9 0.94250532  1 1
+49 49   0.9 0.12372357  1 0
+50 50   0.9 0.07003268  0 0
+
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 3: Time-varying action attributes for longitudinal DAG
+> #---------------------------------------------------------------------------------------
+> # Define longitudinal data structure over 6 time-points t=(0:5) with survival outcome "Y"
+> t_end <- 5
+> D <- DAG.empty()
+> D <- D + node("L2", t=0, distr="rbern", prob=0.05)
+> D <- D + node("L1", t=0, distr="rbern", prob=ifelse(L2[0]==1,0.5,0.1))
+> D <- D + node("A1", t=0, distr="rbern", prob=ifelse(L1[0]==1, 0.5, 0.1))
+> D <- D + node("Y",  t=0, distr="rbern", 
++                 prob=plogis(-6.5 + L1[0] + 4*L2[0] + 0.05*I(L2[0]==0)), EFU=TRUE)
+> D <- D + node("L2", t=1:t_end, distr="rbern", prob=ifelse(A1[t-1]==1, 0.1, 0.9))
+> D <- D + node("A1", t=1:t_end, distr="rbern", 
++               prob=ifelse(A1[t-1]==1, 1, ifelse(L1[0]==1 & L2[0]==0, 0.3, 0.5)))
+> D <- D + node("Y",  t=1:t_end, distr="rbern", prob=plogis(-6.5+L1[0]+4*L2[t]), EFU=TRUE)
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+node L1_0, order:2
+node A1_0, order:3
+node Y_0, order:4
+node L2_1, order:5
+node A1_1, order:6
+node Y_1, order:7
+node L2_2, order:8
+node A1_2, order:9
+node Y_2, order:10
+node L2_3, order:11
+node A1_3, order:12
+node Y_3, order:13
+node L2_4, order:14
+node A1_4, order:15
+node Y_4, order:16
+node L2_5, order:17
+node A1_5, order:18
+node Y_5, order:19
+> 
+> #---------------------------------------------------------------------------------------
+> # Dynamic actions indexed by constant value of parameter theta={0,1})
+> #---------------------------------------------------------------------------------------
+> # Define time-varying node A1: sets A1 to 1 if L2 at t is >= theta
+> actN_A1 <- node("A1",t=0:t_end, distr="rbern", prob=ifelse(L2[t] >= theta,1,0))
+> 
+> # Define two actions, indexed by fixed values of theta={0,1}
+> D_act <- D + action("A1_th0", nodes=actN_A1, theta=0)
+> D_act <- D_act + action("A1_th1", nodes=actN_A1, theta=1)
+> 
+> # Simulate 50 observations for per each action above
+> simfull(A(D_act), n=50)
+$A1_th0
+   ID theta L2_0 L1_0 A1_0 Y_0 L2_1 A1_1 Y_1 L2_2 A1_2 Y_2 L2_3 A1_3 Y_3 L2_4
+1   1     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+2   2     0    0    0    1   0    0    1   0    1    1   0    0    1   0    0
+3   3     0    0    0    1   0    0    1   0    0    1   0    1    1   0    0
+4   4     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+5   5     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+6   6     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+7   7     0    0    0    1   0    1    1   0    0    1   0    0    1   0    0
+8   8     0    0    0    1   0    0    1   0    0    1   0    1    1   1   NA
+9   9     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+10 10     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+11 11     0    0    0    1   0    1    1   0    0    1   0    0    1   0    0
+12 12     0    0    0    1   0    0    1   0    1    1   0    0    1   0    0
+13 13     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+14 14     0    0    1    1   0    1    1   0    1    1   1   NA   NA  NA   NA
+15 15     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+16 16     0    0    1    1   0    0    1   0    0    1   0    0    1   0    0
+17 17     0    1    1    1   1   NA   NA  NA   NA   NA  NA   NA   NA  NA   NA
+18 18     0    1    0    1   0    0    1   0    0    1   0    0    1   0    0
+19 19     0    0    1    1   0    0    1   0    0    1   0    1    1   0    0
+20 20     0    0    0    1   0    0    1   0    0    1   0    0    1   0    1
+21 21     0    0    0    1   0    1    1   0    0    1   0    0    1   0    0
+22 22     0    0    0    1   0    0    1   0    0    1   0    0    1   0    1
+23 23     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+24 24     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+25 25     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+26 26     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+27 27     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+28 28     0    0    1    1   0    0    1   0    0    1   1   NA   NA  NA   NA
+29 29     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+30 30     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+31 31     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+32 32     0    0    0    1   0    0    1   0    0    1   0    1    1   0    0
+33 33     0    0    0    1   0    0    1   0    1    1   0    0    1   0    0
+34 34     0    0    1    1   0    0    1   0    0    1   0    0    1   0    0
+35 35     0    0    0    1   0    1    1   0    0    1   0    0    1   0    0
+36 36     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+37 37     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+38 38     0    0    0    1   0    0    1   0    0    1   0    0    1   0    1
+39 39     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+40 40     0    0    0    1   0    0    1   0    1    1   0    0    1   0    0
+41 41     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+42 42     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+43 43     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+44 44     0    0    0    1   0    0    1   0    1    1   1   NA   NA  NA   NA
+45 45     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+46 46     0    0    0    1   0    1    1   0    0    1   0    0    1   0    0
+47 47     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+48 48     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+49 49     0    0    1    1   0    0    1   0    0    1   0    0    1   0    0
+50 50     0    0    0    1   0    0    1   0    0    1   0    0    1   0    0
+   A1_4 Y_4 L2_5 A1_5 Y_5
+1     1   0    0    1   0
+2     1   0    1    1   0
+3     1   0    0    1   0
+4     1   0    0    1   0
+5     1   0    1    1   0
+6     1   0    0    1   0
+7     1   0    0    1   0
+8    NA  NA   NA   NA  NA
+9     1   0    0    1   0
+10    1   0    0    1   0
+11    1   0    0    1   0
+12    1   0    0    1   0
+13    1   0    1    1   0
+14   NA  NA   NA   NA  NA
+15    1   0    0    1   0
+16    1   0    0    1   0
+17   NA  NA   NA   NA  NA
+18    1   0    0    1   0
+19    1   0    0    1   0
+20    1   0    0    1   0
+21    1   0    0    1   0
+22    1   0    0    1   0
+23    1   0    0    1   0
+24    1   0    0    1   0
+25    1   0    0    1   0
+26    1   0    0    1   0
+27    1   0    0    1   0
+28   NA  NA   NA   NA  NA
+29    1   0    0    1   0
+30    1   0    0    1   0
+31    1   0    0    1   0
+32    1   0    0    1   0
+33    1   0    0    1   0
+34    1   0    0    1   0
+35    1   0    0    1   0
+36    1   0    0    1   0
+37    1   0    0    1   0
+38    1   0    0    1   0
+39    1   0    0    1   0
+40    1   0    0    1   0
+41    1   0    0    1   0
+42    1   0    0    1   0
+43    1   0    0    1   0
+44   NA  NA   NA   NA  NA
+45    1   0    0    1   0
+46    1   0    0    1   0
+47    1   0    0    1   0
+48    1   0    0    1   0
+49    1   0    0    1   0
+50    1   0    0    1   0
+
+$A1_th1
+   ID theta L2_0 L1_0 A1_0 Y_0 L2_1 A1_1 Y_1 L2_2 A1_2 Y_2 L2_3 A1_3 Y_3 L2_4
+1   1     1    1    1    1   0    0    0   0    1    1   0    1    1   0    0
+2   2     1    0    0    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA
+3   3     1    0    1    0   0    1    1   0    0    0   0    1    1   0    0
+4   4     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+5   5     1    0    0    0   0    1    1   0    1    1   1   NA   NA  NA   NA
+6   6     1    0    0    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA
+7   7     1    1    1    1   0    0    0   0    1    1   0    0    0   0    1
+8   8     1    1    0    1   1   NA   NA  NA   NA   NA  NA   NA   NA  NA   NA
+9   9     1    0    1    0   0    0    0   0    1    1   0    0    0   0    1
+10 10     1    0    1    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA
+11 11     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+12 12     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+13 13     1    0    0    0   0    0    0   0    1    1   0    0    0   0    1
+14 14     1    0    0    0   0    1    1   0    0    0   0    1    1   0    1
+15 15     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+16 16     1    0    0    0   0    0    0   0    1    1   0    0    0   0    1
+17 17     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+18 18     1    0    0    0   0    0    0   0    0    0   0    1    1   0    0
+19 19     1    0    0    0   0    1    1   0    0    0   0    0    0   0    1
+20 20     1    0    0    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA
+21 21     1    0    0    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA
+22 22     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+23 23     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+24 24     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+25 25     1    0    0    0   0    1    1   0    1    1   0    0    0   0    0
+26 26     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+27 27     1    0    0    0   0    1    1   0    0    0   0    1    1   1   NA
+28 28     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+29 29     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+30 30     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+31 31     1    0    1    0   0    1    1   0    0    0   0    1    1   1   NA
+32 32     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+33 33     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+34 34     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+35 35     1    1    0    1   0    0    0   0    1    1   1   NA   NA  NA   NA
+36 36     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+37 37     1    0    0    0   0    1    1   0    0    0   0    1    1   1   NA
+38 38     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+39 39     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+40 40     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+41 41     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+42 42     1    0    0    0   0    1    1   0    0    0   0    1    1   0    1
+43 43     1    0    0    0   0    1    1   0    1    1   0    0    0   0    1
+44 44     1    0    0    0   0    0    0   0    1    1   0    1    1   0    1
+45 45     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+46 46     1    0    0    0   0    1    1   0    0    0   0    0    0   0    1
+47 47     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+48 48     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+49 49     1    0    0    0   0    1    1   0    0    0   0    1    1   0    0
+50 50     1    0    0    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA
+   A1_4 Y_4 L2_5 A1_5 Y_5
+1     0   0    1    1   0
+2    NA  NA   NA   NA  NA
+3     0   0    1    1   0
+4     0   0    1    1   0
+5    NA  NA   NA   NA  NA
+6    NA  NA   NA   NA  NA
+7     1   0    0    0   0
+8    NA  NA   NA   NA  NA
+9     1   0    0    0   0
+10   NA  NA   NA   NA  NA
+11    0   0    1    1   0
+12    0   0    1    1   0
+13    1   0    0    0   0
+14    1   0    0    0   0
+15    0   0    1    1   0
+16    1   0    0    0   0
+17    0   0    1    1   0
+18    0   0    1    1   0
+19    1   0    0    0   0
+20   NA  NA   NA   NA  NA
+21   NA  NA   NA   NA  NA
+22    0   0    1    1   0
+23    0   0    1    1   0
+24    0   0    1    1   0
+25    0   0    1    1   0
+26    0   0    1    1   0
+27   NA  NA   NA   NA  NA
+28    0   0    1    1   0
+29    0   0    1    1   0
+30    0   0    1    1   0
+31   NA  NA   NA   NA  NA
+32    0   0    1    1   0
+33    0   0    0    0   0
+34    0   0    1    1   0
+35   NA  NA   NA   NA  NA
+36    0   0    1    1   0
+37   NA  NA   NA   NA  NA
+38    0   0    1    1   0
+39    0   0    1    1   0
+40    0   0    1    1   0
+41    0   0    1    1   0
+42    1   0    0    0   0
+43    1   0    0    0   0
+44    1   0    0    0   0
+45    0   0    1    1   0
+46    1   0    1    1   0
+47    0   0    1    1   1
+48    0   0    1    1   0
+49    0   0    1    1   0
+50   NA  NA   NA   NA  NA
+
+> 
+> #---------------------------------------------------------------------------------------
+> # Dynamic actions indexed by time-varying parameter theta[t]
+> #---------------------------------------------------------------------------------------
+> # This defines an action node with threshold theta varying in time (note syntax theta[t])
+> actN_A1 <- node("A1",t=0:t_end, distr="rbern", prob=ifelse(L2[t] >= theta[t],1,0))
+> 
+> # Now define 3 actions that are indexed by various values of theta over time
+> D_act <- D + action("A1_th_const0", nodes=actN_A1, theta=rep(0,(t_end+1)))
+> D_act <- D_act + action("A1_th_var1", nodes=actN_A1, theta=c(0,0,0,1,1,1))
+> D_act <- D_act + action("A1_th_var2", nodes=actN_A1, theta=c(0,1,1,1,1,1))
+> 
+> # Simulate 50 observations for per each action above
+> simfull(A(D_act), n=50)
+$A1_th_const0
+   ID theta_0 theta_1 theta_2 theta_3 theta_4 theta_5 L2_0 L1_0 A1_0 Y_0 L2_1
+1   1       0       0       0       0       0       0    0    0    1   0    0
+2   2       0       0       0       0       0       0    0    0    1   0    0
+3   3       0       0       0       0       0       0    0    0    1   0    0
+4   4       0       0       0       0       0       0    0    0    1   0    0
+5   5       0       0       0       0       0       0    0    1    1   0    0
+6   6       0       0       0       0       0       0    0    0    1   0    0
+7   7       0       0       0       0       0       0    0    0    1   0    0
+8   8       0       0       0       0       0       0    0    0    1   0    0
+9   9       0       0       0       0       0       0    0    1    1   0    0
+10 10       0       0       0       0       0       0    0    0    1   0    0
+11 11       0       0       0       0       0       0    0    0    1   0    0
+12 12       0       0       0       0       0       0    0    0    1   0    0
+13 13       0       0       0       0       0       0    0    0    1   0    0
+14 14       0       0       0       0       0       0    0    0    1   0    1
+15 15       0       0       0       0       0       0    0    0    1   0    0
+16 16       0       0       0       0       0       0    0    0    1   0    0
+17 17       0       0       0       0       0       0    0    0    1   0    0
+18 18       0       0       0       0       0       0    0    0    1   0    0
+19 19       0       0       0       0       0       0    0    0    1   0    0
+20 20       0       0       0       0       0       0    0    0    1   0    0
+21 21       0       0       0       0       0       0    0    1    1   0    0
+22 22       0       0       0       0       0       0    0    0    1   0    0
+23 23       0       0       0       0       0       0    0    0    1   0    1
+24 24       0       0       0       0       0       0    1    1    1   0    0
+25 25       0       0       0       0       0       0    0    0    1   0    0
+26 26       0       0       0       0       0       0    0    0    1   0    0
+27 27       0       0       0       0       0       0    0    0    1   0    0
+28 28       0       0       0       0       0       0    0    0    1   0    0
+29 29       0       0       0       0       0       0    0    0    1   0    0
+30 30       0       0       0       0       0       0    0    1    1   1   NA
+31 31       0       0       0       0       0       0    0    0    1   0    0
+32 32       0       0       0       0       0       0    0    0    1   0    0
+33 33       0       0       0       0       0       0    0    0    1   0    0
+34 34       0       0       0       0       0       0    0    0    1   0    0
+35 35       0       0       0       0       0       0    0    0    1   0    0
+36 36       0       0       0       0       0       0    0    1    1   0    0
+37 37       0       0       0       0       0       0    1    1    1   0    0
+38 38       0       0       0       0       0       0    0    0    1   0    1
+39 39       0       0       0       0       0       0    0    0    1   0    0
+40 40       0       0       0       0       0       0    0    1    1   0    0
+41 41       0       0       0       0       0       0    0    0    1   0    0
+42 42       0       0       0       0       0       0    0    0    1   0    0
+43 43       0       0       0       0       0       0    0    0    1   0    0
+44 44       0       0       0       0       0       0    0    0    1   0    0
+45 45       0       0       0       0       0       0    0    0    1   0    0
+46 46       0       0       0       0       0       0    1    1    1   0    0
+47 47       0       0       0       0       0       0    0    0    1   0    0
+48 48       0       0       0       0       0       0    0    0    1   0    0
+49 49       0       0       0       0       0       0    0    0    1   0    0
+50 50       0       0       0       0       0       0    0    0    1   0    0
+   A1_1 Y_1 L2_2 A1_2 Y_2 L2_3 A1_3 Y_3 L2_4 A1_4 Y_4 L2_5 A1_5 Y_5
+1     1   0    0    1   0    1    1   0    0    1   0    0    1   0
+2     1   0    0    1   0    0    1   0    0    1   0    0    1   0
+3     1   0    0    1   0    0    1   0    0    1   0    0    1   0
+4     1   0    0    1   0    0    1   0    0    1   0    0    1   0
+5     1   0    0    1   0    0    1   0    0    1   0    0    1   0
+6     1   0    0    1   0    0    1   0    0    1   0    0    1   0
+7     1   0    0    1   0    0    1   0    0    1   0    1    1   0
+8     1   0    0    1   0    0    1   0    0    1   0    0    1   0
+9     1   0    0    1   0    1    1   1   NA   NA  NA   NA   NA  NA
+10    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+11    1   0    1    1   0    0    1   0    0    1   0    0    1   0
+12    1   0    0    1   0    0    1   0    0    1   0    1    1   0
+13    1   0    0    1   0    0    1   0    1    1   0    0    1   0
+14    1   0    0    1   0    0    1   0    1    1   0    0    1   0
+15    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+16    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+17    1   0    0    1   0    0    1   0    1    1   0    1    1   0
+18    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+19    1   0    1    1   0    0    1   0    0    1   0    0    1   0
+20    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+21    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+22    1   0    1    1   0    0    1   0    1    1   0    1    1   0
+23    1   0    0    1   0    1    1   0    0    1   0    0    1   0
+24    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+25    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+26    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+27    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+28    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+29    1   0    0    1   0    0    1   0    1    1   0    0    1   0
+30   NA  NA   NA   NA  NA   NA   NA  NA   NA   NA  NA   NA   NA  NA
+31    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+32    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+33    1   0    0    1   0    1    1   0    0    1   0    0    1   0
+34    1   0    0    1   0    1    1   0    0    1   0    0    1   0
+35    1   0    0    1   0    1    1   0    0    1   0    0    1   0
+36    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+37    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+38    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+39    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+40    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+41    1   0    0    1   0    1    1   0    1    1   0    0    1   0
+42    1   0    0    1   0    0    1   0    0    1   0    1    1   0
+43    1   0    0    1   0    1    1   0    0    1   0    0    1   0
+44    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+45    1   0    0    1   0    1    1   0    0    1   0    0    1   0
+46    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+47    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+48    1   0    0    1   0    1    1   0    0    1   0    1    1   0
+49    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+50    1   0    0    1   0    0    1   0    0    1   0    0    1   0
+
+$A1_th_var1
+   ID theta_0 theta_1 theta_2 theta_3 theta_4 theta_5 L2_0 L1_0 A1_0 Y_0 L2_1
+1   1       0       0       0       1       1       1    0    0    1   0    0
+2   2       0       0       0       1       1       1    0    0    1   0    0
+3   3       0       0       0       1       1       1    0    1    1   0    0
+4   4       0       0       0       1       1       1    0    0    1   0    0
+5   5       0       0       0       1       1       1    0    0    1   0    0
+6   6       0       0       0       1       1       1    0    0    1   0    0
+7   7       0       0       0       1       1       1    0    0    1   0    0
+8   8       0       0       0       1       1       1    0    1    1   0    0
+9   9       0       0       0       1       1       1    0    0    1   0    0
+10 10       0       0       0       1       1       1    0    0    1   0    0
+11 11       0       0       0       1       1       1    0    0    1   0    0
+12 12       0       0       0       1       1       1    0    0    1   0    0
+13 13       0       0       0       1       1       1    0    0    1   0    0
+14 14       0       0       0       1       1       1    0    0    1   0    0
+15 15       0       0       0       1       1       1    1    0    1   0    0
+16 16       0       0       0       1       1       1    0    0    1   0    0
+17 17       0       0       0       1       1       1    0    0    1   0    0
+18 18       0       0       0       1       1       1    1    1    1   0    0
+19 19       0       0       0       1       1       1    0    0    1   0    0
+20 20       0       0       0       1       1       1    0    0    1   0    1
+21 21       0       0       0       1       1       1    0    0    1   0    0
+22 22       0       0       0       1       1       1    0    0    1   0    0
+23 23       0       0       0       1       1       1    0    0    1   0    1
+24 24       0       0       0       1       1       1    0    0    1   0    0
+25 25       0       0       0       1       1       1    0    0    1   0    1
+26 26       0       0       0       1       1       1    0    0    1   0    0
+27 27       0       0       0       1       1       1    0    0    1   0    0
+28 28       0       0       0       1       1       1    0    0    1   0    0
+29 29       0       0       0       1       1       1    0    0    1   0    0
+30 30       0       0       0       1       1       1    0    0    1   0    0
+31 31       0       0       0       1       1       1    0    0    1   0    0
+32 32       0       0       0       1       1       1    0    0    1   0    0
+33 33       0       0       0       1       1       1    1    0    1   0    0
+34 34       0       0       0       1       1       1    0    0    1   0    0
+35 35       0       0       0       1       1       1    0    0    1   0    0
+36 36       0       0       0       1       1       1    0    0    1   0    0
+37 37       0       0       0       1       1       1    0    0    1   0    0
+38 38       0       0       0       1       1       1    1    0    1   0    0
+39 39       0       0       0       1       1       1    0    0    1   0    0
+40 40       0       0       0       1       1       1    0    0    1   0    0
+41 41       0       0       0       1       1       1    0    0    1   0    0
+42 42       0       0       0       1       1       1    0    0    1   0    0
+43 43       0       0       0       1       1       1    0    0    1   0    0
+44 44       0       0       0       1       1       1    0    0    1   0    0
+45 45       0       0       0       1       1       1    0    0    1   0    1
+46 46       0       0       0       1       1       1    0    0    1   0    0
+47 47       0       0       0       1       1       1    0    0    1   0    0
+48 48       0       0       0       1       1       1    0    1    1   0    0
+49 49       0       0       0       1       1       1    0    0    1   0    0
+50 50       0       0       0       1       1       1    0    0    1   0    0
+   A1_1 Y_1 L2_2 A1_2 Y_2 L2_3 A1_3 Y_3 L2_4 A1_4 Y_4 L2_5 A1_5 Y_5
+1     1   0    0    1   0    0    0   0    1    1   0    0    0   0
+2     1   0    0    1   0    0    0   0    1    1   0    0    0   0
+3     1   0    1    1   0    1    1   0    0    0   0    1    1   0
+4     1   0    0    1   0    0    0   0    1    1   0    1    1   0
+5     1   0    0    1   0    0    0   0    1    1   0    0    0   0
+6     1   0    0    1   0    0    0   0    1    1   0    0    0   0
+7     1   0    0    1   0    0    0   0    1    1   0    0    0   0
+8     1   0    0    1   0    1    1   0    0    0   0    1    1   0
+9     1   0    0    1   0    1    1   0    0    0   0    1    1   0
+10    1   0    0    1   0    0    0   0    1    1   0    1    1   0
+11    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+12    1   0    0    1   0    0    0   0    1    1   1   NA   NA  NA
+13    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+14    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+15    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+16    1   0    0    1   0    1    1   0    0    0   0    0    0   0
+17    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+18    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+19    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+20    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+21    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+22    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+23    1   0    0    1   0    0    0   0    1    1   0    1    1   0
+24    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+25    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+26    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+27    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+28    1   0    0    1   0    1    1   0    0    0   0    1    1   0
+29    1   0    0    1   0    0    0   0    1    1   0    1    1   0
+30    1   0    0    1   0    0    0   0    1    1   0    1    1   0
+31    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+32    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+33    1   0    0    1   0    0    0   0    1    1   1   NA   NA  NA
+34    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+35    1   0    0    1   0    1    1   0    0    0   0    1    1   0
+36    1   0    0    1   0    1    1   0    0    0   0    1    1   0
+37    1   0    0    1   0    0    0   0    1    1   1   NA   NA  NA
+38    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+39    1   0    0    1   0    0    0   0    1    1   0    1    1   0
+40    1   0    0    1   0    0    0   0    1    1   0    1    1   0
+41    1   0    0    1   0    0    0   0    1    1   1   NA   NA  NA
+42    1   0    1    1   0    0    0   0    0    0   0    1    1   0
+43    1   0    0    1   0    1    1   0    0    0   0    0    0   0
+44    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+45    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+46    1   0    0    1   0    0    0   0    0    0   0    1    1   0
+47    1   0    0    1   0    0    0   0    0    0   0    0    0   0
+48    1   0    0    1   0    0    0   0    1    1   1   NA   NA  NA
+49    1   0    0    1   0    0    0   0    1    1   0    0    0   0
+50    1   0    0    1   0    0    0   0    0    0   0    1    1   0
+
+$A1_th_var2
+   ID theta_0 theta_1 theta_2 theta_3 theta_4 theta_5 L2_0 L1_0 A1_0 Y_0 L2_1
+1   1       0       1       1       1       1       1    0    0    1   0    0
+2   2       0       1       1       1       1       1    0    0    1   0    0
+3   3       0       1       1       1       1       1    0    0    1   0    0
+4   4       0       1       1       1       1       1    0    0    1   0    0
+5   5       0       1       1       1       1       1    0    1    1   1   NA
+6   6       0       1       1       1       1       1    0    0    1   0    0
+7   7       0       1       1       1       1       1    0    0    1   0    0
+8   8       0       1       1       1       1       1    0    0    1   0    0
+9   9       0       1       1       1       1       1    0    0    1   0    0
+10 10       0       1       1       1       1       1    0    0    1   0    0
+11 11       0       1       1       1       1       1    0    0    1   0    0
+12 12       0       1       1       1       1       1    0    0    1   0    0
+13 13       0       1       1       1       1       1    0    1    1   0    0
+14 14       0       1       1       1       1       1    0    0    1   0    0
+15 15       0       1       1       1       1       1    0    1    1   0    0
+16 16       0       1       1       1       1       1    0    0    1   0    0
+17 17       0       1       1       1       1       1    0    0    1   0    0
+18 18       0       1       1       1       1       1    0    0    1   0    0
+19 19       0       1       1       1       1       1    0    0    1   0    0
+20 20       0       1       1       1       1       1    0    0    1   0    0
+21 21       0       1       1       1       1       1    0    0    1   0    0
+22 22       0       1       1       1       1       1    0    0    1   0    0
+23 23       0       1       1       1       1       1    0    1    1   0    0
+24 24       0       1       1       1       1       1    1    1    1   0    0
+25 25       0       1       1       1       1       1    0    0    1   0    0
+26 26       0       1       1       1       1       1    0    0    1   0    0
+27 27       0       1       1       1       1       1    1    1    1   0    0
+28 28       0       1       1       1       1       1    0    0    1   0    0
+29 29       0       1       1       1       1       1    0    0    1   0    1
+30 30       0       1       1       1       1       1    1    1    1   1   NA
+31 31       0       1       1       1       1       1    0    0    1   0    0
+32 32       0       1       1       1       1       1    0    0    1   0    0
+33 33       0       1       1       1       1       1    0    0    1   0    0
+34 34       0       1       1       1       1       1    0    0    1   0    1
+35 35       0       1       1       1       1       1    0    1    1   0    0
+36 36       0       1       1       1       1       1    0    0    1   0    1
+37 37       0       1       1       1       1       1    0    0    1   0    0
+38 38       0       1       1       1       1       1    0    0    1   0    0
+39 39       0       1       1       1       1       1    0    0    1   0    0
+40 40       0       1       1       1       1       1    0    0    1   0    0
+41 41       0       1       1       1       1       1    0    0    1   0    0
+42 42       0       1       1       1       1       1    0    0    1   0    0
+43 43       0       1       1       1       1       1    0    0    1   0    0
+44 44       0       1       1       1       1       1    0    0    1   0    0
+45 45       0       1       1       1       1       1    0    1    1   0    0
+46 46       0       1       1       1       1       1    0    0    1   0    0
+47 47       0       1       1       1       1       1    0    0    1   0    0
+48 48       0       1       1       1       1       1    0    0    1   0    0
+49 49       0       1       1       1       1       1    0    0    1   0    1
+50 50       0       1       1       1       1       1    0    0    1   0    0
+   A1_1 Y_1 L2_2 A1_2 Y_2 L2_3 A1_3 Y_3 L2_4 A1_4 Y_4 L2_5 A1_5 Y_5
+1     0   0    1    1   0    0    0   0    1    1   0    0    0   0
+2     0   0    1    1   0    0    0   0    1    1   0    0    0   0
+3     0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA   NA  NA
+4     0   0    1    1   0    0    0   0    1    1   0    0    0   0
+5    NA  NA   NA   NA  NA   NA   NA  NA   NA   NA  NA   NA   NA  NA
+6     0   0    1    1   0    0    0   0    1    1   0    0    0   0
+7     0   0    1    1   0    0    0   0    1    1   0    1    1   0
+8     0   0    1    1   0    0    0   0    1    1   1   NA   NA  NA
+9     0   0    1    1   0    0    0   0    1    1   0    1    1   0
+10    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+11    0   0    1    1   0    1    1   0    0    0   0    1    1   0
+12    0   0    1    1   0    0    0   0    1    1   0    1    1   0
+13    0   0    1    1   0    0    0   0    1    1   1   NA   NA  NA
+14    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+15    0   0    1    1   0    0    0   0    1    1   1   NA   NA  NA
+16    0   0    1    1   0    1    1   0    0    0   0    1    1   0
+17    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+18    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA   NA  NA
+19    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+20    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+21    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA   NA  NA
+22    0   0    1    1   0    1    1   0    0    0   0    1    1   0
+23    0   0    1    1   0    1    1   0    0    0   0    1    1   0
+24    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+25    0   0    0    0   0    1    1   0    0    0   0    1    1   0
+26    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+27    0   0    1    1   0    0    0   0    1    1   0    1    1   0
+28    0   0    1    1   0    1    1   0    0    0   0    1    1   0
+29    1   0    0    0   0    0    0   0    1    1   0    0    0   0
+30   NA  NA   NA   NA  NA   NA   NA  NA   NA   NA  NA   NA   NA  NA
+31    0   0    1    1   0    0    0   1   NA   NA  NA   NA   NA  NA
+32    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+33    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+34    1   0    0    0   0    0    0   0    1    1   0    0    0   0
+35    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA   NA  NA
+36    1   0    0    0   0    1    1   0    0    0   0    1    1   0
+37    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+38    0   0    1    1   0    0    0   0    1    1   1   NA   NA  NA
+39    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+40    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+41    0   0    1    1   0    0    0   0    0    0   0    0    0   0
+42    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA   NA  NA
+43    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+44    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+45    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA   NA  NA
+46    0   0    1    1   1   NA   NA  NA   NA   NA  NA   NA   NA  NA
+47    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+48    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+49    1   0    0    0   0    1    1   0    1    1   0    0    0   0
+50    0   0    1    1   0    0    0   0    1    1   0    0    0   0
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("add.action", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("doLTCF")
+> ### * doLTCF
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: doLTCF
+> ### Title: Missing Variable Imputation with Last Time Point Value Carried
+> ###   Forward (LTCF)
+> ### Aliases: doLTCF
+> 
+> ### ** Examples
+> 
+> t_end <- 16
+> lDAG <- DAG.empty()
+> lDAG <- lDAG + 
++ 	node(name = "L2", t = 0, distr = "rconst", const = 0) + 
++ 	node(name = "A1", t = 0, distr = "rconst", const = 0) + 
++ 	node(name = "L2", t = 1:t_end, distr = "rbern", 
++  	prob = ifelse(A1[t - 1]  ==  1, 0.1, 
++  			ifelse(L2[t-1] == 1, 0.9, 
++  			  min(1,0.1 + t/.(t_end))))) + 
++ 	node(name = "A1", t = 1:t_end, distr = "rbern", 
++  	prob = ifelse(A1[t - 1]  ==  1, 1, 
++  			 ifelse(L2[0] == 0, 0.3, 
++ 			  ifelse(L2[0] == 0, 0.1, 
++ 			   ifelse(L2[0] == 1, 0.7, 0.5))))) + 
++ 	node(name = "Y", t = 1:t_end, distr = "rbern", 
++  	prob = plogis(-6.5 + 4 * L2[t] + 0.05 * sum(I(L2[0:t] == rep(0,(t + 1))))), 
++  	EFU = TRUE)
+> lDAG <- set.DAG(lDAG)
+...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+node A1_0, order:2
+node L2_1, order:3
+node A1_1, order:4
+node Y_1, order:5
+node L2_2, order:6
+node A1_2, order:7
+node Y_2, order:8
+node L2_3, order:9
+node A1_3, order:10
+node Y_3, order:11
+node L2_4, order:12
+node A1_4, order:13
+node Y_4, order:14
+node L2_5, order:15
+node A1_5, order:16
+node Y_5, order:17
+node L2_6, order:18
+node A1_6, order:19
+node Y_6, order:20
+node L2_7, order:21
+node A1_7, order:22
+node Y_7, order:23
+node L2_8, order:24
+node A1_8, order:25
+node Y_8, order:26
+node L2_9, order:27
+node A1_9, order:28
+node Y_9, order:29
+node L2_10, order:30
+node A1_10, order:31
+node Y_10, order:32
+node L2_11, order:33
+node A1_11, order:34
+node Y_11, order:35
+node L2_12, order:36
+node A1_12, order:37
+node Y_12, order:38
+node L2_13, order:39
+node A1_13, order:40
+node Y_13, order:41
+node L2_14, order:42
+node A1_14, order:43
+node Y_14, order:44
+node L2_15, order:45
+node A1_15, order:46
+node Y_15, order:47
+node L2_16, order:48
+node A1_16, order:49
+node Y_16, order:50
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1. No forward imputation.
+> #---------------------------------------------------------------------------------------
+> Odat.wide <- sim(DAG = lDAG, n = 1000, rndseed = 123)
+simulating observed dataset from the DAG object
+> Odat.wide[c(21,47), 1:18]
+   ID L2_0 A1_0 L2_1 A1_1 Y_1 L2_2 A1_2 Y_2 L2_3 A1_3 Y_3 L2_4 A1_4 Y_4 L2_5
+21 21    0    0    1    0   1   NA   NA  NA   NA   NA  NA   NA   NA  NA   NA
+47 47    0    0    0    0   0    0    0   0    0    0   0    1    0   1   NA
+   A1_5 Y_5
+21   NA  NA
+47   NA  NA
+> Odat.wideLTCF <- sim(DAG = lDAG, n = 1000, LTCF = "Y", rndseed = 123)
+simulating observed dataset from the DAG object
+> Odat.wideLTCF[c(21,47), 1:18]
+   ID L2_0 A1_0 L2_1 A1_1 Y_1 L2_2 A1_2 Y_2 L2_3 A1_3 Y_3 L2_4 A1_4 Y_4 L2_5
+21 21    0    0    1    0   1    1    0   1    1    0   1    1    0   1    1
+47 47    0    0    0    0   0    0    0   0    0    0   0    1    0   1    1
+   A1_5 Y_5
+21    0   1
+47    0   1
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 2. With forward imputation.
+> #---------------------------------------------------------------------------------------
+> Odat.wideLTCF2 <- doLTCF(data = Odat.wide, LTCF = "Y")
+> Odat.wideLTCF2[c(21,47), 1:18]
+   ID L2_0 A1_0 L2_1 A1_1 Y_1 L2_2 A1_2 Y_2 L2_3 A1_3 Y_3 L2_4 A1_4 Y_4 L2_5
+21 21    0    0    1    0   1    1    0   1    1    0   1    1    0   1    1
+47 47    0    0    0    0   0    0    0   0    0    0   0    1    0   1    1
+   A1_5 Y_5
+21    0   1
+47    0   1
+> all.equal(Odat.wideLTCF, Odat.wideLTCF2)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("doLTCF", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("node")
+> ### * node
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: node
+> ### Title: Create Node Object(s)
+> ### Aliases: node
+> 
+> ### ** Examples
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1A: Define some Bernoulli nodes, survival outcome Y and put it together in a 
+> # DAG object
+> #---------------------------------------------------------------------------------------
+> W1 <- node(name = "W1", distr = "rbern", 
++ 	prob = plogis(-0.5), order = 1)
+> W2 <- node(name = "W2", distr = "rbern", 
++ 	prob = plogis(-0.5 + 0.5 * W1), order = 2)
+> A <- node(name = "A", distr = "rbern", 
++ 	prob = plogis(-0.5 - 0.3 * W1 - 0.3 * W2), order = 3)
+> Y <- node(name = "Y", distr = "rbern", 
++ 	prob = plogis(-0.1 + 1.2 * A + 0.3 * W1 + 0.3 * W2), order = 4)
+> D1A <- set.DAG(c(W1,W2,A,Y))
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1B: Same as 1A using +node interface and no order argument
+> #---------------------------------------------------------------------------------------
+> D1B <- DAG.empty()
+> D1B <- D1B + node(name = "W1", distr = "rbern", 
++ 	prob = plogis(-0.5))
+> D1B <- D1B + node(name = "W2", distr = "rbern", 
++ 	prob = plogis(-0.5 + 0.5 * W1))
+> D1B <- D1B + node(name = "A", distr = "rbern", 
++ 	prob = plogis(-0.5 - 0.3 * W1 - 0.3 * W2))
+> D1B <- D1B + node(name = "Y", distr = "rbern", 
++ 	prob = plogis(-0.1 + 1.2 * A + 0.3 * W1 + 0.3 * W2))
+> D1B <- set.DAG(D1B)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node A, order:3
+node Y, order:4
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1C: Same as 1A and 1B using add.nodes interface and no order argument
+> #---------------------------------------------------------------------------------------
+> D1C <- DAG.empty()
+> D1C <- add.nodes(D1C, node(name = "W1", distr = "rbern", 
++ 	prob = plogis(-0.5)))
+> D1C <- add.nodes(D1C, node(name = "W2", distr = "rbern", 
++ 	prob = plogis(-0.5 + 0.5 * W1)))
+> D1C <- add.nodes(D1C, node(name = "A", distr = "rbern", 
++ 	prob = plogis(-0.5 - 0.3 * W1 - 0.3 * W2)))
+> D1C <- add.nodes(D1C, node(name = "Y", distr = "rbern", 
++ 	prob = plogis(-0.1 + 1.2 * A + 0.3 * W1 + 0.3 * W2)))
+> D1C <- set.DAG(D1C)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node A, order:3
+node Y, order:4
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1D: Add a uniformly distributed node and redefine outcome Y as categorical
+> #---------------------------------------------------------------------------------------
+> D_unif <- DAG.empty()
+> D_unif <- D_unif + 
++ node("W1", distr = "rbern", prob = plogis(-0.5)) + 
++ node("W2", distr = "rbern", prob = plogis(-0.5 + 0.5 * W1)) + 
++ node("W3", distr = "runif", min = plogis(-0.5 + 0.7 * W1 + 0.3 * W2), max = 10) + 
++ node("An", distr = "rbern", prob = plogis(-0.5 - 0.3 * W1 - 0.3 * W2 - 0.2 * sin(W3)))
+> # Categorical syntax 1 (probabilities as values):
+> D_cat_1 <- D_unif + node("Y", distr = "rcategor", probs = {0.3; 0.4})
+> D_cat_1 <- set.DAG(D_cat_1)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node W3, order:3
+node An, order:4
+node Y, order:5
+> # Categorical syntax 2 (probabilities as formulas):
+> D_cat_2 <- D_unif + 
++ node("Y", distr = "rcategor", 
++ 	probs={plogis(-0.1 + 1.2 * An + 0.3 * W1 + 0.3 * W2 + 0.2 * cos(W3)); 
++ 			plogis(-0.5 + 0.7 * W1)})
+> D_cat_2 <- set.DAG(D_cat_2)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node W3, order:3
+node An, order:4
+node Y, order:5
+Warning in rcategor(n = 10L, probs = c(0.576709104275316, 0.526561233702586,  :
+  some categorical probabilities add up to more than 1, normalizing to add to 1
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 2A: Define Bernoulli nodes using R rbinom() function, defining prob argument
+> # for L2 as a function of node L1
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + 
++ node("L1", t = 0, distr = "rbinom", 
++ 	prob = 0.05, size = 1) + 
++ node("L2", t = 0, distr = "rbinom", 
++ 	prob = ifelse(L1[0] == 1, 0.5, 0.1), size = 1)
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L1_0, order:1
+node L2_0, order:2
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 2B: Equivalent to 2A, passing argument size to rbinom inside a named list
+> # params
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + 
++ node("L1", t = 0, distr = "rbinom", 
++ 	prob = 0.05, params = list(size = 1)) + 
++ node("L2", t = 0, distr = "rbinom", 
++ 	prob = ifelse(L1[0] == 1,0.5,0.1), params = list(size = 1))
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L1_0, order:1
+node L2_0, order:2
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 2C: Equivalent to 2A and 2B, define Bernoulli nodes using a wrapper "rbern"
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + 
++ node("L1", t = 0, distr = "rbern", prob = 0.05) + 
++ node("L2", t = 0, distr = "rbern", prob = ifelse(L1[0] == 1, 0.5, 0.1))
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L1_0, order:1
+node L2_0, order:2
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 3: Define node with normal distribution using rnorm() R function
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + node("L2", t = 0, distr = "rnorm", mean = 10, sd = 5)
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 4: Define 34 Bernoulli nodes, or 2 Bernoulli nodes over 17 time points,
+> # prob argument contains .() expression that is immediately evaluated in the calling 
+> # environment (.(t_end) will evaluate to 16)
+> #---------------------------------------------------------------------------------------
+> t_end <- 16
+> D <- DAG.empty()
+> D <- D + 
++ node("L2", t = 0:t_end, distr = "rbinom", 
++ 	prob = ifelse(t == .(t_end), 0.5, 0.1), size = 1) + 
++ node("L1", t = 0:t_end, distr = "rbinom", 
++ 	prob = ifelse(L2[0] == 1, 0.5, 0.1), size = 1)
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+node L1_0, order:2
+node L2_1, order:3
+node L1_1, order:4
+node L2_2, order:5
+node L1_2, order:6
+node L2_3, order:7
+node L1_3, order:8
+node L2_4, order:9
+node L1_4, order:10
+node L2_5, order:11
+node L1_5, order:12
+node L2_6, order:13
+node L1_6, order:14
+node L2_7, order:15
+node L1_7, order:16
+node L2_8, order:17
+node L1_8, order:18
+node L2_9, order:19
+node L1_9, order:20
+node L2_10, order:21
+node L1_10, order:22
+node L2_11, order:23
+node L1_11, order:24
+node L2_12, order:25
+node L1_12, order:26
+node L2_13, order:27
+node L1_13, order:28
+node L2_14, order:29
+node L1_14, order:30
+node L2_15, order:31
+node L1_15, order:32
+node L2_16, order:33
+node L1_16, order:34
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 5: Defining new distribution function 'rbern', defining and passing a custom 
+> # vectorized node function 'customfun'
+> #---------------------------------------------------------------------------------------
+> rbern <- function(n, prob) { # defining a bernoulli wrapper based on R rbinom function
++   rbinom(n = n, prob = prob, size = 1)
++ }
+> customfun <- function(arg, lambda) {
++   res <- ifelse(arg == 1, lambda, 0.1)
++   res
++ }
+> D <- DAG.empty()
+> D <- D + 
++ node("W1", distr = "rbern", prob = 0.05) + 
++ node("W2", distr = "rbern", prob = customfun(W1, 0.5)) + 
++ node("W3", distr = "rbern", prob = ifelse(W1 == 1, 0.5, 0.1))
+> D1d <- set.DAG(D, vecfun = c("customfun"))
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node W3, order:3
+[1] "current list of user-defined vectorized functions: customfun"
+> sim1d <- simobs(D1d, n = 200, rndseed = 1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("node", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("parents")
+> ### * parents
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: parents
+> ### Title: Show Node Parents Given DAG Object
+> ### Aliases: parents
+> 
+> ### ** Examples
+> 
+> D <- DAG.empty()
+> D <- D + node(name="W1", distr="rbern", prob=plogis(-0.5))
+> D <- D + node(name="W2", distr="rbern", prob=plogis(-0.5 + 0.5*W1))
+> D <- D + node(name="A", distr="rbern", prob=plogis(-0.5 - 0.3*W1 - 0.3*W2))
+> D <- D + node(name="Y", distr="rbern", prob=plogis(-0.1 + 1.2*A + 0.3*W1 + 0.3*W2), EFU=TRUE)
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node A, order:3
+node Y, order:4
+> parents(D, c("W2", "A", "Y"))
+$W2
+[1] "W1"
+
+$A
+[1] "W1" "W2"
+
+$Y
+[1] "W1" "W2"
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("parents", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rbern")
+> ### * rbern
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rbern
+> ### Title: Bernoulli Node Distribution
+> ### Aliases: rbern
+> 
+> ### ** Examples
+> 
+> #---------------------------------------------------------------------------------------
+> # Specifying and simulating from a DAG with 3 Bernoulli nodes
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + node("W1", distr="rbern", prob=0.05)
+> D <- D + node("W2", distr="rbern", prob=ifelse(W1==1,0.5,0.1))
+> D <- D + node("W3", distr="rbern", prob=ifelse(W1==1,0.5,0.1))
+> Dset <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node W3, order:3
+> simdat <- simobs(Dset, n=200, rndseed=1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rbern", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rcategor")
+> ### * rcategor
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rcategor
+> ### Title: Categorical Node Distribution (Factor)
+> ### Aliases: rcategor
+> 
+> ### ** Examples
+> 
+> #---------------------------------------------------------------------------------------
+> # Specifying and simulating from a DAG with one categorical node with constant
+> # probabilities
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + node("race",t=0,distr="rcategor",probs=c(0.2,0.1,0.4,0.15,0.05,0.1))
+> Dset <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node race_0, order:1
+> simdat <- simobs(Dset, n=200, rndseed=1)
+> 
+> #---------------------------------------------------------------------------------------
+> # Specifying and simulating from a DAG with a categorical node with varying
+> # probabilities (probabilities are determined by values sampled for nodes L0 and L1)
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + node("L0", distr="rnorm", mean=10, sd=5)
+> D <- D + node("L1", distr="rnorm", mean=10, sd=5)
+> D <- D + node("L2", distr="rcategor", probs=c(abs(1/L0), abs(1/L1)))
+> Dset <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L0, order:1
+node L1, order:2
+node L2, order:3
+> simdat <- simobs(Dset, n=200, rndseed=1)
+Warning in rcategor(n = 200L, probs = c(0.145608499782661, 0.0915900494286307,  :
+  some categorical probabilities add up to more than 1, normalizing to add to 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rcategor", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rconst")
+> ### * rconst
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rconst
+> ### Title: Constant (Degenerate) Node Distribution
+> ### Aliases: rconst
+> 
+> ### ** Examples
+> 
+> #---------------------------------------------------------------------------------------
+> # Specifying and simulating from a DAG with 1 Bernoulli and 2 constant nodes
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + node("W1", distr="rbern", prob=0.05)
+> D <- D + node("W2", distr="rconst", const=1)
+> D <- D + node("W3", distr="rconst", const=ifelse(W1==1,5,10))
+> Dset <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node W3, order:3
+> simdat <- simobs(Dset, n=200, rndseed=1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rconst", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("set.DAG")
+> ### * set.DAG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: set.DAG
+> ### Title: Create and Lock DAG Object
+> ### Aliases: set.DAG
+> 
+> ### ** Examples
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1A: Define some Bernoulli nodes, survival outcome Y and put it together in a 
+> # DAG object
+> #---------------------------------------------------------------------------------------
+> W1 <- node(name = "W1", distr = "rbern", 
++ 	prob = plogis(-0.5), order = 1)
+> W2 <- node(name = "W2", distr = "rbern", 
++ 	prob = plogis(-0.5 + 0.5 * W1), order = 2)
+> A <- node(name = "A", distr = "rbern", 
++ 	prob = plogis(-0.5 - 0.3 * W1 - 0.3 * W2), order = 3)
+> Y <- node(name = "Y", distr = "rbern", 
++ 	prob = plogis(-0.1 + 1.2 * A + 0.3 * W1 + 0.3 * W2), order = 4)
+> D1A <- set.DAG(c(W1,W2,A,Y))
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1B: Same as 1A using +node interface and no order argument
+> #---------------------------------------------------------------------------------------
+> D1B <- DAG.empty()
+> D1B <- D1B + node(name = "W1", distr = "rbern", 
++ 	prob = plogis(-0.5))
+> D1B <- D1B + node(name = "W2", distr = "rbern", 
++ 	prob = plogis(-0.5 + 0.5 * W1))
+> D1B <- D1B + node(name = "A", distr = "rbern", 
++ 	prob = plogis(-0.5 - 0.3 * W1 - 0.3 * W2))
+> D1B <- D1B + node(name = "Y", distr = "rbern", 
++ 	prob = plogis(-0.1 + 1.2 * A + 0.3 * W1 + 0.3 * W2))
+> D1B <- set.DAG(D1B)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node A, order:3
+node Y, order:4
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1C: Same as 1A and 1B using add.nodes interface and no order argument
+> #---------------------------------------------------------------------------------------
+> D1C <- DAG.empty()
+> D1C <- add.nodes(D1C, node(name = "W1", distr = "rbern", 
++ 	prob = plogis(-0.5)))
+> D1C <- add.nodes(D1C, node(name = "W2", distr = "rbern", 
++ 	prob = plogis(-0.5 + 0.5 * W1)))
+> D1C <- add.nodes(D1C, node(name = "A", distr = "rbern", 
++ 	prob = plogis(-0.5 - 0.3 * W1 - 0.3 * W2)))
+> D1C <- add.nodes(D1C, node(name = "Y", distr = "rbern", 
++ 	prob = plogis(-0.1 + 1.2 * A + 0.3 * W1 + 0.3 * W2)))
+> D1C <- set.DAG(D1C)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node A, order:3
+node Y, order:4
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1D: Add a uniformly distributed node and redefine outcome Y as categorical
+> #---------------------------------------------------------------------------------------
+> D_unif <- DAG.empty()
+> D_unif <- D_unif + 
++ node("W1", distr = "rbern", prob = plogis(-0.5)) + 
++ node("W2", distr = "rbern", prob = plogis(-0.5 + 0.5 * W1)) + 
++ node("W3", distr = "runif", min = plogis(-0.5 + 0.7 * W1 + 0.3 * W2), max = 10) + 
++ node("An", distr = "rbern", prob = plogis(-0.5 - 0.3 * W1 - 0.3 * W2 - 0.2 * sin(W3)))
+> # Categorical syntax 1 (probabilities as values):
+> D_cat_1 <- D_unif + node("Y", distr = "rcategor", probs = {0.3; 0.4})
+> D_cat_1 <- set.DAG(D_cat_1)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node W3, order:3
+node An, order:4
+node Y, order:5
+> # Categorical syntax 2 (probabilities as formulas):
+> D_cat_2 <- D_unif + 
++ node("Y", distr = "rcategor", 
++ 	probs={plogis(-0.1 + 1.2 * An + 0.3 * W1 + 0.3 * W2 + 0.2 * cos(W3)); 
++ 			plogis(-0.5 + 0.7 * W1)})
+> D_cat_2 <- set.DAG(D_cat_2)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node W3, order:3
+node An, order:4
+node Y, order:5
+Warning in rcategor(n = 10L, probs = c(0.576709104275316, 0.526561233702586,  :
+  some categorical probabilities add up to more than 1, normalizing to add to 1
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 2A: Define Bernoulli nodes using R rbinom() function, defining prob argument
+> # for L2 as a function of node L1
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + 
++ node("L1", t = 0, distr = "rbinom", 
++ 	prob = 0.05, size = 1) + 
++ node("L2", t = 0, distr = "rbinom", 
++ 	prob = ifelse(L1[0] == 1, 0.5, 0.1), size = 1)
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L1_0, order:1
+node L2_0, order:2
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 2B: Equivalent to 2A, passing argument size to rbinom inside a named list
+> # params
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + 
++ node("L1", t = 0, distr = "rbinom", 
++ 	prob = 0.05, params = list(size = 1)) + 
++ node("L2", t = 0, distr = "rbinom", 
++ 	prob = ifelse(L1[0] == 1,0.5,0.1), params = list(size = 1))
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L1_0, order:1
+node L2_0, order:2
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 2C: Equivalent to 2A and 2B, define Bernoulli nodes using a wrapper "rbern"
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + 
++ node("L1", t = 0, distr = "rbern", prob = 0.05) + 
++ node("L2", t = 0, distr = "rbern", prob = ifelse(L1[0] == 1, 0.5, 0.1))
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L1_0, order:1
+node L2_0, order:2
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 3: Define node with normal distribution using rnorm() R function
+> #---------------------------------------------------------------------------------------
+> D <- DAG.empty()
+> D <- D + node("L2", t = 0, distr = "rnorm", mean = 10, sd = 5)
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 4: Define 34 Bernoulli nodes, or 2 Bernoulli nodes over 17 time points,
+> # prob argument contains .() expression that is immediately evaluated in the calling 
+> # environment (.(t_end) will evaluate to 16)
+> #---------------------------------------------------------------------------------------
+> t_end <- 16
+> D <- DAG.empty()
+> D <- D + 
++ node("L2", t = 0:t_end, distr = "rbinom", 
++ 	prob = ifelse(t == .(t_end), 0.5, 0.1), size = 1) + 
++ node("L1", t = 0:t_end, distr = "rbinom", 
++ 	prob = ifelse(L2[0] == 1, 0.5, 0.1), size = 1)
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+node L1_0, order:2
+node L2_1, order:3
+node L1_1, order:4
+node L2_2, order:5
+node L1_2, order:6
+node L2_3, order:7
+node L1_3, order:8
+node L2_4, order:9
+node L1_4, order:10
+node L2_5, order:11
+node L1_5, order:12
+node L2_6, order:13
+node L1_6, order:14
+node L2_7, order:15
+node L1_7, order:16
+node L2_8, order:17
+node L1_8, order:18
+node L2_9, order:19
+node L1_9, order:20
+node L2_10, order:21
+node L1_10, order:22
+node L2_11, order:23
+node L1_11, order:24
+node L2_12, order:25
+node L1_12, order:26
+node L2_13, order:27
+node L1_13, order:28
+node L2_14, order:29
+node L1_14, order:30
+node L2_15, order:31
+node L1_15, order:32
+node L2_16, order:33
+node L1_16, order:34
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 5: Defining new distribution function 'rbern', defining and passing a custom 
+> # vectorized node function 'customfun'
+> #---------------------------------------------------------------------------------------
+> rbern <- function(n, prob) { # defining a bernoulli wrapper based on R rbinom function
++   rbinom(n = n, prob = prob, size = 1)
++ }
+> customfun <- function(arg, lambda) {
++   res <- ifelse(arg == 1, lambda, 0.1)
++   res
++ }
+> D <- DAG.empty()
+> D <- D + 
++ node("W1", distr = "rbern", prob = 0.05) + 
++ node("W2", distr = "rbern", prob = customfun(W1, 0.5)) + 
++ node("W3", distr = "rbern", prob = ifelse(W1 == 1, 0.5, 0.1))
+> D1d <- set.DAG(D, vecfun = c("customfun"))
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node W3, order:3
+[1] "current list of user-defined vectorized functions: customfun"
+> sim1d <- simobs(D1d, n = 200, rndseed = 1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("set.DAG", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("set.targetE")
+> ### * set.targetE
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: set.targetE
+> ### Title: Define Non-Parametric Causal Parameters
+> ### Aliases: set.targetE
+> 
+> ### ** Examples
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1: DAG with single point treatment
+> #---------------------------------------------------------------------------------------
+> # Define a DAG with single-point treatment ("Anode")
+> D <- DAG.empty()
+> D <- D + node("W1", distr="rbern", prob=plogis(-0.5))
+> D <- D + node("W2", distr="rbern", prob=plogis(-0.5 + 0.5*W1))
+> D <- D + node("Anode", distr="rbern", prob=plogis(-0.5 - 0.3*W1 - 0.3*W2))
+> D <- D + node("Y", distr="rbern", prob=plogis(-0.1 + 1.2*Anode + 0.3*W1 + 0.3*W2),
++ EFU=TRUE)
+> D_WAY <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node Anode, order:3
+node Y, order:4
+> 
+> # Defining interventions (actions)
+> # define action "A1" that sets the treatment node to constant 1
+> D_WAY <- D_WAY + action("A1", nodes=node("Anode",distr="rbern", prob=1))
+> # define another action "A0" that sets the treatment node to constant 0
+> D_WAY <- D_WAY + action("A0", nodes=node("Anode",distr="rbern", prob=0))
+> #---------------------------------------------------------------------------------------
+> # Defining and calculating causal parameters:
+> #---------------------------------------------------------------------------------------
+> # Counterfactual mean of node "Y" under action "A1"
+> D_WAY <- set.targetE(D_WAY, outcome="Y", param="A1")
+> eval.target(D_WAY, n=10000)
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 10000 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+$res
+Mean_Y 
+0.7938 
+
+$call
+set.targetE(DAG = D_WAY, outcome = "Y", param = "A1")
+
+> 
+> # Contrasts of means of "Y" under action "A1" minus action "A0"
+> D_WAY <- set.targetE(D_WAY, outcome="Y", param="A1-A0")
+> eval.target(D_WAY, n=10000)
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 10000 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+$res
+Diff_Y 
+0.2541 
+
+$call
+set.targetE(DAG = D_WAY, outcome = "Y", param = "A1-A0")
+
+> 
+> # Ratios of "Y" under action "A1" over action "A0"
+> D_WAY <- set.targetE(D_WAY, outcome="Y", param="A1/A0")
+> eval.target(D_WAY, n=10000)
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 10000 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+$res
+ Ratio_Y 
+1.445958 
+
+$call
+set.targetE(DAG = D_WAY, outcome = "Y", param = "A1/A0")
+
+> 
+> # Alternative parameter evaluation by passing already simulated full data to
+> # \code{eval.target}
+> X_dat1 <- simfull(A(D_WAY), n=10000)
+> D_WAY <- set.targetE(D_WAY, outcome="Y", param="A1/A0")
+> eval.target(D_WAY, data=X_dat1)
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+$res
+ Ratio_Y 
+1.463897 
+
+$call
+set.targetE(DAG = D_WAY, outcome = "Y", param = "A1/A0")
+
+> 
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 2: DAG with time-varying outcomes (survival outcome)
+> #---------------------------------------------------------------------------------------
+> # Define longitudinal data structure over 6 time-points t=(0:5)
+> t_end <- 5
+> D <- DAG.empty()
+> D <- D + node("L2", t=0, distr="rbern", prob=0.05)
+> D <- D + node("L1", t=0, distr="rbern", prob=ifelse(L2[0]==1,0.5,0.1))
+> D <- D + node("A1", t=0, distr="rbern", prob=ifelse(L1[0]==1 & L2[0]==0, 0.5,
++ ifelse(L1[0]==0 & L2[0]==0, 0.1,
++ ifelse(L1[0]==1 & L2[0]==1, 0.9, 0.5))))
+> D <- D + node("A2", t=0, distr="rbern", prob=0, order=4, EFU=TRUE)
+> D <- D + node("Y",  t=0, distr="rbern",
++ prob=plogis(-6.5 + L1[0] + 4*L2[0] + 0.05*I(L2[0]==0)),
++ EFU=TRUE)
+> D <- D + node("L2", t=1:t_end, distr="rbern", prob=ifelse(A1[t-1]==1, 0.1,
++ ifelse(L2[t-1]==1, 0.9,
++ min(1,0.1 + t/16))))
+> D <- D + node("A1", t=1:t_end, distr="rbern", prob=ifelse(A1[t-1]==1, 1,
++ ifelse(L1[0]==1 & L2[0]==0, 0.3,
++ ifelse(L1[0]==0 & L2[0]==0, 0.1,
++ ifelse(L1[0]==1 & L2[0]==1, 0.7,
++ 0.5)))))
+> D <- D + node("A2", t=1:t_end, distr="rbern", prob=0, EFU=TRUE)
+> D <- D + node("Y",  t=1:t_end, distr="rbern",
++ prob=plogis(-6.5 + L1[0] + 4*L2[t] + 0.05*sum(I(L2[0:t]==rep(0,(t+1))))),
++ EFU=TRUE)
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+node L1_0, order:2
+node A1_0, order:3
+node Y_0, order:5
+node L2_1, order:6
+node A1_1, order:7
+node A2_1, order:8
+node Y_1, order:9
+node L2_2, order:10
+node A1_2, order:11
+node A2_2, order:12
+node Y_2, order:13
+node L2_3, order:14
+node A1_3, order:15
+node A2_3, order:16
+node Y_3, order:17
+node L2_4, order:18
+node A1_4, order:19
+node A2_4, order:20
+node Y_4, order:21
+node L2_5, order:22
+node A1_5, order:23
+node A2_5, order:24
+node Y_5, order:25
+> 
+> # Add two dynamic actions (indexed by values of the parameter theta={0,1})
+> # Define intervention nodes
+> act_t0_theta <- node("A1",t=0, distr="rbern", prob=ifelse(L2[0] >= theta,1,0))
+> act_tp_theta <- node("A1",t=1:t_end, distr="rbern",
++ prob=ifelse(A1[t-1]==1,1,ifelse(L2[t] >= theta,1,0)))
+> # Add two actions to current DAG object
+> D <- D + action("A1_th0", nodes=c(act_t0_theta, act_tp_theta), theta=0)
+> D <- D + action("A1_th1", nodes=c(act_t0_theta, act_tp_theta), theta=1)
+> #---------------------------------------------------------------------------------------
+> # Defining and calculating the target parameter
+> #---------------------------------------------------------------------------------------
+> # Counterfactual mean of node "Y" at time-point t=4 under action "A1_th0"
+> D <- set.targetE(D, outcome="Y", t=4, param="A1_th0")
+> eval.target(D, n=5000)
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 5000 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+$res
+Mean_Y_4 
+   0.055 
+
+$call
+set.targetE(DAG = D, outcome = "Y", t = 4, param = "A1_th0")
+
+> 
+> # Vector of counterfactual means of"Y" over all time points under action "A1_th1"
+> D <- set.targetE(D, outcome="Y", t=0:5, param="A1_th1")
+> eval.target(D, n=5000)
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 5000 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+$res
+Mean_Y_0 Mean_Y_1 Mean_Y_2 Mean_Y_3 Mean_Y_4 Mean_Y_5 
+  0.0070   0.0212   0.0398   0.0652   0.0868   0.1098 
+
+$call
+set.targetE(DAG = D, outcome = "Y", t = 0:5, param = "A1_th1")
+
+> 
+> # Vector of counterfactual contrasts of "Y" over all time points
+> # for action "A1_th1" minus action "A1_th0"
+> D <- set.targetE(D, outcome="Y", t=0:5, param="A1_th1 - A1_th0")
+> eval.target(D, n=5000)
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 5000 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+$res
+Diff_Y_0 Diff_Y_1 Diff_Y_2 Diff_Y_3 Diff_Y_4 Diff_Y_5 
+  0.0002   0.0062   0.0120   0.0264   0.0368   0.0438 
+
+$call
+set.targetE(DAG = D, outcome = "Y", t = 0:5, param = "A1_th1 - A1_th0")
+
+> 
+> # Vector of counterfactual ratios of "Y" over all time points
+> # for action "A1_th0" over action "A1_th1"
+> D <- set.targetE(D, outcome="Y", t=0:5, param="A1_th0 / A1_th1")
+> eval.target(D, n=5000)
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 5000 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+$res
+Ratio_Y_0 Ratio_Y_1 Ratio_Y_2 Ratio_Y_3 Ratio_Y_4 Ratio_Y_5 
+0.8648649 0.8867925 0.7652582 0.6238532 0.6098131 0.6105860 
+
+$call
+set.targetE(DAG = D, outcome = "Y", t = 0:5, param = "A1_th0 / A1_th1")
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("set.targetE", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("set.targetMSM")
+> ### * set.targetMSM
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: set.targetMSM
+> ### Title: Define Causal Parameters with a Working Marginal Structural
+> ###   Model (MSM)
+> ### Aliases: set.targetMSM
+> 
+> ### ** Examples
+> 
+> #---------------------------------------------------------------------------------------
+> # DAG with time-varying outcomes (survival outcome)
+> #---------------------------------------------------------------------------------------
+> # Define longitudinal data structure over 6 time-points t=(0:5)
+> t_end <- 5
+> D <- DAG.empty()
+> D <- D + node("L2", t=0, distr="rbern", prob=0.05)
+> D <- D + node("L1", t=0, distr="rbern", prob=ifelse(L2[0]==1,0.5,0.1))
+> D <- D + node("A1", t=0, distr="rbern", prob=ifelse(L1[0]==1 & L2[0]==0, 0.5,
++ ifelse(L1[0]==0 & L2[0]==0, 0.1,
++ ifelse(L1[0]==1 & L2[0]==1, 0.9, 0.5))))
+> D <- D + node("A2", t=0, distr="rbern", prob=0, order=4, EFU=TRUE)
+> D <- D + node("Y",  t=0, distr="rbern",
++ prob=plogis(-6.5 + L1[0] + 4*L2[0] + 0.05*I(L2[0]==0)),
++ EFU=TRUE)
+> D <- D + node("L2", t=1:t_end, distr="rbern", prob=ifelse(A1[t-1]==1, 0.1,
++ ifelse(L2[t-1]==1, 0.9,
++ min(1,0.1 + t/16))))
+> D <- D + node("A1", t=1:t_end, distr="rbern", prob=ifelse(A1[t-1]==1, 1,
++ ifelse(L1[0]==1 & L2[0]==0, 0.3,
++ ifelse(L1[0]==0 & L2[0]==0, 0.1,
++ ifelse(L1[0]==1 & L2[0]==1, 0.7,
++ 0.5)))))
+> D <- D + node("A2", t=1:t_end, distr="rbern", prob=0, EFU=TRUE)
+> D <- D + node( "Y",  t=1:t_end, distr="rbern",
++ prob=plogis(-6.5 + L1[0] + 4*L2[t] + 0.05*sum(I(L2[0:t]==rep(0,(t+1))))),
++ EFU=TRUE)
+> D <- set.DAG(D)
+...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+node L1_0, order:2
+node A1_0, order:3
+node Y_0, order:5
+node L2_1, order:6
+node A1_1, order:7
+node A2_1, order:8
+node Y_1, order:9
+node L2_2, order:10
+node A1_2, order:11
+node A2_2, order:12
+node Y_2, order:13
+node L2_3, order:14
+node A1_3, order:15
+node A2_3, order:16
+node Y_3, order:17
+node L2_4, order:18
+node A1_4, order:19
+node A2_4, order:20
+node Y_4, order:21
+node L2_5, order:22
+node A1_5, order:23
+node A2_5, order:24
+node Y_5, order:25
+> 
+> # Add two dynamic actions (indexed by values of the parameter theta={0,1})
+> # Define intervention nodes
+> act_t0_theta <- node("A1",t=0, distr="rbern", prob=ifelse(L2[0] >= theta,1,0))
+> act_tp_theta <- node("A1",t=1:t_end, distr="rbern",
++ prob=ifelse(A1[t-1]==1,1,ifelse(L2[t] >= theta,1,0)))
+> # Add two actions to current DAG object
+> D <- D + action("A1_th0", nodes=c(act_t0_theta, act_tp_theta), theta=0)
+> D <- D + action("A1_th1", nodes=c(act_t0_theta, act_tp_theta), theta=1)
+> 
+> #---------------------------------------------------------------------------------------
+> # MSM EXAMPLE 1: Modeling survival over time
+> #---------------------------------------------------------------------------------------
+> # Modeling pooled survival Y_t over time as a projection on the following working
+> # logistic model:
+> msm.form <- "Y ~ theta + t + I(theta*t)"
+> D <- set.targetMSM(D, outcome="Y", t=0:5, formula=msm.form, family="binomial",
++ hazard=FALSE)
+> MSMres <- eval.target(D, n=1000)
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 1000 simulated samples per action
+MSM: fitting glm to full data...
+> MSMres$beta
+NULL
+> 
+> #---------------------------------------------------------------------------------------
+> # MSM EXAMPLE 2: Modeling survival over time with exposure-based summary measures
+> #---------------------------------------------------------------------------------------
+> # Now we want to model Y_t by adding a summary measure covariate defined as mean
+> # exposure A1 from time 0 to t;
+> # Enclosing any term inside S() forces its evaluation in the environment
+> # of the full (counterfactual) data.
+> msm.form_sum <- "Y ~ theta + t + I(theta*t) + S(mean(A1[0:t]))"
+> D <- set.targetMSM(D, outcome="Y", t=0:5, formula=msm.form_sum, family="binomial",
++ hazard=FALSE)
+> MSMres <- eval.target(D, n=1000)
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 1000 simulated samples per action
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+> MSMres$beta
+NULL
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("set.targetMSM", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sim")
+> ### * sim
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sim
+> ### Title: Simulate Observed or Full Data from 'DAG' Object
+> ### Aliases: sim
+> 
+> ### ** Examples
+> 
+> t_end <- 16
+> lDAG <- DAG.empty()
+> lDAG <- lDAG + 
++ 	node(name = "L2", t = 0, distr = "rconst", const = 0) + 
++ 	node(name = "A1", t = 0, distr = "rconst", const = 0) + 
++ 	node(name = "L2", t = 1:t_end, distr = "rbern", 
++  	prob = ifelse(A1[t - 1]  ==  1, 0.1, 
++  			ifelse(L2[t-1] == 1, 0.9, 
++  			  min(1,0.1 + t/.(t_end))))) + 
++ 	node(name = "A1", t = 1:t_end, distr = "rbern", 
++  	prob = ifelse(A1[t - 1]  ==  1, 1, 
++  			 ifelse(L2[0] == 0, 0.3, 
++ 			  ifelse(L2[0] == 0, 0.1, 
++ 			   ifelse(L2[0] == 1, 0.7, 0.5))))) + 
++ 	node(name = "Y", t = 1:t_end, distr = "rbern", 
++  	prob = plogis(-6.5 + 4 * L2[t] + 0.05 * sum(I(L2[0:t] == rep(0,(t + 1))))), 
++  	EFU = TRUE)
+> lDAG <- set.DAG(lDAG)
+...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+node A1_0, order:2
+node L2_1, order:3
+node A1_1, order:4
+node Y_1, order:5
+node L2_2, order:6
+node A1_2, order:7
+node Y_2, order:8
+node L2_3, order:9
+node A1_3, order:10
+node Y_3, order:11
+node L2_4, order:12
+node A1_4, order:13
+node Y_4, order:14
+node L2_5, order:15
+node A1_5, order:16
+node Y_5, order:17
+node L2_6, order:18
+node A1_6, order:19
+node Y_6, order:20
+node L2_7, order:21
+node A1_7, order:22
+node Y_7, order:23
+node L2_8, order:24
+node A1_8, order:25
+node Y_8, order:26
+node L2_9, order:27
+node A1_9, order:28
+node Y_9, order:29
+node L2_10, order:30
+node A1_10, order:31
+node Y_10, order:32
+node L2_11, order:33
+node A1_11, order:34
+node Y_11, order:35
+node L2_12, order:36
+node A1_12, order:37
+node Y_12, order:38
+node L2_13, order:39
+node A1_13, order:40
+node Y_13, order:41
+node L2_14, order:42
+node A1_14, order:43
+node Y_14, order:44
+node L2_15, order:45
+node A1_15, order:46
+node Y_15, order:47
+node L2_16, order:48
+node A1_16, order:49
+node Y_16, order:50
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 1. No forward imputation.
+> #---------------------------------------------------------------------------------------
+> Odat.wide <- sim(DAG = lDAG, n = 1000, rndseed = 123)
+simulating observed dataset from the DAG object
+> Odat.wide[c(21,47), 1:18]
+   ID L2_0 A1_0 L2_1 A1_1 Y_1 L2_2 A1_2 Y_2 L2_3 A1_3 Y_3 L2_4 A1_4 Y_4 L2_5
+21 21    0    0    1    0   1   NA   NA  NA   NA   NA  NA   NA   NA  NA   NA
+47 47    0    0    0    0   0    0    0   0    0    0   0    1    0   1   NA
+   A1_5 Y_5
+21   NA  NA
+47   NA  NA
+> Odat.wideLTCF <- sim(DAG = lDAG, n = 1000, LTCF = "Y", rndseed = 123)
+simulating observed dataset from the DAG object
+> Odat.wideLTCF[c(21,47), 1:18]
+   ID L2_0 A1_0 L2_1 A1_1 Y_1 L2_2 A1_2 Y_2 L2_3 A1_3 Y_3 L2_4 A1_4 Y_4 L2_5
+21 21    0    0    1    0   1    1    0   1    1    0   1    1    0   1    1
+47 47    0    0    0    0   0    0    0   0    0    0   0    1    0   1    1
+   A1_5 Y_5
+21    0   1
+47    0   1
+> #---------------------------------------------------------------------------------------
+> # EXAMPLE 2. With forward imputation.
+> #---------------------------------------------------------------------------------------
+> Odat.wideLTCF2 <- doLTCF(data = Odat.wide, LTCF = "Y")
+> Odat.wideLTCF2[c(21,47), 1:18]
+   ID L2_0 A1_0 L2_1 A1_1 Y_1 L2_2 A1_2 Y_2 L2_3 A1_3 Y_3 L2_4 A1_4 Y_4 L2_5
+21 21    0    0    1    0   1    1    0   1    1    0   1    1    0   1    1
+47 47    0    0    0    0   0    0    0   0    0    0   0    1    0   1    1
+   A1_5 Y_5
+21    0   1
+47    0   1
+> all.equal(Odat.wideLTCF, Odat.wideLTCF2)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sim", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  4.788 0.071 4.87 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

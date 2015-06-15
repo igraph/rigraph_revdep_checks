@@ -1,0 +1,115 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/miniCRAN.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘miniCRAN/DESCRIPTION’ ... OK
+* this is package ‘miniCRAN’ version ‘0.2.4’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘miniCRAN’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... NOTE
+Missing or unexported object: ‘igraph::plot.igraph’
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... ERROR
+Running examples in ‘miniCRAN-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: makeDepGraph
+> ### Title: Create dependency graph from available packages.
+> ### Aliases: makeDepGraph
+> 
+> ### ** Examples
+> 
+> 
+> 
+> 
+> availPkgs <- cranJuly2014
+> 
+> ## Not run: 
+> ##D availPkgs <- pkgAvail(
+> ##D   repos = c(CRAN="http://cran.revolutionanalytics.com"),
+> ##D   type="source"
+> ##D   )
+> ## End(Not run)
+> 
+> 
+> # Create dependency graph using stored database of available packages
+> p <- makeDepGraph(
++   c("ggplot2", "forecast"), 
++   availPkgs = availPkgs
++ )
+Loading required namespace: igraph
+> 
+> if(require(igraph)) plot(p)
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Error: 'plot.igraph' is not an exported object from 'namespace:igraph'
+Execution halted
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... [40s/63s] OK
+  Running ‘test-all.R’ [40s/62s]
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking running R code from vignettes ... OK
+* checking re-building of vignette outputs ... NOTE
+Error in re-building vignettes:
+  ...
+Quitting from lines 59-62 (miniCRAN-dependency-graph.rmd) 
+Error: processing vignette 'miniCRAN-dependency-graph.rmd' failed with diagnostics:
+'plot.igraph' is not an exported object from 'namespace:igraph'
+Execution halted
+
+* DONE
+Status: 1 ERROR, 2 NOTEs

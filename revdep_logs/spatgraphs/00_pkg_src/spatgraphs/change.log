@@ -1,0 +1,128 @@
+v2.61:
+ - uploaded to bitbucket, using mercurial now
+v2.60:
+ - uses NAMESPACE
+ - add sparseMatrix-transformation
+
+v2.53:
+ - random graph still in progress
+v2.52:
+ - add random graph: P(connect i j) = f(d_ij, mi, mj)
+ 
+v2.51:
+ - shortestPath fixed: Inf returned now in list form
+ 
+v2.50:
+ - spectral clustering algorithm added
+  
+v2.44:
+ - fix oveloading ambiguity in pow-calls, mixed float and double 
+ 
+v2.43:
+ - fix clash of c-side fmin-function with mathcalls.h-library of ubuntu
+ - updated docs
+ - ready for CRAN
+v2.42:
+ - fix memory leak from new's never being deleted in a loop of Pp.init .
+ 
+v2.41:
+ - fix REAL-error, happened when spatstat loaded
+ 
+v2.40:
+ - Delaunay makes use of inclusion vector
+ - Delaunay now checks emptyness only from given precalculated neighbours 
+ 
+v2.39:
+ - big geometric: included nodes only
+v2.38:
+ - add a clip-method to sg-class: Clips edges crossing window border. Requires spatstat.
+ 
+v2.37:
+ - better plotting, no duplicate points when add=FALSE
+ - better plotting of clusters
+ - added prune method
+ - added possibility to give a precalculated sg-object to narrow search space
+ - igraph pp$n-dependece fix
+ 
+v2.36:
+ - fix 3d pattern check: length(z) was checked wrong
+ - removed spin3d(): rgl now has it's own 
+ 
+v2.35:
+ - new Pp structure: added distances handler and other features from biolisa's Pp-class
+ 
+v2.34:
+ - prettier colors for plotting
+v2.33:
+ - fix "toroidal" check for non-ppp object
+ - added adjacency matrix transposing with t()-method directly to sg-objects
+  
+ 
+v2.32:
+ - 'n' and 'window' are no longer required from the pattern
+ - 'delauney' is now 'delaunay'
+ - better argument handling
+ 
+v2.31:
+ - fix some more sun compiler errors: added fmin-function to dists.cpp, for some reason is not defined in non-GNU math.h 
+
+v2.31:
+ - fix sun compiler errors with variable vector size 
+ 
+v2.30:
+ - tidy up compiler warnings
+ - update documentation 
+ 
+v2.29:
+ - added 'directed' to plot arrows
+ - added summary for 'sgc'
+
+v2.28:
+ - added the summary function for 'sg'
+ 
+v2.27:
+ - tidy up documentation
+ - remove unused code
+ - rename sg_to_sym to 'sg2sym' and add way-parameter
+ - parameter name for graph, 'e', changed to 'x' in functions 
+
+v2.26:
+ - added sg_to_sym_2way symmetrisation (mutual neighbours)
+v2.25:
+ - add a png-capture to spin3d()
+v2.24:
+ - fixed the plotting with rgl: no more additional plot
+ - added the possibility to provide the symmetric distance matrix
+ - improved sg2igraph, sg2adj and adj2sg
+ 
+v2.23
+ - add interface to igraph , sg2igraph() and igraph2sg()
+ 
+v2.22:
+ - modified Gabriel to k-Gabriel graph
+v2.21:
+ - added the plot.new-check to plot.sg
+v2.2:
+ - plot only clusters with atleast 'atleast=1' points.
+ - shortestPath now forces the graph to symmetric
+v2.1:
+ - renumber, stable release.
+ - fix print.sgc for RST parameter
+ - added the Signal-to-noise-Ratio graph
+ - cleaned up documentation
+v2.07:
+ - fix the lineplotting errors given by the NA's in draw vector
+v2.06:
+ - added shortestPath
+v2.05:
+ - fix sgc-class $N computation for clusters
+v2.04:
+ - fix the sgc-class $N to be from cluster count to point count
+v2.03:
+ - added 'which' to plot
+ - fiddled with the print.sg, removed checks and print whatever is in x$parameters
+ - fix cut.sg
+v2.02:
+ - fixed the print.sg: warning for RST (compared c(0,0,0) and "")
+ 
+ 

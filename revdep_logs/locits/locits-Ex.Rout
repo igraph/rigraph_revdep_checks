@@ -1,0 +1,1310 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "locits"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "locits-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('locits')
+Loading required package: wavethresh
+Loading required package: MASS
+WaveThresh: R wavelet software, release 4.6.6, installed
+
+Copyright Guy Nason and others 1993-2013
+
+Note: nlevels has been renamed to nlevelsWT
+
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("AutoBestBW")
+> ### * AutoBestBW
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: AutoBestBW
+> ### Title: Choose a good bandwidth for running mean smoothing of a EWS
+> ###   spectral estimator.
+> ### Aliases: AutoBestBW
+> ### Keywords: smooth
+> 
+> ### ** Examples
+> 
+> #
+> # Generate synthetic data
+> #
+> x <- rnorm(256)
+> #
+> # Compute best linear bandwidth
+> #
+> tmp <- AutoBestBW(x=x)
+> #
+> # Printing it out in my example gives:
+> # tmp
+> # [1] 168
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("AutoBestBW", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Cvarip2")
+> ### * Cvarip2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Cvarip2
+> ### Title: Computes variance of Haar wavelet coefficients of wavelet
+> ###   periodogram using C code.
+> ### Aliases: Cvarip2
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # See example from varip2
+> #
+> #
+> my.Pmat <- PsiJmat(-5, filter.number=1, family="DaubExPhase")
+> my.PsiJ <- PsiJ(-5, filter.number=1, family="DaubExPhase")
+> my.PsiJL <- sapply(my.PsiJ, "length")
+> Cvarip2(i=1, p=10, ll=2, S=c(1/2,1/4,1/8,1/16,1/32),
++     Pmat=my.Pmat, PsiJL=my.PsiJL)
+[1] 1.865244
+> #
+> # Gives answer 1.865244, which is the same as given in the example for varip2
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Cvarip2", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("HwdS")
+> ### * HwdS
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: HwdS
+> ### Title: Compute the non-decimated Haar wavelet transform without using
+> ###   periodic boundary conditions.
+> ### Aliases: HwdS
+> ### Keywords: algebra
+> 
+> ### ** Examples
+> 
+> #
+> # Apply Haar transform to Gaussian data
+> #
+> HwdS(rnorm(32))
+Class 'wd' : Discrete Wavelet Transform Object:
+       ~~  : List with 8 components with names
+              C D nlevels fl.dbase filter type bc date 
+
+$C and $D are LONG coefficient vectors
+
+Created on : Sat Jun 13 12:28:33 2015 
+Type of decomposition:  station 
+
+summary(.):
+----------
+Levels:  5 
+Length of original:  32 
+Filter was:  Haar wavelet 
+Boundary handling:  periodic 
+Transform type:  station 
+Date:  Sat Jun 13 12:28:33 2015 
+> #Class 'wd' : Discrete Wavelet Transform Object:
+> #       ~~  : List with 8 components with names
+> #              C D nlevels fl.dbase filter type bc date 
+> #
+> #$C and $D are LONG coefficient vectors
+> #
+> #Created on : Tue Jul 17 15:14:59 2012 
+> #Type of decomposition:  station 
+> #
+> #summary(.):
+> #----------
+> #Levels:  5 
+> #Length of original:  32 
+> #Filter was:  Haar wavelet 
+> #Boundary handling:  periodic 
+> #Transform type:  station 
+> #Date:  Tue Jul 17 15:14:59 2012 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("HwdS", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Rvarlacf")
+> ### * Rvarlacf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Rvarlacf
+> ### Title: Compute confidence intervals for localized autocovariance for
+> ###   locally stationary time series.
+> ### Aliases: Rvarlacf
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # Do localized autocovariance on a iid Gaussian sequence
+> #
+> tmp <- Rvarlacf(rnorm(256), nz=125)
+> #
+> # Plot the localized autocovariances over time (default plot, doesn't
+> # produce CIs)
+> #
+> ## Not run: plot(tmp)
+> #
+> # You should get a plot where the lag 0 acs are all near 1 and all the
+> # others are near zero, the acfs over time. 
+> #
+> ## Not run: plot(tmp, plotcor=FALSE, type="acf")
+> #
+> # This plots the autocovariances (note: \code{plotcor=FALSE}) and the
+> # type of plot is \code{"acf"} which means like a regular ACF plot, except
+> # this is c(125, tau), ie the acf localized to time=125 The confidence
+> # intervals are also plotted. 
+> # The plot subtitle indicates that it is c(125, tau) that is being plotted
+> #
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Rvarlacf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("StoreStatistics")
+> ### * StoreStatistics
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: StoreStatistics
+> ### Title: Interogates calculation store to see how well we are reusing
+> ###   previous calculations (debugging)
+> ### Aliases: StoreStatistics
+> ### Keywords: utilities
+> 
+> ### ** Examples
+> 
+> #
+> # Simulate some data
+> #
+> x <- tvar1sim()
+> #
+> # Calculate lacf and confidence intervals
+> #
+> x.lacf <- Rvarlacf(x=x, nz=50, var.lag.max=20)
+> #
+> # Find out how the store did
+> #
+> StoreStatistics()
+Number calculated outside framework:  0 
+Number calculated then stored:  270864 
+Number found in store:  46182312 
+
+Overall % calculated:  0.5830904 
+% outside framework:  0 
+> #Number calculated outside framework:  0 
+> #Number calculated then stored:  154440 
+> #Number found in store:  14980680 
+> #
+> #Overall % calculated:  1.020408 
+> #% outside framework:  0 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("StoreStatistics", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("covI")
+> ### * covI
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: covI
+> ### Title: Compute the covariance between two wavelet periodogram ordinates
+> ###   at the same scale, but different time locations.
+> ### Aliases: covI
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> P1 <- PsiJ(-5, filter.number=1, family="DaubExPhase")
+> #
+> # Compute the covariance
+> #
+> covI(II=c(1/2, 1/4, 1/8, 1/16, 1/32), m=1, n=3, ll=5, ThePsiJ=P1)
+[1] 0.8430809
+> #
+> # [1] 0.8430809
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("covI", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("covIwrap")
+> ### * covIwrap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: covIwrap
+> ### Title: A wrapper for the covI function.
+> ### Aliases: covIwrap
+> ### Keywords: ts ~kwd2
+> 
+> ### ** Examples
+> 
+> P1 <- PsiJ(-5, filter.number=1, family="DaubExPhase")
+> #
+> # First call to covIwrap
+> #
+> ans <- covIwrap(S=c(1/2, 1/4, 1/8, 1/16, 1/32), m=1, n=3, ll=5,
++     storewrap=NULL, P=P1)
+> #
+> # Make sure you keep the storewrap component.
+> #
+> my.storewrap <- ans$storewrap
+> #
+> # What is the answer?
+> #
+> ans$ans
+[1] 0.8430809
+> #[1] 0.8430809
+> #
+> # Issue next call to covIwrap: but storewrap argument is now the one we stored.
+> #
+> ans <- covIwrap(S=c(1/2, 1/4, 1/8, 1/16, 1/32), m=1, n=3, ll=5,
++     storewrap=my.storewrap, P=P1)
+> #
+> # This call will reuse the stored value. However, if you change any of the
+> # arguments then the store won't be used.
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("covIwrap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ewspec3")
+> ### * ewspec3
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ewspec3
+> ### Title: Compute evolutionary wavelet spectrum of a time series.
+> ### Aliases: ewspec3
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # Generate time series
+> #
+> x <- tvar1sim()
+> #
+> # Compute its evolutionary wavelet spectrum, with linear running mean smooth
+> #
+> x.ewspec3 <- ewspec3(x)
+> #
+> # Plot the answer, probably its a bit variable, because the default bandwidth
+> # is 5, which is probably inappropriate for many series
+> #
+> ## Not run: plot(x.ewspec3$S)
+> #
+> # Try a larger bandwidth
+> #
+> x.ewspec3 <- ewspec3(x, binwidth=100)
+> #
+> # Plot the answer, should look a lot smoother
+> #
+> # Note, a lot of high frequency power on the right hand side of the plot,
+> # which is expected as process looks like AR(1) with param of -0.9
+> #
+> ## Not run: plot(x.ewspec3$S)
+> #
+> # Do smoothing like ewspec (but additionally AutoReflect)
+> #
+> x.ewspec3 <- ewspec3(x, WPsmooth.type="wavelet")
+> #
+> # Plot the results
+> #
+> ## Not run: plot(x.ewspec3$S)
+> #
+> # Another possibility is to use AutoBestBW which tries to find the best
+> # linear smooth closest to a wavelet smooth. This makes use of ewspec3
+> #
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ewspec3", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ewspecHaarNonPer")
+> ### * ewspecHaarNonPer
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ewspecHaarNonPer
+> ### Title: Compute evolutionary wavelet spectrum (EWS) estimate based on
+> ###   the Haar wavelet transform.
+> ### Aliases: ewspecHaarNonPer
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # Requires wavethresh, so not run directly in installation of package
+> #
+> ewspecHaarNonPer(rnorm(512))
+$S
+Class 'wd' : Discrete Wavelet Transform Object:
+       ~~  : List with 8 components with names
+              C D nlevels fl.dbase filter type bc date 
+
+$C and $D are LONG coefficient vectors
+
+Created on : Sat Jun 13 12:28:36 2015 
+Type of decomposition:  station 
+
+summary(.):
+----------
+Levels:  9 
+Length of original:  512 
+Filter was:  Haar wavelet 
+Boundary handling:  periodic 
+Transform type:  station 
+Date:  Sat Jun 13 12:28:36 2015 
+
+$WavPer
+Class 'wd' : Discrete Wavelet Transform Object:
+       ~~  : List with 8 components with names
+              C D nlevels fl.dbase filter type bc date 
+
+$C and $D are LONG coefficient vectors
+
+Created on : Sat Jun 13 12:28:36 2015 
+Type of decomposition:  station 
+
+summary(.):
+----------
+Levels:  9 
+Length of original:  512 
+Filter was:  Haar wavelet 
+Boundary handling:  periodic 
+Transform type:  station 
+Date:  Sat Jun 13 12:28:36 2015 
+
+$rm
+            -1         -2         -3        -4        -5        -6         -7
+-1 1.500000000 0.75000000 0.37500000 0.1875000  0.093750  0.046875  0.0234375
+-2 0.750000000 1.75000000 1.12500000 0.5625000  0.281250  0.140625  0.0703125
+-3 0.375000000 1.12500000 2.87500000 2.0625000  1.031250  0.515625  0.2578125
+-4 0.187500000 0.56250000 2.06250000 5.4375000  4.031250  2.015625  1.0078125
+-5 0.093750000 0.28125000 1.03125000 4.0312500 10.718750  8.015625  4.0078125
+-6 0.046875000 0.14062500 0.51562500 2.0156250  8.015625 21.359375 16.0078125
+-7 0.023437500 0.07031250 0.25781250 1.0078125  4.007812 16.007812 42.6796875
+-8 0.011718750 0.03515625 0.12890625 0.5039062  2.003906  8.003906 32.0039062
+-9 0.005859375 0.01757812 0.06445312 0.2519531  1.001953  4.001953 16.0019531
+            -8           -9
+-1  0.01171875 5.859375e-03
+-2  0.03515625 1.757812e-02
+-3  0.12890625 6.445312e-02
+-4  0.50390625 2.519531e-01
+-5  2.00390625 1.001953e+00
+-6  8.00390625 4.001953e+00
+-7 32.00390625 1.600195e+01
+-8 85.33984375 6.400195e+01
+-9 64.00195312 1.706699e+02
+
+$irm
+              -1            -2            -3            -4            -5
+-1  8.525340e-01 -3.940053e-01  0.0481410499 -0.0078233426  0.0013566504
+-2 -3.940053e-01  9.550397e-01 -0.3610578745  0.0586750695 -0.0101748782
+-3  4.814105e-02 -3.610579e-01  0.6370103405 -0.2335267767  0.0404960154
+-4 -7.823343e-03  5.867507e-02 -0.2335267767  0.3534639059 -0.1273555592
+-5  1.356650e-03 -1.017488e-02  0.0404960154 -0.1273555592  0.1824193597
+-6 -2.390236e-04  1.792677e-03 -0.0071348530  0.0224383359 -0.0653043628
+-7  4.225946e-05 -3.169460e-04  0.0012614450 -0.0039671071  0.0115458385
+-8 -7.421527e-06  5.566145e-05 -0.0002215326  0.0006966959 -0.0020276583
+-9  1.141685e-06 -8.562637e-06  0.0000340793 -0.0001071757  0.0003119233
+              -6            -7            -8            -9
+-1 -0.0002390236  4.225946e-05 -7.421527e-06  1.141685e-06
+-2  0.0017926766 -3.169460e-04  5.566145e-05 -8.562637e-06
+-3 -0.0071348530  1.261445e-03 -2.215326e-04  3.407930e-05
+-4  0.0224383359 -3.967107e-03  6.966959e-04 -1.071757e-04
+-5 -0.0653043628  1.154584e-02 -2.027658e-03  3.119233e-04
+-6  0.0919966972 -3.285630e-02  5.770161e-03 -8.876482e-04
+-7 -0.0328562958  4.605393e-02 -1.632201e-02  2.510884e-03
+-8  0.0057701605 -1.632201e-02  2.265998e-02 -7.091590e-03
+-9 -0.0008876482  2.510884e-03 -7.091590e-03  8.302349e-03
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ewspecHaarNonPer", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getridofendNA")
+> ### * getridofendNA
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getridofendNA
+> ### Title: Replaces all NAs in vector by 0
+> ### Aliases: getridofendNA
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> #
+> #
+> #
+> x <- c(3, 4, 6, NA, 3)
+> getridofendNA(x)
+[1] 3 4 6 0 3
+> #[1] 3 4 6 0 3
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getridofendNA", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("hwtos2")
+> ### * hwtos2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: hwtos2
+> ### Title: Test of second-order stationarity using wavelets.
+> ### Aliases: hwtos2
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # First, test a set of iid Gaussians: should be stationary!
+> #
+> hwtos2(rnorm(256))
+  7    6    5    4    3  
+Class 'tos' : Stationarity Object :
+       ~~~~  : List with 9 components with names
+              nreject rejpval spvals sTS AllTS AllPVal alpha x xSD 
+
+
+summary(.):
+----------
+There are  155  hypothesis tests altogether
+There were  0  FDR rejects
+No p-values were smaller than the FDR val of:   
+Using Bonferroni rejection p-value is  0.0003225806 
+And there would be  0  rejections.
+> #  8    7    6    5    4    3  
+> #Class 'tos' : Stationarity Object :
+> #       ~~~~  : List with 9 components with names
+> #              nreject rejpval spvals sTS AllTS AllPVal alpha x xSD 
+> #
+> #
+> #summary(.):
+> #----------
+> #There are  186  hypothesis tests altogether
+> #There were  0  FDR rejects
+> #No p-values were smaller than the FDR val of:   
+> #Using Bonferroni rejection p-value is  0.0002688172 
+> #And there would be  0  rejections.
+> #
+> #  NOTE: the summary indicates that nothing was rejected: hence stationary!
+> #
+> # Second, example. Concatenated Gaussians with different variances
+> #
+> hwtos2(c(rnorm(256), rnorm(256,sd=2)))
+  8    7    6    5    4    3  
+Class 'tos' : Stationarity Object :
+       ~~~~  : List with 9 components with names
+              nreject rejpval spvals sTS AllTS AllPVal alpha x xSD 
+
+
+summary(.):
+----------
+There are  186  hypothesis tests altogether
+There were  4  FDR rejects
+The rejection p-value was  0.0004430985 
+Using Bonferroni rejection p-value is  0.0002688172 
+And there would be  3  rejections.
+Listing FDR rejects... (thanks Y&Y!)
+P: 6 HWTlev:  0  indices on next line...[1] 1
+P: 6 HWTlev:  4  indices on next line...[1] 15
+P: 7 HWTlev:  0  indices on next line...[1] 1
+P: 8 HWTlev:  0  indices on next line...[1] 1
+> #  9    8    7    6    5    4    3  
+> #Class 'tos' : Stationarity Object :
+> #       ~~~~  : List with 9 components with names
+> #              nreject rejpval spvals sTS AllTS AllPVal alpha x xSD 
+> #
+> #
+> #summary(.):
+> #----------
+> #There are  441  hypothesis tests altogether
+> #There were  5  FDR rejects
+> #The rejection p-value was  3.311237e-06 
+> #Using Bonferroni rejection p-value is  0.0001133787 
+> #And there would be  5  rejections.
+> #Listing FDR rejects... (thanks Y&Y!)
+> #P: 5 HWTlev:  0  indices on next line...[1] 1
+> #P: 6 HWTlev:  0  indices on next line...[1] 1
+> #P: 7 HWTlev:  0  indices on next line...[1] 1
+> #P: 8 HWTlev:  0  indices on next line...[1] 1
+> #P: 9 HWTlev:  0  indices on next line...[1] 1
+> #
+> # NOTE: This time 5 Haar wavelet coefficients got rejected: hence series
+> # is not stationary.
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("hwtos2", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("idlastzero")
+> ### * idlastzero
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: idlastzero
+> ### Title: Return the index of the last zero in a vector
+> ### Aliases: idlastzero
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> idlastzero(c(3,4,5,0,9))
+[1] 4
+> #[1] 4
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("idlastzero", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("lacf")
+> ### * lacf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: lacf
+> ### Title: Compute localized autocovariance.
+> ### Aliases: lacf
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # With wavethresh attached, note binwidth is fabricated here,
+> # just to make the example work. The lacf implementation in
+> # the costat package performs wavelet (ie maybe better) smoothing automatically
+> #
+> v <- lacf(rnorm(256), binwidth=40)
+> #
+> # With costat attached also
+> #
+> ## Not run: plot(v)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("lacf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("littlevar")
+> ### * littlevar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: littlevar
+> ### Title: Subsidiary helper function for hwtos2
+> ### Aliases: littlevar
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> #
+> # Not intended for direct user use
+> #
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("littlevar", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("locits-package")
+> ### * locits-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: locits-package
+> ### Title: New test of second-order stationarity and confidence intervals
+> ###   for localized autocovariance.
+> ### Aliases: locits-package locits
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # Here's a simple simulated example.
+> #
+> # A series which is a concatenation of two iid Gaussian series with
+> # different variances.
+> #
+> x <- c(rnorm(256, sd=1), rnorm(256, sd=2))
+> #
+> # Let's do a test of stationarity
+> #
+> st.test <- hwtos2(x)
+  8    7    6    5    4    3  
+> #8    7    6    5    4    3  
+> #
+> # Ok, that's the computation gone, let's look at the results.
+> #
+> st.test
+Class 'tos' : Stationarity Object :
+       ~~~~  : List with 9 components with names
+              nreject rejpval spvals sTS AllTS AllPVal alpha x xSD 
+
+
+summary(.):
+----------
+There are  186  hypothesis tests altogether
+There were  5  FDR rejects
+The rejection p-value was  0.0001445035 
+Using Bonferroni rejection p-value is  0.0002688172 
+And there would be  5  rejections.
+Listing FDR rejects... (thanks Y&Y!)
+P: 4 HWTlev:  4  indices on next line...[1] 15
+P: 5 HWTlev:  0  indices on next line...[1] 1
+P: 6 HWTlev:  0  indices on next line...[1] 1
+P: 7 HWTlev:  0  indices on next line...[1] 1
+P: 8 HWTlev:  0  indices on next line...[1] 1
+> 
+> #Class 'tos' : Stationarity Object :
+> #~~~~  : List with 9 components with names
+> #	nreject rejpval spvals sTS AllTS AllPVal alpha x xSD 
+> #
+> #
+> #summary(.):
+> #----------
+> #There are  186  hypothesis tests altogether
+> #There were  4  FDR rejects
+> #The rejection p-value was  0.0001376564 
+> #Using Bonferroni rejection p-value is  0.0002688172 
+> #And there would be  4  rejections.
+> #Listing FDR rejects... (thanks Y&Y!)
+> #P: 5 HWTlev:  0  indices on next line...[1] 1
+> #P: 6 HWTlev:  0  indices on next line...[1] 1
+> #P: 7 HWTlev:  0  indices on next line...[1] 1
+> #P: 8 HWTlev:  0  indices on next line...[1] 1
+> #
+> # In the lines above if there are any rejects then the series is
+> # deemed to be nonstationary, and note that there were 4 in both
+> # the lines above (sometimes FDR rejects a few more).
+> #
+> # You can also plot the object and it shows you where it thinks the
+> # nonstationarities are
+> #
+> ## Not run: plot(st.test)
+> #
+> # See the help page for the hwtos2 function, where there is an example
+> # with a stationary series.
+> #
+> # For the localized autocovariance...
+> #
+> # Let's use the function tvar1sim which generates a time-varying AR model
+> # with AR(1) paramter varying over the extent of the series from 0.9
+> # to -0.9 (that is, near the start of the series it behaves like an
+> # AR(1) with parameter 0.9, and near the end like an AR(1) with parameter
+> # -0.9, and in between the parameter is somewhere between 0.9 and -0.9
+> # figured linearly between the two.
+> #
+> x <- tvar1sim()
+> #
+> # Plot it, so you know what the series looks like, should always do this.
+> #
+> ## Not run: ts.plot(x)
+> #
+> # Now, let's compute the localized autocovariance and also confidence intervals
+> # For the variance, let's look at the first 20 lags
+> #
+> # Do it at t=50 and t=450, ie what is the localized autocovariance at these
+> # two times.
+> #
+> x.lacf.50 <- Rvarlacf(x=x, nz=50, var.lag.max=20)
+> x.lacf.450 <- Rvarlacf(x=x, nz=450, var.lag.max=20)
+> #
+> # Now plot the answers, you may want to do this on two different plots
+> # so that you can compare the answers
+> #
+> #
+> ## Not run: plot(x.lacf.50, plotcor=FALSE, type="acf")
+> ## Not run: plot(x.lacf.450, plotcor=FALSE, type="acf")
+> #
+> # Note that the plotcor argument is set so covariances and not correlations
+> # are plotted. Also, the type is set to "acf" to make the plot *look* like
+> # the regular acf plot. But DON'T be fooled, it is not the regular acf
+> # that is plotted, but a time localized plot. The two plots should look
+> # very different, both like AR(1) but with different parameters (from the
+> # same time series).
+> #
+> # You could also plot the regular acf and see how it gets it wrong!
+> #
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("locits-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mkcoef")
+> ### * mkcoef
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mkcoef
+> ### Title: Compute discrete wavelets.
+> ### Aliases: mkcoef
+> ### Keywords: algebra
+> 
+> ### ** Examples
+> 
+> #
+> # E.g. compute discrete Haar wavelets on scales 1, 2, 3.
+> #
+> mkcoef(-3, 1, "DaubExPhase")
+[[1]]
+[1]  0.7071068 -0.7071068
+
+[[2]]
+[1]  0.5  0.5 -0.5 -0.5
+
+[[3]]
+[1]  0.3535534  0.3535534  0.3535534  0.3535534 -0.3535534 -0.3535534 -0.3535534
+[8] -0.3535534
+
+> #[[1]]
+> #[1]  0.7071068 -0.7071068
+> #
+> #[[2]]
+> #[1]  0.5  0.5 -0.5 -0.5
+> #
+> #[[3]]
+> #[1]  0.3535534  0.3535534  0.3535534  0.3535534 -0.3535534 -0.3535534 -0.3535534
+> #[8] -0.3535534
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mkcoef", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.lacf")
+> ### * plot.lacf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.lacf
+> ### Title: Plot localized autocovariance (lacf) object.
+> ### Aliases: plot.lacf
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # Make some dummy data, e.g. white noise
+> #
+> v <- rnorm(256)
+> #
+> # Compute the localized autocovariance (ok, the input is stationary
+> # but this is just an example. More interesting things could be achieved
+> # by putting the results of simulating from a LSW process, or piecewise
+> # stationary by concatenating different stationary realizations, etc.
+> #
+> vlacf <- lacf(v, lag.max=30)
+> #
+> # Now let's do some plotting of the localized autocovariance
+> #
+> ## Not run: plot(vlacf, lags=0:6)
+> #
+> # Should get a plot where lag 0 is all up at value 1, and all other
+> # autocorrelations are near zero (since its white noise).
+> #
+> #
+> # How about just looking at lags 0, 2 and 4, and some different colours.
+> #
+> ## Not run: plot(vlacf, lags=c(0,2,4), lcol=c(1,2,3))
+> #
+> # O.k. Let's concentrate on time t=200, let's look at a standard acf
+> # plot near there.
+> #
+> ## Not run: plot(vlacf, type="acf", the.time=200)
+> #
+> # Now plot the autocovariance, rather than the autocorrelation.
+> #
+> ## Not run: plot(vlacf, type="acf", the.time=200, plotcor=FALSE)
+> #
+> # Actually, the plot doesn't look a lot different as the series is white
+> # noise, but it is different if you look closely.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.lacf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.lacfCI")
+> ### * plot.lacfCI
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.lacfCI
+> ### Title: Plot confidence intervals for localized autocovariance for
+> ###   locally stationary time series.
+> ### Aliases: plot.lacfCI
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # Simulate a TVAR(1) process
+> #
+> x <- tvar1sim()
+> #
+> # Computes its time-localized autocovariance and confidence intervals
+> # Note: smoothing is done automatically!
+> #
+> x.lacf <- Rvarlacf(x=x, nz=50, var.lag.max=20)
+> #
+> # Now plot this, plot covariances as an acf plot, with the CIs
+> #
+> ## Not run: plot(x.lacf, type="acf", plotcor=FALSE)
+> #
+> # Now plot it as a line plot, as correlations and can't do CIs
+> #
+> ## Not run: plot(x.lacf)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.lacfCI", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.tos")
+> ### * plot.tos
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.tos
+> ### Title: Produces a graphical representation of the results of a test of
+> ###   stationarity.
+> ### Aliases: plot.tos
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # Produces an interesting plot with high probability
+> #
+> #
+> # Note that the input time series is two concatenated white noise
+> # sequences with very different variances.
+> #
+> answer <- hwtos2(c(rnorm(256), rnorm(256, sd=5)))
+  8    7    6    5    4    3  
+> ## Not run: plot(answer)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.tos", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print.lacf")
+> ### * print.lacf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.lacf
+> ### Title: Print lacf class object
+> ### Aliases: print.lacf
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # Make some dummy data, e.g. white noise
+> #
+> v <- rnorm(256)
+> #
+> # Compute the localized autocovariance (ok, the input is stationary
+> # but this is just an example. More interesting things could be achieved
+> # by putting the results of simulating from a LSW process, or piecewise
+> # stationary by concatenating different stationary realizations, etc.
+> #
+> vlacf <- lacf(v, lag.max=30)
+> #
+> # Now let's print the lacf object 
+> #
+> print(vlacf)
+Class 'lacf' : Localized Autocovariance/correlation Object:
+       ~~~~  : List with 7 components with names
+              lacf lacr name date SmoothWP S J 
+
+
+summary(.):
+----------
+Name of originating time series:  v 
+Date produced:  Sat Jun 13 12:28:41 2015 
+Number of times:  256 
+Number of lags:  31 
+> #Class 'lacf' : Localized Autocovariance/correlation Object:
+> #       ~~~~  : List with 3 components with names
+> #             lacf lacr date 
+> #
+> #
+> #summary(.):
+> #----------
+> #Name of originating time series:  
+> #Date produced:  Thu Oct 25 12:11:29 2012 
+> #Number of times:  256 
+> #Number of lags:  30 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.lacf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print.lacfCI")
+> ### * print.lacfCI
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.lacfCI
+> ### Title: Print basic information about a 'lacfCI' object.
+> ### Aliases: print.lacfCI
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # See example on Rvarlacf help page
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.lacfCI", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print.tos")
+> ### * print.tos
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print.tos
+> ### Title: Print out a 'tos' class object, eg from the 'link{hwtos2}'
+> ###   function.
+> ### Aliases: print.tos
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # See example at end of help for hwtos2
+> #
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print.tos", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("runmean")
+> ### * runmean
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: runmean
+> ### Title: Compute a running mean of a vector
+> ### Aliases: runmean
+> ### Keywords: smooth
+> 
+> ### ** Examples
+> 
+> runmean(1:6, 2)
+[1] 1.0 1.5 2.5 3.5 4.5 5.5
+> #
+> # [1] 1.0 1.5 2.5 3.5 4.5 5.5
+> #
+> runmean(1:14, 4)
+ [1]  1.75  2.50  3.50  4.50  5.50  6.50  7.50  8.50  9.50 10.50 11.50 12.50
+[13] 13.25 13.50
+> #
+> #  [1]  1.75  2.50  3.50  4.50  5.50  6.50  7.50  8.50  9.50 10.50 11.50 12.5
+> # [13] 13.25 13.50
+> #
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("runmean", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.lacf")
+> ### * summary.lacf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.lacf
+> ### Title: Summarizes a lacf object
+> ### Aliases: summary.lacf
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # Make some dummy data, e.g. white noise
+> #
+> v <- rnorm(256)
+> #
+> # Compute the localized autocovariance (ok, the input is stationary
+> # but this is just an example. More interesting things could be achieved
+> # by putting the results of simulating from a LSW process, or piecewise
+> # stationary by concatenating different stationary realizations, etc.
+> #
+> vlacf <- lacf(v, lag.max=20)
+> #
+> # Now let's summarize the lacf object
+> #
+> summary(vlacf)
+Name of originating time series:  v 
+Date produced:  Sat Jun 13 12:28:42 2015 
+Number of times:  256 
+Number of lags:  21 
+> #Name of originating time series:  
+> #Date produced:  Thu Oct 25 12:11:29 2012 
+> #Number of times:  256 
+> #Number of lags:  20  
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.lacf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.lacfCI")
+> ### * summary.lacfCI
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.lacfCI
+> ### Title: Produce a brief summary of the contents of a 'lacfCI' object
+> ### Aliases: summary.lacfCI
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # See example in the Rvarlacf function
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.lacfCI", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.tos")
+> ### * summary.tos
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.tos
+> ### Title: Summarize the results of a test of stationarity
+> ### Aliases: summary.tos
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # See example for hwtos2, this contains two examples where
+> # summary.tos (as summary(.) is used in the output.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.tos", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("tvar1sim")
+> ### * tvar1sim
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: tvar1sim
+> ### Title: Simulate a realization from a particular TVAR(1) model.
+> ### Aliases: tvar1sim
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # Generate realization from the TVAR(1) process
+> #
+> x <- tvar1sim()
+> #
+> # Maybe plot it
+> #
+> ## Not run: ts.plot(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("tvar1sim", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("varip2")
+> ### * varip2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: varip2
+> ### Title: Direct computation of estimate of variance of v_ip, the Haar
+> ###   wavelet coefficients of the periodogram.
+> ### Aliases: varip2
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> #
+> # Generate autocorrelation wavelets
+> #
+> P1 <- PsiJ(-5, filter.number=1, family="DaubExPhase")
+> #
+> #
+> # Now compute varip2: this is the variance of the Haar wavelet coefficient
+> # at the finest scale, location 10 and P1 autocorrelation wavelet.
+> # Note, I've used S to be the exact coefficients which would be for white noise.
+> # In practice, S would be an *estimate* calculated from the data.
+> #
+> varip2(i=1, p=10, ll=2, S=c(1/2, 1/4, 1/8, 1/16, 1/32), P=P1)
+$covAA
+[1] 1.988298
+
+$covAB
+[1] 0.1230545
+
+$covBB
+[1] 1.988298
+
+$ans
+[1] 1.865244
+
+> #
+> # Ans component is 1.865244
+>   
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("varip2", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("whichlevel")
+> ### * whichlevel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: whichlevel
+> ### Title: Helper routine for 'mkcoef'
+> ### Aliases: whichlevel
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+> whichlevel(6)
+[1] 11
+> # [1] 11
+> #
+> # E.g. mkcoef wanted to generate 6 levels of discrete wavelets and
+> # whichlevel tells it that it needs to generate a wavelet transform
+> # of at least 11 levels.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("whichlevel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  8.525 0.3 8.842 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

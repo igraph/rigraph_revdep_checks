@@ -1,0 +1,190 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "popgraph"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "popgraph-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('popgraph')
+Loading required package: ggplot2
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("geom_edgelabels")
+> ### * geom_edgelabels
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: geom_edgelabels
+> ### Title: Plotting of a population graph edge labels using ggplot neumonic
+> ### Aliases: geom_edgelabels
+> 
+> ### ** Examples
+> 
+> a <- matrix( c(0,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0),nrow=4)
+> rownames(a) <- colnames(a) <- LETTERS[1:4]
+> graph <- as.popgraph(a)
+> igraph::V(graph)$x <- runif(4)
+> igraph::V(graph)$y <- runif(4)
+> igraph::E(graph)$Label <- LETTERS[1:4]
+> require(ggplot2)
+> p <- ggplot() + geom_edgeset( aes(x=x,y=y), graph )
+> p + geom_edgelabels(aes(x=x,y=y,label=Label),graph)
+> p + geom_edgelabels(aes(x=x,y=y,label=Label),graph,color="red")
+> p + geom_edgelabels(aes(x=x,y=y,label=Label),graph,color="red", offset=c(.005,-0.004))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("geom_edgelabels", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("geom_edgeset")
+> ### * geom_edgeset
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: geom_edgeset
+> ### Title: Plotting of a population graph edge set using ggplot neumonic
+> ### Aliases: geom_edgeset
+> 
+> ### ** Examples
+> 
+> a <- matrix( c(0,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0),nrow=4)
+> rownames(a) <- colnames(a) <- LETTERS[1:4]
+> graph <- as.popgraph(a)
+> igraph::V(graph)$x <- runif(4)
+> igraph::V(graph)$y <- runif(4)
+> require(ggplot2)
+> ggplot() + geom_edgeset( aes(x=x,y=y), graph )
+> ggplot() + geom_edgeset( aes(x=x,y=y), graph, color="darkblue" )
+> require(grid)
+Loading required package: grid
+> ggplot() + geom_edgeset( aes(x=x,y=y), graph, directed=TRUE, arrow=arrow(length=unit(0.5,"cm")) )
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("geom_edgeset", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:grid’
+
+> nameEx("geom_nodeset")
+> ### * geom_nodeset
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: geom_nodeset
+> ### Title: Plotting of a population graph edge set using ggplot neumonic
+> ### Aliases: geom_nodeset
+> 
+> ### ** Examples
+> 
+> library(igraph)
+> a <- matrix( c(0,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0),nrow=4)
+> rownames(a) <- colnames(a) <- LETTERS[1:4]
+> graph <- as.popgraph(a)
+> igraph::V(graph)$x <- runif(4)
+> igraph::V(graph)$y <- runif(4)
+> require(ggplot2)
+> ggplot() + geom_nodeset( aes(x=x,y=y), graph )
+> igraph::V(graph)$group <- c("A","A","B","B")
+> ggplot() + geom_nodeset( aes(x=x,y=y,color=group), graph, size=4 )
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("geom_nodeset", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("popgraph-operator-minus")
+> ### * popgraph-operator-minus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: -.popgraph
+> ### Title: Overload '-' operator for pairs of 'popgraph' objects
+> ### Aliases: -.popgraph
+> 
+> ### ** Examples
+> 
+> library(igraph)
+> e1 <- as.popgraph( graph.atlas(716) )
+> e2 <- as.popgraph( graph.atlas(806) )
+> e3 <- e1 - e2
+> par(mfrow=c(1,3))
+> l <- layout.fruchterman.reingold( e1 )
+> plot(e1, layout=l)
+> plot(e2, layout=l)
+> plot(e3, layout=l)
+> par(mfrow=c(1,1))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("popgraph-operator-minus", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("theme_empty")
+> ### * theme_empty
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: theme_empty
+> ### Title: A blank theme for plotting networks
+> ### Aliases: theme_empty
+> 
+> ### ** Examples
+> 
+> data(lopho)
+> require(ggplot2)
+> require(igraph)
+> layout <- layout.fruchterman.reingold( lopho )
+Error in check_version(graph) : 
+  This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+Calls: layout.fruchterman.reingold -> E -> update_es_ref -> check_version
+Execution halted

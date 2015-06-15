@@ -1,0 +1,480 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "ror"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "ror-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('ror')
+Loading required package: rJava
+Loading required package: ROI
+ROI: R Optimization Infrastructure
+Registered solver plugins: glpk.
+Default solver: ROI_NULL.
+Loading required package: ROI.plugin.glpk
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("gibbs")
+> ### * gibbs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sample.vfs.gibbs
+> ### Title: Robust Ordinal Regression Value Function sampler
+> ### Aliases: sample.vfs.gibbs
+> ### Keywords: robust
+> 
+> ### ** Examples
+> 
+> # Set Java VM memory use to 2g not to run out of heap space
+> options( java.parameters = "-Xmx2g" )
+> library(ror)
+> 
+> ## Function needed to generate pareto-optimal alternatives
+> randomPointFromHypersphere <- function(ncrit) {
++   rns <- c()
++   while(TRUE) {
++     rns <- rnorm(ncrit)
++     if (all(rns > 0)) {
++       break
++     }
++   }
++   mul <- 1 / sqrt(sum(rns * rns))
++   return(rns * mul)
++ }
+> 
+> performances <- t(replicate(10, randomPointFromHypersphere(5)))  # 10 alts, 5 crit
+> preferences <- matrix(c(1, 2, 4, 5, 7, 8, 1, 3), ncol=2, byrow=TRUE)
+> 
+> vfs <- sample.vfs.gibbs(performances, preferences, nr=10, thinning=2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gibbs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("maximalvectors")
+> ### * maximalvectors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: maximalvectors
+> ### Title: Maximal Vector Computation
+> ### Aliases: maximalvectors
+> ### Keywords: robust
+> 
+> ### ** Examples
+> 
+> # Set Java VM memory use to 2g not to run out of heap space
+> options( java.parameters = "-Xmx2g" )
+> library(ror)
+> 
+> ## Test with pareto-optimal alternatives
+> performances <- matrix(c(0.1823507, 0.5232321, 0.7595968, 0.2964752,
++ 0.1676054, 0.5408093, 0.1604821,0.4699517, 0.4170541, 0.5357071,
++ 0.1292226, 0.2366909, 0.7583132, 0.3765545, 0.4587448), ncol=5, byrow=TRUE)
+> nonDominated <- maximalvectors(performances)
+> stopifnot(nrow(nonDominated) == 3)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("maximalvectors", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("maximalvectors.indices")
+> ### * maximalvectors.indices
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: maximalvectors.indices
+> ### Title: Maximal Vector index computation
+> ### Aliases: maximalvectors.indices
+> ### Keywords: robust
+> 
+> ### ** Examples
+> 
+> # Set Java VM memory use to 2g not to run out of heap space
+> options( java.parameters = "-Xmx2g" )
+> library(ror)
+> 
+> performances <- matrix(runif(n=50), nrow=10) # 10 alts, 5 crit
+> 
+> nonDominatedIdx <- maximalvectors.indices(performances)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("maximalvectors.indices", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rejection")
+> ### * rejection
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sample.vfs.rejection
+> ### Title: Robust Ordinal Regression Value Function sampler
+> ### Aliases: sample.vfs.rejection
+> ### Keywords: robust
+> 
+> ### ** Examples
+> 
+> # Set Java VM memory use to 2g not to run out of heap space
+> options( java.parameters = "-Xmx2g" )
+> library(ror)
+> 
+> ## Function needed to generate pareto-optimal alternatives
+> randomPointFromHypersphere <- function(ncrit) {
++   rns <- c()
++   while(TRUE) {
++     rns <- rnorm(ncrit)
++     if (all(rns > 0)) {
++       break
++     }
++   }
++   mul <- 1 / sqrt(sum(rns * rns))
++   return(rns * mul)
++ }
+> 
+> performances <- t(replicate(10, randomPointFromHypersphere(5)))  # 10 alts, 5 crit
+> preferences <- matrix(c(1, 2, 4, 5, 7, 8, 1, 3), ncol=2, byrow=TRUE)
+> 
+> vfs <- sample.vfs.rejection(performances, preferences, nr=10)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rejection", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ror-package")
+> ### * ror-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ror-package
+> ### Title: Robust Ordinal Regression MCDA sampler/solver
+> ### Aliases: ror-package ror
+> ### Keywords: robust
+> 
+> ### ** Examples
+> 
+> # Set Java VM memory use to 2g not to run out of heap space
+> options( java.parameters = "-Xmx2g" )
+> library(ror)
+> 
+> ## Function needed to generate pareto-optimal alternatives
+> randomPointFromHypersphere <- function(ncrit) {
++   rns <- c()
++   while(TRUE) {
++     rns <- rnorm(ncrit)
++     if (all(rns > 0)) {
++       break
++     }
++   }
++   mul <- 1 / sqrt(sum(rns * rns))
++   return(rns * mul)
++ }
+> 
+> performances <- t(replicate(10, randomPointFromHypersphere(5)))  # 10 alts, 5 crit
+> preferences <- matrix(c(1, 2, 4, 5, 7, 8, 1, 3), ncol=2, byrow=TRUE)
+> 
+> ## Necessary relation
+> utagms(performances, preferences, necessary=TRUE, strictVF=TRUE)
+       [,1]  [,2]  [,3]  [,4]  [,5]  [,6]  [,7]  [,8]  [,9] [,10]
+ [1,]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [2,] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [3,] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [4,] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+ [5,] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+ [6,] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+ [7,] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+ [8,] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+ [9,] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+[10,] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+attr(,"class")
+[1] "binary.relation"
+> ## Possible relation
+> utagms(performances, preferences, necessary=FALSE, strictVF=TRUE)
+       [,1] [,2] [,3]  [,4] [,5] [,6]  [,7] [,8] [,9] [,10]
+ [1,]  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE
+ [2,] FALSE TRUE TRUE  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE
+ [3,] FALSE TRUE TRUE  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE
+ [4,]  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE
+ [5,]  TRUE TRUE TRUE FALSE TRUE TRUE  TRUE TRUE TRUE  TRUE
+ [6,]  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE
+ [7,]  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE
+ [8,]  TRUE TRUE TRUE  TRUE TRUE TRUE FALSE TRUE TRUE  TRUE
+ [9,]  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE
+[10,]  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE TRUE TRUE  TRUE
+attr(,"class")
+[1] "binary.relation"
+> 
+> ## RORSMAA giving the POIs and RAIs
+> ror <- rorsmaa(performances, preferences)
+> print(ror$poi)
+        [,1]   [,2]   [,3]   [,4]   [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
+ [1,] 1.0000 1.0000 1.0000 0.5530 0.9678 0.6230 0.4871 0.8546 0.2521 0.9136
+ [2,] 0.0000 1.0000 0.4714 0.1074 0.5627 0.1360 0.2401 0.4991 0.0186 0.5812
+ [3,] 0.0000 0.5286 1.0000 0.1523 0.6127 0.3396 0.1613 0.5930 0.1122 0.6501
+ [4,] 0.4470 0.8926 0.8477 1.0000 1.0000 0.6239 0.4790 0.7473 0.2185 0.8423
+ [5,] 0.0322 0.4373 0.3873 0.0000 1.0000 0.1881 0.1975 0.4614 0.0147 0.5498
+ [6,] 0.3770 0.8640 0.6604 0.3761 0.8119 1.0000 0.4192 0.6367 0.0681 0.7468
+ [7,] 0.5129 0.7599 0.8387 0.5210 0.8025 0.5808 1.0000 1.0000 0.3702 0.8905
+ [8,] 0.1454 0.5009 0.4070 0.2527 0.5386 0.3633 0.0000 1.0000 0.1604 0.5895
+ [9,] 0.7479 0.9814 0.8878 0.7815 0.9853 0.9319 0.6298 0.8396 1.0000 0.9327
+[10,] 0.0864 0.4188 0.3499 0.1577 0.4502 0.2532 0.1095 0.4105 0.0673 1.0000
+attr(,"class")
+[1] "valued.relation"
+> print(ror$rai)
+        [,1]   [,2]   [,3]   [,4]   [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
+ [1,] 0.0343 0.2166 0.3014 0.3011 0.1114 0.0307 0.0045 0.0000 0.0000 0.0000
+ [2,] 0.0000 0.0001 0.0015 0.0290 0.1625 0.1613 0.1511 0.1703 0.1796 0.1446
+ [3,] 0.0000 0.0018 0.0367 0.0941 0.1382 0.1529 0.1778 0.1645 0.1489 0.0851
+ [4,] 0.1003 0.1639 0.2231 0.1659 0.1348 0.0970 0.0519 0.0465 0.0166 0.0000
+ [5,] 0.0000 0.0002 0.0042 0.0356 0.0996 0.1581 0.1686 0.1301 0.1273 0.2763
+ [6,] 0.0268 0.1983 0.1441 0.1226 0.0870 0.0824 0.0960 0.1213 0.0931 0.0284
+ [7,] 0.3179 0.1278 0.0928 0.0800 0.0824 0.0943 0.0993 0.0708 0.0347 0.0000
+ [8,] 0.0000 0.0788 0.0660 0.0704 0.0726 0.0956 0.0921 0.1234 0.1745 0.2266
+ [9,] 0.5071 0.1894 0.1012 0.0628 0.0519 0.0493 0.0251 0.0090 0.0036 0.0006
+[10,] 0.0136 0.0231 0.0290 0.0385 0.0596 0.0784 0.1336 0.1641 0.2217 0.2384
+attr(,"class")
+[1] "smaa.acceptabilities"
+> cat(ror$misses, "misses while generating 10k value functions")
+92679 misses while generating 10k value functions> 
+> ## Sample some value functions
+> vfs <- sample.vfs.gibbs(performances, preferences, nr=10, thinning=2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ror-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rorsmaa")
+> ### * rorsmaa
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rorsmaa
+> ### Title: Robust Ordinal Regression SMAA sampler
+> ### Aliases: rorsmaa
+> ### Keywords: robust
+> 
+> ### ** Examples
+> 
+> library(ror)
+> 
+> ## Function needed to generate pareto-optimal alternatives
+> randomPointFromHypersphere <- function(ncrit) {
++   rns <- c()
++   while(TRUE) {
++     rns <- rnorm(ncrit)
++     if (all(rns > 0)) {
++       break
++     }
++   }
++   mul <- 1 / sqrt(sum(rns * rns))
++   return(rns * mul)
++ }
+> 
+> performances <- t(replicate(10, randomPointFromHypersphere(5)))  # 10 alts, 5 crit
+> preferences <- matrix(c(1, 2, 4, 5, 7, 8, 1, 3), ncol=2, byrow=TRUE)
+> 
+> ## RORSMAA gives the POIs and RAIs
+> ror <- rorsmaa(performances, preferences)
+> print(ror$poi)
+        [,1]   [,2]   [,3]   [,4]   [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
+ [1,] 1.0000 1.0000 1.0000 0.5496 0.9640 0.6291 0.4780 0.8501 0.2563 0.9082
+ [2,] 0.0000 1.0000 0.4624 0.1038 0.5584 0.1388 0.2262 0.4870 0.0214 0.5722
+ [3,] 0.0000 0.5376 1.0000 0.1589 0.6192 0.3541 0.1532 0.5847 0.1085 0.6507
+ [4,] 0.4504 0.8962 0.8411 1.0000 1.0000 0.6338 0.4778 0.7399 0.2185 0.8408
+ [5,] 0.0360 0.4416 0.3808 0.0000 1.0000 0.1902 0.1954 0.4533 0.0176 0.5464
+ [6,] 0.3709 0.8612 0.6459 0.3662 0.8098 1.0000 0.4104 0.6251 0.0688 0.7399
+ [7,] 0.5220 0.7738 0.8468 0.5222 0.8046 0.5896 1.0000 1.0000 0.3805 0.8892
+ [8,] 0.1499 0.5130 0.4153 0.2601 0.5467 0.3749 0.0000 1.0000 0.1671 0.5909
+ [9,] 0.7437 0.9786 0.8915 0.7815 0.9824 0.9312 0.6195 0.8329 1.0000 0.9249
+[10,] 0.0918 0.4278 0.3493 0.1592 0.4536 0.2601 0.1108 0.4091 0.0751 1.0000
+attr(,"class")
+[1] "valued.relation"
+> print(ror$rai)
+        [,1]   [,2]   [,3]   [,4]   [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
+ [1,] 0.0347 0.2163 0.2956 0.2968 0.1194 0.0340 0.0032 0.0000 0.0000 0.0000
+ [2,] 0.0000 0.0001 0.0034 0.0231 0.1547 0.1618 0.1543 0.1715 0.1804 0.1507
+ [3,] 0.0000 0.0008 0.0371 0.0940 0.1456 0.1522 0.1735 0.1649 0.1497 0.0822
+ [4,] 0.0993 0.1729 0.2156 0.1636 0.1286 0.1066 0.0506 0.0468 0.0160 0.0000
+ [5,] 0.0000 0.0004 0.0063 0.0364 0.0986 0.1536 0.1655 0.1312 0.1293 0.2787
+ [6,] 0.0276 0.1937 0.1412 0.1127 0.0920 0.0823 0.0989 0.1264 0.0969 0.0283
+ [7,] 0.3286 0.1204 0.0950 0.0869 0.0805 0.0929 0.0940 0.0639 0.0378 0.0000
+ [8,] 0.0000 0.0795 0.0697 0.0776 0.0770 0.0887 0.0932 0.1227 0.1636 0.2280
+ [9,] 0.4954 0.1906 0.1044 0.0686 0.0533 0.0509 0.0234 0.0078 0.0045 0.0011
+[10,] 0.0144 0.0253 0.0317 0.0403 0.0503 0.0770 0.1434 0.1648 0.2218 0.2310
+attr(,"class")
+[1] "smaa.acceptabilities"
+> cat(ror$misses, "misses while generating 10k value functions\n")
+91291 misses while generating 10k value functions
+> 
+> ## Not run: 
+> ##D ## Plot the results
+> ##D plot(ror$rai)
+> ##D plot(ror$poi)
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rorsmaa", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("utagms")
+> ### * utagms
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: utagms
+> ### Title: UTA^GMS MCDA solver
+> ### Aliases: utagms
+> ### Keywords: robust
+> 
+> ### ** Examples
+> 
+> library(ror)
+> 
+> ## Example with 3 alternatives and 3 criteria
+> performances <- matrix(c(1.0, 1.0, 1.0, 2.0, 1.0, 1.1, 2.0, 0.5, 3.0), ncol=3, byrow=TRUE)
+> ## a3 > a2 (strongly preferred)
+> strongPrefs <- matrix(c(3, 2), ncol=2, byrow=TRUE)
+> 
+> ## Necessary relation
+> necrel <- utagms(performances, strongPrefs, necessary=TRUE, strictVF=TRUE)
+> ## Possible relation with strictly increasing value functions
+> posrel <- utagms(performances, strongPrefs, necessary=FALSE, strictVF=FALSE)
+> 
+> ## Sanity check, the necessary relation should be
+> ## T F F
+> ## T T F
+> ## T T T
+> stopifnot(necrel == matrix(c(TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE), ncol=3, byrow=TRUE))
+> 
+> ## Sanity check, the possible relation should be
+> ## T T F
+> ## T T F
+> ## T T T
+> stopifnot(posrel == matrix(c(TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE), ncol=3, byrow=TRUE))
+> 
+> ## Test with a2 ~ a3
+> necrel <- utagms(performances, strongPrefs=NULL, indifPrefs=strongPrefs, necessary=TRUE, strictVF=TRUE)
+> ## Sanity check, the necessary relation should represent (a2 ~ a3)
+> stopifnot(necrel[2,3] == necrel[3,2] && necrel[3,2] == TRUE)
+> 
+> ## Not run: 
+> ##D 
+> ##D ## Plot the relation
+> ##D plot(necrel)
+> ##D 
+> ##D ## a3 > a2 and a2 > a3
+> ##D strongPrefs <- matrix(c(3, 2, 2, 3), ncol=2, byrow=TRUE)
+> ##D 
+> ##D ## Error as the model is infeasible
+> ##D necrel <- utagms(performances, strongPrefs, necessary=TRUE, strictVF=TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("utagms", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("utagms.strong.necessary")
+> ### * utagms.strong.necessary
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: utagms.strong.necessary
+> ### Title: UTA^GMS MCDA solver strong necessary relation
+> ### Aliases: utagms.strong.necessary
+> ### Keywords: robust
+> 
+> ### ** Examples
+> 
+> library(ror)
+> 
+> ## Example with 3 alternatives and 3 criteria
+> performances <- matrix(c(1.0, 1.0, 1.0, 2.0, 1.0, 1.1, 2.0, 0.5, 3.0), ncol=3, byrow=TRUE)
+> ## a3 > a2 (strongly preferred)
+> strongPrefs <- matrix(c(3, 2), ncol=2, byrow=TRUE)
+> 
+> ## Strong necessary relation
+> strongnec <- utagms.strong.necessary(performances, strongPrefs)
+> 
+> ## Sanity check, the relation have a3 >^N a2
+> stopifnot(strongnec[3,2] == TRUE)
+> 
+> ## Not run: 
+> ##D ## Plot the relation
+> ##D plot(strongnec)
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("utagms.strong.necessary", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  4.838 0.106 4.169 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

@@ -1,0 +1,1358 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "micropan"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "micropan-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('micropan')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+Attaching package: ‘micropan’
+
+The following object is masked from ‘package:base’:
+
+    gregexpr
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("bClust")
+> ### * bClust
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bClust
+> ### Title: Clustering sequences based on pairwise distances
+> ### Aliases: bClust
+> 
+> ### ** Examples
+> 
+> # Loading distance data in the micropan package
+> data(Mpneumoniae.blast.distances,package="micropan")
+> 
+> # Clustering with default settings
+> clustering.blast.single <- bClust(Mpneumoniae.blast.distances)
+bClust:
+...constructing graph with 9573 sequences (nodes) and 139543 distances (edges)
+...found 646 single linkage clusters
+...ended with 646 clusters, largest cluster has 4091 members
+> 
+> # Clustering with complete linkage and a liberal threshold
+> clustering.blast.complete <- bClust(Mpneumoniae.blast.distances,linkage="complete",threshold=0.75)
+bClust:
+...constructing graph with 9573 sequences (nodes) and 80624 distances (edges)
+...found 1105 single linkage clusters
+...found 49 incomplete clusters, splitting:
+.................................................
+...ended with 1210 clusters, largest cluster has 71 members
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bClust", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bDist")
+> ### * bDist
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bDist
+> ### Title: Computes distances between sequences based on BLAST results
+> ### Aliases: bDist
+> 
+> ### ** Examples
+> 
+> # Using BLAST result files in this package
+> # We need to uncompress them first...
+> extdata.path <- file.path(path.package("micropan"),"extdata")
+> filenames <- c("GID1_vs_GID1.txt",
++                "GID1_vs_GID2.txt",
++                "GID1_vs_GID3.txt",
++                "GID2_vs_GID1.txt",
++                "GID2_vs_GID2.txt",
++                "GID2_vs_GID3.txt",
++                "GID3_vs_GID1.txt",
++                "GID3_vs_GID2.txt",
++                "GID3_vs_GID3.txt")
+> pth <- lapply( file.path( extdata.path, paste( filenames, ".xz", sep="" ) ), xzuncompress )
+> 
+> # ... reading the BLAST result files (textfiles)...
+> blast.distances <- bDist(file.path(extdata.path,filenames))
+bDist:
+...reading 3 self alignments...
+   ...reading file /Users/gaborcsardi/works/igraph/revdep_check/micropan.Rcheck/micropan/extdata/GID1_vs_GID1.txt 
+   ...reading file /Users/gaborcsardi/works/igraph/revdep_check/micropan.Rcheck/micropan/extdata/GID2_vs_GID2.txt 
+   ...reading file /Users/gaborcsardi/works/igraph/revdep_check/micropan.Rcheck/micropan/extdata/GID3_vs_GID3.txt 
+...found BLAST results for 4200 unique sequences...
+...reading remaining alignments...
+  ...done with 5 out of 9 files, have computed 17272 distances...
+  ...done with 7 out of 9 files, have computed 23215 distances...
+  ...done with 9 out of 9 files, have computed 29204 distances...
+> 
+> # ...and compressing them again...
+> pth <- lapply( file.path( extdata.path, filenames ), xzcompress )
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bDist", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("binomixEstimate")
+> ### * binomixEstimate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: binomixEstimate
+> ### Title: Binomial mixture model estimates
+> ### Aliases: binomixEstimate
+> 
+> ### ** Examples
+> 
+> # Loading a Panmat object in the micropan package
+> data(list="Mpneumoniae.blast.panmat",package="micropan")
+> 
+> # Estimating binomial mixture models
+> bino <- binomixEstimate(Mpneumoniae.blast.panmat,K.range=3:8)  # using 3,4,...,8 components
+binomixEstimate: Fitting 3 component model...
+binomixEstimate: Fitting 4 component model...
+binomixEstimate: Fitting 5 component model...
+binomixEstimate: Fitting 6 component model...
+binomixEstimate: Fitting 7 component model...
+binomixEstimate: Fitting 8 component model...
+> print(bino$BIC.table) # minimum BIC at 3 components
+             Core.size Pan.size      BIC
+3 components      1096     1267 1151.008
+4 components      1092     1281 1164.656
+5 components      1094     1340 1178.482
+6 components      1020     1339 1192.698
+7 components      1090     1303 1206.967
+8 components       819     1297 1221.202
+> 
+> # Plotting the optimal model, and printing the summary
+> plot(bino)
+> summary(bino)
+Minimum BIC model at 3 components 
+For this model:
+Estimated core size: 1096 clusters
+Estimated pangenome size: 1267 clusters
+> 
+> # Plotting the 8-component model as well
+> plot(bino,ncomp=8)  # clearly overfitted, we do not need this many sectors
+> 
+> # Plotting the distribution in a single genome
+> plot(bino,type="single")  # completely dominated by core genes
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("binomixEstimate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("binomixMachine")
+> ### * binomixMachine
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: binomixMachine
+> ### Title: Computing engine for binomial mixture models
+> ### Aliases: binomixMachine
+> ### Keywords: internal
+> 
+> ### ** Examples
+> 
+> # You should never run this function explicitly, use binomixEstimate().
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("binomixMachine", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("blastAllAll")
+> ### * blastAllAll
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: blastAllAll
+> ### Title: Making BLAST search all against all genomes
+> ### Aliases: blastAllAll
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 	# Using FASTA files in this package.
+> ##D   # We need to uncompress them first...
+> ##D 	extdata.path <- file.path(path.package("micropan"),"extdata")
+> ##D 	filenames <- c("Mpneumoniae_M129_GID1.fsa",
+> ##D 				   "Mpneumoniae_309_GID2.fsa",
+> ##D 				   "Mpneumoniae_FH_GID3.fsa")
+> ##D   pth <- lapply( file.path( extdata.path, paste( filenames, ".xz", sep="" ) ), xzuncompress )
+> ##D   
+> ##D   #...blasting, assuming the BLAST+ software is properly installed
+> ##D   # NB! This will take some minute(s)!
+> ##D 	blastAllAll(in.files=file.path(extdata.path,filenames),out.folder=".")
+> ##D   
+> ##D   # ...and compressing them again...
+> ##D   pth <- lapply( file.path( extdata.path, filenames ), xzcompress )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("blastAllAll", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("chao")
+> ### * chao
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: chao
+> ### Title: The Chao lower bound estimate of pan-genome size
+> ### Aliases: chao
+> 
+> ### ** Examples
+> 
+> # Loading a Panmat object in the micropan package
+> data(list="Mpneumoniae.blast.panmat",package="micropan")
+> 
+> # Estimating the pan-genome size using the Chao estimator
+> chao.pansize <- chao(Mpneumoniae.blast.panmat)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("chao", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dClust")
+> ### * dClust
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dClust
+> ### Title: Clustering sequences based on domain sequence
+> ### Aliases: dClust
+> 
+> ### ** Examples
+> 
+> # Using HMMER3 result files in the micropan package
+> # We need to uncompress them first...
+> extdata.path <- file.path(path.package("micropan"),"extdata")
+> filenames <- c("GID1_vs_Pfam-A.hmm.txt",
++                "GID2_vs_Pfam-A.hmm.txt",
++                "GID3_vs_Pfam-A.hmm.txt")
+> pth <- lapply( file.path( extdata.path, paste( filenames, ".xz", sep="" ) ), xzuncompress )
+> 
+> # ...reading the HMMER3 results...
+> hmmer.table <- NULL
+> for(i in 1:3){
++   htab <- readHmmer(file.path(extdata.path,filenames[i]))
++   htab <- hmmerCleanOverlap(htab)   # Cleaning the results by removing overlapping hits
++   hmmer.table <- rbind(hmmer.table,htab)
++ }
+There are 764 proteins in this hmmer.table...
+There are 215 proteins with multiple hits, resolving overlaps:
+..
+There are 764 proteins in this hmmer.table...
+There are 215 proteins with multiple hits, resolving overlaps:
+..
+There are 760 proteins in this hmmer.table...
+There are 213 proteins with multiple hits, resolving overlaps:
+..
+> 
+> # ...and compressing them again...
+> pth <- lapply( file.path( extdata.path, filenames ), xzcompress )
+> 
+> # Finally, the clustering
+> clustering.domains <- dClust(hmmer.table)
+dClust:
+...hmmer.table contains 2288 proteins...
+...with hits against 481 HMMs...
+...ended with 442 clusters, largest cluster has 73 members
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dClust", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("distJaccard")
+> ### * distJaccard
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: distJaccard
+> ### Title: Computing Jaccard distances between genomes
+> ### Aliases: distJaccard
+> 
+> ### ** Examples
+> 
+> # Loading two Panmat objects in the micropan package
+> data(list=c("Mpneumoniae.blast.panmat","Mpneumoniae.domain.panmat"),package="micropan")
+> 
+> # Jaccard distances based on a BLAST clustering Panmat object
+> Jdist.blast <- distJaccard(Mpneumoniae.blast.panmat)
+> 
+> # Jaccard distances based on domain sequence clustering Panmat object
+> Jdist.domains <- distJaccard(Mpneumoniae.domain.panmat)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("distJaccard", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("distManhattan")
+> ### * distManhattan
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: distManhattan
+> ### Title: Computing Manhattan distances between genomes
+> ### Aliases: distManhattan
+> 
+> ### ** Examples
+> 
+> # Loading two Panmat objects in the micropan package
+> data(list=c("Mpneumoniae.blast.panmat","Mpneumoniae.domain.panmat"),package="micropan")
+> 
+> # Manhattan distances based on a BLAST clustering Panmat object
+> Mdist.blast <- distManhattan(Mpneumoniae.blast.panmat)
+> 
+> # Manhattan distances based on domain sequence clustering Panmat object
+> Mdist.domains <- distManhattan(Mpneumoniae.domain.panmat,scale=0.5)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("distManhattan", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("entrezDownload")
+> ### * entrezDownload
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: entrezDownload
+> ### Title: Downloading genome data
+> ### Aliases: entrezDownload
+> ### Keywords: download
+> 
+> ### ** Examples
+> 
+> # Accession numbers for the chromosome and plasmid of Buchnera aphidicola, strain APS
+> entrezDownload( accession="BA000003.2,AP001071.1", out.file="Buchnera_aphidicola_APS.fsa" )
+Downloading genome......sequences saved in Buchnera_aphidicola_APS.fsa 
+[1] "Buchnera_aphidicola_APS.fsa"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("entrezDownload", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fluidity")
+> ### * fluidity
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fluidity
+> ### Title: Computing genomic fluidity for a pan-genome
+> ### Aliases: fluidity
+> 
+> ### ** Examples
+> 
+> # Loading two Panmat objects in the micropan package
+> data(list=c("Mpneumoniae.blast.panmat","Mpneumoniae.domain.panmat"),package="micropan")
+> 
+> # Fluidity based on a BLAST clustering Panmat object
+> fluid.blast <- fluidity(Mpneumoniae.blast.panmat)
+> 
+> # Fluidity based on domain sequence clustering Panmat object
+> fluid.domains <- fluidity(Mpneumoniae.domain.panmat)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fluidity", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("geneWeights")
+> ### * geneWeights
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: geneWeights
+> ### Title: Gene cluster weighting
+> ### Aliases: geneWeights
+> 
+> ### ** Examples
+> 
+> # Loading a Panmat object in the micropan package
+> data(list="Mpneumoniae.blast.panmat",package="micropan")
+> 
+> # Weighted Manhattan distances based on a BLAST clustering Panmat object
+> w <- geneWeights(Mpneumoniae.blast.panmat,type="shell")
+> Mdist.blast <- distManhattan(Mpneumoniae.blast.panmat,weights=w)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("geneWeights", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getAccessions")
+> ### * getAccessions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getAccessions
+> ### Title: Collecting contig accession numbers
+> ### Aliases: getAccessions
+> ### Keywords: download
+> 
+> ### ** Examples
+> 
+> # The master record accession for the WGS genome Mycoplasma genitalium, strain G37
+> acc <- getAccessions("AAGX00000000")
+> # Then we use this to download all contigs and save them in the same fasta file
+> entrezDownload( acc, out.file="Mycoplasma_genitalium_G37.fsa" )
+Downloading genome......sequences saved in Mycoplasma_genitalium_G37.fsa 
+[1] "Mycoplasma_genitalium_G37.fsa"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getAccessions", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gregexpr")
+> ### * gregexpr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gregexpr
+> ### Title: Extended 'gregexpr' with substring retrieval
+> ### Aliases: gregexpr
+> ### Keywords: gregexpr
+> 
+> ### ** Examples
+> 
+>   sequences<-c("ACATGTCATGTCC","CTTGTATGCTG")
+>   gregexpr("ATG",sequences,extract=TRUE)
+[[1]]
+[1] "ATG" "ATG"
+
+[[2]]
+[1] "ATG"
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gregexpr", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("heaps")
+> ### * heaps
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: heaps
+> ### Title: Heaps law estimate
+> ### Aliases: heaps objectFun
+> 
+> ### ** Examples
+> 
+> # Loading a Panmat object in the micropan package
+> data(list="Mpneumoniae.blast.panmat",package="micropan")
+> 
+> # Estimating population openness
+> h.est <- heaps(Mpneumoniae.blast.panmat,n.perm=500)
+permuting:
+....................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+> if(h.est[2]>1){
++   cat("Population is closed with alpha =",h.est[2], "\n")
++ } else {
++   cat("Population is open with alpha =",h.est[2], "\n")
++ }
+Population is closed with alpha = 1.388656 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("heaps", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("hmmerCleanOverlap")
+> ### * hmmerCleanOverlap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: hmmerCleanOverlap and nonoverlap
+> ### Title: Removing overlapping hits from HMMER3 scans
+> ### Aliases: hmmerCleanOverlap nonoverlap
+> 
+> ### ** Examples
+> 
+> # See the example in the Help-file for dClust.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("hmmerCleanOverlap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("hmmerScan")
+> ### * hmmerScan
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: hmmerScan
+> ### Title: Scanning a profile Hidden Markov Model database
+> ### Aliases: hmmerScan
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 	# Using a FASTA file in the micropan package
+> ##D   # We need to uncompress it first...
+> ##D 	extdata.path <- file.path(path.package("micropan"),"extdata")
+> ##D 	filenames <- "Mpneumoniae_309_GID2.fsa"
+> ##D   pth <- lapply( file.path( extdata.path, paste( filenames, ".xz", sep="" ) ), xzuncompress )
+> ##D 	
+> ##D   # Using a miniature pHMM database in the micropan package
+> ##D   # We need to uncompress its datafiles first...
+> ##D   db <- "microfam0.hmm"
+> ##D   pth <- lapply( file.path( extdata.path,
+> ##D           paste( db, c(".h3f.xz",".h3i.xz",".h3m.xz",".h3p.xz"), sep="" ) ), xzuncompress )
+> ##D 	
+> ##D   # ...and scanning the FASTA-file against microfam0...
+> ##D 	hmmerScan(in.files=file.path(extdata.path,filenames), 
+> ##D 		db=file.path(extdata.path,db),out.folder=".")
+> ##D   
+> ##D   # ...and compressing all files again...
+> ##D   pth <- lapply( file.path( extdata.path, filenames ), xzcompress )
+> ##D   pth <- lapply( file.path( extdata.path,
+> ##D       paste( db, c(".h3f",".h3i",".h3m",".h3p"), sep="" ) ), xzcompress )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("hmmerScan", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("isOrtholog")
+> ### * isOrtholog
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: isOrtholog
+> ### Title: Identifies orthologs in gene clusters
+> ### Aliases: isOrtholog
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 	# Loading distance data in the micropan package
+> ##D 	data(list=c("Mpneumoniae.blast.distances","Mpneumoniae.blast.clustering"),
+> ##D 		package="micropan")
+> ##D 
+> ##D 	# Finding orthologs
+> ##D 	is.ortholog <- isOrtholog(Mpneumoniae.blast.clustering,
+> ##D 		Mpneumoniae.blast.distances)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("isOrtholog", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mpneumoniae")
+> ### * mpneumoniae
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Mpneumoniae
+> ### Title: Data sets for the _Mycoplasma pneumoniae_ casestudy
+> ### Aliases: Mpneumoniae Mpneumoniae.table Mpneumoniae.blast.distances
+> ###   Mpneumoniae.blast.clustering Mpneumoniae.blast.panmat
+> ###   Mpneumoniae.domain.clustering Mpneumoniae.domain.panmat
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> # Genome overview table
+> data(Mpneumoniae.table) #loads the Mpneumoniae.table
+> if(interactive()){
++   View(Mpneumoniae.table)
++ } else {
++   str(Mpneumoniae.table)
++ }
+'data.frame':	7 obs. of  6 variables:
+ $ GID.tag     : chr  "GID1" "GID2" "GID3" "GID4" ...
+ $ Strain      : chr  "M129" "309" "FH" "M129-B7" ...
+ $ Color       : chr  "cyan3" "blue" "blue" "cyan3" ...
+ $ Accession   : chr  "U00089.2" "AP012303.1" "CP002077.1" "CP003913.1" ...
+ $ MasterRecord: chr  "" "" "" "" ...
+ $ File        : chr  "Mpneumoniae_M129.fsa" "Mpneumoniae_309.fsa" "Mpneumoniae_FH.fsa" "Mpneumoniae_M129-B7.fsa" ...
+> 
+> # BLAST distances, only the first 20 are displayed
+> data(Mpneumoniae.blast.distances) #loads the Mpneumoniae.blast.distances
+> if(interactive()){
++   View(Mpneumoniae.blast.distances[1:20,])
++ } else {
++   str(Mpneumoniae.blast.distances[1:20,])
++ }
+'data.frame':	20 obs. of  3 variables:
+ $ Sequence.A: chr  "GID1_seq995" "GID1_seq652" "GID1_seq459" "GID1_seq1093" ...
+ $ Sequence.B: chr  "GID1_seq995" "GID1_seq652" "GID1_seq459" "GID1_seq1093" ...
+ $ Distance  : num  0 0 0 0 0 0 0 0 0 0 ...
+> 
+> # BLAST clustering vector
+> data(Mpneumoniae.blast.clustering) #loads the Mpneumoniae.blast.clustering
+> Mpneumoniae.blast.clustering[1:30]
+   GID1_seq1    GID2_seq1    GID3_seq1    GID4_seq1  GID5_seq407 GID6_seq1164 
+        2000         2000         2000         2000         2000         2000 
+GID7_seq1174   GID1_seq10   GID2_seq10   GID3_seq11   GID4_seq10  GID5_seq416 
+        2000         3000         3000         3000         3000         3000 
+GID6_seq1155 GID7_seq1165  GID1_seq100  GID2_seq101  GID3_seq102   GID4_seq99 
+        3000         3000         4001         4001         4001         4001 
+ GID5_seq506   GID6_seq49  GID1_seq101  GID1_seq105 GID1_seq1075 GID1_seq1077 
+        4001         4001         4002         4002         4002         4002 
+GID1_seq1080  GID2_seq102 GID2_seq1057 GID2_seq1059  GID2_seq106 GID2_seq1062 
+        4002         4002         4002         4002         4002         4002 
+> 
+> # BLAST pan-matrix
+> data(Mpneumoniae.blast.panmat) #loads the Mpneumoniae.blast.panmat
+> summary(Mpneumoniae.blast.panmat)
+33 clusters found in 1 genomes
+10 clusters found in 2 genomes
+13 clusters found in 3 genomes
+16 clusters found in 4 genomes
+22 clusters found in 5 genomes
+16 clusters found in 6 genomes
+1100 clusters found in 7 genomes
+> 
+> # Domain sequence clustering vector
+> data(Mpneumoniae.domain.clustering) #loads the Mpneumoniae.domain.clustering
+> Mpneumoniae.domain.clustering[1:30]
+GID1_seq1126 GID2_seq1108 GID3_seq1110 GID4_seq1119  GID5_seq110  GID6_seq526 
+           1            1            1            1            1            1 
+ GID7_seq934 GID1_seq1372 GID2_seq1377 GID3_seq1361 GID4_seq1367  GID5_seq376 
+           1            2            2            2            2            2 
+GID6_seq1194 GID7_seq1204  GID1_seq684  GID2_seq681  GID3_seq682  GID4_seq679 
+           2            2            3            3            3            3 
+ GID5_seq986  GID6_seq564  GID7_seq512 GID1_seq1195  GID1_seq124 GID1_seq1252 
+           3            3            3            4            4            4 
+GID1_seq1390 GID1_seq1398  GID1_seq179   GID1_seq29  GID1_seq298  GID1_seq301 
+           4            4            4            4            4            4 
+> 
+> # Domain sequence pan-matrix
+> data(Mpneumoniae.domain.panmat) #loads the Mpneumoniae.domain.panmat
+> summary(Mpneumoniae.domain.panmat)
+5 clusters found in 1 genomes
+0 clusters found in 2 genomes
+2 clusters found in 3 genomes
+1 clusters found in 4 genomes
+2 clusters found in 5 genomes
+5 clusters found in 6 genomes
+430 clusters found in 7 genomes
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mpneumoniae", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("negTruncLogLike")
+> ### * negTruncLogLike
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: negTruncLogLike
+> ### Title: Negative truncated log-likelihood function
+> ### Aliases: negTruncLogLike
+> ### Keywords: internal
+> 
+> ### ** Examples
+> 
+> # You should never run this function explicitly, use binomixEstimate().
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("negTruncLogLike", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("panMatrix")
+> ### * panMatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: panMatrix
+> ### Title: Computing the pan-matrix for a set of gene clusters
+> ### Aliases: panMatrix
+> 
+> ### ** Examples
+> 
+> # Loading clustering data in the micropan package
+> data(list=c("Mpneumoniae.blast.clustering","Mpneumoniae.domain.clustering"),package="micropan")
+> 
+> # Pan-matrix based on BLAST clustering
+> panmat.blast <- panMatrix(Mpneumoniae.blast.clustering)
+> 
+> # Pan-matrix based on domain sequence clustering
+> panmat.domains <- panMatrix(Mpneumoniae.domain.clustering)
+> 
+> # Plotting the first pan-matrix, and then printing its summary
+> plot(panmat.blast)
+> summary(panmat.blast)
+33 clusters found in 1 genomes
+10 clusters found in 2 genomes
+13 clusters found in 3 genomes
+16 clusters found in 4 genomes
+22 clusters found in 5 genomes
+16 clusters found in 6 genomes
+1100 clusters found in 7 genomes
+> str(panmat.blast)
+Pan-matrix with 1210 gene families over 7 genomes
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("panMatrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("panPrep")
+> ### * panPrep
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: panPrep
+> ### Title: Preparing FASTA files for pan-genomics
+> ### Aliases: panPrep
+> 
+> ### ** Examples
+> 
+> # Using a FASTA file in the micropan package
+> # We need to uncompress it first...
+> extdata.path <- file.path(path.package("micropan"),"extdata")
+> filenames <- "Mpneumoniae_309_protein.fsa"
+> pth <- lapply( file.path( extdata.path, paste( filenames, ".xz", sep="" ) ), xzuncompress )
+> 
+> # ...then we prep it, using the GID.tag "GID123"
+> panPrep(file.path(extdata.path,filenames),GID.tag="GID123","Mpneumoniae_309.fsa") 
+> # ...should produce a FASTA file named Mpneumoniae_309_GID123.fsa
+> 
+> # ...and compress the input file again...
+> pth <- lapply( file.path( extdata.path, filenames ), xzcompress )
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("panPrep", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("panTree")
+> ### * panTree
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: panTree
+> ### Title: Constructing pan-genome trees
+> ### Aliases: panTree
+> 
+> ### ** Examples
+> 
+> # Loading a Panmat object, constructing a tree and plotting it
+> data(list="Mpneumoniae.blast.panmat",package="micropan")
+> my.tree <- panTree(Mpneumoniae.blast.panmat)
+> plot(my.tree)
+> 
+> # Computing some weights to be used in the distManhattan 
+> # function below...
+> w <- geneWeights(Mpneumoniae.blast.panmat,type="shell")
+> # Creating another tree with scaled and weighted distances and bootstrap values
+> my.tree <- panTree(Mpneumoniae.blast.panmat, scale=0.1, weights=w)
+> 
+> # ...and plotting with alternative labels and colors from Mpneumoniae.table
+> data(list="Mpneumoniae.table",package="micropan")
+> labels <- Mpneumoniae.table$Strain
+> names(labels) <- Mpneumoniae.table$GID.tag
+> cols <- Mpneumoniae.table$Color
+> names(cols) <- Mpneumoniae.table$GID.tag
+> plot(my.tree, leaf.lab=labels, col=cols,
++ 	cex=0.8, xlab="Shell-weighted Manhattan distances")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("panTree", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("panpca")
+> ### * panpca
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: panpca
+> ### Title: Principal component analysis of a pan-matrix
+> ### Aliases: panpca
+> 
+> ### ** Examples
+> 
+> # Loading two Panmat objects in the micropan package
+> data(list=c("Mpneumoniae.blast.panmat","Mpneumoniae.domain.panmat"),package="micropan")
+> 
+> # Panpca based on a BLAST clustering Panmat object
+> ppca.blast <- panpca(Mpneumoniae.blast.panmat)
+> plot(ppca.blast) # The generic plot function
+> plotScores(ppca.blast) # A score-plot
+> 
+> # Panpca based on domain sequence clustering Panmat object
+> w <- geneWeights(Mpneumoniae.domain.panmat,type="shell")
+> ppca.domains <- panpca(Mpneumoniae.domain.panmat,scale=0.5,weights=w)
+> summary(ppca.domains)
+Principal component 1 explains 77.6% of the variation
+Principal component 2 explains 15.6% of the variation
+Principal component 3 explains 3.1% of the variation
+Principal component 4 explains 2.5% of the variation
+Principal component 5 explains 0.9% of the variation
+Principal component 6 explains 0.3% of the variation
+Principal component 7 explains 0% of the variation
+> plotLoadings(ppca.domains)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("panpca", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.Binomix")
+> ### * plot.Binomix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.Binomix
+> ### Title: Plotting and printing 'Binomix' objects
+> ### Aliases: plot.Binomix summary.Binomix str.Binomix panColor
+> ### Keywords: ~Binomix
+> 
+> ### ** Examples
+> 
+> # See examples in the Help-file for binomixEstimate.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.Binomix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.Fasta")
+> ### * plot.Fasta
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.Fasta
+> ### Title: Plotting and printing 'Fasta' objects
+> ### Aliases: plot.Fasta summary.Fasta str.Fasta
+> ### Keywords: ~sequences ~FASTA ~Fasta
+> 
+> ### ** Examples
+> 
+> # See the examples in the Help-file for readFasta/writeFasta
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.Fasta", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.Panmat")
+> ### * plot.Panmat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.Panmat
+> ### Title: Plotting and printing 'Panmat' objects
+> ### Aliases: plot.Panmat summary.Panmat str.Panmat
+> ### Keywords: ~Panmat ~pan-matrix
+> 
+> ### ** Examples
+> 
+> # Loading clustering data in the micropan package
+> data(list="Mpneumoniae.blast.clustering",package="micropan")
+> panmat.blast <- panMatrix(Mpneumoniae.blast.clustering)
+> 
+> # Plotting and printing the Panmat object
+> plot(panmat.blast)
+> summary(panmat.blast)
+33 clusters found in 1 genomes
+10 clusters found in 2 genomes
+13 clusters found in 3 genomes
+16 clusters found in 4 genomes
+22 clusters found in 5 genomes
+16 clusters found in 6 genomes
+1100 clusters found in 7 genomes
+> str(panmat.blast)
+Pan-matrix with 1210 gene families over 7 genomes
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.Panmat", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.Panpca")
+> ### * plot.Panpca
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.Panpca
+> ### Title: Plotting and printing 'Panpca' objects
+> ### Aliases: plot.Panpca summary.Panpca str.Panpca
+> 
+> ### ** Examples
+> 
+> # Loading a Panmat object in the micropan package
+> data(list="Mpneumoniae.blast.panmat",package="micropan")
+> ppca.blast <- panpca(Mpneumoniae.blast.panmat)
+> summary(ppca.blast)
+Principal component 1 explains 34.7% of the variation
+Principal component 2 explains 30.9% of the variation
+Principal component 3 explains 13.3% of the variation
+Principal component 4 explains 9.9% of the variation
+Principal component 5 explains 6.7% of the variation
+Principal component 6 explains 4.5% of the variation
+Principal component 7 explains 0% of the variation
+> plot(ppca.blast,cum=TRUE)
+> # This reveals that the two first components together explain more than 64% of the variation
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.Panpca", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.Pantree")
+> ### * plot.Pantree
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.Pantree
+> ### Title: Plotting and printing 'Pantree' objects
+> ### Aliases: plot.Pantree summary.Pantree str.Pantree
+> ### Keywords: ~Pantree
+> 
+> ### ** Examples
+> 
+> # See examples in the Help-file for panTree.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.Pantree", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.Rarefac")
+> ### * plot.Rarefac
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.Rarefac
+> ### Title: Plotting and printing 'Rarefac' objects
+> ### Aliases: plot.Rarefac summary.Rarefac str.Rarefac
+> 
+> ### ** Examples
+> 
+> # Loading a Panmat objects in the micropan package
+> data(list="Mpneumoniae.blast.panmat",package="micropan")
+> 
+> # Computing Rarefaction
+> rarefac.blast <- rarefaction(Mpneumoniae.blast.panmat,n.perm=100)
+permuting:
+...................................................................................................
+
+> 
+> 
+> # Plotting and printing the Rarefac object
+> plot(rarefac.blast)
+> summary(rarefac.blast)
+For 1 genome we observe on average 1151 unique gene clusters
+For 2 genomes we observe on average 1174 unique gene clusters
+For 3 genomes we observe on average 1187 unique gene clusters
+For 4 genomes we observe on average 1194 unique gene clusters
+For 5 genomes we observe on average 1200 unique gene clusters
+For 6 genomes we observe on average 1205 unique gene clusters
+For 7 genomes we observe on average 1210 unique gene clusters
+> str(rarefac.blast)
+Rarefaction over 7 genomes
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.Rarefac", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotScores")
+> ### * plotScores
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotScores
+> ### Title: Plotting scores and loadings in a 'Panpca' object
+> ### Aliases: plotScores plotLoadings
+> 
+> ### ** Examples
+> 
+> # Loading a Panmat object in the micropan package
+> data(list=c("Mpneumoniae.blast.panmat","Mpneumoniae.domain.panmat"),package="micropan")
+> ppca.blast <- panpca(Mpneumoniae.blast.panmat)
+> 
+> # Plotting scores and loadings
+> plotScores(ppca.blast) # A score-plot
+> plotLoadings(ppca.blast) # A loading plot
+> 
+> # Plotting score with alternative labels and colors
+> data(list="Mpneumoniae.table",package="micropan")
+> labels <- Mpneumoniae.table$Strain
+> names(labels) <- Mpneumoniae.table$GID.tag
+> cols <- Mpneumoniae.table$Color
+> names(cols) <- Mpneumoniae.table$GID.tag
+> plotScores(ppca.blast,labels=labels,col=cols)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotScores", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("prodigalPredict")
+> ### * prodigalPredict
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: prodigalPredict
+> ### Title: Gene predictions using Prodigal
+> ### Aliases: prodigalPredict
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Using a small genome file in this package
+> ##D # We need to uncompress it first...
+> ##D extdata.path <- file.path(path.package("micropan"),"extdata")
+> ##D filenames <- "Mpneumoniae_309_genome.fsa"
+> ##D pth <- lapply( file.path( extdata.path, paste( filenames, ".xz", sep="" ) ), xzuncompress )
+> ##D 
+> ##D # Calling Prodigal, and using a similar name (_genome replaced by _protein) in output
+> ##D prodigalPredict( file.path(extdata.path,filenames), gsub("_genome","_protein",filenames) )
+> ##D 
+> ##D # ...and compressing the genome-file again...
+> ##D pth <- lapply( file.path( extdata.path, filenames ), xzcompress )
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("prodigalPredict", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rarefaction")
+> ### * rarefaction
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rarefaction
+> ### Title: Rarefaction curves for a pan-genome
+> ### Aliases: rarefaction
+> 
+> ### ** Examples
+> 
+> # Loading two Panmat objects in the micropan package
+> data(list=c("Mpneumoniae.blast.panmat","Mpneumoniae.domain.panmat"),package="micropan")
+> 
+> # Rarefaction based on a BLAST clustering Panmat object
+> rarefac.blast <- rarefaction(Mpneumoniae.blast.panmat,n.perm=100)
+permuting:
+...................................................................................................
+
+> plot(rarefac.blast)
+> 
+> # Rarefaction based on domain sequence clustering Panmat object
+> rarefac.domains <- rarefaction(Mpneumoniae.domain.panmat,n.perm=1000)
+permuting:
+...................................................................................................
+....................................................................................................
+....................................................................................................
+....................................................................................................
+....................................................................................................
+....................................................................................................
+....................................................................................................
+....................................................................................................
+....................................................................................................
+....................................................................................................
+
+> summary(rarefac.domains)
+For 1 genome we observe on average 438 unique gene clusters
+For 2 genomes we observe on average 441 unique gene clusters
+For 3 genomes we observe on average 442 unique gene clusters
+For 4 genomes we observe on average 443 unique gene clusters
+For 5 genomes we observe on average 444 unique gene clusters
+For 6 genomes we observe on average 444 unique gene clusters
+For 7 genomes we observe on average 445 unique gene clusters
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rarefaction", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("readBlastTable")
+> ### * readBlastTable
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: readBlastTable
+> ### Title: Reading BLAST result file
+> ### Aliases: readBlastTable
+> 
+> ### ** Examples
+> 
+> # Using a BLAST result file in this package
+> # We need to uncompress it first...
+> extdata.path <- file.path(path.package("micropan"),"extdata")
+> filenames <- "GID1_vs_GID2.txt"
+> pth <- lapply( file.path( extdata.path, paste( filenames, ".xz", sep="" ) ), xzuncompress )
+> 
+> #...then we can read it...
+> blast.table <- readBlastTable(file.path(extdata.path,filenames))
+> 
+> # ...and compressing it again...
+> pth <- lapply( file.path( extdata.path, filenames ), xzcompress )
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("readBlastTable", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("readFasta")
+> ### * readFasta
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: readFasta and writeFasta
+> ### Title: Read and write biological sequence files.
+> ### Aliases: readFasta writeFasta
+> ### Keywords: sequence FASTA
+> 
+> ### ** Examples
+> 
+> # Reading a FASTA-file from the package extdata/ folder
+> # We need to uncompress it first...
+> extdata.path <- file.path(path.package("micropan"),"extdata")
+> filenames <- "Mpneumoniae_309_protein.fsa"
+> pth <- lapply( file.path( extdata.path, paste( filenames, ".xz", sep="" ) ), xzuncompress )
+> 
+> # Reading the file...
+> fdta <- readFasta(in.file=file.path(extdata.path,filenames))
+> 
+> # ...and compressing it again
+> pth <- lapply( file.path( extdata.path, filenames ), xzcompress )
+> 
+> # Plotting and printing the Fasta object
+> plot(fdta)
+> summary(fdta)
+Fasta formatted sequence data containing 1407 sequences
+Alphabet: * A C D E F G H I K L M N P Q R S T V W Y 
+> str(fdta)
+Fasta: 1407 sequences
+> 
+> # Writing the Fasta object to a new file
+> writeFasta(fdta,out.file="Delete_me.fsa")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("readFasta", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("readHmmer")
+> ### * readHmmer
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: readHmmer
+> ### Title: Reading results from a HMMER3 scan
+> ### Aliases: readHmmer
+> 
+> ### ** Examples
+> 
+> # See the example in the Help-file for dClust
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("readHmmer", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("reverseComplement")
+> ### * reverseComplement
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: reverseComplement
+> ### Title: Reverse-complement of a DNA or RNA sequence
+> ### Aliases: reverseComplement
+> ### Keywords: DNA RNA
+> 
+> ### ** Examples
+> 
+> dna<-"ATGGGTCTGAACTGCTGGACTAAATGA"
+> reverseComplement(dna)
+[1] "TCATTTAGTCCAGCAGTTCAGACCCAT"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("reverseComplement", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("setLeafAttributes")
+> ### * setLeafAttributes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: setLeafAttributes
+> ### Title: Setting leaf attributes
+> ### Aliases: setLeafAttributes branchPos clusterSignature
+> ### Keywords: internal
+> 
+> ### ** Examples
+> 
+> # You should not call these functions explicitly.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("setLeafAttributes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("translate")
+> ### * translate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: translate
+> ### Title: From nucleotides to proteins
+> ### Aliases: translate
+> ### Keywords: DNA RNA amino acid
+> 
+> ### ** Examples
+> 
+> dna<-"ATGGGTCTGAACTGCTGGACTAAATGA"
+> translate(dna)
+[1] "MGLNCWTK*"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("translate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("xz")
+> ### * xz
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: xzcompress
+> ### Title: xz (un)compress a file
+> ### Aliases: xzcompress xzuncompress
+> ### Keywords: file programming
+> 
+> ### ** Examples
+> 
+>   cat(file="foo.txt", "Hello world!")
+> 
+>   xzcompress("foo.txt")
+>   print(file.info("foo.txt.xz"))
+           size isdir mode               mtime               ctime
+foo.txt.xz   64 FALSE  644 2015-06-13 12:35:50 2015-06-13 12:35:50
+                         atime uid gid       uname grname
+foo.txt.xz 2015-06-13 12:35:50 501  20 gaborcsardi  staff
+> 
+>   xzuncompress("foo.txt.xz")
+>   print(file.info("foo.txt"))
+        size isdir mode               mtime               ctime
+foo.txt   12 FALSE  644 2015-06-13 12:35:50 2015-06-13 12:35:50
+                      atime uid gid       uname grname
+foo.txt 2015-06-13 12:35:50 501  20 gaborcsardi  staff
+> 
+>   file.remove("foo.txt")
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("xz", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  14.529 0.626 16.556 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

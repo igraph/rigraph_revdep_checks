@@ -1,0 +1,183 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "InteractiveIGraph"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "InteractiveIGraph-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('InteractiveIGraph')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("AdjustmentFunctions")
+> ### * AdjustmentFunctions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: AdjustmentFunctions
+> ### Title: Adjustment Functions
+> ### Aliases: ExtraInfo.default BottomMenuAdjustment.default
+> ###   PlotAdjustment.default
+> 
+> ### ** Examples
+> 
+> gOrg <- erdos.renyi.game(15, 1/10,  directed = TRUE)
+> V(gOrg)$comment = paste("Some comment about vertex with number:", V(gOrg)) 
+> 
+> 
+> ExtraInfo.New <- function(type="V", ProgId=0, g=g){  
++ msg = ""
++   
++   if(type=="V"){  
++     vid = which(V(g)$ProgId == ProgId)
++     msg = paste(",", V(g)[vid]$comment)
++   }
++   if(type=="E"){
++     msg = ", E..."    
++   }
++   if(type=="G"){
++     msg = ", G..."    
++   }
++     
++   Item = list(list(label=msg, RegionParams=list(XBufCof = 0, YBufCof=0.2), 
++ 			RecParams=list(lwd = NA, border=NA), TextParams=list(cex=0.8)))
++   g <- MenuAddItems(Items=Item,  MenuLine='Info', g=g)  
++   
++   return(g)
++ }
+> 
+> if(interactive()){
++   g = InteractiveIGraph(gOrg, ExtraInfo=ExtraInfo.New)
++ }
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("AdjustmentFunctions", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CommandList")
+> ### * CommandList
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CommandList
+> ### Title: CommandList
+> ### Aliases: PrintCommandList CommandList
+> 
+> ### ** Examples
+> 
+> PrintCommandList()
+Del    : Delete -- Delete any active object..
+q      : Quite -- Quits the function, returns last value of graph..
+ctrl-S : Save -- Saves graph and dump graph to text file in active directory..
+ctrl-R : Reset -- Reset graph from las saving..
+ctrl-C : Command -- Waits for input of the command..
+ctrl-F : Change attributes -- Waits for input of the attributes specification (color='green').
+ctrl-B : SavePdf -- Saves picture as pdf..
++      : zoom(+) -- zoom(+).
+-      : zoom(-) -- zoom(-).
+Left   : Left -- Move to left.
+Right  : Right -- Move to right.
+Up     : Up -- Move up.
+Down   : Down -- Move down.
+a      : (de)activate -- Activates or activates vertices..
+A      : Activate only -- Deactivate all vertices but selected..
+ctrl-A : Select all -- Select all vertices..
+g      : Groupe -- Create new group, or join group if in group view mode..
+G      : Select active group members -- Select active group members.
+ctrl-G : Menu all groups -- Put all groups in bottom menu..
+b      : Block -- Block(unblock) active group..
+s      : Mode(select) -- Turn on(off) select mode..
+i      : Mode(AllEdges) -- Turn on(off) AllEdges mode..
+M      : Print mode list -- Prints the list of modes..
+m      : Print all commands -- Prints the list of commands..
+h      : Hide bottom meniu -- Hides(unhides) bottom meniu..
+v      : Select vertices by edge -- Select vertices that associates with selected edges..
+V      : Deselect all vertices -- Remove any selections of the vertices..
+ctrl-V : Add vertex -- Create new vertex in the place of past click..
+e      : Select edges by vertices -- Select edges that associates with selected vertices..
+E      : Deselect all edges -- Remove any selections of the edges..
+ctrl-E : Add edge -- Create new edge, from selected vertices to active vertex..
+d      : Activate selected edges -- Activate selected edges.
+D      : Deactivate selected edges -- Deactivate selected edges.
+t      : minimum.spanning.tree -- Selects all edges allond minimum spanning tree..
+p      : shortest.paths(form) -- Finds shortest path from from selected vertices to active vertex..
+P      : shortest.paths(to) -- Finds shortest path from from active vertex to selected vertices..
+ctrl-P : shortest.paths(none) -- Finds shortest path regardless directions..
+w      : Adjust whide -- Adjust vertex whide to fit label..
+l      : Layout -- Redo layout (layout.outo).
+o      : Plot Active Regions -- Marks the regions around vertices that will initiates selection if clicked..
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CommandList", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("InteractiveIGraph-package")
+> ### * InteractiveIGraph-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: InteractiveIGraph-package
+> ### Title: Interactive igraph
+> ### Aliases: InteractiveIGraph-package
+> 
+> ### ** Examples
+> 
+> 
+> 
+> # this is a regular igraph object
+> gOrg <- erdos.renyi.game(15, 1/10,  directed = TRUE)
+> plot(gOrg) 
+> 
+> # this is an 'InteractiveIGraph' object, up till now there is not much difference. 
+> # Just some extra attributes.
+> g = InteractiveIGraph.Constructor(gOrg)
+> g = plot(g) 
+Error in do.call("plot.igraph", args = PlotParam) : 
+  could not find function "plot.igraph"
+Calls: plot -> plot.InteractiveIGraph -> do.call
+Execution halted

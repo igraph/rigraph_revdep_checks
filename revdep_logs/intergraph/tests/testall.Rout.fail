@@ -1,0 +1,254 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(testthat)
+> library(intergraph)
+> 
+> test_package("intergraph")
+Converting directed networks to data frames : ..
+Converting undirected networks to data frames : ..
+Creating igraphs from data frames : 1.23
+Creating igraphs from networks : ...
+Creating networks from data frames : ..4567
+Converting igraphs to networks : 89.
+Testing whether custom 'attrmap' specifications work : a
+Testing GitHub issue #1 : ....
+Testing compareAttributes : 
+Test compareAList : .
+Validating edge lists : ...
+Validating vertex data frames : ....
+Validating edgelist vs vertex data frame : ..
+
+1. Error: Disassembling to d.f and assembling back to igraph gives the same result 
+This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: asDF(exIgraph) at test-asIgraph.R:6
+5: asDF.igraph(exIgraph)
+6: dumpAttr(object, "edge")
+7: dumpAttr.igraph(object, "edge")
+8: lapply(nams, function(a) igraph::get.edge.attribute(x, a))
+9: FUN(X[[i]], ...)
+10: igraph::get.edge.attribute(x, a)
+11: as.igraph.es(graph, index)
+12: inherits(e, "igraph.es")
+13: E(graph)
+14: update_es_ref(graph)
+15: check_version(graph)
+16: stop("This graph was created by an old(er) igraph version.\n", "  Call upgrade_graph() on it to use with the current igraph version")
+
+2. Error: Vertex names are properly set via 'vnames' argument for directed network 
+This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: asDF(exIgraph) at test-asIgraph.R:24
+5: asDF.igraph(exIgraph)
+6: dumpAttr(object, "edge")
+7: dumpAttr.igraph(object, "edge")
+8: lapply(nams, function(a) igraph::get.edge.attribute(x, a))
+9: FUN(X[[i]], ...)
+10: igraph::get.edge.attribute(x, a)
+11: as.igraph.es(graph, index)
+12: inherits(e, "igraph.es")
+13: E(graph)
+14: update_es_ref(graph)
+15: check_version(graph)
+16: stop("This graph was created by an old(er) igraph version.\n", "  Call upgrade_graph() on it to use with the current igraph version")
+
+3. Error: Vertex names are properly set via 'vnames' argument for undirected network 
+This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: asDF(exIgraph2) at test-asIgraph.R:34
+5: asDF.igraph(exIgraph2)
+6: dumpAttr(object, "edge")
+7: dumpAttr.igraph(object, "edge")
+8: lapply(nams, function(a) igraph::get.edge.attribute(x, a))
+9: FUN(X[[i]], ...)
+10: igraph::get.edge.attribute(x, a)
+11: as.igraph.es(graph, index)
+12: inherits(e, "igraph.es")
+13: E(graph)
+14: update_es_ref(graph)
+15: check_version(graph)
+16: stop("This graph was created by an old(er) igraph version.\n", "  Call upgrade_graph() on it to use with the current igraph version")
+
+4. Error: Disassembling directed igraph to d.f. and assembling back to network: edgecount 
+This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: asDF(exIgraph) at test-asNetwork.R:17
+5: asDF.igraph(exIgraph)
+6: dumpAttr(object, "edge")
+7: dumpAttr.igraph(object, "edge")
+8: lapply(nams, function(a) igraph::get.edge.attribute(x, a))
+9: FUN(X[[i]], ...)
+10: igraph::get.edge.attribute(x, a)
+11: as.igraph.es(graph, index)
+12: inherits(e, "igraph.es")
+13: E(graph)
+14: update_es_ref(graph)
+15: check_version(graph)
+16: stop("This graph was created by an old(er) igraph version.\n", "  Call upgrade_graph() on it to use with the current igraph version")
+
+5. Error: Disassembling directed igraph to d.f. and assembling back to network: vcount 
+This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: asDF(exIgraph) at test-asNetwork.R:23
+5: asDF.igraph(exIgraph)
+6: dumpAttr(object, "edge")
+7: dumpAttr.igraph(object, "edge")
+8: lapply(nams, function(a) igraph::get.edge.attribute(x, a))
+9: FUN(X[[i]], ...)
+10: igraph::get.edge.attribute(x, a)
+11: as.igraph.es(graph, index)
+12: inherits(e, "igraph.es")
+13: E(graph)
+14: update_es_ref(graph)
+15: check_version(graph)
+16: stop("This graph was created by an old(er) igraph version.\n", "  Call upgrade_graph() on it to use with the current igraph version")
+
+6. Error: Disassembling undirected igraph to d.f. and assembling back to network: edgecount 
+This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: asDF(exIgraph2) at test-asNetwork.R:29
+5: asDF.igraph(exIgraph2)
+6: dumpAttr(object, "edge")
+7: dumpAttr.igraph(object, "edge")
+8: lapply(nams, function(a) igraph::get.edge.attribute(x, a))
+9: FUN(X[[i]], ...)
+10: igraph::get.edge.attribute(x, a)
+11: as.igraph.es(graph, index)
+12: inherits(e, "igraph.es")
+13: E(graph)
+14: update_es_ref(graph)
+15: check_version(graph)
+16: stop("This graph was created by an old(er) igraph version.\n", "  Call upgrade_graph() on it to use with the current igraph version")
+
+7. Error: Disassembling undirected igraph to d.f. and assembling back to network: vcount 
+This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: asDF(exIgraph2) at test-asNetwork.R:35
+5: asDF.igraph(exIgraph2)
+6: dumpAttr(object, "edge")
+7: dumpAttr.igraph(object, "edge")
+8: lapply(nams, function(a) igraph::get.edge.attribute(x, a))
+9: FUN(X[[i]], ...)
+10: igraph::get.edge.attribute(x, a)
+11: as.igraph.es(graph, index)
+12: inherits(e, "igraph.es")
+13: E(graph)
+14: update_es_ref(graph)
+15: check_version(graph)
+16: stop("This graph was created by an old(er) igraph version.\n", "  Call upgrade_graph() on it to use with the current igraph version")
+
+8. Error: Directed igraphs via netcompare --------------------------------------
+This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: netcompare(asNetwork(exIgraph), exIgraph, test = TRUE) at test-asNetwork.R:47
+5: asNetwork(exIgraph)
+6: asNetwork.igraph(exIgraph)
+7: asDF(object)
+8: asDF.igraph(object)
+9: dumpAttr(object, "edge")
+10: dumpAttr.igraph(object, "edge")
+11: lapply(nams, function(a) igraph::get.edge.attribute(x, a))
+12: FUN(X[[i]], ...)
+13: igraph::get.edge.attribute(x, a)
+14: as.igraph.es(graph, index)
+15: inherits(e, "igraph.es")
+16: E(graph)
+17: update_es_ref(graph)
+18: check_version(graph)
+19: stop("This graph was created by an old(er) igraph version.\n", "  Call upgrade_graph() on it to use with the current igraph version")
+
+9. Error: Undirected igraphs via netcompare ------------------------------------
+This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: netcompare(asNetwork(exIgraph2), exIgraph2, test = TRUE) at test-asNetwork.R:52
+5: asNetwork(exIgraph2)
+6: asNetwork.igraph(exIgraph2)
+7: asDF(object)
+8: asDF.igraph(object)
+9: dumpAttr(object, "edge")
+10: dumpAttr.igraph(object, "edge")
+11: lapply(nams, function(a) igraph::get.edge.attribute(x, a))
+12: FUN(X[[i]], ...)
+13: igraph::get.edge.attribute(x, a)
+14: as.igraph.es(graph, index)
+15: inherits(e, "igraph.es")
+16: E(graph)
+17: update_es_ref(graph)
+18: check_version(graph)
+19: stop("This graph was created by an old(er) igraph version.\n", "  Call upgrade_graph() on it to use with the current igraph version")
+
+a. Error: 'na' vertex attribute can be dropped when going network->igraph ------
+This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+1: withCallingHandlers(eval(code, new_test_environment), error = capture_calls, message = function(c) invokeRestart("muffleMessage"), 
+       warning = function(c) invokeRestart("muffleWarning"))
+2: eval(code, new_test_environment)
+3: eval(expr, envir, enclos)
+4: asNetwork(exIgraph) at test-attrmap.R:4
+5: asNetwork.igraph(exIgraph)
+6: asDF(object)
+7: asDF.igraph(object)
+8: dumpAttr(object, "edge")
+9: dumpAttr.igraph(object, "edge")
+10: lapply(nams, function(a) igraph::get.edge.attribute(x, a))
+11: FUN(X[[i]], ...)
+12: igraph::get.edge.attribute(x, a)
+13: as.igraph.es(graph, index)
+14: inherits(e, "igraph.es")
+15: E(graph)
+16: update_es_ref(graph)
+17: check_version(graph)
+18: stop("This graph was created by an old(er) igraph version.\n", "  Call upgrade_graph() on it to use with the current igraph version")
+Error: Test failures
+Execution halted

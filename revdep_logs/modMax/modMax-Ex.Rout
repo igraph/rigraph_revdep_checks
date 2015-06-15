@@ -1,0 +1,86 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "modMax"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "modMax-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('modMax')
+Loading required package: gtools
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following object is masked from ‘package:gtools’:
+
+    permute
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Warning: replacing previous import by ‘gtools::permute’ when loading ‘modMax’
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("extremalOptimization")
+> ### * extremalOptimization
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: extremalOptimization
+> ### Title: Extremal optimization (EO) algorithms
+> ### Aliases: extremalOptimization pcseoss
+> ### Keywords: Extremal Optimization Community Modularity Random Local
+> ###   Search Agent Social Networks PCSEO-SS algorithm Community structure
+> ###   Conflict pairwise constraints large-scale network
+> 
+> ### ** Examples
+> 
+> 
+> #weighted network
+> randomgraph <- erdos.renyi.game(10, 0.3, type="gnp",directed = FALSE, loops = FALSE)
+> 
+> #to ensure that the graph is connected
+> vertices <- which(clusters(randomgraph)$membership==1)  
+> graph <- induced.subgraph(randomgraph,vertices)
+> graph <- set.edge.attribute(graph, "weight", value=runif(ecount(graph),0,1))
+> 
+> adj <- get.adjacency(graph, attr="weight")
+> result <- extremalOptimization(adj)
+Error in switch(mode, out = 1, `in` = 2, all = 3, total = 3) : 
+  EXPR must be a length 1 vector
+Calls: extremalOptimization ... callExtremalOptimization -> calculateLambda -> neighbors
+Execution halted

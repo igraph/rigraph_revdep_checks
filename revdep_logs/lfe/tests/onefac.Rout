@@ -1,0 +1,83 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(lfe)
+Loading required package: Matrix
+> options(lfe.threads=1,digits=3,warn=1)
+> set.seed(6553)
+> # single fixed effect, special case which we risk destroying when we optimize, so check it
+> x <- rnorm(2000)
+> x2 <- rnorm(length(x))
+> x3 <- rnorm(length(x))
+> ## create individual and firm
+> id <- factor(sample(1500,length(x),replace=TRUE))
+> nlevels(id)
+[1] 1101
+> ## effects
+> id.eff <- rnorm(nlevels(id))
+> 
+> ## left hand side
+> y <- x + 0.25*x2 + 0.5*x3 + id.eff[id] + rnorm(length(x))
+> 
+> ## estimate
+> est <- felm(y ~ x+x2 + x3 |id)
+> 
+> ## extract the group fixed effects
+> fe <- getfe(est, se=TRUE)
+> ## merge back
+> head(fe)
+     effect obs comp fe idx    se
+id.1  1.686   1    1 id   1 1.149
+id.2 -0.998   2    1 id   2 0.754
+id.3 -0.830   1    1 id   3 1.035
+id.4 -0.562   1    1 id   4 0.986
+id.5 -1.546   2    1 id   5 0.737
+id.8 -1.814   1    1 id   8 1.077
+> ideff <- fe[paste('id',id,sep='.'),'effect']
+> 
+> ## verify that id and firm coefficients are 1
+> options(scipen=8)
+> lm(y ~ x + x2 + x3 + ideff -1)
+
+Call:
+lm(formula = y ~ x + x2 + x3 + ideff - 1)
+
+Coefficients:
+    x     x2     x3  ideff  
+1.007  0.246  0.545  1.000  
+
+> 
+> # no factor
+> felm(y ~ x + x2 + x3)
+(Intercept)           x          x2          x3 
+     0.0447      0.9669      0.2145      0.5351 
+> 
+> # no covariate
+> est <- felm(y ~ 0|id)
+> head(getfe(est, se=TRUE))
+      effect obs comp fe idx   se
+id.1  0.0434   1    1 id   1 1.36
+id.2 -1.1396   2    1 id   2 1.17
+id.3 -0.1782   1    1 id   3 1.45
+id.4 -3.4786   1    1 id   4 1.67
+id.5 -0.5694   2    1 id   5 1.17
+id.8 -1.7134   1    1 id   8 1.56
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  1.567   0.073   2.044 

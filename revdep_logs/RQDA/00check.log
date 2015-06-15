@@ -1,0 +1,21 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/RQDA.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘RQDA/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘RQDA’ version ‘0.2-7’
+* checking package namespace information ... OK
+* checking package dependencies ... NOTE
+Package which this enhances but not available for checking: ‘rjpod’
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘RQDA’ can be installed ... ERROR
+Installation failed.
+See ‘/Users/gaborcsardi/works/igraph/revdep_check/RQDA.Rcheck/00install.out’ for details.
+Status: 1 ERROR, 1 NOTE

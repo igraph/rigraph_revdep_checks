@@ -1,0 +1,15 @@
+* installing *source* package ‘poppr’ ...
+** package ‘poppr’ successfully unpacked and MD5 sums checked
+** libs
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c permut_shuffler.c -o permut_shuffler.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c poppr_distance.c -o poppr_distance.o
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o poppr.so permut_shuffler.o poppr_distance.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/poppr.Rcheck/poppr/libs
+** R
+** data
+** inst
+** preparing package for lazy loading
+Error : objects ‘plot.igraph’, ‘print.igraph’ are not exported by 'namespace:igraph'
+Error : package ‘adegenet’ could not be loaded
+ERROR: lazy loading failed for package ‘poppr’
+* removing ‘/Users/gaborcsardi/works/igraph/revdep_check/poppr.Rcheck/poppr’

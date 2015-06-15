@@ -1,0 +1,13 @@
+* installing *source* package ‘RcmdrPlugin.RMTCJags’ ...
+** package ‘RcmdrPlugin.RMTCJags’ successfully unpacked and MD5 sums checked
+** R
+** inst
+** preparing package for lazy loading
+Error : .onLoad failed in loadNamespace() for 'rjags', details:
+  call: dyn.load(file, DLLpath = DLLpath, ...)
+  error: unable to load shared object '/Users/gaborcsardi/works/igraph/revdep_lib/rjags/libs/rjags.so':
+  dlopen(/Users/gaborcsardi/works/igraph/revdep_lib/rjags/libs/rjags.so, 10): Library not loaded: /usr/local/lib/libjags.3.dylib
+  Referenced from: /Users/gaborcsardi/works/igraph/revdep_lib/rjags/libs/rjags.so
+  Reason: image not found
+ERROR: lazy loading failed for package ‘RcmdrPlugin.RMTCJags’
+* removing ‘/Users/gaborcsardi/works/igraph/revdep_check/RcmdrPlugin.RMTCJags.Rcheck/RcmdrPlugin.RMTCJags’

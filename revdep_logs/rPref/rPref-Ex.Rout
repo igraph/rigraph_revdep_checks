@@ -1,0 +1,516 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "rPref"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "rPref-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('rPref')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("base_pref")
+> ### * base_pref
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: base_pref
+> ### Title: Base preferences
+> ### Aliases: base_pref high high_ low low_ true true_
+> 
+> ### ** Examples
+> 
+> # Define a preference with a score value combining mpg and hp
+> p1 <- high(4 * mpg + hp)
+> # Perform the preference selection
+> psel(mtcars, p1)
+              mpg cyl disp  hp drat   wt qsec vs am gear carb
+Maserati Bora  15   8  301 335 3.54 3.57 14.6  0  1    5    8
+> 
+> # Define a preference with a given function
+> f <- function(x, y) (abs(x - mean(x))/max(x) + abs(y - mean(y))/max(y))
+> p2 <- low(f(mpg, hp))
+> psel(mtcars, p2)
+              mpg cyl disp  hp drat   wt qsec vs am gear carb
+Ferrari Dino 19.7   6  145 175 3.62 2.77 15.5  0  1    5    6
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("base_pref", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("base_pref_macros")
+> ### * base_pref_macros
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: base_pref_macros
+> ### Title: Useful base preference macros
+> ### Aliases: around base_pref_macros between layered pos
+> 
+> ### ** Examples
+> 
+> # Search for cars where mpg is near to 25
+> psel(mtcars, around(mpg, 25))
+           mpg cyl  disp hp drat   wt qsec vs am gear carb
+Merc 240D 24.4   4 146.7 62 3.69 3.19   20  1  0    4    2
+> 
+> # cyl = 2 and cyl = 4 are equally good, cyl = 6 is worse
+> psel(mtcars, layered(cyl, c(2, 4), 6))
+                mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+Datsun 710     22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+Merc 240D      24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+Merc 230       22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+Fiat 128       32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+Honda Civic    30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+Toyota Corona  21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+Fiat X1-9      27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+Porsche 914-2  26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+Lotus Europa   30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+Volvo 142E     21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("base_pref_macros", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("complex_pref")
+> ### * complex_pref
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: complex_pref
+> ### Title: Complex preferences
+> ### Aliases: &.preference *.preference +.preference -.preference
+> ###   complex_pref empty length.preference reverse |.preference
+> ### Keywords: skyline
+> 
+> ### ** Examples
+> 
+> # Define preference for cars with low consumption (high mpg-value)
+> # and simultanously high horsepower
+> p1 <- high(mpg) * high(hp)
+> 
+> # Perform the preference search
+> psel(mtcars, p1)
+                mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+Merc 450SL     17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+Fiat 128       32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+Lotus Europa   30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+Ferrari Dino   19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+Maserati Bora  15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("complex_pref", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("get_btg")
+> ### * get_btg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get_btg
+> ### Title: Better-Than-Graph
+> ### Aliases: get_btg
+> 
+> ### ** Examples
+> 
+> # Pick a small data set and create preference and BTG
+> df <- mtcars[1:10,]
+> pref <- high(mpg) * low(wt)
+> btg <- get_btg(df, pref)
+> 
+> # Create labels for the nodes with relevant values
+> labels <- paste0(df$mpg, "\n", df$wt)
+> 
+> # Plot the graph using igraph
+> library(igraph)
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> plot(btg$graph, layout = btg$layout, vertex.label = labels,
++      vertex.size = 25)
+> 
+> # Add colors for the maxima nodes and plot again
+> colors <- rep(rgb(1, 1, 1), nrow(df))
+> colors[psel.indices(df, pref)] <- rgb(0,1,0)
+> plot(btg$graph, layout = btg$layout, vertex.label = labels,
++      vertex.size = 25, vertex.color = colors)
+> 
+> # Show lattice structure of 3-dimensional Pareto preference
+> df <- merge(merge(data.frame(x = 1:3), data.frame(y = 1:3)), data.frame(z = 1:2))
+> labels <- paste0(df$x, ",", df$y, ",", df$z)
+> btg <- get_btg(df, low(x) * low(y) * low(z))
+> plot(btg$graph, layout = btg$layout, vertex.label = labels,
++      vertex.size = 20)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get_btg", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("get_hasse_diag")
+> ### * get_hasse_diag
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get_hasse_diag
+> ### Title: Adjacency list of Hasse diagramm
+> ### Aliases: get_hasse_diag
+> 
+> ### ** Examples
+> 
+> get_hasse_diag(mtcars, low(mpg))
+      [,1] [,2]
+ [1,]    1    4
+ [2,]    1   32
+ [3,]    2    4
+ [4,]    2   32
+ [5,]    3    8
+ [6,]    4   21
+ [7,]    5   10
+ [8,]    5   25
+ [9,]    6    5
+[10,]    7   17
+[11,]    8   27
+[12,]    9    8
+[13,]   10   30
+[14,]   11    6
+[15,]   12   13
+[16,]   13   11
+[17,]   14   22
+[18,]   15   24
+[19,]   16   24
+[20,]   17   31
+[21,]   18   20
+[22,]   19   18
+[23,]   21    3
+[24,]   21    9
+[25,]   22   29
+[26,]   23   22
+[27,]   24    7
+[28,]   25   30
+[29,]   26   19
+[30,]   26   28
+[31,]   27   26
+[32,]   28   18
+[33,]   29   12
+[34,]   30    1
+[35,]   30    2
+[36,]   31   14
+[37,]   31   23
+[38,]   32   21
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get_hasse_diag", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot_front")
+> ### * plot_front
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot_front
+> ### Title: Pareto Front Plot
+> ### Aliases: plot_front
+> 
+> ### ** Examples
+> 
+> # Plots Pareto fronts for the hp/mpg values of mtcars
+> show_front <- function(pref) {
++   plot(mtcars$hp, mtcars$mpg)
++   sky <- psel(mtcars, pref)
++   plot_front(mtcars, pref, col = rgb(0, 0, 1))
++   points(sky$hp, sky$mpg, lwd = 3)
++ }
+> 
+> # Do this for all four combinations of pareto compositions
+> show_front(low(hp)  * low(mpg))
+> show_front(low(hp)  * high(mpg))
+> show_front(high(hp) * low(mpg))
+> show_front(high(hp) * high(mpg))
+> 
+> # Compare this to the front of a intersection preference
+> show_front(high(hp) | high(mpg))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot_front", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pred_succ")
+> ### * pred_succ
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pred_succ
+> ### Title: Predecessor and successor functions
+> ### Aliases: all_pred all_succ hasse_pred hasse_succ init_pred_succ
+> ###   pred_succ
+> 
+> ### ** Examples
+> 
+> # Preference on mtcars for high mpg and low weight
+> p <- high(mpg) * low(wt)
+> init_pred_succ(mtcars, p)
+> 
+> # Helper to show mpg/hp values
+> show_vals <- function(x) mtcars[x,c('mpg','wt')]
+> 
+> # Pick some tuple "in the middle"
+> show_vals(10)
+          mpg   wt
+Merc 280 19.2 3.44
+> 
+> # Show (direct) predecessors/successors of tuple 10
+> show_vals(hasse_pred(p, 10)) # Next better car
+                mpg    wt
+Mazda RX4 Wag  21.0 2.875
+Hornet 4 Drive 21.4 3.215
+Ferrari Dino   19.7 2.770
+> show_vals(hasse_succ(p, 10)) # Next worse car
+                   mpg    wt
+Hornet Sportabout 18.7 3.440
+Pontiac Firebird  19.2 3.845
+> show_vals(all_pred(p, 10))   # All better cars
+                mpg    wt
+Mazda RX4      21.0 2.620
+Mazda RX4 Wag  21.0 2.875
+Datsun 710     22.8 2.320
+Hornet 4 Drive 21.4 3.215
+Merc 240D      24.4 3.190
+Merc 230       22.8 3.150
+Fiat 128       32.4 2.200
+Honda Civic    30.4 1.615
+Toyota Corolla 33.9 1.835
+Toyota Corona  21.5 2.465
+Fiat X1-9      27.3 1.935
+Porsche 914-2  26.0 2.140
+Lotus Europa   30.4 1.513
+Ferrari Dino   19.7 2.770
+Volvo 142E     21.4 2.780
+> show_vals(all_succ(p, 10))   # All worse cars
+                     mpg    wt
+Hornet Sportabout   18.7 3.440
+Valiant             18.1 3.460
+Duster 360          14.3 3.570
+Merc 280C           17.8 3.440
+Merc 450SE          16.4 4.070
+Merc 450SL          17.3 3.730
+Merc 450SLC         15.2 3.780
+Cadillac Fleetwood  10.4 5.250
+Lincoln Continental 10.4 5.424
+Chrysler Imperial   14.7 5.345
+Dodge Challenger    15.5 3.520
+Camaro Z28          13.3 3.840
+Pontiac Firebird    19.2 3.845
+Maserati Bora       15.0 3.570
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pred_succ", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("psel")
+> ### * psel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: psel
+> ### Title: Preference selection
+> ### Aliases: psel psel.indices
+> 
+> ### ** Examples
+> 
+> # Skyline and Top-K/At-least skyline
+> psel(mtcars, low(mpg) * low(hp))
+                    mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+Datsun 710         22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+Valiant            18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+Merc 240D          24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+Merc 280C          17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+Honda Civic        30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+Toyota Corona      21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+AMC Javelin        15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+> psel(mtcars, low(mpg) * low(hp), top = 5)
+                    mpg cyl  disp  hp drat   wt  qsec vs am gear carb .level
+Datsun 710         22.8   4 108.0  93 3.85 2.32 18.61  1  1    4    1      1
+Valiant            18.1   6 225.0 105 2.76 3.46 20.22  1  0    3    1      1
+Merc 240D          24.4   4 146.7  62 3.69 3.19 20.00  1  0    4    2      1
+Merc 280C          17.8   6 167.6 123 3.92 3.44 18.90  1  0    4    4      1
+Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.25 17.98  0  0    3    4      1
+> psel(mtcars, low(mpg) * low(hp), at_least = 5)
+                    mpg cyl  disp  hp drat    wt  qsec vs am gear carb .level
+Datsun 710         22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1      1
+Valiant            18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1      1
+Merc 240D          24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2      1
+Merc 280C          17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4      1
+Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4      1
+Honda Civic        30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2      1
+Toyota Corona      21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1      1
+AMC Javelin        15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2      1
+> 
+> # Visualize the skyline in a plot
+> sky1 <- psel(mtcars, high(mpg) * high(hp))
+> plot(mtcars$mpg, mtcars$hp)
+> points(sky1$mpg, sky1$hp, lwd=3)
+> 
+> # Grouped preference with dplyr
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following object is masked from ‘package:rPref’:
+
+    between
+
+The following object is masked from ‘package:stats’:
+
+    filter
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> psel(group_by(mtcars, cyl), low(mpg))
+Source: local data frame [4 x 11]
+Groups: cyl
+
+   mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+2 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+3 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+4 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+> 
+> # Return size of each maxima group
+> summarise(psel(group_by(mtcars, cyl), low(mpg)), n())
+Source: local data frame [3 x 2]
+
+  cyl n()
+1   4   1
+2   6   1
+3   8   2
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("psel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("show.pref")
+> ### * show.pref
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: show.pref
+> ### Title: Partial evaluation and string output of preferences
+> ### Aliases: as.character.preference eval.pref pref.str show.pref
+> 
+> ### ** Examples
+> 
+> f <- function(x) 2*x
+> p <- true(cyl == f(1))
+> 
+> # prints 'cyl == f(x)'
+> p
+[Preference] true(cyl == f(1))> 
+> # prints 'cyl == 2'
+> show.pref(p, mtcars)
+[Preference] true(cyl == 2)> eval.pref(p, mtcars)
+[Preference] true(cyl == 2)> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("show.pref", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("show.query")
+> ### * show.query
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: show.query
+> ### Title: Show preference in usual Query Languages
+> ### Aliases: show.query
+> 
+> ### ** Examples
+> 
+> show.query(low(a) * high(b))
+[1] "PREFERRING LOW a PLUS HIGH b"
+> 
+> show.query(low(a) * high(b), dialect = 'Preference SQL')
+[1] "PREFERRING a LOWEST AND b HIGHEST"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("show.query", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.839 0.034 0.875 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

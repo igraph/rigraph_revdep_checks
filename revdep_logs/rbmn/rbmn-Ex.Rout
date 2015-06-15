@@ -1,0 +1,1895 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "rbmn"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "rbmn-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('rbmn')
+Loading required package: MASS
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("adja2arcs")
+> ### * adja2arcs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: adja2arcs
+> ### Title: Arc matrix from an adjacency matrix
+> ### Aliases: adja2arcs
+> 
+> ### ** Examples
+> 
+>  adja2arcs(rbmn0adja.02)
+     to  from
+[1,] "a" "b" 
+[2,] "b" "c" 
+[3,] "d" "c" 
+[4,] "d" "e" 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("adja2arcs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("adja2crossed")
+> ### * adja2crossed
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: adja2crossed
+> ### Title: creates a crossed-adjacency matrix from two ones
+> ### Aliases: adja2crossed
+> 
+> ### ** Examples
+> 
+>  print(adja2crossed(rbmn0adja.01, rbmn0adja.01));
+    A_A B_A C_A A_B B_B C_B A_C B_C C_C
+A_A   0   1   0   1   0   0   0   0   0
+B_A   0   0   1   0   1   0   0   0   0
+C_A   0   0   0   0   0   1   0   0   0
+A_B   0   0   0   0   1   0   1   0   0
+B_B   0   0   0   0   0   1   0   1   0
+C_B   0   0   0   0   0   0   0   0   1
+A_C   0   0   0   0   0   0   0   1   0
+B_C   0   0   0   0   0   0   0   0   1
+C_C   0   0   0   0   0   0   0   0   0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("adja2crossed", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("adja2nbn")
+> ### * adja2nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: adja2nbn
+> ### Title: standardized /nbn/ from an adjacency matrix
+> ### Aliases: adja2nbn
+> 
+> ### ** Examples
+> 
+>  print8nbn(adja2nbn(adja4nbn(rbmn0nbn.03)));
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+---------F---[-]  = 0  (1)
+---------E---[F]  = 1*F  (1)
+---------D---[E]  = 1*E  (1)
+---------C---[D]  = 1*D  (1)
+---------B---[C]  = 1*C  (1)
+---------A---[B]  = 1*B  (1)
+---------H---[-]  = 0  (1)
+---------G---[F,H]  = 1*F + 1*H  (1)
+---------I---[H]  = 1*H  (1)
+---------J---[I]  = 1*I  (1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("adja2nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("adja4nbn")
+> ### * adja4nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: adja4nbn
+> ### Title: adjacency matrix of a /nbn/
+> ### Aliases: adja4nbn
+> 
+> ### ** Examples
+> 
+>  adja4nbn(rbmn0nbn.04);
+     to
+from  1.1 1.2 2.1 2.2 C
+  1.1   0   1   1   0 0
+  1.2   0   0   0   1 0
+  2.1   0   0   0   1 0
+  2.2   0   0   0   0 0
+  C     1   0   0   1 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("adja4nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("arc7nb4nbn")
+> ### * arc7nb4nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: arc7nb4nbn
+> ### Title: returns the number(s) of arcs of a /nbn/
+> ### Aliases: arc7nb4nbn
+> 
+> ### ** Examples
+> 
+>  arc7nb4nbn(rbmn0nbn.05);
+[1] 12
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("arc7nb4nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("arcs4nbn1nbn")
+> ### * arcs4nbn1nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: arcs4nbn1nbn
+> ### Title: returns the list of 'parallel' arcs of a crossed-nbn
+> ### Aliases: arcs4nbn1nbn
+> 
+> ### ** Examples
+> 
+>  print(arcs4nbn1nbn(rbmn0nbn.01, rbmn0nbn.04));
+$`A->B`
+     [,1]    [,2]   
+[1,] "A_1.1" "B_1.1"
+[2,] "A_1.2" "B_1.2"
+[3,] "A_2.1" "B_2.1"
+[4,] "A_2.2" "B_2.2"
+[5,] "A_C"   "B_C"  
+
+$`B->C`
+     [,1]    [,2]   
+[1,] "B_1.1" "C_1.1"
+[2,] "B_1.2" "C_1.2"
+[3,] "B_2.1" "C_2.1"
+[4,] "B_2.2" "C_2.2"
+[5,] "B_C"   "C_C"  
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("arcs4nbn1nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("boco")
+> ### * boco
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: body composition
+> ### Title: Body Composition Variables and Covariables
+> ### Aliases: boco
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> 
+> # load the data and build the correct network from the model string.
+> data(boco);
+> print(head(boco));
+   A     H     W   C        TF        LF       AF       TL       LL        AL
+1 83 181.7  92.6 117 17.110526  8.914737 3.040000 31.18947 18.50526  6.600000
+2 68 168.8  74.7  93  8.270526  5.390526 2.002632 27.98947 16.18947  7.547368
+3 28 182.3 112.2 112 17.674737 11.303158 3.063684 36.70526 24.53684 10.126316
+4 41 171.1  82.6  96 10.611053  6.518421 1.750526 29.17895 19.63158  7.789474
+5 85 169.4  71.1 102 10.882105  4.657368 1.899474 26.15789 14.45263  5.810526
+6 29 176.0  88.4  96 11.188947  7.532105 2.664211 31.42105 19.75789  8.315789
+    TB   LB   AB
+1 0.60 1.11 0.47
+2 0.66 1.04 0.50
+3 0.81 1.14 0.53
+4 0.76 1.08 0.46
+5 0.62 1.05 0.43
+6 0.66 0.95 0.45
+> boco7dag <- "[H][W|H][TF|W;H]";
+> # to be finished
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("boco", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("chain2correlation")
+> ### * chain2correlation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: chain2correlation
+> ### Title: computes the correlation matrix of a chain
+> ### Aliases: chain2correlation
+> 
+> ### ** Examples
+> 
+>  chain2correlation(rbmn0chain.03);
+             A           B           C           D           E            F
+A  1.000000000  0.08994967 -0.03908609 -0.03310071  0.01374899  0.009274947
+B  0.089949671  1.00000000 -0.43453283 -0.36799150  0.15285201  0.103112631
+C -0.039086085 -0.43453283  1.00000000  0.84686697 -0.35176171 -0.237295374
+D -0.033100715 -0.36799150  0.84686697  1.00000000 -0.41536832 -0.280203836
+E  0.013748988  0.15285201 -0.35176171 -0.41536832  1.00000000  0.674591256
+F  0.009274947  0.10311263 -0.23729537 -0.28020384  0.67459126  1.000000000
+G -0.003965536 -0.04408616  0.10145645  0.11980211 -0.28842381 -0.427553431
+H  0.000000000  0.00000000  0.00000000  0.00000000  0.00000000  0.000000000
+I  0.000000000  0.00000000  0.00000000  0.00000000  0.00000000  0.000000000
+J  0.000000000  0.00000000  0.00000000  0.00000000  0.00000000  0.000000000
+             G          H          I          J
+A -0.003965536  0.0000000  0.0000000  0.0000000
+B -0.044086159  0.0000000  0.0000000  0.0000000
+C  0.101456451  0.0000000  0.0000000  0.0000000
+D  0.119802112  0.0000000  0.0000000  0.0000000
+E -0.288423806  0.0000000  0.0000000  0.0000000
+F -0.427553431  0.0000000  0.0000000  0.0000000
+G  1.000000000 -0.4663584  0.2921989 -0.1564866
+H -0.466358440  1.0000000 -0.6265544  0.3355501
+I  0.292198942 -0.6265544  1.0000000 -0.5355482
+J -0.156486611  0.3355501 -0.5355482  1.0000000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("chain2correlation", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("chain2gema")
+> ### * chain2gema
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: chain2gema
+> ### Title: transforms a /chain/ to a /gema/
+> ### Aliases: chain2gema
+> 
+> ### ** Examples
+> 
+>  identical(chain2gema(rbmn0chain.02)$mu, rbmn0gema.02$mu);
+[1] TRUE
+>  print(chain2gema(rbmn0chain.02)$li-rbmn0gema.02$li);
+  [,1]          [,2] [,3] [,4]          [,5]
+a    0  0.000000e+00    0    0  0.000000e+00
+b    0 -4.440892e-16    0    0  0.000000e+00
+d    0  0.000000e+00    0    0  0.000000e+00
+c    0 -2.220446e-16    0    0  0.000000e+00
+e    0  0.000000e+00    0    0 -1.110223e-16
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("chain2gema", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("chain2mn")
+> ### * chain2mn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: chain2mn
+> ### Title: computes the distribution of a chain
+> ### Aliases: chain2mn
+> 
+> ### ** Examples
+> 
+>  print8mn(chain2mn(rbmn0chain.01));
+  mu  s.d.  C.A C.B  C.C
+A  0 1.000 1.00 0.5 0.25
+B  0 2.309 0.50 1.0 0.50
+C  0 3.464 0.25 0.5 1.00
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("chain2mn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("chain2nbn")
+> ### * chain2nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: chain2nbn
+> ### Title: transforms a /chain/ to a /nbn/
+> ### Aliases: chain2nbn
+> 
+> ### ** Examples
+> 
+>  print8nbn(chain2nbn(rbmn0chain.02), ordering=names(rbmn0nbn.02));
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+---------a---[-]  = 1  (5)
+---------b---[a]  = 2 + 0.283*a  (4)
+---------d---[-]  = 4  (2)
+---------c---[b,d]  = 3 + 0.267*b + 0.567*d  (3)
+---------e---[d]  = 5 + 0.177*d  (1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("chain2nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("chain2pre")
+> ### * chain2pre
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: chain2pre
+> ### Title: computes the precision of a chain
+> ### Aliases: chain2pre
+> 
+> ### ** Examples
+> 
+>  chain2pre(rbmn0chain.02);
+            a           b           c           d          e
+a  0.04500000 -0.01767767  0.00000000  0.00000000  0.0000000
+b -0.01767767  0.07043651 -0.02969569  0.01683588  0.0000000
+c  0.00000000 -0.02969569  0.11111111 -0.06299408  0.0000000
+d  0.00000000  0.01683588 -0.06299408  0.31696429 -0.1767767
+e  0.00000000  0.00000000  0.00000000 -0.17677670  1.0000000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("chain2pre", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("chain4chain")
+> ### * chain4chain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: chain4chain
+> ### Title: extracts a chain from a chain
+> ### Aliases: chain4chain
+> 
+> ### ** Examples
+> 
+>  chain4chain(rbmn0chain.02, c("a", "d"), c("b"), 12);
+[1] "This function is under construction!"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("chain4chain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("check8chain")
+> ### * check8chain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: check8chain
+> ### Title: checks a /chain/ object
+> ### Aliases: check8chain
+> 
+> ### ** Examples
+> 
+>  check8chain(rbmn0chain.01);
+[1] TRUE
+>  res <- check8chain(rbmn0adja.01);
+>  if (is.na(as.logical(res))) { print(res);}
+[1] "The names of the chain are not 'names(rbmn0chain.01)'"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("check8chain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("check8gema")
+> ### * check8gema
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: check8gema
+> ### Title: checks a /gema/ object
+> ### Aliases: check8gema
+> 
+> ### ** Examples
+> 
+>  check8gema(rbmn0gema.01);
+[1] TRUE
+>  res <- check8gema(rbmn0adja.01);
+>  if (is.na(as.logical(res))) { print(res);}
+[1] "A /gema/ must be a list"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("check8gema", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("check8nbn")
+> ### * check8nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: check8nbn
+> ### Title: checks a /nbn/ object
+> ### Aliases: check8nbn
+> 
+> ### ** Examples
+> 
+>  check8nbn(rbmn0nbn.01);
+[1] TRUE
+>  res <- check8nbn(rbmn0adja.01);
+>  if (is.na(as.logical(res))) { print(res);}
+[1] "A /nbn/ must be a list"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("check8nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("condi4joint")
+> ### * condi4joint
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: condi4joint
+> ### Title: computes some conditional distribution of a multinormal vector
+> ### Aliases: condi4joint
+> 
+> ### ** Examples
+> 
+>  print8mn(condi4joint(rbmn0mn.04, c("1.1", "2.2", "1.2", "2.1"), NULL));
+    mu  s.d. C.1.1 C.2.2 C.1.2 C.2.1
+1.1  0 1.414 1.000 0.884 0.816 0.816
+2.2  0 4.000 0.884 1.000 0.866 0.866
+1.2  0 1.732 0.816 0.866 1.000 0.667
+2.1  0 1.732 0.816 0.866 0.667 1.000
+>  print8mn(condi4joint(rbmn0mn.04, c("1.1", "2.2", "1.2", "2.1"), "C", 0));
+    mu  s.d. C.1.1 C.2.2 C.1.2 C.2.1
+1.1  0 1.000 1.000 0.756 0.707 0.707
+2.2  0 2.646 0.756 1.000 0.802 0.802
+1.2  0 1.414 0.707 0.802 1.000 0.500
+2.1  0 1.414 0.707 0.802 0.500 1.000
+>  print(condi4joint(rbmn0mn.04, c("1.1", "2.2", "1.2", "2.1"), "C", NULL));
+$mu
+1.1 2.2 1.2 2.1 
+  0   0   0   0 
+
+$rho
+    C
+1.1 1
+2.2 3
+1.2 1
+2.1 1
+
+$gamma
+    1.1 2.2 1.2 2.1
+1.1   1   2   1   1
+2.2   2   7   3   3
+1.2   1   3   2   1
+2.1   1   3   1   2
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("condi4joint", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cor4var")
+> ### * cor4var
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cor4var
+> ### Title: returns the correlation matrix from the variance
+> ### Aliases: cor4var
+> 
+> ### ** Examples
+> 
+>  cor4var(rbmn0mn.04$gamma);
+          1.1       1.2       2.1       2.2         C
+1.1 1.0000000 0.8164966 0.8164966 0.8838835 0.7071068
+1.2 0.8164966 1.0000000 0.6666667 0.8660254 0.5773503
+2.1 0.8164966 0.6666667 1.0000000 0.8660254 0.5773503
+2.2 0.8838835 0.8660254 0.8660254 1.0000000 0.7500000
+C   0.7071068 0.5773503 0.5773503 0.7500000 1.0000000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cor4var", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("crossed4nbn1nbn")
+> ### * crossed4nbn1nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: crossed4nbn1nbn
+> ### Title: creates a crossed-nbn from two /nbn/s
+> ### Aliases: crossed4nbn1nbn
+> 
+> ### ** Examples
+> 
+>  print8nbn(crossed4nbn1nbn(rbmn0nbn.01, rbmn0nbn.04));
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+-----A_1.1---[A_C]  = 1*A_C  (1)
+-----B_1.1---[A_1.1,B_C]  = 1.155*A_1.1 + 1*B_C  (2)
+-----C_1.1---[B_1.1,C_C]  = 0.75*B_1.1 + 1*C_C  (3)
+-----A_1.2---[A_1.1]  = 1*A_1.1  (1)
+-----B_1.2---[A_1.2,B_1.1]  = 1.155*A_1.2 + 1*B_1.1  (2)
+-----C_1.2---[B_1.2,C_1.1]  = 0.75*B_1.2 + 1*C_1.1  (3)
+-----A_2.1---[A_1.1]  = 1*A_1.1  (1)
+-----B_2.1---[A_2.1,B_1.1]  = 1.155*A_2.1 + 1*B_1.1  (2)
+-----C_2.1---[B_2.1,C_1.1]  = 0.75*B_2.1 + 1*C_1.1  (3)
+-----A_2.2---[A_1.2,A_2.1,A_C]  = 1*A_1.2 + 1*A_2.1 + 1*A_C  (1)
+-----B_2.2---[A_2.2,B_1.2,B_2.1,B_C]  = 1.155*A_2.2 + 1*B_1.2 + 1*B_2.1 + 1*B_C  (2)
+-----C_2.2---[B_2.2,C_1.2,C_2.1,C_C]  = 0.75*B_2.2 + 1*C_1.2 + 1*C_2.1 + 1*C_C  (3)
+-------A_C---[-]  = 0  (1)
+-------B_C---[A_C]  = 1.155*A_C  (2)
+-------C_C---[B_C]  = 0.75*B_C  (3)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("crossed4nbn1nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dev4mn")
+> ### * dev4mn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dev4mn
+> ### Title: Computes the deviance for a sample of multinormal vector
+> ### Aliases: dev4mn
+> 
+> ### ** Examples
+> 
+>  dev4mn(matrix(runif(3), 1), t(rbmn0mn.01$mu), rbmn0mn.01$gamma);
+         [,1]
+[1,] 9.178307
+attr(,"logarithm")
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dev4mn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("diff8nbn")
+> ### * diff8nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: diff8nbn
+> ### Title: returns a score of the difference between two /nbn/s
+> ### Aliases: diff8nbn
+> 
+> ### ** Examples
+> 
+>  diff8nbn(rbmn0nbn.01, rbmn0nbn.01);
+[1] 0
+>  diff8nbn(rbmn0nbn.01, rbmn0nbn.01, scalar=FALSE);
+   A.mu A.sigma    B.mu B.sigma     B.A    C.mu C.sigma     C.B 
+      0       0       0       0       0       0       0       0 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("diff8nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("estimate8constrainednbn")
+> ### * estimate8constrainednbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: estimate8constrainednbn
+> ### Title: estimates the parameters of a nbn with equality constraints
+> ### Aliases: estimate8constrainednbn
+> 
+> ### ** Examples
+> 
+>  data(boco);
+>  print8nbn(rbmn0nbn.05);
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+--------TL---[-]  = 0  (1)
+--------LL---[TL]  = 1*TL  (1)
+--------AL---[LL]  = 1*LL  (1)
+--------TF---[TL]  = 1*TL  (1)
+--------LF---[TF,LL]  = 1*TF + 1*LL  (1)
+--------AF---[LF,AL]  = 1*LF + 1*AL  (1)
+--------TB---[TF]  = 1*TF  (1)
+--------LB---[TB,LF]  = 1*TB + 1*LF  (1)
+--------AB---[LB,AF]  = 1*LB + 1*AF  (1)
+>  print8nbn(estimate8nbn(rbmn0nbn.05, boco));
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+--------TL---[-]  = 30.557  (4.769)
+--------LL---[TL]  = -0.996 + 0.658*TL  (1.652)
+--------AL---[LL]  = 0.259 + 0.384*LL  (0.734)
+--------TF---[TL]  = -7.933 + 0.652*TL  (3.942)
+--------LF---[TF,LL]  = -0.995 + 0.378*TF + 0.168*LL  (1.596)
+--------AF---[LF,AL]  = 0.327 + 0.317*LF + 0.005*AL  (0.487)
+--------TB---[TF]  = 0.601 + 0.006*TF  (0.13)
+--------LB---[TB,LF]  = 0.302 + 1.084*TB + 0.002*LF  (0.094)
+--------AB---[LB,AF]  = 0.051 + 0.372*LB + 0.004*AF  (0.034)
+>  print8nbn(estimate8constrainednbn(rbmn0nbn.05, rbmn0crarc.05, boco));
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+--------TL---[-]  = 30.557  (4.769)
+--------LL---[TL]  = 1.091 + 0.589*TL  (1.684)
+--------AL---[LL]  = 0.764 + 0.357*LL  (0.74)
+--------TF---[TL]  = -7.933 + 0.652*TL  (3.942)
+--------LF---[TF,LL]  = -0.703 + 0.589*TF + 0.02*LL  (1.844)
+--------AF---[LF,AL]  = 0.304 + 0.357*LF + -0.028*AL  (0.497)
+--------TB---[TF]  = 0.601 + 0.006*TF  (0.13)
+--------LB---[TB,LF]  = 0.596 + 0.589*TB + 0.008*LF  (0.113)
+--------AB---[LB,AF]  = 0.066 + 0.357*LB + 0.004*AF  (0.034)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("estimate8constrainednbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("estimate8nbn")
+> ### * estimate8nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: estimate8nbn
+> ### Title: estimating the /nbn/ parameters
+> ### Aliases: estimate8nbn
+> 
+> ### ** Examples
+> 
+>  data(boco);
+>  print8nbn(rbmn0nbn.05);
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+--------TL---[-]  = 0  (1)
+--------LL---[TL]  = 1*TL  (1)
+--------AL---[LL]  = 1*LL  (1)
+--------TF---[TL]  = 1*TL  (1)
+--------LF---[TF,LL]  = 1*TF + 1*LL  (1)
+--------AF---[LF,AL]  = 1*LF + 1*AL  (1)
+--------TB---[TF]  = 1*TF  (1)
+--------LB---[TB,LF]  = 1*TB + 1*LF  (1)
+--------AB---[LB,AF]  = 1*LB + 1*AF  (1)
+>  print8nbn(estimate8nbn(rbmn0nbn.05, boco));
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+--------TL---[-]  = 30.557  (4.769)
+--------LL---[TL]  = -0.996 + 0.658*TL  (1.652)
+--------AL---[LL]  = 0.259 + 0.384*LL  (0.734)
+--------TF---[TL]  = -7.933 + 0.652*TL  (3.942)
+--------LF---[TF,LL]  = -0.995 + 0.378*TF + 0.168*LL  (1.596)
+--------AF---[LF,AL]  = 0.327 + 0.317*LF + 0.005*AL  (0.487)
+--------TB---[TF]  = 0.601 + 0.006*TF  (0.13)
+--------LB---[TB,LF]  = 0.302 + 1.084*TB + 0.002*LF  (0.094)
+--------AB---[LB,AF]  = 0.051 + 0.372*LB + 0.004*AF  (0.034)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("estimate8nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gema2mn")
+> ### * gema2mn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gema2mn
+> ### Title: computes a /mn/ from a /gema/
+> ### Aliases: gema2mn
+> 
+> ### ** Examples
+> 
+>  print8mn(gema2mn(rbmn0gema.04));
+    mu  s.d. C.1.1 C.1.2 C.2.1 C.2.2   C.C
+1.1  0 1.000 1.000   0.0 0.707 0.707 0.500
+1.2  0 1.000 0.000   1.0 0.000 0.000 0.500
+2.1  0 1.414 0.707   0.0 1.000 0.500 0.707
+2.2  0 1.414 0.707   0.0 0.500 1.000 0.354
+C    0 2.000 0.500   0.5 0.707 0.354 1.000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gema2mn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gema2nbn")
+> ### * gema2nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gema2nbn
+> ### Title: computes a /nbn/ from a /gema/
+> ### Aliases: gema2nbn
+> 
+> ### ** Examples
+> 
+>  print8nbn(gema2nbn(rbmn0gema.02));
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+---------a---[-]  = 1  (5)
+---------b---[a]  = 2 + 0.283*a  (4)
+---------d---[-]  = 4  (2)
+---------c---[b,d]  = 3 + 0.267*b + 0.567*d  (3)
+---------e---[d]  = 5 + 0.177*d  (1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gema2nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generate8chain")
+> ### * generate8chain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generate8chain
+> ### Title: generation of a /chain/ /nbn/
+> ### Aliases: generate8chain
+> 
+> ### ** Examples
+> 
+>  set.seed(1234);
+>  print8chain(generate8chain());
+#-------------------------
+    (A)     0              (0.622)
+     ^         <0.722>
+    (B)     0              (0.609)
+     ^         <0.281>
+ <--(C)-->  0              (0.623)
+#-------------------------
+>  print8chain(generate8chain());
+#-------------------------
+    (A)     0              (0.694)
+     ^         <0.675>
+ <--(B)-->  0              (0.545)
+     v         <-0.428>
+    (C)     0              (0.283)
+     v         <-0.466>
+    (D)     0              (0.923)
+     v         <-0.627>
+    (E)     0              (0.292)
+#-------------------------
+>  print8chain(generate8chain(rnn=10, rcor=0.5));
+#-------------------------
+    (A)     0              (0.526)
+     ^         <0.5>
+    (B)     0              (0.915)
+     ^         <0.5>
+ <--(C)-->  0              (0.831)
+     v         <0.5>
+ -->)D(<--  0              (0.046)
+     ^         <0.5>
+ <--(E)-->  0              (0.456)
+     v         <0.5>
+ -->)F(<--  0              (0.265)
+     ^         <0.5>
+    (G)     0              (0.305)
+     ^         <0.5>
+ <--(H)-->  0              (0.507)
+     v         <0.5>
+ -->)I(<--  0              (0.181)
+     ^         <0.5>
+ <--(J)-->  0              (0.76)
+#-------------------------
+>  print8chain(generate8chain(rnn=10, rcor=0.5));
+#-------------------------
+ <--(A)-->  0              (0.074)
+     v         <0.5>
+ -->)B(<--  0              (0.31)
+     ^         <0.5>
+    (C)     0              (0.717)
+     ^         <0.5>
+    (D)     0              (0.505)
+     ^         <0.5>
+    (E)     0              (0.153)
+     ^         <0.5>
+ <--(F)-->  0              (0.504)
+     v         <0.5>
+ -->)G(<--  0              (0.494)
+     ^         <0.5>
+ <--(H)-->  0              (0.751)
+     v         <0.5>
+ -->)I(<--  0              (0.175)
+     ^         <0.5>
+ <--(J)-->  0              (0.848)
+#-------------------------
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generate8chain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generate8nbn")
+> ### * generate8nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generate8nbn
+> ### Title: returns a randomly built /nbn/ object.
+> ### Aliases: generate8nbn
+> 
+> ### ** Examples
+> 
+>  set.seed(1234)
+>  print8nbn(generate8nbn());
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+---------A---[-]  = 0  (0.622)
+---------B---[A]  = 0.722*A  (0.609)
+---------C---[-]  = 0  (0.64)
+>  print8nbn(generate8nbn());
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+---------A---[-]  = 0  (0.514)
+---------B---[A]  = -0.435*A  (0.694)
+---------C---[B]  = -0.428*B  (0.923)
+---------D---[-]  = 0  (0.267)
+---------E---[D]  = 0.051*D  (0.303)
+---------F---[A,E]  = -0.908*A + -0.638*E  (0.915)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generate8nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("inout4chain")
+> ### * inout4chain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: inout4chain
+> ### Title: reduces a chain to its inputs and outputs
+> ### Aliases: inout4chain
+> 
+> ### ** Examples
+> 
+>  print8chain(inout4chain(rbmn0chain.02));
+#-------------------------
+ <--(a)-->  1              (5)
+     v         <0.111>
+ -->)c(<--  3.535              (3.185)
+     ^         <0.333>
+ <--(d)-->  4              (2)
+     v         <0.333>
+    (e)     5              (1)
+#-------------------------
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("inout4chain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("is8nbn8chain")
+> ### * is8nbn8chain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: is8nbn8chain
+> ### Title: Checks if a given /nbn/ is a /chain/
+> ### Aliases: is8nbn8chain
+> 
+> ### ** Examples
+> 
+> is8nbn8chain(rbmn0nbn.01);
+[1] TRUE
+> is8nbn8chain(rbmn0nbn.04);
+[1] FALSE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("is8nbn8chain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("marginal4chain")
+> ### * marginal4chain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: marginal4chain
+> ### Title: returns marginal expectations and standard deviations of a chain
+> ### Aliases: marginal4chain
+> 
+> ### ** Examples
+> 
+>  marginal4chain(rbmn0chain.02);
+$mu
+[1] 1.000000 2.282843 5.877902 4.000000 5.707107
+
+$sigma
+[1] 5.000000 4.242641 3.401680 2.000000 1.060660
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("marginal4chain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mn2gema")
+> ### * mn2gema
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mn2gema
+> ### Title: computes a /gema/ from a /mn/
+> ### Aliases: mn2gema
+> 
+> ### ** Examples
+> 
+>  print8gema(mn2gema(rbmn0mn.04));
+    mu    E1 E2 E3    E4    E5
+1.1  0 1.414  0  0 0.000 0.000
+1.2  0 1.414  1  0 0.000 0.000
+2.1  0 1.414  0  1 0.000 0.000
+2.2  0 3.536  1  1 1.225 0.000
+C    0 0.707  0  0 0.408 0.577
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mn2gema", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mn4joint1condi")
+> ### * mn4joint1condi
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mn4joint1condi
+> ### Title: computes a joint distribution from a marginal and a conditional
+> ###   one for multinormal distributions
+> ### Aliases: mn4joint1condi
+> 
+> ### ** Examples
+> 
+>  lcon <- list(a=c(D=2, E=4), 
++  b=matrix(1:6, 2, dimnames=list(LETTERS[4:5], 
++  LETTERS[1:3])), 
++  S=matrix(c(1, 1, 1, 2), 2));
+> 
+>  print8mn(mn4joint1condi(rbmn0mn.01, lcon));
+  mu   s.d.   C.A   C.B   C.C   C.D   C.E
+A  0  1.000 1.000 0.500 0.250 0.399 0.430
+B  0  2.309 0.500 1.000 0.500 0.730 0.751
+C  0  3.464 0.250 0.500 1.000 0.955 0.943
+D  2 22.036 0.399 0.730 0.955 1.000 0.998
+E  4 27.470 0.430 0.751 0.943 0.998 1.000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mn4joint1condi", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("nb8bn")
+> ### * nb8bn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nb8bn
+> ### Title: number of Bayesian networks
+> ### Aliases: nb8bn
+> 
+> ### ** Examples
+> 
+>  nb8bn(5)
+[1] 29281
+>  nb8bn(5, TRUE);
+[1] 302
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nb8bn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("nbn2chain")
+> ### * nbn2chain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nbn2chain
+> ### Title: transforms a /nbn/ into a /chain/
+> ### Aliases: nbn2chain
+> 
+> ### ** Examples
+> 
+>  print8chain(nbn2chain(rbmn0nbn.02));
+#-------------------------
+ <--(a)-->  1              (5)
+     v         <0.333>
+    (b)     2              (4)
+     v         <0.333>
+ -->)c(<--  3              (3)
+     ^         <0.333>
+ <--(d)-->  4              (2)
+     v         <0.333>
+    (e)     5              (1)
+#-------------------------
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nbn2chain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("nbn2gema")
+> ### * nbn2gema
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nbn2gema
+> ### Title: computes a /gema/ from a /nbn/
+> ### Aliases: nbn2gema
+> 
+> ### ** Examples
+> 
+>  identical(nbn2gema(rbmn0nbn.02), rbmn0gema.02);
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nbn2gema", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("nbn2mn")
+> ### * nbn2mn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nbn2mn
+> ### Title: computes the joint distribution of a /nbn/
+> ### Aliases: nbn2mn
+> 
+> ### ** Examples
+> 
+>  print8mn(nbn2mn(rbmn0nbn.05));
+   mu  s.d.  C.TL  C.LL  C.AL  C.TF  C.LF  C.AF  C.TB  C.LB  C.AB
+TL  0 1.000 1.000 0.707 0.577 0.707 0.756 0.728 0.577 0.728 0.756
+LL  0 1.414 0.707 1.000 0.816 0.500 0.802 0.857 0.408 0.686 0.802
+AL  0 1.732 0.577 0.816 1.000 0.408 0.655 0.840 0.333 0.560 0.727
+TF  0 1.414 0.707 0.500 0.408 1.000 0.802 0.686 0.816 0.857 0.802
+LF  0 2.646 0.756 0.802 0.655 0.802 1.000 0.917 0.655 0.917 0.952
+AF  0 4.123 0.728 0.857 0.840 0.686 0.917 1.000 0.560 0.824 0.947
+TB  0 1.732 0.577 0.408 0.333 0.816 0.655 0.560 1.000 0.840 0.727
+LB  0 4.123 0.728 0.686 0.560 0.857 0.917 0.824 0.840 1.000 0.947
+AB  0 7.937 0.756 0.802 0.727 0.802 0.952 0.947 0.727 0.947 1.000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nbn2mn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("nbn2nbn")
+> ### * nbn2nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nbn2nbn
+> ### Title: computes the /nbn/ changing its topological order
+> ### Aliases: nbn2nbn
+> 
+> ### ** Examples
+> 
+>  print8mn(nbn2mn(rbmn0nbn.01, algo=1));
+  mu  s.d.  C.A C.B  C.C
+A  0 1.000 1.00 0.5 0.25
+B  0 2.309 0.50 1.0 0.50
+C  0 3.464 0.25 0.5 1.00
+>  print8mn(nbn2mn(rbmn0nbn.01, algo=2));
+  mu  s.d.  C.A C.B  C.C
+A  0 1.000 1.00 0.5 0.25
+B  0 2.309 0.50 1.0 0.50
+C  0 3.464 0.25 0.5 1.00
+>  print8mn(nbn2mn(rbmn0nbn.01, algo=3));
+  mu  s.d.  C.A C.B  C.C
+A  0 1.000 1.00 0.5 0.25
+B  0 2.309 0.50 1.0 0.50
+C  0 3.464 0.25 0.5 1.00
+>  print8mn(nbn2mn(nbn2nbn(rbmn0nbn.02, c(1, 2, 4, 5, 3))));
+     mu  s.d.   C.a   C.b   C.c   C.e   C.d
+a 1.000 5.000 1.000 0.333 0.111 0.014 0.041
+b 2.283 4.243 0.333 1.000 0.333 0.042 0.124
+c 5.878 3.402 0.111 0.333 1.000 0.125 0.372
+e 5.731 1.062 0.014 0.042 0.125 1.000 0.336
+d 4.135 2.016 0.041 0.124 0.372 0.336 1.000
+>  print8mn(nbn2mn(nbn2nbn(rbmn0nbn.02, c(4, 1, 2, 3, 5))));
+     mu  s.d.   C.c   C.a   C.b   C.d   C.e
+c 5.878 3.402 1.000 0.111 0.333 0.372 0.125
+a 1.000 5.000 0.111 1.000 0.333 0.041 0.014
+b 2.283 4.243 0.333 0.333 1.000 0.124 0.042
+d 4.135 2.016 0.372 0.041 0.124 1.000 0.336
+e 5.731 1.062 0.125 0.014 0.042 0.336 1.000
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nbn2nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("nbn2rr")
+> ### * nbn2rr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nbn2rr
+> ### Title: computes standard matrices from a /nbn/
+> ### Aliases: nbn2rr
+> 
+> ### ** Examples
+> 
+>  nbn2rr(rbmn0nbn.01);
+$mm
+A B C 
+0 0 0 
+
+$ss
+A B C 
+1 2 3 
+
+$rr
+  A        B    C
+A 0 1.154701 0.00
+B 0 0.000000 0.75
+C 0 0.000000 0.00
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nbn2rr", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("nbn4nbn")
+> ### * nbn4nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nbn4nbn
+> ### Title: From a /nbn/ computes the associated nbn1
+> ### Aliases: nbn4nbn
+> 
+> ### ** Examples
+> 
+>  print8nbn(nbn4nbn(rbmn0nbn.04));
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+-------1.1---[C]  = 1*C  (1)
+-------1.2---[1.1]  = 1*1.1  (1)
+-------2.1---[1.1]  = 1*1.1  (1)
+-------2.2---[1.2,2.1,C]  = 1*1.2 + 1*2.1 + 1*C  (1)
+---------C---[-]  = 0  (1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nbn4nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("nbn4rmatrix")
+> ### * nbn4rmatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nbn4rmatrix
+> ### Title: a /nbn/ from a regression matrix
+> ### Aliases: nbn4rmatrix
+> 
+> ### ** Examples
+> 
+>  print8nbn(nbn4rmatrix(rmatrix4nbn(rbmn0nbn.02)));
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+---------a---[-]  = 0  (5)
+---------b---[a]  = 0.283*a  (4)
+---------d---[-]  = 0  (2)
+---------c---[b,d]  = 0.267*b + 0.567*d  (3)
+---------e---[d]  = 0.177*d  (1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nbn4rmatrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("normalize8nbn")
+> ### * normalize8nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: normalize8nbn
+> ### Title: normalizes a /nbn/
+> ### Aliases: normalize8nbn
+> 
+> ### ** Examples
+> 
+>  print8nbn(normalize8nbn(rbmn0nbn.01));
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+---------A---[-]  = 0  (1)
+---------B---[A]  = 0.5*A  (0.866)
+---------C---[B]  = 0.5*B  (0.866)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("normalize8nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("order4chain")
+> ### * order4chain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: order4chain
+> ### Title: returns a topological order of a /chain/ or checks a proposed
+> ###   order.
+> ### Aliases: order4chain
+> 
+> ### ** Examples
+> 
+>  order4chain(rbmn0chain.02);
+[1] 1 2 4 3 5
+>  order4chain(rbmn0chain.02, order4chain(rbmn0chain.02));
+[1] "Sorry, the 'ord' option is wrong and must be corrected!"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("order4chain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("order4gema")
+> ### * order4gema
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: order4gema
+> ### Title: topological order of a /gema/
+> ### Aliases: order4gema
+> 
+> ### ** Examples
+> 
+>  names(rbmn0gema.04$mu)[order4gema(rbmn0gema.04)];
+[1] "1.1" "1.2" "2.1" "2.2" "C"  
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("order4gema", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("order4nbn")
+> ### * order4nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: order4nbn
+> ### Title: topological order of a /nbn/
+> ### Aliases: order4nbn
+> 
+> ### ** Examples
+> 
+>  names(rbmn0nbn.04)[order4nbn(rbmn0nbn.04)];
+[1] "C"   "1.1" "1.2" "2.1" "2.2"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("order4nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print8chain")
+> ### * print8chain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print8chain
+> ### Title: prints a /chain/ object
+> ### Aliases: print8chain
+> 
+> ### ** Examples
+> 
+>  print8chain(rbmn0chain.01);
+#-------------------------
+ <--(A)-->  0              (1)
+     v         <0.5>
+    (B)     0              (2)
+     v         <0.5>
+    (C)     0              (3)
+#-------------------------
+>  print8chain(rbmn0chain.02);
+#-------------------------
+ <--(a)-->  1              (5)
+     v         <0.333>
+    (b)     2              (4)
+     v         <0.333>
+ -->)c(<--  3              (3)
+     ^         <0.333>
+ <--(d)-->  4              (2)
+     v         <0.333>
+    (e)     5              (1)
+#-------------------------
+>  print8chain(rbmn0chain.03);
+#-------------------------
+    (A)     0              (0.622)
+     ^         <0.09>
+    (B)     0              (0.609)
+     ^         <-0.435>
+    (C)     0              (0.623)
+     ^         <0.847>
+    (D)     0              (0.861)
+     ^         <-0.415>
+    (E)     0              (0.64)
+     ^         <0.675>
+ <--(F)-->  0              (0.009)
+     v         <-0.428>
+ -->)G(<--  0              (0.233)
+     ^         <-0.466>
+ <--(H)-->  0              (0.666)
+     v         <-0.627>
+    (I)     0              (0.514)
+     v         <-0.536>
+    (J)     0              (0.694)
+#-------------------------
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print8chain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print8gema")
+> ### * print8gema
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print8gema
+> ### Title: standard print function for a /gema/ object.
+> ### Aliases: print8gema
+> 
+> ### ** Examples
+> 
+>  print8gema(rbmn0gema.01);
+  mu    E1  E2 E3
+A  0 1.000 0.0  0
+B  0 1.155 2.0  0
+C  0 0.866 1.5  3
+>  print8gema(rbmn0gema.02, "m");
+     mu
+a 1.000
+b 2.283
+d 4.000
+c 5.878
+e 5.707
+>  print8gema(rbmn0gema.03, "l", digit=1);
+    E1   E2   E3   E4  E5  E6   E7  E8   E9 E10
+F  0.0  0.0  0.0  0.0 0.0 0.0  0.0 0.0  0.0 0.0
+E  0.6  0.6  0.0  0.0 0.0 0.0  0.0 0.0  0.0 0.0
+D -0.3 -0.3  0.9  0.0 0.0 0.0  0.0 0.0  0.0 0.0
+C -0.3 -0.3  0.9  0.6 0.0 0.0  0.0 0.0  0.0 0.0
+B  0.1  0.1 -0.2 -0.2 0.6 0.0  0.0 0.0  0.0 0.0
+A  0.0  0.0  0.0  0.0 0.1 0.6  0.0 0.0  0.0 0.0
+H  0.0  0.0  0.0  0.0 0.0 0.0  0.7 0.0  0.0 0.0
+G -0.1  0.0  0.0  0.0 0.0 0.0 -0.1 0.2  0.0 0.0
+I  0.0  0.0  0.0  0.0 0.0 0.0 -0.4 0.0  0.5 0.0
+J  0.0  0.0  0.0  0.0 0.0 0.0  0.3 0.0 -0.3 0.7
+>  print8gema(rbmn0gema.04, printed=FALSE);
+    mu E1 E2 E3 E4 E5
+1.1  0  1  0  0  0  0
+1.2  0  0  1  0  0  0
+2.1  0  1  0  1  0  0
+2.2  0  1  0  0  1  0
+C    0  1  1  1  0  1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print8gema", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print8mn")
+> ### * print8mn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print8mn
+> ### Title: standard print function for a /mn/ object.
+> ### Aliases: print8mn
+> 
+> ### ** Examples
+> 
+>  print8mn(rbmn0mn.01);
+  mu  s.d.  C.A C.B  C.C
+A  0 1.000 1.00 0.5 0.25
+B  0 2.309 0.50 1.0 0.50
+C  0 3.464 0.25 0.5 1.00
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print8mn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("print8nbn")
+> ### * print8nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: print8nbn
+> ### Title: print function for a /nbn/ object.
+> ### Aliases: print8nbn
+> 
+> ### ** Examples
+> 
+>  print8nbn(rbmn0nbn.01);
+=====Nodes===[parents]   = Exp. (sd.dev)       
+-----------------------------------------------
+---------A---[-]  = 0  (1)
+---------B---[A]  = 1.155*A  (2)
+---------C---[B]  = 0.75*B  (3)
+>  print8nbn(rbmn0nbn.03, "pm", order=1:2)
+
+Model: [F][E|F][D|E][C|D][B|C][A|B][H][G|F;H][I|H][J|I] 
+
+=====Nodes===[parents]   
+-----------------------------------------------
+---------F---[-]
+---------E---[F]
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("print8nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rbmn-package")
+> ### * rbmn-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rbmn-package
+> ### Title: Linear Gaussian Bayesian network manipulations
+> ### Aliases: rbmn-package rbmn
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+> library(rbmn)
+> 
+> ## getting the data set
+> data(boco)
+> print(head(boco));
+   A     H     W   C        TF        LF       AF       TL       LL        AL
+1 83 181.7  92.6 117 17.110526  8.914737 3.040000 31.18947 18.50526  6.600000
+2 68 168.8  74.7  93  8.270526  5.390526 2.002632 27.98947 16.18947  7.547368
+3 28 182.3 112.2 112 17.674737 11.303158 3.063684 36.70526 24.53684 10.126316
+4 41 171.1  82.6  96 10.611053  6.518421 1.750526 29.17895 19.63158  7.789474
+5 85 169.4  71.1 102 10.882105  4.657368 1.899474 26.15789 14.45263  5.810526
+6 29 176.0  88.4  96 11.188947  7.532105 2.664211 31.42105 19.75789  8.315789
+    TB   LB   AB
+1 0.60 1.11 0.47
+2 0.66 1.04 0.50
+3 0.81 1.14 0.53
+4 0.76 1.08 0.46
+5 0.62 1.05 0.43
+6 0.66 0.95 0.45
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rbmn-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("reverse8chain")
+> ### * reverse8chain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: reverse8chain
+> ### Title: reverses the nodes of a chain
+> ### Aliases: reverse8chain
+> 
+> ### ** Examples
+> 
+>  print8chain(rbmn0chain.02);
+#-------------------------
+ <--(a)-->  1              (5)
+     v         <0.333>
+    (b)     2              (4)
+     v         <0.333>
+ -->)c(<--  3              (3)
+     ^         <0.333>
+ <--(d)-->  4              (2)
+     v         <0.333>
+    (e)     5              (1)
+#-------------------------
+>  print8chain(reverse8chain(rbmn0chain.02));
+#-------------------------
+    (e)     5              (1)
+     ^         <0.333>
+ <--(d)-->  4              (2)
+     v         <0.333>
+ -->)c(<--  3              (3)
+     ^         <0.333>
+    (b)     2              (4)
+     ^         <0.333>
+ <--(a)-->  1              (5)
+#-------------------------
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("reverse8chain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rm8nd4adja")
+> ### * rm8nd4adja
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rm8nd4adja
+> ### Title: removes somes nodes from an adjacency matrix
+> ### Aliases: rm8nd4adja
+> ### Keywords: utilities PKEYWORDS
+> 
+> ### ** Examples
+> 
+>  rm8nd4adja(rbmn0adja.04, "1.1");
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1.1 1.2 2.1 2.2 C
+1.1   0   1   1   0 0
+1.2   0   0   0   1 0
+2.1   0   0   0   1 0
+2.2   0   0   0   0 0
+C     1   0   0   1 0
+<<<<< MESSAGE >>>>>
+[1] "Not a topological order"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+No traceback available 
+    1.2 2.1 2.2 C
+1.2   0   0   1 0
+2.1   0   0   1 0
+2.2   0   0   0 0
+C     1   1   1 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rm8nd4adja", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rm8nd4nbn")
+> ### * rm8nd4nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rm8nd4nbn
+> ### Title: removes some nodes from a /nbn/
+> ### Aliases: rm8nd4nbn
+> 
+> ### ** Examples
+> 
+>  rm8nd4nbn(rbmn0nbn.04, "1.1"); 
+[1] "the presently proposed algorithm is false, see 'margina.r' to check it"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rm8nd4nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rmatrix4nbn")
+> ### * rmatrix4nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rmatrix4nbn
+> ### Title: regression matrix of a /nbn/
+> ### Aliases: rmatrix4nbn
+> 
+> ### ** Examples
+> 
+>  rmatrix4nbn(rbmn0nbn.02);
+    to
+from a         b d         c         e
+   a 5 0.2828427 0 0.0000000 0.0000000
+   b 0 4.0000000 0 0.2672612 0.0000000
+   d 0 0.0000000 2 0.5669467 0.1767767
+   c 0 0.0000000 0 3.0000000 0.0000000
+   e 0 0.0000000 0 0.0000000 1.0000000
+>  (rmatrix4nbn(rbmn0nbn.02, FALSE)>0)*1;
+    to
+from a b d c e
+   a 0 1 0 0 0
+   b 0 0 0 1 0
+   d 0 0 0 1 1
+   c 0 0 0 0 0
+   e 0 0 0 0 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rmatrix4nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simulate8gema")
+> ### * simulate8gema
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simulate8gema
+> ### Title: simulates from a /gema/ object
+> ### Aliases: simulate8gema
+> 
+> ### ** Examples
+> 
+>  simulate8gema(rbmn0gema.01, 10);
+                A           B           C
+ [1,] -0.62645381 -0.35607990 -2.77394577
+ [2,]  1.59528080  2.50108714 -0.58558979
+ [3,]  0.48742905  2.03948400  3.25695705
+ [4,] -0.30538839  2.67093020  3.17272736
+ [5,] -0.62124058 -5.14674661 -0.48526720
+ [6,] -0.04493361 -0.08426539  2.76830959
+ [7,]  0.82122120  2.13606720  4.35898251
+ [8,]  0.78213630  1.05226317 -5.17885771
+ [9,]  0.61982575  0.60345565 -0.01479479
+[10,] -1.47075238 -2.65457868 -0.73710933
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simulate8gema", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simulate8gmn")
+> ### * simulate8gmn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simulate8gmn
+> ### Title: simulates a multinormal vector with varying expectation
+> ### Aliases: simulate8gmn
+> 
+> ### ** Examples
+> 
+>  loi <- list(mu=c(D=2, E=4), 
++  rho=matrix(1:6, 2, dimnames=list(LETTERS[4:5], 
++  LETTERS[1:3])), 
++  gamma=matrix(c(1, 1, 1, 2), 2));
+>  cova <- matrix(runif(36), 12, dimnames=list(NULL, LETTERS[1:3]));
+>  print(simulate8gmn(loi, cova, 12));
+          D         E
+1  5.646953 10.454208
+2  6.014247  9.381385
+3  5.527247  9.696240
+4  7.006857 11.160576
+5  9.490384 12.147179
+6  6.101785  8.933550
+7  7.229727 11.026976
+8  7.974400 11.932245
+9  7.190091 12.101283
+10 1.976980  4.313102
+11 7.977619 11.271310
+12 6.384278  9.359059
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simulate8gmn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simulate8mn")
+> ### * simulate8mn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simulate8mn
+> ### Title: simulates a multinormal vector
+> ### Aliases: simulate8mn
+> 
+> ### ** Examples
+> 
+>  print(simulate8mn(rbmn0mn.01, 12));
+            A          B          C
+1   1.0139714  1.8948083  1.5959127
+2   0.8850380  3.3739625 -2.4674709
+3  -0.3277710 -0.4858346  3.7465018
+4  -1.7613337 -2.1627437 -5.4210582
+5  -0.5026535 -0.3977787 -1.1279061
+6   0.2153976 -0.3346713  3.5522439
+7   0.5576471 -2.4282888 -0.9342033
+8  -0.6216627 -2.1400476 -1.9877006
+9  -0.3093145 -2.5220551 -1.1630238
+10 -0.2844249 -0.7906737  1.6790435
+11 -1.7083252 -2.2465150 -5.0392613
+12  0.4158121  2.7491708 -2.9774895
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simulate8mn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simulate8nbn")
+> ### * simulate8nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simulate8nbn
+> ### Title: simulates from a /nbn/ object
+> ### Aliases: simulate8nbn
+> 
+> ### ** Examples
+> 
+>  simulate8nbn(rbmn0nbn.01, 10);
+               A          B           C
+ [1,] -0.6264538  2.3001958  4.48207895
+ [2,]  0.1836433  0.9917395  3.09021354
+ [3,] -0.8356286 -2.2073820 -1.43184153
+ [4,]  1.5952808 -2.5873282 -7.90855122
+ [5,]  0.3295078  2.6303446  3.83223572
+ [6,] -0.8204684 -1.0372625 -0.94633310
+ [7,]  0.4874291  0.5304541 -0.06954597
+ [8,]  0.7383247  2.7402164 -2.35709488
+ [9,]  0.5757814  2.3072974  0.29602290
+[10,] -0.3053884  0.8351705  1.88020256
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simulate8nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("state4chain")
+> ### * state4chain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: state4chain
+> ### Title: returns the states of each node of a chain
+> ### Aliases: state4chain
+> 
+> ### ** Examples
+> 
+>  state4chain(rbmn0chain.01);
+  A   B   C 
+"r" "t" "l" 
+>  state4chain(rbmn0chain.03);
+  A   B   C   D   E   F   G   H   I   J 
+"l" "t" "t" "t" "t" "r" "c" "r" "t" "l" 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("state4chain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("string7dag4nbn")
+> ### * string7dag4nbn
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: string7dag4nbn
+> ### Title: provides so-called string model of a /nbn/
+> ### Aliases: string7dag4nbn
+> 
+> ### ** Examples
+> 
+>  string7dag4nbn(rbmn0nbn.01);
+[1] "[A][B|A][C|B]"
+>  string7dag4nbn(rbmn0nbn.04, sep=", ");
+[1] "[1.1|C][1.2|1.1][2.1|1.1][2.2|1.2, 2.1, C][C]"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("string7dag4nbn", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("var2pre")
+> ### * var2pre
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: var2pre
+> ### Title: returns the precision matrix from the variance
+> ### Aliases: var2pre
+> 
+> ### ** Examples
+> 
+>  var2pre(rbmn0mn.04$gamma);
+              1.1 1.2 2.1           2.2  C
+1.1  3.000000e+00  -1  -1 -1.776357e-16 -1
+1.2 -1.000000e+00   2   1 -1.000000e+00  1
+2.1 -1.000000e+00   1   2 -1.000000e+00  1
+2.2  2.183439e-15  -1  -1  1.000000e+00 -1
+C   -1.000000e+00   1   1 -1.000000e+00  3
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("var2pre", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.442 0.022 0.464 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

@@ -1,0 +1,741 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "JGL"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "JGL-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('JGL')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("JGL-package")
+> ### * JGL-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: JGL-package
+> ### Title: Joint Graphical Lasso
+> ### Aliases: JGL-package
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+> ## load an example dataset with K=two classes, p=200 features, and n=100 samples per class:
+> data(example.data)
+> str(example.data)
+List of 2
+ $ : num [1:100, 1:200] 0.395 -2.03 -1.704 -0.469 1.75 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ : num [1:100, 1:200] -1.548 1.45 -0.812 -0.589 0.69 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+> ## run FGL:
+> fgl.results = JGL(Y=example.data,penalty="fused",lambda1=.25,lambda2=.1)
+> str(fgl.results)
+List of 3
+ $ theta            :List of 2
+  ..$ : num [1:47, 1:47] 1.04 0 0 0 0 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr [1:47] "gene 5" "gene 7" "gene 9" "gene 15" ...
+  .. .. ..$ : chr [1:47] "gene 5" "gene 7" "gene 9" "gene 15" ...
+  ..$ : num [1:47, 1:47] 1.04 0 0 0 0 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr [1:47] "gene 5" "gene 7" "gene 9" "gene 15" ...
+  .. .. ..$ : chr [1:47] "gene 5" "gene 7" "gene 9" "gene 15" ...
+ $ theta.unconnected:List of 2
+  ..$ : Named num [1:153] 1.243 0.909 0.976 1.069 1.009 ...
+  .. ..- attr(*, "names")= chr [1:153] "gene 1" "gene 2" "gene 3" "gene 4" ...
+  ..$ : Named num [1:153] 1.243 0.909 0.976 1.289 1.009 ...
+  .. ..- attr(*, "names")= chr [1:153] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ connected        : logi [1:200] FALSE FALSE FALSE FALSE TRUE FALSE ...
+ - attr(*, "class")= chr "jgl"
+> print.jgl(fgl.results)
+
+Number of connected nodes:  47 
+Number of subnetworks in each class:  15 11 
+Number of edges in each class:  17 14 
+Number of edges shared by all classes:  4 
+L1 norm of off-diagonal elements of classes' Thetas:  0.8156875 0.6878476 
+> ## get subnetwork membership of FGL results:
+> subnetworks(fgl.results$theta)
+[[1]]
+[[1]][[1]]
+[1] "gene 5"   "gene 126"
+
+[[1]][[2]]
+[1] "gene 15"  "gene 177"
+
+[[1]][[3]]
+[1] "gene 18"  "gene 32"  "gene 61"  "gene 155"
+
+[[1]][[4]]
+[1] "gene 25" "gene 76"
+
+[[1]][[5]]
+[1] "gene 49"  "gene 199"
+
+[[1]][[6]]
+[1] "gene 57"  "gene 130"
+
+[[1]][[7]]
+[1] "gene 60"  "gene 123"
+
+[[1]][[8]]
+[1] "gene 63"  "gene 186"
+
+[[1]][[9]]
+[1] "gene 67"  "gene 168"
+
+[[1]][[10]]
+[1] "gene 68" "gene 90"
+
+[[1]][[11]]
+[1] "gene 80"  "gene 114"
+
+[[1]][[12]]
+[1] "gene 86"  "gene 158"
+
+[[1]][[13]]
+[1] "gene 95"  "gene 122"
+
+[[1]][[14]]
+[1] "gene 98"  "gene 175"
+
+[[1]][[15]]
+[1] "gene 140" "gene 146"
+
+
+[[2]]
+[[2]][[1]]
+[1] "gene 5"   "gene 61"  "gene 126" "gene 155"
+
+[[2]][[2]]
+[1] "gene 7"   "gene 172" "gene 181"
+
+[[2]][[3]]
+[1] "gene 9"  "gene 24"
+
+[[2]][[4]]
+[1] "gene 15"  "gene 135"
+
+[[2]][[5]]
+[1] "gene 25" "gene 76"
+
+[[2]][[6]]
+[1] "gene 56"  "gene 178"
+
+[[2]][[7]]
+[1] "gene 63"  "gene 186"
+
+[[2]][[8]]
+[1] "gene 64"  "gene 128"
+
+[[2]][[9]]
+[1] "gene 83"  "gene 194"
+
+[[2]][[10]]
+[1] "gene 96"  "gene 116"
+
+[[2]][[11]]
+[1] "gene 102" "gene 140"
+
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("JGL-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("JGL")
+> ### * JGL
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: JGL
+> ### Title: Joint Graphical Lasso
+> ### Aliases: JGL
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## load an example dataset with K=two classes, p=200 features, and n=100 samples per class:
+> data(example.data)
+> str(example.data)
+List of 2
+ $ : num [1:100, 1:200] 0.395 -2.03 -1.704 -0.469 1.75 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ : num [1:100, 1:200] -1.548 1.45 -0.812 -0.589 0.69 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+> ## run fgl:
+> fgl.results = JGL(Y=example.data,penalty="fused",lambda1=.25,lambda2=.1)
+> str(fgl.results)
+List of 3
+ $ theta            :List of 2
+  ..$ : num [1:47, 1:47] 1.04 0 0 0 0 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr [1:47] "gene 5" "gene 7" "gene 9" "gene 15" ...
+  .. .. ..$ : chr [1:47] "gene 5" "gene 7" "gene 9" "gene 15" ...
+  ..$ : num [1:47, 1:47] 1.04 0 0 0 0 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr [1:47] "gene 5" "gene 7" "gene 9" "gene 15" ...
+  .. .. ..$ : chr [1:47] "gene 5" "gene 7" "gene 9" "gene 15" ...
+ $ theta.unconnected:List of 2
+  ..$ : Named num [1:153] 1.243 0.909 0.976 1.069 1.009 ...
+  .. ..- attr(*, "names")= chr [1:153] "gene 1" "gene 2" "gene 3" "gene 4" ...
+  ..$ : Named num [1:153] 1.243 0.909 0.976 1.289 1.009 ...
+  .. ..- attr(*, "names")= chr [1:153] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ connected        : logi [1:200] FALSE FALSE FALSE FALSE TRUE FALSE ...
+ - attr(*, "class")= chr "jgl"
+> print.jgl(fgl.results)
+
+Number of connected nodes:  47 
+Number of subnetworks in each class:  15 11 
+Number of edges in each class:  17 14 
+Number of edges shared by all classes:  4 
+L1 norm of off-diagonal elements of classes' Thetas:  0.8156875 0.6878476 
+> ## run ggl:
+> ggl.results = JGL(Y=example.data,penalty="group",lambda1=.15,lambda2=.2,return.whole.theta=TRUE)
+> str(ggl.results)
+List of 2
+ $ theta    :List of 2
+  ..$ : num [1:200, 1:200] 1.28 0 0 0 0 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+  .. .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+  ..$ : num [1:200, 1:200] 1.21 0 0 0 0 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+  .. .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ connected: logi [1:200] FALSE FALSE FALSE FALSE FALSE FALSE ...
+ - attr(*, "class")= chr "jgl"
+> print.jgl(ggl.results)
+
+Number of connected nodes:  47 
+Number of subnetworks in each class:  16 11 
+Number of edges in each class:  19 15 
+Number of edges shared by all classes:  7 
+L1 norm of off-diagonal elements of classes' Thetas:  0.617223 0.4538536 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("JGL", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("example.data")
+> ### * example.data
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: example.data
+> ### Title: Toy two-class gene expression dataset.
+> ### Aliases: example.data
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(example.data)
+> str(example.data) 
+List of 2
+ $ : num [1:100, 1:200] 0.395 -2.03 -1.704 -0.469 1.75 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ : num [1:100, 1:200] -1.548 1.45 -0.812 -0.589 0.69 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("example.data", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("net.degree")
+> ### * net.degree
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: net.degree
+> ### Title: List the degree of every node in all classes.
+> ### Aliases: net.degree
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## load an example dataset with K=two classes, p=200 features, and n=100 samples per class:
+> data(example.data)
+> str(example.data)
+List of 2
+ $ : num [1:100, 1:200] 0.395 -2.03 -1.704 -0.469 1.75 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ : num [1:100, 1:200] -1.548 1.45 -0.812 -0.589 0.69 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+> ## run fgl:
+> fgl.results = JGL(Y=example.data,penalty="fused",lambda1=.25,lambda2=.1)
+> ## get degree list:
+> net.degree(fgl.results$theta)
+[[1]]
+  gene 5   gene 7   gene 9  gene 15  gene 18  gene 24  gene 25  gene 32 
+       1        0        0        1        1        0        1        1 
+ gene 49  gene 56  gene 57  gene 60  gene 61  gene 63  gene 64  gene 67 
+       1        0        1        1        2        1        0        1 
+ gene 68  gene 76  gene 80  gene 83  gene 86  gene 90  gene 95  gene 96 
+       1        1        1        0        1        1        1        0 
+ gene 98 gene 102 gene 114 gene 116 gene 122 gene 123 gene 126 gene 128 
+       1        0        1        0        1        1        1        0 
+gene 130 gene 135 gene 140 gene 146 gene 155 gene 158 gene 168 gene 172 
+       1        0        1        1        2        1        1        0 
+gene 175 gene 177 gene 178 gene 181 gene 186 gene 194 gene 199 
+       1        1        0        0        1        0        1 
+
+[[2]]
+  gene 5   gene 7   gene 9  gene 15  gene 18  gene 24  gene 25  gene 32 
+       1        1        1        1        0        1        1        0 
+ gene 49  gene 56  gene 57  gene 60  gene 61  gene 63  gene 64  gene 67 
+       0        1        0        0        1        1        1        0 
+ gene 68  gene 76  gene 80  gene 83  gene 86  gene 90  gene 95  gene 96 
+       0        1        0        1        0        0        0        1 
+ gene 98 gene 102 gene 114 gene 116 gene 122 gene 123 gene 126 gene 128 
+       0        1        0        1        0        0        2        1 
+gene 130 gene 135 gene 140 gene 146 gene 155 gene 158 gene 168 gene 172 
+       0        1        1        0        2        0        0        2 
+gene 175 gene 177 gene 178 gene 181 gene 186 gene 194 gene 199 
+       0        0        1        1        1        1        0 
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("net.degree", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("net.edges")
+> ### * net.edges
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: net.edges
+> ### Title: List the edges in a network
+> ### Aliases: net.edges
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## load an example dataset with K=two classes, p=200 features, and n=100 samples per class:
+> data(example.data)
+> str(example.data)
+List of 2
+ $ : num [1:100, 1:200] 0.395 -2.03 -1.704 -0.469 1.75 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ : num [1:100, 1:200] -1.548 1.45 -0.812 -0.589 0.69 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+> ## run fgl:
+> fgl.results = JGL(Y=example.data,penalty="fused",lambda1=.25,lambda2=.1)
+> ## get edges list:
+> net.edges(fgl.results$theta)
+[[1]]
++ 17/17 edges (vertex names):
+ [1] gene 5  --gene 126 gene 15 --gene 177 gene 18 --gene 61  gene 25 --gene 76 
+ [5] gene 32 --gene 155 gene 49 --gene 199 gene 57 --gene 130 gene 60 --gene 123
+ [9] gene 61 --gene 155 gene 63 --gene 186 gene 67 --gene 168 gene 68 --gene 90 
+[13] gene 80 --gene 114 gene 86 --gene 158 gene 95 --gene 122 gene 98 --gene 175
+[17] gene 140--gene 146
+
+[[2]]
++ 14/14 edges (vertex names):
+ [1] gene 5  --gene 126 gene 7  --gene 172 gene 9  --gene 24  gene 15 --gene 135
+ [5] gene 25 --gene 76  gene 56 --gene 178 gene 61 --gene 155 gene 63 --gene 186
+ [9] gene 64 --gene 128 gene 83 --gene 194 gene 96 --gene 116 gene 102--gene 140
+[13] gene 126--gene 155 gene 172--gene 181
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("net.edges", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("net.hubs")
+> ### * net.hubs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: net.hubs
+> ### Title: Get degrees of most connected nodes.
+> ### Aliases: net.hubs
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## load an example dataset with K=two classes, p=200 features, and n=100 samples per class:
+> data(example.data)
+> str(example.data)
+List of 2
+ $ : num [1:100, 1:200] 0.395 -2.03 -1.704 -0.469 1.75 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ : num [1:100, 1:200] -1.548 1.45 -0.812 -0.589 0.69 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+> ## run fgl:
+> fgl.results = JGL(Y=example.data,penalty="fused",lambda1=.25,lambda2=.1)
+> ## get hubs list:
+> net.hubs(fgl.results$theta)
+[[1]]
+ gene 61 gene 155   gene 5  gene 15  gene 18  gene 25  gene 32  gene 49 
+       2        2        1        1        1        1        1        1 
+ gene 57  gene 60 
+       1        1 
+
+[[2]]
+gene 126 gene 155 gene 172   gene 5   gene 7   gene 9  gene 15  gene 24 
+       2        2        2        1        1        1        1        1 
+ gene 25  gene 56 
+       1        1 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("net.hubs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("net.neighbors")
+> ### * net.neighbors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: net.neighbors
+> ### Title: Get network neighbors of a node
+> ### Aliases: net.neighbors
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## load an example dataset with K=two classes, p=200 features, and n=100 samples per class:
+> data(example.data)
+> str(example.data)
+List of 2
+ $ : num [1:100, 1:200] 0.395 -2.03 -1.704 -0.469 1.75 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ : num [1:100, 1:200] -1.548 1.45 -0.812 -0.589 0.69 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+> ## run fgl:
+> fgl.results = JGL(Y=example.data,penalty="fused",lambda1=.25,lambda2=.1,return.whole.theta=TRUE)
+> ## get neighbors of gene 195:
+> net.neighbors(fgl.results$theta,index=195)
+[[1]]
+character(0)
+
+[[2]]
+character(0)
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("net.neighbors", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("screen.fgl")
+> ### * screen.fgl
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: screen.fgl
+> ### Title: Quickly identify connected features in the solution to FGL
+> ### Aliases: screen.fgl
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## load an example dataset with K=two classes, p=200 features, and n=100 samples per class:
+> data(example.data)
+> str(example.data)
+List of 2
+ $ : num [1:100, 1:200] 0.395 -2.03 -1.704 -0.469 1.75 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ : num [1:100, 1:200] -1.548 1.45 -0.812 -0.589 0.69 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+> ## which nodes will be connected?
+> screen.fgl(example.data,lambda1=.2,lambda2=.1,weights="equal")
+[1] "screening feature 100"
+[1] "screening feature 200"
+  [1]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+ [13]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE
+ [25]  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE
+ [37]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+ [49]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [61]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [73]  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+ [85] FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [97]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE
+[109]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+[121] FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE
+[133]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE
+[145]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE
+[157]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
+[169] FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+[181]  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE
+[193]  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("screen.fgl", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("screen.ggl")
+> ### * screen.ggl
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: screen.ggl
+> ### Title: Quickly identify connected features in the solution to GGL
+> ### Aliases: screen.ggl
+> 
+> ### ** Examples
+> 
+> ## load an example dataset with K=two classes, p=200 features, and n=100 samples per class:
+> data(example.data)
+> str(example.data)
+List of 2
+ $ : num [1:100, 1:200] 0.395 -2.03 -1.704 -0.469 1.75 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ : num [1:100, 1:200] -1.548 1.45 -0.812 -0.589 0.69 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+> ## which nodes will be connected?
+> screen.ggl(example.data,lambda1=.3,lambda2=.3,weights="equal")
+[1] "screening feature 100"
+[1] "screening feature 200"
+  [1]  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+ [13] FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE
+ [25]  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE
+ [37]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE
+ [49]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [61]  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE
+ [73]  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+ [85] FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE
+ [97]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE
+[109]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+[121] FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE
+[133]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE
+[145] FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE
+[157] FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE
+[169] FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+[181]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE
+[193]  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("screen.ggl", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("subnetworks")
+> ### * subnetworks
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: subnetworks
+> ### Title: Identify subnetwork membership
+> ### Aliases: subnetworks
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## load an example dataset with K=two classes, p=200 features, and n=100 samples per class:
+> data(example.data)
+> str(example.data)
+List of 2
+ $ : num [1:100, 1:200] 0.395 -2.03 -1.704 -0.469 1.75 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+ $ : num [1:100, 1:200] -1.548 1.45 -0.812 -0.589 0.69 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:200] "gene 1" "gene 2" "gene 3" "gene 4" ...
+> ## run fgl:
+> fgl.results = JGL(Y=example.data,penalty="fused",lambda1=.25,lambda2=.1)
+> ## identify subnetworks
+> subnetworks(fgl.results$theta)
+[[1]]
+[[1]][[1]]
+[1] "gene 5"   "gene 126"
+
+[[1]][[2]]
+[1] "gene 15"  "gene 177"
+
+[[1]][[3]]
+[1] "gene 18"  "gene 32"  "gene 61"  "gene 155"
+
+[[1]][[4]]
+[1] "gene 25" "gene 76"
+
+[[1]][[5]]
+[1] "gene 49"  "gene 199"
+
+[[1]][[6]]
+[1] "gene 57"  "gene 130"
+
+[[1]][[7]]
+[1] "gene 60"  "gene 123"
+
+[[1]][[8]]
+[1] "gene 63"  "gene 186"
+
+[[1]][[9]]
+[1] "gene 67"  "gene 168"
+
+[[1]][[10]]
+[1] "gene 68" "gene 90"
+
+[[1]][[11]]
+[1] "gene 80"  "gene 114"
+
+[[1]][[12]]
+[1] "gene 86"  "gene 158"
+
+[[1]][[13]]
+[1] "gene 95"  "gene 122"
+
+[[1]][[14]]
+[1] "gene 98"  "gene 175"
+
+[[1]][[15]]
+[1] "gene 140" "gene 146"
+
+
+[[2]]
+[[2]][[1]]
+[1] "gene 5"   "gene 61"  "gene 126" "gene 155"
+
+[[2]][[2]]
+[1] "gene 7"   "gene 172" "gene 181"
+
+[[2]][[3]]
+[1] "gene 9"  "gene 24"
+
+[[2]][[4]]
+[1] "gene 15"  "gene 135"
+
+[[2]][[5]]
+[1] "gene 25" "gene 76"
+
+[[2]][[6]]
+[1] "gene 56"  "gene 178"
+
+[[2]][[7]]
+[1] "gene 63"  "gene 186"
+
+[[2]][[8]]
+[1] "gene 64"  "gene 128"
+
+[[2]][[9]]
+[1] "gene 83"  "gene 194"
+
+[[2]][[10]]
+[1] "gene 96"  "gene 116"
+
+[[2]][[11]]
+[1] "gene 102" "gene 140"
+
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("subnetworks", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  2.646 0.053 2.703 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

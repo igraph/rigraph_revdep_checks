@@ -1,0 +1,3 @@
+- Starting RNetLogo in GUI mode with R 2.15.2 and 2.15.3 on Windows 32-bit (workaround: use 2.15.1 or R 3.0.0 or JGR or RStudio)
+- Unloading Java/NetLogo not fully possible (maybe some memory is also not released) --> due to rJava and NetLogo (system.exit), no solution via RNetLogo possible
+- Quitting a headless NetLogo instance directly after quitting a GUI instance throws a java.lang.InterruptedException. Just use the headless instance once again before quitting.

@@ -1,0 +1,277 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "PROFANCY"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "PROFANCY-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('PROFANCY')
+Loading required package: Matrix
+Loading required package: lattice
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("getCandidates")
+> ### * getCandidates
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getCandidates
+> ### Title: Get candidate metabolites
+> ### Aliases: getCandidates
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #############    Get disease candidates   ################
+> ##D ##Example 1: Users have chose disease name provided by system (Prostate cancer), 
+> ##D ##network is set to "EHMN". The candidates and seed metabolites are default.
+> ##D Candidates1<-getCandidates(diseaseName="Prostate cancer",network="EHMN",
+> ##D                 seedDefault=TRUE,candidateDefault=TRUE)
+> ##D print(Candidates1[1:5])
+> ##D 
+> ##D 
+> ##D 
+> ##D ##Example 2: The disease name is input by users. The seeds are provided by users. 
+> ##D ##The network is set to "KEGG".The candidates are provided by users.
+> ##D path1<-paste(system.file(package="PROFANCY"),"/localdata/ProstateCandidates.txt",sep="")
+> ##D candidateExample<-read.table(path1)
+> ##D candidateExample<-candidateExample[[1]]
+> ##D path2<-paste(system.file(package="PROFANCY"),"/localdata/ProstateSeeds.txt",sep="")
+> ##D seedExample<-read.table(path2)
+> ##D seedExample<-seedExample[[1]]
+> ##D Candidates2<-getCandidates(diseaseName="Prostate cancer",network="KEGG",seed=seedExample,
+> ##D                 seedDefault=FALSE,candidates=candidateExample,candidateDefault=FALSE)
+> ##D print(Candidates2[1:5])
+> ##D 
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getCandidates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getProvidedDiseaseName")
+> ### * getProvidedDiseaseName
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getProvidedDiseaseName
+> ### Title: Get all disease names provided by PROFANCY package
+> ### Aliases: getProvidedDiseaseName
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #############    Get all disease Names provided  ################
+> ##D ProvidedDiseaseName<-getProvidedDiseaseName()
+> ##D print(ProvidedDiseaseName[1:5])
+> ##D write.table(ProvidedDiseaseName,"ProvidedDiseaseName.txt",quote=FALSE,row.names=FALSE,sep="\t")
+> ##D 
+> ##D 
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getProvidedDiseaseName", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getSeed")
+> ### * getSeed
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getSeed
+> ### Title: Get seed metabolites
+> ### Aliases: getSeed
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #############    Get disease seed metabolites   ################
+> ##D ##Example 1: Users have chose disease name provided by system (Prostate cancer),
+> ##D ## network is set "EHMN". The seeds are provided by default.
+> ##D seed1<-getSeed(diseaseName="Prostate cancer",network="EHMN",seedDefault=TRUE)
+> ##D print(seed1[1:5])
+> ##D 
+> ##D 
+> ##D 
+> ##D ##Example 2: The disease name is provided by users. The seeds are provided by users.
+> ##D ## The network is set "KEGG".
+> ##D diseaseName<-"prostate cancer"  ##the disease name provided by users.
+> ##D path2<-paste(system.file(package="PROFANCY"),"/localdata/ProstateSeeds.txt",sep="")
+> ##D seedExample<-read.table(path2)
+> ##D seedExample<-seedExample[[1]]
+> ##D seed2<-getSeed(diseaseName="Prostate cancer",network="EHMN",seed=seedExample,seedDefault=FALSE)
+> ##D print(seed2[1:5])
+> ##D 
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getSeed", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getTopDiseaseMetabolites")
+> ### * getTopDiseaseMetabolites
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getTopDiseaseMetabolites
+> ### Title: Get the disease Risk metabolites
+> ### Aliases: getTopDiseaseMetabolites
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #############    Prioritize candidate metabolites   ################
+> ##D ##Example 1: Users have chose disease name provided by system and network is set "EHMN". 
+> ##D ##The seeds and candidates are default.
+> ##D ProvidedDiseaseName<-getProvidedDiseaseName() ##get all disease name provided.
+> ##D diseaseName<-ProvidedDiseaseName[17]  ##choose the disease you want to study.
+> ##D example1<-getTopDiseaseMetabolites(diseaseName=diseaseName,network="EHMN",
+> ##D                   seedDefault=TRUE,showTop=30,candidateDefault=TRUE)
+> ##D print(example1[1:5,])
+> ##D write.table(example1,"example1.txt",quote=FALSE,row.names=FALSE,sep="\t")
+> ##D 
+> ##D 
+> ##D ##Example 2: The disease name is provided by users. The seeds and candidates 
+> ##D ##are provided by users. The network is set "KEGG".
+> ##D diseaseName<-"prostate cancer"  ##the disease name provided by users.
+> ##D path1<-paste(system.file(package="PROFANCY"),"/localdata/ProstateCandidates.txt",sep="")
+> ##D candidateExample<-read.table(path1)
+> ##D candidateExample<-candidateExample[[1]]
+> ##D path2<-paste(system.file(package="PROFANCY"),"/localdata/ProstateSeeds.txt",sep="")
+> ##D seedExample<-read.table(path2)
+> ##D seedExample<-seedExample[[1]]
+> ##D example2<-getTopDiseaseMetabolites(diseaseName,network="KEGG",seed=seedExample,
+> ##D            candidates=candidateExample,seedDefault=FALSE,showTop=30,candidateDefault=FALSE)
+> ##D print(example2[1:5,])
+> ##D write.table(example2,"example2.txt",quote=FALSE,row.names=FALSE,sep="\t")
+> ##D 
+> ##D 
+> ##D 
+> ##D ##Example 3: Disease name chose in our provided. The seeds are provided by 
+> ##D ##default. The candidates are provided by users. Network is set "EHMN".
+> ##D path1<-paste(system.file(package="PROFANCY"),"/localdata/ProstateCandidates.txt",sep="")
+> ##D candidateExample<-read.table(path1)
+> ##D candidateExample<-candidateExample[[1]]
+> ##D example3<-getTopDiseaseMetabolites(diseaseName="Prostate cancer",network="EHMN",
+> ##D               candidates=candidateExample,seedDefault=TRUE,showTop=30,candidateDefault=FALSE)
+> ##D print(example3[1:5,])
+> ##D write.table(example3,"example3.txt",quote=FALSE,row.names=FALSE,sep="\t")
+> ##D 
+> ##D 
+> ##D 
+> ##D ##Example 4: Disease name chose in our provided. The seeds are provided by users.
+> ##D ## The candidates are provided by default. Network is set "KEGG".
+> ##D path2<-paste(system.file(package="PROFANCY"),"/localdata/ProstateSeeds.txt",sep="")
+> ##D seedExample<-read.table(path2)
+> ##D seedExample<-seedExample[[1]]
+> ##D example4<-getTopDiseaseMetabolites(diseaseName="Prostate cancer",network="KEGG",
+> ##D                    seed=seedExample,seedDefault=FALSE,showTop=30,candidateDefault=TRUE)
+> ##D print(example4[1:5,])
+> ##D write.table(example4,"example4.txt",quote=FALSE,row.names=FALSE,sep="\t")
+> ##D 
+> ##D 
+> ##D 
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getTopDiseaseMetabolites", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("initializeData")
+> ### * initializeData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: initializeData
+> ### Title: initialize environment envData
+> ### Aliases: initializeData
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+>   
+>   initializeData()
+>   
+>   ##see information in environment variable envData
+>   ls(envData)
+[1] "DiseaseInfList"        "EHMNAddPathInfNetwork" "KEGGAddPathInfNetwork"
+[4] "MetaboliteInf"         "ProstateCandidates"    "ProstateSeeds"        
+>   
+>   ##obtain one variable in environment variable envData
+>   KEGGAddPathInfNetwork<-get("KEGGAddPathInfNetwork",envir=envData)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("initializeData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  1.107 0.035 1.144 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

@@ -1,0 +1,617 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "timeordered"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "timeordered-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('timeordered')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: plyr
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("applynetworkfunction")
+> ### * applynetworkfunction
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: applynetworkfunction
+> ### Title: Applies a function (typically a descriptive statistic) to
+> ###   multiple time-aggregated networks
+> ### Aliases: applynetworkfunction
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> g <- generatetonetwork(ants, allindivs)
+> td100 <- generatetimedeltas(0,1500,100)
+> ns100 <- generatenetworkslices(g, td100)
+> md100 <- applynetworkfunction(ns100, diameter)
+> tl100 <- generatetimelags(0,1500,100)
+> nl100 <- generatenetworkslices(g, tl100)
+> ml100 <- applynetworkfunction(nl100, function(x){diameter(x)})
+> par(mfrow=c(1,2))
+> plot(midpoints(td100),unlist(md100),type="l",xlab="Time (window size = 100)",ylab="Diameter")
+> plot(maxpoints(tl100),unlist(ml100),type="l",xlab="Aggregation time",ylab="Diameter")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("applynetworkfunction", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("generatelatencies")
+> ### * generatelatencies
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generatelatencies
+> ### Title: Generates vector-clock latencies for each individual at each
+> ###   time.
+> ### Aliases: generatelatencies
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> l <- generatelatencies(ants, allindivs)
+> image(l[,,1000],axes=FALSE,frame=TRUE,col=rainbow(100))
+> axis(1, at = (1:ncol(l))/ncol(l), labels=colnames(l),tick=FALSE,las=2,cex.axis=0.2)
+> axis(2, at = (1:nrow(l))/nrow(l), labels=rownames(l),tick=FALSE,las=2,cex.axis=0.2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generatelatencies", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generatenetworkslices")
+> ### * generatenetworkslices
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generatenetworkslices
+> ### Title: Generates multiple time-aggregated networks from a time-ordered
+> ###   network
+> ### Aliases: generatenetworkslices
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> g <- generatetonetwork(ants, allindivs)
+> td100 <- generatetimedeltas(0,1500,100)
+> ns100 <- generatenetworkslices(g, td100)
+> plotnetworkslices(ns100, td100)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generatenetworkslices", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generatetimeaggregatednetwork")
+> ### * generatetimeaggregatednetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generatetimeaggregatednetwork
+> ### Title: Constructs a weighted time-aggregated network from a
+> ###   time-ordered network by aggregating interactions occurring between a
+> ###   start and stop time. Weights are stored as E(g)$weight.
+> ### Aliases: generatetimeaggregatednetwork
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> g <- generatetonetwork(ants, allindivs)
+> tan500 <- generatetimeaggregatednetwork(g, 0, 500)
+> plottanet(tan500)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generatetimeaggregatednetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generatetimedeltas")
+> ### * generatetimedeltas
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generatetimedeltas
+> ### Title: Constructs matrix of sequential time windows suitable for
+> ###   slicing time ordered networks
+> ### Aliases: generatetimedeltas
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> td100 <- generatetimedeltas(0,1500,100)
+> boxplot(t(td100))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generatetimedeltas", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generatetimelags")
+> ### * generatetimelags
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generatetimelags
+> ### Title: Constructs matrix of increasingly large time windows suitable
+> ###   for assessing how window size affects time aggregated networks
+> ### Aliases: generatetimelags
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> tl100 <- generatetimelags(0,1500,100)
+> boxplot(t(tl100))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generatetimelags", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generatetonetwork")
+> ### * generatetonetwork
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generatetonetwork
+> ### Title: Generates a time-ordered network from an interaction list.
+> ### Aliases: generatetonetwork
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> g <- generatetonetwork(ants, allindivs)
+> plottonet(g)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generatetonetwork", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generatetonetworkfromvel")
+> ### * generatetonetworkfromvel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generatetonetworkfromvel
+> ### Title: Generates a time-ordered network from a data frame listing all
+> ###   directed edges. An internal function.
+> ### Aliases: generatetonetworkfromvel
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ##---- Should be DIRECTLY executable !! ----
+> ##-- ==>  Define data, use random,
+> ##--	or do  help(data=index)  for the standard data sets.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generatetonetworkfromvel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("maxpoints")
+> ### * maxpoints
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: maxpoints
+> ### Title: Determines the maximum value of each row of a matrix; used as a
+> ###   convenience function for plotting.
+> ### Aliases: maxpoints
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> tl100 <- generatetimelags(0,1500,100)
+> boxplot(t(maxpoints(tl100)))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("maxpoints", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("midpoints")
+> ### * midpoints
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: midpoints
+> ### Title: Determines the mean value of each row of a matrix; used as a
+> ###   convenience function for plotting.
+> ### Aliases: midpoints
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> tl100 <- generatetimelags(0,1500,100)
+> boxplot(t(midpoints(tl100)))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("midpoints", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotnetworkslices")
+> ### * plotnetworkslices
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotnetworkslices
+> ### Title: Plots a time-aggregated network
+> ### Aliases: plotnetworkslices
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> g <- generatetonetwork(ants, allindivs)
+> td100 <- generatetimedeltas(0,1500,100)
+> ns100 <- generatenetworkslices(g, td100)
+> plotnetworkslices(ns100, td100)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotnetworkslices", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plottanet")
+> ### * plottanet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plottanet
+> ### Title: Plots a time-aggregated network.
+> ### Aliases: plottanet
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> g <- generatetonetwork(ants, allindivs)
+> tan <- generatetimeaggregatednetwork(g, 0, 500)
+> plottanet(tan,layout=layout.kamada.kawai)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plottanet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plottonet")
+> ### * plottonet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plottonet
+> ### Title: Plots a time-ordered network.
+> ### Aliases: plottonet
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> g <- generatetonetwork(ants, allindivs)
+> plottonet(g)
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plottonet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("randomize_edges_helper")
+> ### * randomize_edges_helper
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: randomize_edges_helper
+> ### Title: Does all the work for 'edge_randomization' and
+> ###   'randomized_edges'. An internal function.
+> ### Aliases: randomize_edges_helper
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ##---- Should be DIRECTLY executable !! ----
+> ##-- ==>  Define data, use random,
+> ##--	or do  help(data=index)  for the standard data sets.
+> 
+> ## The function is currently defined as
+> function (edges, randomize_vertices) 
++ {
++     vertex_columns <- c("VertexFrom", "VertexTo")
++     unique_edges <- unique(edges[, vertex_columns])
++     unique_edge_count <- nrow(unique_edges)
++     edge_map <- cbind(unique_edges, unique_edges[sample(unique_edge_count, 
++         unique_edge_count), ])
++     new_vertex_columns <- c("NewVF", "NewVT")
++     colnames(edge_map) <- c(vertex_columns, new_vertex_columns)
++     if (randomize_vertices) {
++         edge_map[, new_vertex_columns] <- sample(unlist(edge_map[, 
++             new_vertex_columns]), unique_edge_count * 2)
++         repeat {
++             invalid <- (edge_map$NewVF == edge_map$NewVT) | (duplicated(edge_map[, 
++                 new_vertex_columns]))
++             if (sum(invalid) == 0) 
++                 break
++             for (i in which(invalid)) edge_map <- swap(edge_map, 
++                 i, sample(new_vertex_columns, 1), sample(unique_edge_count, 
++                   1), sample(new_vertex_columns, 1))
++         }
++     }
++     original_colnames <- colnames(edges)
++     attribute_columns <- original_colnames[!(original_colnames %in% 
++         vertex_columns)]
++     edges <- merge(edges, edge_map)
++     edges <- edges[, c(new_vertex_columns, attribute_columns)]
++     colnames(edges)[1:length(new_vertex_columns)] <- vertex_columns
++     return(edges)
++   }
+function (edges, randomize_vertices) 
+{
+    vertex_columns <- c("VertexFrom", "VertexTo")
+    unique_edges <- unique(edges[, vertex_columns])
+    unique_edge_count <- nrow(unique_edges)
+    edge_map <- cbind(unique_edges, unique_edges[sample(unique_edge_count, 
+        unique_edge_count), ])
+    new_vertex_columns <- c("NewVF", "NewVT")
+    colnames(edge_map) <- c(vertex_columns, new_vertex_columns)
+    if (randomize_vertices) {
+        edge_map[, new_vertex_columns] <- sample(unlist(edge_map[, 
+            new_vertex_columns]), unique_edge_count * 2)
+        repeat {
+            invalid <- (edge_map$NewVF == edge_map$NewVT) | (duplicated(edge_map[, 
+                new_vertex_columns]))
+            if (sum(invalid) == 0) 
+                break
+            for (i in which(invalid)) edge_map <- swap(edge_map, 
+                i, sample(new_vertex_columns, 1), sample(unique_edge_count, 
+                  1), sample(new_vertex_columns, 1))
+        }
+    }
+    original_colnames <- colnames(edges)
+    attribute_columns <- original_colnames[!(original_colnames %in% 
+        vertex_columns)]
+    edges <- merge(edges, edge_map)
+    edges <- edges[, c(new_vertex_columns, attribute_columns)]
+    colnames(edges)[1:length(new_vertex_columns)] <- vertex_columns
+    return(edges)
+}
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("randomize_edges_helper", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("randomizeidentities")
+> ### * randomizeidentities
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: randomizeidentities
+> ### Title: Resamples data based on vertex identity.
+> ### Aliases: randomizeidentities
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> ri <- randomizeidentities(ants,withinvertexfrom=TRUE,byvertexfrom=TRUE,withreplacement=TRUE)
+> g <- generatetonetwork(ri, allindivs)
+> plottonet(g)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("randomizeidentities", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("randomizetimes")
+> ### * randomizetimes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: randomizetimes
+> ### Title: Resamples data based on event time.
+> ### Aliases: randomizetimes
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> rt <- randomizetimes(ants,withinvertexfrom=TRUE,byvertexfrom=TRUE,withreplacement=TRUE)
+> g <- generatetonetwork(rt, allindivs)
+> plottonet(g)
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("randomizetimes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("randomly_permuted_times")
+> ### * randomly_permuted_times
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: randomly_permuted_times
+> ### Title: Randomize temporal networks
+> ### Aliases: randomly_permuted_times vertex_randomization
+> ###   contact_randomization time_reversal randomly_permuted_times
+> ###   random_times randomized_contacts edge_randomization
+> ###   total_randomization randomized_edges
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> # load a temporal network
+> require(timeordered)
+> data(ants)
+> 
+> # randomly permute contact start timestamps while preserving contact duration
+> r1 <- randomly_permuted_times(ants)
+> 
+> # randomly permute vertices between contacts and assign a random start 
+> # timestamp to each contact while preserving contact duration
+> r2 <- contact_randomization(ants)
+> r2 <- random_times(r1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("randomly_permuted_times", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rarefy")
+> ### * rarefy
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rarefy
+> ### Title: Simulates the effect of insufficient sampling by data
+> ###   rarefaction.
+> ### Aliases: rarefy
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ##---- Should be DIRECTLY executable !! ----
+> ##-- ==>  Define data, use random,
+> ##--	or do  help(data=index)  for the standard data sets.
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rarefy", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("shortesthoppath")
+> ### * shortesthoppath
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: shortesthoppath
+> ### Title: Determines a path (shortest by the least number of unique
+> ###   vertices) between two vertices at two times.
+> ### Aliases: shortesthoppath
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> g <- generatetonetwork(ants, allindivs)
+> shp <- shortesthoppath(g, "WBGG", 927, "GYGG", 1423)
+> plottonet(g, shp)
+> title(paste(length(unique(shp$Name))," hops"))
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("shortesthoppath", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("shortesttimepath")
+> ### * shortesttimepath
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: shortesttimepath
+> ### Title: Determines a path (shortest by the least time) between a vertex
+> ###   at a start time and another vertex at any later time.
+> ### Aliases: shortesttimepath
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> data(ants)
+> allindivs <- c(union(ants$VertexFrom, ants$VertexTo), "NULL1", "NULL2")
+> g <- generatetonetwork(ants, allindivs)
+> stp <- shortesttimepath(g, "WBGG", 927, "Q")
+Warning in .Call("R_igraph_get_shortest_paths", graph, as.igraph.vs(graph,  :
+  At structural_properties.c:4517 :Couldn't reach some vertices
+Error in eval(expr, envir, enclos) : object 'X' not found
+Calls: shortesttimepath ... tail -> [ -> [.igraph.vs -> lazy_eval -> eval -> eval
+Execution halted

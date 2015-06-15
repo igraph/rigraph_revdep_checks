@@ -1,0 +1,646 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "RNetLogo"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "RNetLogo-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('RNetLogo')
+Loading required package: rJava
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("NLCommand")
+> ### * NLCommand
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLCommand
+> ### Title: Executes a command in the referenced NetLogo instance.
+> ### Aliases: NLCommand
+> ### Keywords: interface NLCommand RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D NLStart("C:/Program Files/NetLogo 5.1.0")
+> ##D NLCommand("create-turtles 10")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLCommand", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLDfToList")
+> ### * NLDfToList
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLDfToList
+> ### Title: Transforms a data.frame into a NetLogo list or multiple NetLogo
+> ###   lists (one for each column of the data.frame).
+> ### Aliases: NLDfToList
+> ### Keywords: interface NLDfToList RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D NLStart("C:/Program Files/NetLogo 5.1.0")
+> ##D df1 <- data.frame(x=c(1,2,3,4),y=c(5,6,7,8))
+> ##D # the current NetLogo model must have two variables ('x' and 'y')
+> ##D # add the variables
+> ##D NLSourceFromString("globals [x y]", append.model=FALSE)
+> ##D # set the variables to the data.frame
+> ##D NLDfToList(df1)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLDfToList", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLDoCommand")
+> ### * NLDoCommand
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLDoCommand
+> ### Title: Repeats execution of a command in the referenced NetLogo
+> ###   instance a defined number of times.
+> ### Aliases: NLDoCommand
+> ### Keywords: interface NLDoCommand RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D model.path <- "/models/Sample Models/Earth Science/Fire.nlogo"
+> ##D NLLoadModel(paste(nl.path,model.path,sep=""))
+> ##D NLCommand("setup")
+> ##D NLDoCommand(10, "go")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLDoCommand", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLDoCommandWhile")
+> ### * NLDoCommandWhile
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLDoCommandWhile
+> ### Title: Repeats a command in the referenced NetLogo instance while a
+> ###   reporter returns 'TRUE'.
+> ### Aliases: NLDoCommandWhile
+> ### Keywords: interface NLDoCommandWhile RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D model.path <- "/models/Sample Models/Earth Science/Fire.nlogo"
+> ##D NLLoadModel(paste(nl.path,model.path,sep=""))
+> ##D NLCommand("setup")
+> ##D NLDoCommandWhile("burned-trees < 500", "go")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLDoCommandWhile", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLDoReport")
+> ### * NLDoReport
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLDoReport
+> ### Title: Repeats a command and a reporter in the referenced NetLogo
+> ###   instance a defined number of times.
+> ### Aliases: NLDoReport
+> ### Keywords: interface NLDoReport RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D model.path <- "/models/Sample Models/Earth Science/Fire.nlogo"
+> ##D NLLoadModel(paste(nl.path,model.path,sep=""))
+> ##D NLCommand("setup")
+> ##D burned10 <- NLDoReport(10, "go", "burned-trees")
+> ##D initburned10 <- NLDoReport(10, "go", c("initial-trees","burned-trees"), 
+> ##D                 as.data.frame=TRUE, df.col.names=c("initial","burned"))
+> ##D str(initburned10)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLDoReport", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLDoReportWhile")
+> ### * NLDoReportWhile
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLDoReportWhile
+> ### Title: Repeats execution of a command and a reporter in the referenced
+> ###   NetLogo instance while a conditional reporter returns 'TRUE'.
+> ### Aliases: NLDoReportWhile
+> ### Keywords: interface NLDoReportWhile RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D model.path <- "/models/Sample Models/Earth Science/Fire.nlogo"
+> ##D NLLoadModel(paste(nl.path,model.path,sep=""))
+> ##D NLCommand("setup")
+> ##D burnedLower2200 <- NLDoReportWhile("burned-trees < 2200", "go", 
+> ##D                                    "burned-trees")
+> ##D str(burnedLower2200)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLDoReportWhile", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLGetAgentSet")
+> ### * NLGetAgentSet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLGetAgentSet
+> ### Title: Reports variable value(s) of one or more agent(s) as a
+> ###   data.frame (optional as a list or vector)
+> ### Aliases: NLGetAgentSet
+> ### Keywords: interface NLGetAgentSet RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D # NLLoadModel(...)
+> ##D NLCommand("create-turtles 10")
+> ##D 
+> ##D colors <- NLGetAgentSet(c("who","xcor","ycor","color"), 
+> ##D                         "turtles with [who < 5]")
+> ##D str(colors)
+> ##D                         
+> ##D # or as a list (slightly faster):
+> ##D colors.list <- NLGetAgentSet(c("who","xcor","ycor","color"), 
+> ##D                         "turtles with [who < 5]", as.data.frame=FALSE)
+> ##D str(colors.list)
+> ##D             
+> ##D # or as a list with one list element for each agent
+> ##D # (very slow!, not recommended especially for large agentsets)
+> ##D colors.list2 <- NLGetAgentSet(c("who","xcor","ycor","color"), 
+> ##D                         "turtles with [who < 5]", as.data.frame=FALSE, 
+> ##D                         agents.by.row=TRUE)
+> ##D str(colors.list2)
+> ##D                         
+> ##D # getting the ends of links is a little bit more tricky, because they store only the
+> ##D # reference to the turtles and turtles cannot directly be requested. 
+> ##D # A way to go is:
+> ##D # create some links
+> ##D NLCommand("ask turtles [ create-links-with n-of 2 other turtles ]")
+> ##D link.test <- NLGetAgentSet(c("[who] of end1","[who] of end2"),"links")
+> ##D str(link.test)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLGetAgentSet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLGetGraph")
+> ### * NLGetGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLGetGraph
+> ### Title: Captures a network.
+> ### Aliases: NLGetGraph
+> ### Keywords: interface NLGetGraph RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D model.path <- 
+> ##D "/models/Sample Models/Networks/Preferential Attachment.nlogo"
+> ##D NLLoadModel(paste(nl.path,model.path,sep=""))
+> ##D NLCommand("setup")
+> ##D NLDoCommand(4, "go")
+> ##D graph1 <- NLGetGraph()
+> ##D plot(graph1, layout=layout.kamada.kawai, vertex.label=V(graph1)$name,
+> ##D      vertex.shape="rectangle", vertex.size=20, asp=FALSE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLGetGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLGetPatches")
+> ### * NLGetPatches
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLGetPatches
+> ### Title: Reports the values of patch variables as a data.frame (optional
+> ###   as a list, matrix or simple vector)
+> ### Aliases: NLGetPatches
+> ### Keywords: interface NLGetPatches RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D # NLLoadModel(...)
+> ##D 
+> ##D allpatches <- NLGetPatches(c("pxcor","pycor","pcolor"))
+> ##D str(allpatches)
+> ##D 
+> ##D # only a subset of patches
+> ##D subsetpatches <- NLGetPatches(c("pxcor","pycor","pcolor"), 
+> ##D                               "patches with [pxcor < 5]")
+> ##D str(subsetpatches)
+> ##D 
+> ##D # or as a list (slightly faster):
+> ##D colors.list <- NLGetPatches(c("pxcor","pycor","pcolor"), 
+> ##D                         "patches with [pxcor < 5]", as.data.frame=FALSE)
+> ##D str(colors.list)
+> ##D 
+> ##D # or as a list with one list element for each patch
+> ##D # (very slow!, not recommended especially for large patchsets)
+> ##D colors.list2 <- NLGetPatches(c("pxcor","pycor","pcolor"), 
+> ##D                         "patches with [pxcor < 5]", as.data.frame=FALSE, 
+> ##D                         patches.by.row=TRUE)
+> ##D str(colors.list2)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLGetPatches", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLLoadModel")
+> ### * NLLoadModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLLoadModel
+> ### Title: Loads a model into the NetLogo instance.
+> ### Aliases: NLLoadModel
+> ### Keywords: interface NLLoadModel RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D model.path <- "/models/Sample Models/Earth Science/Fire.nlogo"
+> ##D absolute.model.path <- paste(nl.path,model.path,sep="")
+> ##D NLLoadModel(absolute.model.path)
+> ##D 
+> ##D relative.model.path <- "models/Sample Models/Earth Science/Fire.nlogo"
+> ##D NLLoadModel(relative.model.path)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLLoadModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLQuit")
+> ### * NLQuit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLQuit
+> ### Title: Quits a NetLogo instance.
+> ### Aliases: NLQuit
+> ### Keywords: interface NLQuit RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D NLQuit()
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLQuit", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLReport")
+> ### * NLReport
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLReport
+> ### Title: Reports a value or list of values
+> ### Aliases: NLReport
+> ### Keywords: interface NLReport RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D model.path <- "/models/Sample Models/Earth Science/Fire.nlogo"
+> ##D NLLoadModel(paste(nl.path,model.path,sep=""))
+> ##D NLCommand("setup")
+> ##D NLDoCommand(10, "go")
+> ##D noburned <- NLReport("burned-trees")
+> ##D str(noburned)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLReport", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLSetAgentSet")
+> ### * NLSetAgentSet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLSetAgentSet
+> ### Title: Sets a variable of one or more agent(s) to value(s) in a
+> ###   data.frame or vector.
+> ### Aliases: NLSetAgentSet
+> ### Keywords: interface NLSetAgentSet RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D # NLLoadModel(...)
+> ##D ag <- NLGetAgentSet(c("xcor","ycor"),"turtles")
+> ##D ag2 <- data.frame(xcor=ag$xcor, ycor=ag$xcor)
+> ##D NLSetAgentSet("turtles", ag2)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLSetAgentSet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLSetPatchSet")
+> ### * NLSetPatchSet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLSetPatchSet
+> ### Title: Sets the variable value of one or more patch(es) to value(s) in
+> ###   a data.frame.
+> ### Aliases: NLSetPatchSet
+> ### Keywords: interface NLSetAgentSet RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D # NLLoadModel(...)
+> ##D 
+> ##D # for NetLogo 2D:
+> ##D input <- NLGetPatches(c("pxcor","pycor","pcolor"))
+> ##D str(input)
+> ##D # for NetLogo 3D:
+> ##D input <- NLGetPatches(c("pxcor","pycor","pzcor","pcolor"))
+> ##D str(input)
+> ##D 
+> ##D input$pcolor <- floor(abs(rnorm(nrow(input))*100)) 
+> ##D patch.var <- "pcolor"
+> ##D NLSetPatchSet(patch.var, input)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLSetPatchSet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLSetPatches")
+> ### * NLSetPatches
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLSetPatches
+> ### Title: Sets a variable of all patches in the NetLogo world to the
+> ###   values in a matrix.
+> ### Aliases: NLSetPatches
+> ### Keywords: interface NLSetPatches RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D m1 <- matrix(1:1089 , 33)
+> ##D NLSetPatches("pcolor", m1)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLSetPatches", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLSourceFromString")
+> ### * NLSourceFromString
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLSourceFromString
+> ### Title: Creates or appends NetLogo code from R.
+> ### Aliases: NLSourceFromString
+> ### Keywords: interface NLSourceFromString RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D setup <- "to setup\n ca\n crt 10\nend \n"
+> ##D go <- "to go\n ask turtles [\n  set xcor random-xcor\n  
+> ##D        set ycor random-ycor\n ]\nend \n"
+> ##D reporter1 <- "to-report noturtles\n report count turtles\n end \n"
+> ##D NLSourceFromString(setup,go,reporter1, append.model=FALSE)
+> ##D NLCommand("setup")
+> ##D NLCommand("go")
+> ##D noturtles <- NLReport("noturtles")
+> ##D print(noturtles)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLSourceFromString", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("NLStart")
+> ### * NLStart
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: NLStart
+> ### Title: Creates an instance of NetLogo
+> ### Aliases: NLStart
+> ### Keywords: interface NLStart RNetLogo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(RNetLogo)
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D NLCommand("create-turtles 10")
+> ##D noturtles <- NLReport("count turtles")
+> ##D print(noturtles)
+> ##D 
+> ##D # create a second NetLogo instance in headless mode (= without GUI) 
+> ##D # stored in a variable
+> ##D nlheadless1 <- "nlheadless1"
+> ##D NLStart(nl.path, gui=F, nl.obj=nlheadless1)
+> ##D model.path <- "/models/Sample Models/Earth Science/Fire.nlogo"
+> ##D NLLoadModel(paste(nl.path,model.path,sep=""), nl.obj=nlheadless1)
+> ##D NLCommand("setup", nl.obj=nlheadless1)
+> ##D burned1 <- NLDoReport(20, "go", c("ticks","burned-trees"), 
+> ##D                       as.data.frame=TRUE,df.col.names=c("tick","burned"), 
+> ##D                       nl.obj=nlheadless1)
+> ##D print(burned1)
+> ##D 
+> ##D # create a third NetLogo instance in headless mode (= without GUI) 
+> ##D # with explicit name of stored object
+> ##D nlheadless2 <- "nlheadless2"
+> ##D NLStart(nl.path, gui=F, nl.obj=nlheadless2)
+> ##D model.path <- "/models/Sample Models/Earth Science/Fire.nlogo"
+> ##D NLLoadModel(paste(nl.path,model.path,sep=""), nl.obj=nlheadless2)
+> ##D NLCommand("setup", nl.obj=nlheadless2)
+> ##D burned2 <- NLDoReport(10, "go", c("ticks","burned-trees"), 
+> ##D                       as.data.frame=TRUE,df.col.names=c("tick","burned"), 
+> ##D                       nl.obj=nlheadless2)
+> ##D print(burned2)               
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("NLStart", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("RNetLogo-package")
+> ### * RNetLogo-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: RNetLogo-package
+> ### Title: Provides an interface to the agent-based modelling platform
+> ###   NetLogo
+> ### Aliases: RNetLogo-package RNetLogo
+> ### Keywords: NetLogo agent-based individual-based
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(RNetLogo)
+> ##D nl.path <- "C:/Program Files/NetLogo 5.1.0"
+> ##D NLStart(nl.path)
+> ##D model.path <- "/models/Sample Models/Earth Science/Fire.nlogo"
+> ##D NLLoadModel(paste(nl.path,model.path,sep=""))
+> ##D NLCommand("setup")
+> ##D NLDoCommand(10, "go")
+> ##D burned <- NLReport("burned-trees")
+> ##D print(burned)
+> ##D NLQuit()
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("RNetLogo-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.411 0.012 0.423 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

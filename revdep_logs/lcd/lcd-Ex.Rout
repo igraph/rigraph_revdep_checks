@@ -1,0 +1,380 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "lcd"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "lcd-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('lcd')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("freq.tb-class")
+> ### * freq.tb-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: freq.tb-class
+> ### Title: Class "freq.tb"
+> ### Aliases: freq.tb-class
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> showClass("freq.tb")
+Class "freq.tb" [package "lcd"]
+
+Slots:
+                      
+Name:    table  levels
+Class:  matrix integer
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("freq.tb-class", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("is.chaingraph")
+> ### * is.chaingraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: is.chaingraph
+> ### Title: Chain graph verification
+> ### Aliases: is.chaingraph
+> ### Keywords: multivariate graphs models
+> 
+> ### ** Examples
+> 
+> data(lcd)
+Warning in data(lcd) : data set ‘lcd’ not found
+> is.chaingraph(toy.graph)
+$result
+[1] TRUE
+
+$vert.order
+ [1]  1  2  3  4  5  6  7  8  9 10 11
+
+$chain.size
+[1] 4 2 2 1 1 1
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("is.chaingraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("is.separated")
+> ### * is.separated
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: is.separated
+> ### Title: c-separation on the chain graph
+> ### Aliases: is.separated
+> ### Keywords: graphs
+> 
+> ### ** Examples
+> 
+> is.separated("a", "d", c("b","c"), toy.graph)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("is.separated", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("lcd-package")
+> ### * lcd-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: lcd-package
+> ### Title: Structural learning of chain graphs via the decomposition
+> ###   approach
+> ### Aliases: lcd-package lcd
+> ### Keywords: package multivariate models graphs
+> 
+> ### ** Examples
+> 
+> set.seed(100)
+> p.value <- .01
+> n <- 3000
+> is.chaingraph(toy.graph)
+$result
+[1] TRUE
+
+$vert.order
+ [1]  1  2  3  4  5  6  7  8  9 10 11
+
+$chain.size
+[1] 4 2 2 1 1 1
+
+> tgdata <- rnorm.cg(n, toy.graph, get.normal.dist(toy.graph))
+Number of iteration =  1 
+> tgug <- naive.getug.norm(tgdata, p.value)
+> tg.jtree <- ug.to.jtree(tgug)
+> tg.pat <- learn.mec.norm(tg.jtree, cov(tgdata), n, p.value, "CG")
+> comp.skel(skeleton(toy.graph), skeleton(tg.pat))
+$e.total
+[1] 12
+
+$e.missing
+[1] 0
+
+$e.extra
+[1] 0
+
+> comp.pat(pattern(toy.graph), tg.pat)
+$a.total
+[1] 4
+
+$a.missing
+[1] 0
+
+$a.extra
+[1] 0
+
+$shd
+[1] 0
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("lcd-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("learn.graph")
+> ### * learn.graph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: learn.graph
+> ### Title: Graph learning functions
+> ### Aliases: learn.complex.norm learn.complex.multinom learn.mec.norm
+> ###   learn.mec.multinom learn.skeleton.norm learn.skeleton.multinom
+> ###   learn.v
+> ### Keywords: graphs multivariate models
+> 
+> ### ** Examples
+> 
+> set.seed(100)
+> p.value <- .01
+> n <- 3000
+> is.chaingraph(toy.graph)
+$result
+[1] TRUE
+
+$vert.order
+ [1]  1  2  3  4  5  6  7  8  9 10 11
+
+$chain.size
+[1] 4 2 2 1 1 1
+
+> tgdata <- rnorm.cg(n, toy.graph, get.normal.dist(toy.graph))
+Number of iteration =  1 
+> tgug <- naive.getug.norm(tgdata, p.value)
+> tg.jtree <- ug.to.jtree(tgug)
+> tg.pat <- learn.mec.norm(tg.jtree, cov(tgdata), n, p.value, "CG")
+> comp.skel(skeleton(toy.graph), skeleton(tg.pat))
+$e.total
+[1] 12
+
+$e.missing
+[1] 0
+
+$e.extra
+[1] 0
+
+> comp.pat(pattern(toy.graph), tg.pat)
+$a.total
+[1] 4
+
+$a.missing
+[1] 0
+
+$a.extra
+[1] 0
+
+$shd
+[1] 0
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("learn.graph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("moralize")
+> ### * moralize
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: moralize
+> ### Title: Chain graph moralization
+> ### Aliases: moralize
+> ### Keywords: graphs
+> 
+> ### ** Examples
+> 
+> moralize(toy.graph)
+  a b c d e f g h i j k
+a 0 1 1 0 0 0 0 0 0 0 0
+b 1 0 0 1 0 0 0 0 0 0 0
+c 1 0 0 0 1 0 0 0 0 0 0
+d 0 1 0 0 0 1 1 0 0 0 0
+e 0 0 1 0 0 1 0 0 1 0 0
+f 0 0 0 1 1 0 0 0 0 0 1
+g 0 0 0 1 0 0 0 1 0 0 1
+h 0 0 0 0 0 0 1 0 0 0 0
+i 0 0 0 0 1 0 0 0 0 1 0
+j 0 0 0 0 0 0 0 0 1 0 0
+k 0 0 0 0 0 1 1 0 0 0 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("moralize", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sep.pair-class")
+> ### * sep.pair-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sep.pair-class
+> ### Title: Class "sep.pair"
+> ### Aliases: sep.pair-class
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> showClass("sep.pair")
+Class "sep.pair" [package "lcd"]
+
+Slots:
+                                    
+Name:          u         v         s
+Class: character character character
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sep.pair-class", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sep.tree-class")
+> ### * sep.tree-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sep.tree-class
+> ### Title: Class "sep.tree"
+> ### Aliases: sep.tree-class
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> showClass("sep.tree")
+Class "sep.tree" [package "lcd"]
+
+Slots:
+                                          
+Name:  tree.struct     cliques  separators
+Class:      matrix        list        list
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sep.tree-class", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("skeleton")
+> ### * skeleton
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: skeleton
+> ### Title: Graph skeleton
+> ### Aliases: skeleton
+> ### Keywords: graphs
+> 
+> ### ** Examples
+> 
+> skeleton(toy.graph)
+  a b c d e f g h i j k
+a 0 1 1 0 0 0 0 0 0 0 0
+b 1 0 0 1 0 0 0 0 0 0 0
+c 1 0 0 0 1 0 0 0 0 0 0
+d 0 1 0 0 0 1 1 0 0 0 0
+e 0 0 1 0 0 1 0 0 1 0 0
+f 0 0 0 1 1 0 0 0 0 0 1
+g 0 0 0 1 0 0 0 1 0 0 1
+h 0 0 0 0 0 0 1 0 0 0 0
+i 0 0 0 0 1 0 0 0 0 1 0
+j 0 0 0 0 0 0 0 0 1 0 0
+k 0 0 0 0 0 1 1 0 0 0 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("skeleton", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.331 0.016 0.347 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

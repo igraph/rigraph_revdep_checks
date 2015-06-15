@@ -1,0 +1,131 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "intergraph"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "intergraph-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('intergraph')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("as.matrix.igraph")
+> ### * as.matrix.igraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as.matrix.igraph
+> ### Title: Convert igraph objects to adjacency or edge list matrices
+> ### Aliases: as.matrix.igraph
+> 
+> ### ** Examples
+> 
+> data(exIgraph)
+> as.matrix(exIgraph, "adjacency")
+      [,1]      
+ [1,] 15        
+ [2,] TRUE      
+ [3,] Numeric,11
+ [4,] Numeric,11
+ [5,] Numeric,11
+ [6,] Numeric,11
+ [7,] Numeric,16
+ [8,] Numeric,16
+ [9,] List,4    
+attr(,"class")
+[1] "igraph"
+> as.matrix(exIgraph, "edgelist")
+      [,1]      
+ [1,] 15        
+ [2,] TRUE      
+ [3,] Numeric,11
+ [4,] Numeric,11
+ [5,] Numeric,11
+ [6,] Numeric,11
+ [7,] Numeric,16
+ [8,] Numeric,16
+ [9,] List,4    
+attr(,"class")
+[1] "igraph"
+> # use edge attribute "label"
+> as.matrix(exIgraph, "adjacency", sparse=FALSE, attr="label")
+      [,1]      
+ [1,] 15        
+ [2,] TRUE      
+ [3,] Numeric,11
+ [4,] Numeric,11
+ [5,] Numeric,11
+ [6,] Numeric,11
+ [7,] Numeric,16
+ [8,] Numeric,16
+ [9,] List,4    
+attr(,"class")
+[1] "igraph"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("as.matrix.igraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("asDF")
+> ### * asDF
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: asDF
+> ### Title: Convert network to data frame(s)
+> ### Aliases: asDF asDF.igraph asDF.network
+> 
+> ### ** Examples
+> 
+> # using method for 'network' objects
+> d1 <- asDF(exNetwork)
+> str(d1)
+List of 2
+ $ edges   :'data.frame':	11 obs. of  4 variables:
+  ..$ V1   : int [1:11] 2 3 4 5 6 8 10 11 14 12 ...
+  ..$ V2   : int [1:11] 1 1 1 1 7 9 11 12 12 13 ...
+  ..$ label: chr [1:11] "ba" "ca" "da" "ea" ...
+  ..$ na   : logi [1:11] FALSE FALSE FALSE FALSE FALSE FALSE ...
+ $ vertexes:'data.frame':	15 obs. of  4 variables:
+  ..$ intergraph_id: int [1:15] 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ label        : chr [1:15] "a" "b" "c" "d" ...
+  ..$ na           : logi [1:15] FALSE FALSE FALSE FALSE FALSE FALSE ...
+  ..$ vertex.names : chr [1:15] "a" "b" "c" "d" ...
+> 
+> # using method for 'igraph' objects
+> d2 <- asDF(exIgraph)
+Error in check_version(graph) : 
+  This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+Calls: asDF ... as.igraph.es -> inherits -> E -> update_es_ref -> check_version
+Execution halted

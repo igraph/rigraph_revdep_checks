@@ -1,0 +1,520 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "synRNASeqNet"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "synRNASeqNet-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('synRNASeqNet')
+Loading required package: parallel
+Loading required package: parmigene
+Loading required package: GenKern
+Loading required package: KernSmooth
+KernSmooth 2.23 loaded
+Copyright M. P. Wand 1997-2009
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("DiscriminantPower")
+> ### * DiscriminantPower
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: DiscriminantPower
+> ### Title: Discriminant Power
+> ### Aliases: DiscriminantPower
+> ### Keywords: DiscriminantPower
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 10, n = 20, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> miML <- parMIEstimate(counts, method = "ML", unit = "nat", nchips = 2)
+> miML <- aracne.a(miML, eps = 0.5)
+> 
+> valML <- performanceNET(miML, adjMat)
+> DP <- DiscriminantPower(valML)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("DiscriminantPower", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Likelihoods")
+> ### * Likelihoods
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Likelihoods
+> ### Title: Likelihood Indices
+> ### Aliases: Likelihoods
+> ### Keywords: Likelihoods
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 10, n = 20, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> miML <- parMIEstimate(counts, method = "ML", unit = "nat", nchips = 2)
+> miML <- aracne.a(miML, eps = 0.5)
+> 
+> valML <- performanceNET(miML, adjMat)
+> LH <- Likelihoods(valML)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Likelihoods", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("YoudenIndex")
+> ### * YoudenIndex
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: YoudenIndex
+> ### Title: Youden's Index
+> ### Aliases: YoudenIndex
+> ### Keywords: YoudenIndex
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 10, n = 20, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> miML <- parMIEstimate(counts, method = "ML", unit = "nat", nchips = 2)
+> miML <- aracne.a(miML, eps = 0.5)
+> 
+> valML <- performanceNET(miML, adjMat)
+> YI <- YoudenIndex(valML)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("YoudenIndex", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("aucDisc")
+> ### * aucDisc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: aucDisc
+> ### Title: Calculate Area Under a (ROC/PR) Curve
+> ### Aliases: aucDisc
+> ### Keywords: aucDisc
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 50, n = 100, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> miML <- parMIEstimate(counts, method = "ML", unit = "nat", nchips = 2)
+> valML <- performanceIndex(miML, adjMat)
+> 
+> AUROC <- aucDisc(valML[, "FPR"], valML[, "Recall"])
+> AUPR <- aucDisc(valML[, "Recall"], valML[, "Precision"])
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("aucDisc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("entropyBayes")
+> ### * entropyBayes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: entropyBayes
+> ### Title: Bayesian Entropy Estimate
+> ### Aliases: entropyBayes
+> ### Keywords: entropyBayes thetaBayes beta_k
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 50, n = 100, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> cellCounts <- table(simData$counts[1, ])
+> eBJ <- entropyBayes(cellCounts, unit = "nat", priorHyperParam = "Jeffreys")
+> eBB <- entropyBayes(cellCounts, unit = "nat", priorHyperParam = "BLUnif")
+> eBP <- entropyBayes(cellCounts, unit = "nat", priorHyperParam = "Perks")
+> eBM <- entropyBayes(cellCounts, unit = "nat", priorHyperParam = "MiniMax")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("entropyBayes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("entropyCS")
+> ### * entropyCS
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: entropyCS
+> ### Title: Chao-Shen Entropy Estimate
+> ### Aliases: entropyCS
+> ### Keywords: entropyCS thetaGT
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 50, n = 100, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> cellCounts <- table(simData$counts[1, ])
+> eCS <- entropyCS(cellCounts, unit = "nat")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("entropyCS", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("entropyML")
+> ### * entropyML
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: entropyML
+> ### Title: Maximum Likelihood Entropy Estimate
+> ### Aliases: entropyML
+> ### Keywords: entropyML thetaML
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 50, n = 100, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> cellCounts <- table(simData$counts[1, ])
+> eML <- entropyML(cellCounts, unit = "nat")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("entropyML", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("entropyMM")
+> ### * entropyMM
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: entropyMM
+> ### Title: Miller-Madow corrected Entropy Estimate
+> ### Aliases: entropyMM
+> ### Keywords: entropyMM
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 50, n = 100, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> cellCounts <- table(simData$counts[1, ])
+> eMM <- entropyMM(cellCounts, unit = "nat")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("entropyMM", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("entropyShrink")
+> ### * entropyShrink
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: entropyShrink
+> ### Title: James-Stein Shrinkage Entropy Estimate
+> ### Aliases: entropyShrink
+> ### Keywords: entropyShrink thetaShrink shrinkageIntensity
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 50, n = 100, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> cellCounts <- table(simData$counts[1, ])
+> eShrink <- entropyShrink(cellCounts, unit = "nat", shrinkageTarget = NULL)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("entropyShrink", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mainNetFunction")
+> ### * mainNetFunction
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mainNetFunction
+> ### Title: Main Estimation and Evaluation Function
+> ### Aliases: mainNetFunction
+> ### Keywords: mainNetFunction
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 5, n = 10, mu = 50, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> #netData <- mainNetFunction(counts, adjMat, nchips = 2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mainNetFunction", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("parMIEstimate")
+> ### * parMIEstimate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: parMIEstimate
+> ### Title: Parallel Mutual Information Estimation
+> ### Aliases: parMIEstimate
+> ### Keywords: parMIEstimate
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 5, n = 10, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> miML <- parMIEstimate(counts, method = "ML", unit = "nat", nchips = 2)
+> miBJ <- parMIEstimate(counts, method = "Bayes", unit = "nat",
++                       nchips = 2, priorHyperParam = "Jeffreys")
+> miSH <- parMIEstimate(counts, method = "Shrink", unit = "nat",
++                       nchips = 2)
+> miKD <- parMIEstimate(counts, method = "KD", nchips = 2)
+> miKNN <- parMIEstimate(counts, method = "KNN", unit = "nat", k = 3,
++                       nchips = 2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("parMIEstimate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("parMIKD")
+> ### * parMIKD
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: parMIKD
+> ### Title: Parallel Kernel Density Mutual Information Estimate
+> ### Aliases: parMIKD
+> ### Keywords: parMIKD
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 10, n = 50, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> miKD <- parMIEstimate(counts, method = "KD", nchips = 2)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("parMIKD", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("performanceIndex")
+> ### * performanceIndex
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: performanceIndex
+> ### Title: Evalutate Performance Indices
+> ### Aliases: performanceIndex
+> ### Keywords: performanceIndex
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 10, n = 20, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> miML <- parMIEstimate(counts, method = "ML", unit = "nat", nchips = 2)
+> valML <- performanceIndex(miML, adjMat)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("performanceIndex", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("performanceNET")
+> ### * performanceNET
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: performanceNET
+> ### Title: Evalutate Performance Indices
+> ### Aliases: performanceNET
+> ### Keywords: performanceNET
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 10, n = 20, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> miML <- parMIEstimate(counts, method = "ML", unit = "nat", nchips = 2)
+> miML <- aracne.a(miML, eps = 0.5)
+> 
+> valML <- performanceNET(miML, adjMat)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("performanceNET", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotPR")
+> ### * plotPR
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotPR
+> ### Title: Plot PR Curve
+> ### Aliases: plotPR
+> ### Keywords: plotPR
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 10, n = 20, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> miML <- parMIEstimate(counts, method = "ML", unit = "nat", nchips = 2)
+> valML <- performanceIndex(miML, adjMat)
+> 
+> plotPR(valML, col = "red")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotPR", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotROC")
+> ### * plotROC
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotROC
+> ### Title: Plot ROC Curve
+> ### Aliases: plotROC
+> ### Keywords: plotROC
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 10, n = 20, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> miML <- parMIEstimate(counts, method = "ML", unit = "nat", nchips = 2)
+> valML <- performanceIndex(miML, adjMat)
+> 
+> plotROC(valML, col = "red")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotROC", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simulatedData")
+> ### * simulatedData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simulatedData
+> ### Title: Random Generation Networks for RNA-Seq Data
+> ### Aliases: simulatedData
+> ### Keywords: simulatedData
+> 
+> ### ** Examples
+> 
+> simData <- simulatedData(p = 50, n = 100, mu = 100, sigma = 0.25,
++                         ppower = 0.73, noise = FALSE)
+> plot(simData$graph)
+> 
+> counts <- simData$counts
+> adjMat <- simData$adjMat
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simulatedData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  5.582 0.225 15.726 0.035 0.033 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

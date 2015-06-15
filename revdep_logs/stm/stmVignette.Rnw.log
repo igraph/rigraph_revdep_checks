@@ -1,0 +1,98 @@
+
+> library("stm")
+stm v1.0.8 (2014-11-07) successfully loaded. See ?stm for help.
+
+> set.seed(2138)
+
+> load(url("http://goo.gl/91KbfS"))
+
+> plotModels(poliblogSelect)
+
+> labelTopics(poliblogPrevFit, c(1, 7, 10))
+Topic 1 Top Words:
+ 	 Highest Prob: black, wright, school, ayer, church, white, american 
+ 	 FREX: wright, church, ayer, black, school, abort, student 
+ 	 Lift: reverend, jeremiah, church, wright, ayer, cathol, rev 
+ 	 Score: wright, ayer, church, black, school, abort, jeremiah 
+Topic 7 Top Words:
+ 	 Highest Prob: palin, biden, sarah, romney, joe, governor, huckabe 
+ 	 FREX: palin, sarah, romney, huckabe, biden, alaska, mitt 
+ 	 Lift: palin, sarah, huckabe, rudi, romney, giuliani, mitt 
+ 	 Score: palin, romney, sarah, biden, huckabe, alaska, mitt 
+Topic 10 Top Words:
+ 	 Highest Prob: bush, presid, said, hous, administr, report, white 
+ 	 FREX: bush, presid, secretari, cheney, administr, rove, meet 
+ 	 Lift: thinkfast, cheney, dana, rove, bush, dick, inaugur 
+ 	 Score: bush, presid, administr, cheney, said, hous, rove 
+
+> thoughts1 <- findThoughts(poliblogPrevFit, texts = shortdoc, 
++     n = 2, topics = 1)$docs[[1]]
+
+> thoughts7 <- findThoughts(poliblogPrevFit, texts = shortdoc, 
++     n = 2, topics = 7)$docs[[1]]
+
+> thoughts10 <- findThoughts(poliblogPrevFit, texts = shortdoc, 
++     n = 2, topics = 10)$docs[[1]]
+
+> thoughts7 <- c("The Sarah Palin Digest: What We Know About McCain's Running Mate   Very little was known nationally about Alaska Gov. Sarah Palin (R ..." ... [TRUNCATED] 
+
+> thoughts10 <- c("Karl Rove orchestrating the Bush Legacy project. President Bush's interview with ABC's Charlie Gibson this week was the first of se ..." ... [TRUNCATED] 
+
+> par(mfrow = c(2, 2), mar = c(0.5, 0.5, 1, 0.5))
+
+> plotQuote(thoughts1, width = 40, main = "Topic 1")
+
+> plotQuote(thoughts7, width = 40, main = "Topic 7")
+
+> plotQuote(thoughts10, width = 40, main = "Topic 10")
+
+> meta$rating <- as.factor(meta$rating)
+
+> prep <- estimateEffect(1:20 ~ rating + s(day), poliblogPrevFit, 
++     meta = meta, uncertainty = "Global")
+
+> plot.estimateEffect(prep, covariate = "rating", topics = c(1, 
++     7, 10), model = poliblogPrevFit, method = "difference", cov.value1 = "Liberal", .... [TRUNCATED] 
+
+> plot.estimateEffect(prep, "day", method = "continuous", 
++     topics = 7, model = z, printlegend = FALSE, xaxt = "n", xlab = "Time (2008)")
+
+> monthseq <- seq(from = as.Date("2008-01-01"), to = as.Date("2008-12-01"), 
++     by = "month")
+
+> monthnames <- months(monthseq)
+
+> axis(1, at = as.numeric(monthseq) - min(as.numeric(monthseq)), 
++     labels = monthnames)
+
+> plot.STM(poliblogContent, type = "perspectives", topics = 10)
+
+> plot.STM(poliblogPrevFit, type = "perspectives", topics = c(9, 
++     10))
+
+> cloud(poliblogPrevFit, topic = 7)
+
+> prep <- estimateEffect(c(1) ~ rating * day, poliblogInteraction, 
++     metadata = meta, uncertainty = "None")
+
+> plot.estimateEffect(prep, covariate = "day", model = poliblogInteraction, 
++     method = "continuous", xlab = "Days", moderator = "rating", 
++      .... [TRUNCATED] 
+
+> plot.estimateEffect(prep, covariate = "day", model = poliblogInteraction, 
++     method = "continuous", xlab = "Days", moderator = "rating", 
++      .... [TRUNCATED] 
+
+> legend(0, 0.08, c("Liberal", "Conservative"), lwd = 2, 
++     col = c("blue", "red"))
+
+> plot.STM(poliblogPrevFit, type = "summary", xlim = c(0, 
++     0.4))
+
+> mod.out.corr <- topicCorr(poliblogPrevFit)
+
+> plot.topicCorr(mod.out.corr)
+
+  When sourcing ‘stmVignette.R’:
+Error: 'plot.igraph' is not an exported object from 'namespace:igraph'
+Execution halted

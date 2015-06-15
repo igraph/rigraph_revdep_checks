@@ -1,0 +1,30 @@
+* installing *source* package ‘sensitivity’ ...
+** package ‘sensitivity’ successfully unpacked and MD5 sums checked
+** libs
+gfortran-4.8 -O2 -fpic -fno-bounds-check -c lbfgs-b.f
+gfortran-4.8: warning: couldn’t understand kern.osversion ‘14.3.0
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG -I. -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c as.cpp -o as.o
+as.cpp:344:16: warning: unused variable 'seedp' [-Wunused-variable]
+                unsigned int seedp=k;
+                             ^
+as.cpp:749:11: warning: unused variable 'minn' [-Wunused-variable]
+                        double minn, maxn;
+                               ^
+as.cpp:749:17: warning: unused variable 'maxn' [-Wunused-variable]
+                        double minn, maxn;
+                                     ^
+as.cpp:534:15: warning: unused variable 'mu' [-Wunused-variable]
+static double mu=1;
+              ^
+4 warnings generated.
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG -I. -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c rglueas.cpp -o rglueas.o
+clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o sensitivity.so lbfgs-b.o as.o rglueas.o -L/usr/local/lib/gcc/x86_64-apple-darwin13.0.0/4.8.2 -lgfortran -lquadmath -lm -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/sensitivity.Rcheck/sensitivity/libs
+** R
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (sensitivity)

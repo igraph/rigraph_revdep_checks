@@ -1,0 +1,41 @@
+
+> library(PROFANCY)
+Loading required package: Matrix
+Loading required package: lattice
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+
+> ProvidedDiseaseName <- getProvidedDiseaseName()
+
+> print(ProvidedDiseaseName[1:5])
+[1] Adenylosuccinate lyase deficiency             
+[2] Alzheimer's disease                           
+[3] Subarachnoid hemorrhage                       
+[4] Aromatic L-amino acid decarboxylase deficiency
+[5] Primary biliary cirrhosis                     
+71 Levels: 2-ketoadipic acidemia ... Transaldolase deficiency
+
+> length(ProvidedDiseaseName)
+[1] 71
+
+> ProvidedDiseaseName <- getProvidedDiseaseName()
+
+> diseaseName <- ProvidedDiseaseName[17]
+
+> example1 <- getTopDiseaseMetabolites(diseaseName = diseaseName, 
++     network = "EHMN", seedDefault = TRUE, showTop = 30, candidateDefault = TRUE)
+
+  When sourcing ‘PROFANCY.R’:
+Error: This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+Execution halted

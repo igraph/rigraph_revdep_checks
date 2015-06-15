@@ -1,0 +1,8 @@
+* installing *source* package ‘gromovlab’ ...
+** package ‘gromovlab’ successfully unpacked and MD5 sums checked
+** R
+** demo
+** preparing package for lazy loading
+Error : object ‘plot.igraph’ is not exported by 'namespace:igraph'
+ERROR: lazy loading failed for package ‘gromovlab’
+* removing ‘/Users/gaborcsardi/works/igraph/revdep_check/gromovlab.Rcheck/gromovlab’

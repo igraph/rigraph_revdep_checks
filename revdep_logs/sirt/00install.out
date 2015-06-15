@@ -1,0 +1,24 @@
+* installing *source* package ‘sirt’ ...
+** package ‘sirt’ successfully unpacked and MD5 sums checked
+** libs
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include" -I"/Users/gaborcsardi/works/igraph/revdep_lib/RcppArmadillo/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c eigenvaluessirt.cpp -o eigenvaluessirt.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include" -I"/Users/gaborcsardi/works/igraph/revdep_lib/RcppArmadillo/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c evm_comp_matrix_poly.cpp -o evm_comp_matrix_poly.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include" -I"/Users/gaborcsardi/works/igraph/revdep_lib/RcppArmadillo/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c gooijer_isop.cpp -o gooijer_isop.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include" -I"/Users/gaborcsardi/works/igraph/revdep_lib/RcppArmadillo/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c invariance_alignment.cpp -o invariance_alignment.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include" -I"/Users/gaborcsardi/works/igraph/revdep_lib/RcppArmadillo/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c matrixfunctions_sirt.cpp -o matrixfunctions_sirt.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include" -I"/Users/gaborcsardi/works/igraph/revdep_lib/RcppArmadillo/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c mle_pcm_group_c.cpp -o mle_pcm_group_c.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include" -I"/Users/gaborcsardi/works/igraph/revdep_lib/RcppArmadillo/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c noharm_sirt_auxfunctions.cpp -o noharm_sirt_auxfunctions.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include" -I"/Users/gaborcsardi/works/igraph/revdep_lib/RcppArmadillo/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c polychoric2_tetrachoric2_rcpp_aux.cpp -o polychoric2_tetrachoric2_rcpp_aux.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include" -I"/Users/gaborcsardi/works/igraph/revdep_lib/RcppArmadillo/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c probs_multcat_items_counts_csirt.cpp -o probs_multcat_items_counts_csirt.o
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include -I"/Users/gaborcsardi/works/igraph/revdep_lib/Rcpp/include" -I"/Users/gaborcsardi/works/igraph/revdep_lib/RcppArmadillo/include"   -fPIC  -Wall -mtune=core2 -g -O2  -c rm_smirt_mml2_code.cpp -o rm_smirt_mml2_code.o
+clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o sirt.so eigenvaluessirt.o evm_comp_matrix_poly.o gooijer_isop.o invariance_alignment.o matrixfunctions_sirt.o mle_pcm_group_c.o noharm_sirt_auxfunctions.o polychoric2_tetrachoric2_rcpp_aux.o probs_multcat_items_counts_csirt.o rm_smirt_mml2_code.o -L/Library/Frameworks/R.framework/Resources/lib -lRlapack -L/Library/Frameworks/R.framework/Resources/lib -lRblas -L/usr/local/lib/gcc/x86_64-apple-darwin13.0.0/4.8.2 -lgfortran -lquadmath -lm -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/sirt.Rcheck/sirt/libs
+** R
+** data
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (sirt)

@@ -1,0 +1,3407 @@
+* installing *source* package ‘sglasso’ ...
+** package ‘sglasso’ successfully unpacked and MD5 sums checked
+** libs
+gfortran-4.8  -fno-common -Wall -g -O2  -c  gdf_fun.f90 -o gdf_fun.o
+gfortran-4.8: warning: couldn’t understand kern.osversion ‘14.3.0
+gdf_fun.f90:2.1:
+
+ integer ::n,p,nrho,info
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:3.1:
+
+ double precision :: X(n,p),S(p,p),Kh(p,p,nrho),gdf(nrho)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:5.1:
+
+ integer :: i,j,ii,jj,k,nr
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:6.1:
+
+ logical :: A(p,p,nrho)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:7.1:
+
+ double precision :: Sk(p,p,n),S_Sk(p,p,n),gdf_partial,Sh(p,p)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:8.1:
+
+ do nr = 1, nrho
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:9.1:
+
+  do j = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:10.1:
+
+   do i = 1, j
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:11.1:
+
+    if(abs(Kh(i,j,nr)).ne.0.) then
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:12.1:
+
+     A(i,j,nr) = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:13.1:
+
+     A(j,i,nr) = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:14.1:
+
+     else 
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:15.1:
+
+      A(i,j,nr) = .false.
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:16.1:
+
+      A(j,i,nr) = .false.
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:17.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:18.1:
+
+   end do 
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:19.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:20.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:21.1:
+
+ do k = 1, n
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:22.1:
+
+  do j = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:23.1:
+
+   do i = 1, j
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:24.1:
+
+    if(any(A(i,j,:))) then
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:25.1:
+
+     Sk(i,j,k) = X(k,i) * X(k,j)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:26.1:
+
+     S_Sk(i,j,k) = S(i,j) - Sk(i,j,k)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:27.1:
+
+     Sk(j,i,k) = Sk(i,j,k)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:28.1:
+
+     S_Sk(j,i,k) = S_Sk(i,j,k)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:29.1:
+
+     else
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:30.1:
+
+      Sk(i,j,k) = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:31.1:
+
+      S_Sk(i,j,k) = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:32.1:
+
+      Sk(j,i,k) = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:33.1:
+
+      S_Sk(j,i,k) = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:34.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:35.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:36.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:37.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:38.1:
+
+ do nr = 1, nrho
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:39.1:
+
+  gdf(nr) = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:40.1:
+
+  Sh = Kh(:,:,nr)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:41.1:
+
+  call dpotrf('U',p,Sh,p,info)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:42.1:
+
+  if(info.ne.0) return
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:43.1:
+
+  call dpotri('U',p,Sh,p,info)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:44.1:
+
+  if(info.ne.0) return
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:45.1:
+
+  do j = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:46.1:
+
+   do i = 1, j - 1
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:47.1:
+
+    Sh(j,i) = Sh(i,j)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:48.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:49.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:50.1:
+
+  do k = 1, n
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:51.1:
+
+   do j = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:52.1:
+
+    do i = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:53.1:
+
+     if(A(i,j,nr)) then
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:54.1:
+
+      gdf_partial = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:55.1:
+
+      do jj = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:56.1:
+
+       do ii = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:57.1:
+
+        if(A(ii,jj,nr)) then
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:58.1:
+
+         gdf_partial = gdf_partial + Kh(i,jj,nr) * S_Sk(jj,ii,k) * Kh(ii,j,nr)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:59.1:
+
+        end if
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:60.1:
+
+       end do
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:61.1:
+
+      end do
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:62.1:
+
+      gdf(nr) = gdf(nr) + (Sh(i,j) - Sk(i,j,k)) * gdf_partial
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:63.1:
+
+     end if
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:64.1:
+
+    end do
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:65.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:66.1:
+
+  end do  
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:67.1:
+
+  gdf(nr) = gdf(nr) / (n - 1)
+ 1
+Warning: Nonconforming tab character at (1)
+gdf_fun.f90:68.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+gfortran-4.8  -fno-common -Wall -g -O2  -c  sglasso_ccd_path.f90 -o sglasso_ccd_path.o
+gfortran-4.8: warning: couldn’t understand kern.osversion ‘14.3.0
+sglasso_ccd_path.f90:13.1:
+
+ rho,nrho,min_rho,grd,th,w,n,conv)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:14.1:
+
+ integer :: nSv,nTv,Tv_pkg(nTv),Tv_rw(nTv),nv,Tv_ptr(nv+1),nTe,Te(nTe),nTe_ptr,
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:15.1:
+
+  Te_scn(ne+1),Te_ptr_scn(ne+1),nstep,nrho,n,conv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:16.1:
+
+ double precision :: Sv(nSv),trnc,tol,rho(nrho),min_rho,grd(nv+ne,nrho),th(nv+n
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:18.1:
+
+ logical :: A(ne),flg
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:19.1:
+
+ integer :: p,i,j,h,k,i0,i1,j0,j1,h0,h1,Te_scn_sz(ne), &
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:20.1:
+
+  Te_cl_ptr(ne+1),Te_cl_sz(ne),Te_cl(ne*(Tv_ptr(nv+1)-1)),nr,df,max_df
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:21.1:
+
+ double precision :: Svh(nSv),tr_SvTv(nv),tr_SvTe(ne),max_rho,Du,oth(nv+ne),ath
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:22.1:
+
+  dth,tr_SvhTeSvhTe,tr_SvhTvSvhTv,th_diff,Du_sgn,cf,arho,agrd(nv+ne)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:24.1:
+
+ A = .false.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:25.1:
+
+ Svh = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:26.1:
+
+ ath = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:27.1:
+
+ oth = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:28.1:
+
+ agrd = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:29.1:
+
+ p = Tv_ptr(nv + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:30.1:
+
+ df = nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:31.1:
+
+ max_df = nv + ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:33.1:
+
+ k = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:34.1:
+
+ Te_cl_ptr(1) = 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:35.1:
+
+ do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:36.1:
+
+  Te_scn_sz(i) = Te_scn(i + 1) - Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:37.1:
+
+  j = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:38.1:
+
+  do h = Te_ptr_scn(i), Te_ptr_scn(i + 1) - 2
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:39.1:
+
+   j = j + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:40.1:
+
+   if(Te_ptr(h).ne.Te_ptr(h + 1)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:41.1:
+
+    k = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:42.1:
+
+    Te_cl(k) = j
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:43.1:
+
+   end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:44.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:45.1:
+
+  Te_cl_ptr(i + 1) = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:46.1:
+
+  Te_cl_sz(i) = Te_cl_ptr(i + 1) - Te_cl_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:47.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:49.1:
+
+ do i = 1, nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:50.1:
+
+  i0 = Tv_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:51.1:
+
+  i1 = Tv_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:52.1:
+
+  tr_SvTv(i) = sum(Sv(Tv_pkg(i0:i1)))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:53.1:
+
+  ath(i) = (i1 - i0 + 1)/tr_SvTv(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:54.1:
+
+  Svh(Tv_pkg(i0:i1)) = 1/ath(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:55.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:57.1:
+
+ max_rho = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:58.1:
+
+ do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:59.1:
+
+  i0 = Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:60.1:
+
+  i1 = Te_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:61.1:
+
+  j0 = Te_ptr_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:62.1:
+
+  j1 = Te_ptr_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:63.1:
+
+  call trSTe(nSv,Sv,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1),tr_SvTe(i
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:64.1:
+
+  Du = - tr_SvTe(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:65.1:
+
+  agrd(nv + i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:66.1:
+
+  max_rho = max(max_rho,abs(Du) / w(i))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:67.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:71.1:
+
+ rho(1) = max_rho
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:72.1:
+
+ cf = dexp((dlog(min_rho) - dlog(max_rho)) / (nrho - 1))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:73.1:
+
+ do i = 2, nrho
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:74.1:
+
+  rho(i) = rho(i - 1) * cf
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:75.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:77.1:
+
+ n = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:78.1:
+
+ do nr = 1, nrho
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:81.1:
+
+  do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:82.1:
+
+   if(.not.A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:83.1:
+
+    if(abs(agrd(nv + i))/w(i).gt.arho) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:84.1:
+
+     A(i) = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:85.1:
+
+     df = df + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:86.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:87.1:
+
+   end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:88.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:90.1:
+
+  do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:91.1:
+
+   oth(1:nv) = ath(1:nv)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:92.1:
+
+   do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:93.1:
+
+    if(A(i)) oth(nv + i) = ath(nv + i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:94.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:96.1:
+
+   if(df.gt.nv) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:97.1:
+
+    do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:98.1:
+
+     if(A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:109.1:
+
+      i0 = Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:110.1:
+
+      i1 = Te_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:111.1:
+
+      j0 = Te_ptr_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:112.1:
+
+      j1 = Te_ptr_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:113.1:
+
+      h0 = Te_cl_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:114.1:
+
+      h1 = Te_cl_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:115.1:
+
+      call trSTe(nSv,Svh,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1),Du)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:116.1:
+
+      Du = Du - tr_SvTe(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:117.1:
+
+      agrd(nv + i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:118.1:
+
+      Du_sgn = dsign(dble(1),Du)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:119.1:
+
+      Du = Du - arho * Du_sgn * w(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:121.1:
+
+        Te_cl_sz(i),Te_cl(h0:h1),tr_SvhTeSvhTe)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:133.1:
+
+   do i = 1, nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:144.1:
+
+    i0 = Tv_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:145.1:
+
+    i1 = Tv_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:146.1:
+
+    Du = sum(Svh(Tv_pkg(i0:i1))) - tr_SvTv(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:147.1:
+
+    agrd(i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:162.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:164.1:
+
+   th_diff = sum(abs(ath(1:nv) - oth(1:nv)))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:165.1:
+
+   if(th_diff/df.lt.tol) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:166.1:
+
+    do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:167.1:
+
+     if(A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:168.1:
+
+      th_diff = th_diff + abs(ath(nv + i) - oth(nv + i))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:169.1:
+
+     end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:170.1:
+
+    end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:171.1:
+
+   end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:173.1:
+
+   if(th_diff/df.lt.tol) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:174.1:
+
+    flg = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:186.1:
+
+    if(flg) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:187.1:
+
+     do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:188.1:
+
+      if(.not.A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:189.1:
+
+       call trSTe(nSv,Svh,Te_scn_sz(i),Te(Te_scn(i):(Te_scn(i + 1) - 1)), &
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:190.1:
+
+        Tv_ptr(nv+1),Te_ptr(Te_ptr_scn(i):(Te_ptr_scn(i + 1) - 1)),Du)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:191.1:
+
+       Du = Du - tr_SvTe(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:192.1:
+
+       agrd(nv + i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:193.1:
+
+       if(abs(Du)/w(i) - arho .gt. 0.) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:195.1:
+
+        A(i) = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:196.1:
+
+        df = df + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:197.1:
+
+       end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:198.1:
+
+      end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:199.1:
+
+     end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:200.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:201.1:
+
+    if(flg) exit
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:202.1:
+
+   end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:203.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:205.1:
+
+  th(:, nr) = ath
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:206.1:
+
+  grd(:, nr) = agrd
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90:208.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_path.f90: In function ‘sglasso_ccd_path’:
+sglasso_ccd_path.f90:179:0: warning: ‘j0’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+                             call updateSvh_e(p,nSv,Svh,-ath(nv + i),Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1))
+ ^
+sglasso_ccd_path.f90:179:0: warning: ‘i0’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+gfortran-4.8  -fno-common -Wall -g -O2  -c  sglasso_ccd_single.f90 -o sglasso_ccd_single.o
+gfortran-4.8: warning: couldn’t understand kern.osversion ‘14.3.0
+sglasso_ccd_single.f90:13.1:
+
+ nstep,trnc,tol,rho,grd,th,w,n,conv)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:14.1:
+
+ integer :: nSv,nTv,Tv_pkg(nTv),Tv_rw(nTv),nv,Tv_ptr(nv+1),nTe, Te(nTe),nTe_ptr
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:15.1:
+
+  Te_scn(ne+1),Te_ptr_scn(ne+1),nstep,n,conv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:16.1:
+
+ double precision :: grd(nv+ne),Sv(nSv),trnc,tol,rho,th(nv+ne),w(ne)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:18.1:
+
+ logical :: A(ne),flg
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:19.1:
+
+ integer :: p,i,j,h,k,i0,i1,j0,j1,h0,h1,Te_scn_sz(ne), &
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:20.1:
+
+  Te_cl_ptr(ne+1),Te_cl_sz(ne),Te_cl(ne*(Tv_ptr(nv+1)-1)),df,max_df
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:21.1:
+
+ double precision :: Svh(nSv),tr_SvTv(nv),tr_SvTe(ne),max_rho,Du,oth(nv+ne), &
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:22.1:
+
+  dth,tr_SvhTeSvhTe,tr_SvhTvSvhTv,th_diff,Du_sgn
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:24.1:
+
+ A = .false.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:25.1:
+
+ Svh = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:26.1:
+
+ oth = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:27.1:
+
+ df = nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:28.1:
+
+ max_df = nv + ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:29.1:
+
+ p = Tv_ptr(nv + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:31.1:
+
+ k = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:32.1:
+
+ Te_cl_ptr(1) = 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:33.1:
+
+ do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:34.1:
+
+  Te_scn_sz(i) = Te_scn(i + 1) - Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:35.1:
+
+  j = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:36.1:
+
+  do h = Te_ptr_scn(i), Te_ptr_scn(i + 1) - 2
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:37.1:
+
+   j = j + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:38.1:
+
+   if(Te_ptr(h).ne.Te_ptr(h + 1)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:39.1:
+
+    k = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:40.1:
+
+    Te_cl(k) = j
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:41.1:
+
+   end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:42.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:43.1:
+
+  Te_cl_ptr(i + 1) = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:44.1:
+
+  Te_cl_sz(i) = Te_cl_ptr(i + 1) - Te_cl_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:45.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:47.1:
+
+ do i = 1, nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:48.1:
+
+  i0 = Tv_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:49.1:
+
+  i1 = Tv_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:50.1:
+
+  tr_SvTv(i) = sum(Sv(Tv_pkg(i0:i1)))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:51.1:
+
+  th(i) = (i1 - i0 + 1)/tr_SvTv(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:52.1:
+
+  Svh(Tv_pkg(i0:i1)) = 1/th(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:53.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:55.1:
+
+ max_rho = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:56.1:
+
+ do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:57.1:
+
+  i0 = Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:58.1:
+
+  i1 = Te_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:59.1:
+
+  j0 = Te_ptr_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:60.1:
+
+  j1 = Te_ptr_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:61.1:
+
+  call trSTe(nSv,Sv,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1),tr_SvTe(i
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:62.1:
+
+  Du = - tr_SvTe(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:63.1:
+
+  grd(nv + i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:64.1:
+
+  max_rho = max(max_rho,abs(Du) / w(i))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:65.1:
+
+  if(abs(Du)/w(i).ge.rho) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:66.1:
+
+   A(i) = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:67.1:
+
+   df = df + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:68.1:
+
+  end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:69.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:71.1:
+
+ if(rho.ge.max_rho) return
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:73.1:
+
+ n = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:74.1:
+
+ do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:75.1:
+
+  oth(1:nv) = th(1:nv)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:76.1:
+
+  do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:77.1:
+
+   if(A(i)) oth(nv + i) = th(nv + i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:78.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:80.1:
+
+  if(df.gt.nv) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:81.1:
+
+   do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:82.1:
+
+    if(A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:88.1:
+
+     i0 = Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:89.1:
+
+     i1 = Te_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:90.1:
+
+     j0 = Te_ptr_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:91.1:
+
+     j1 = Te_ptr_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:92.1:
+
+     h0 = Te_cl_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:93.1:
+
+     h1 = Te_cl_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:94.1:
+
+     call trSTe(nSv,Svh,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1),Du)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:95.1:
+
+     Du = Du - tr_SvTe(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:96.1:
+
+     grd(nv + i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:97.1:
+
+     Du_sgn = dsign(dble(1),Du)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:98.1:
+
+     Du = Du - rho * Du_sgn * w(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:108.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:109.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:110.1:
+
+  end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:112.1:
+
+  do i = 1, nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:118.1:
+
+   i0 = Tv_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:119.1:
+
+   i1 = Tv_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:120.1:
+
+   Du = sum(Svh(Tv_pkg(i0:i1))) - tr_SvTv(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:121.1:
+
+   grd(i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:136.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:139.1:
+
+  if(th_diff/df.lt.tol) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:140.1:
+
+   do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:141.1:
+
+    if(A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:143.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:144.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:145.1:
+
+  end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:147.1:
+
+  if(th_diff/df.lt.tol) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:148.1:
+
+   flg = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90:177.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccd_single.f90: In function ‘sglasso_ccd_single’:
+sglasso_ccd_single.f90:153:0: warning: ‘j0’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+                         call updateSvh_e(p,nSv,Svh,-th(nv + i),Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1))
+ ^
+sglasso_ccd_single.f90:153:0: warning: ‘i0’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+gfortran-4.8  -fno-common -Wall -g -O2  -c  sglasso_ccm_path.f90 -o sglasso_ccm_path.o
+gfortran-4.8: warning: couldn’t understand kern.osversion ‘14.3.0
+sglasso_ccm_path.f90:46.1:
+
+ integer :: nSv,nTv,Tv_pkg(nTv),Tv_rw(nTv),nv,Tv_ptr(nv+1),nTe,Te(nTe),nTe_ptr,
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:47.1:
+
+  Te_scn(ne+1),Te_ptr_scn(ne+1),nstep,nrho,n,conv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:48.1:
+
+ double precision :: Sv(nSv),trnc,tol,rho(nrho),min_rho,grd(nv+ne,nrho),th(nv+n
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:50.1:
+
+ logical :: A(ne),flg
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:51.1:
+
+ integer :: p,i,j,h,k,i0,i1,j0,j1,h0,h1,Te_scn_sz(ne), &
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:52.1:
+
+  Te_cl_ptr(ne+1),Te_cl_sz(ne),Te_cl(ne*(Tv_ptr(nv+1)-1)),nr,df,max_df
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:53.1:
+
+ double precision :: Svh(nSv),tr_SvTv(nv),tr_SvTe(ne),max_rho,Du,oth(nv+ne),ath
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:54.1:
+
+  dth,tr_SvhTeSvhTe,tr_SvhTvSvhTv,th_diff,Du_sgn,cf,arho,agrd(nv+ne)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:56.1:
+
+ A = .false.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:57.1:
+
+ Svh = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:58.1:
+
+ ath = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:59.1:
+
+ oth = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:60.1:
+
+ agrd = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:61.1:
+
+ p = Tv_ptr(nv + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:62.1:
+
+ df = nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:63.1:
+
+ max_df = nv + ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:65.1:
+
+ k = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:66.1:
+
+ Te_cl_ptr(1) = 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:67.1:
+
+ do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:68.1:
+
+  Te_scn_sz(i) = Te_scn(i + 1) - Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:69.1:
+
+  j = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:70.1:
+
+  do h = Te_ptr_scn(i), Te_ptr_scn(i + 1) - 2
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:71.1:
+
+   j = j + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:72.1:
+
+   if(Te_ptr(h).ne.Te_ptr(h + 1)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:73.1:
+
+    k = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:74.1:
+
+    Te_cl(k) = j
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:75.1:
+
+   end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:76.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:77.1:
+
+  Te_cl_ptr(i + 1) = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:78.1:
+
+  Te_cl_sz(i) = Te_cl_ptr(i + 1) - Te_cl_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:79.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:81.1:
+
+ do i = 1, nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:82.1:
+
+  i0 = Tv_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:83.1:
+
+  i1 = Tv_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:84.1:
+
+  tr_SvTv(i) = sum(Sv(Tv_pkg(i0:i1)))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:85.1:
+
+  ath(i) = (i1 - i0 + 1)/tr_SvTv(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:86.1:
+
+  Svh(Tv_pkg(i0:i1)) = 1/ath(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:87.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:89.1:
+
+ max_rho = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:90.1:
+
+ do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:91.1:
+
+  i0 = Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:92.1:
+
+  i1 = Te_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:93.1:
+
+  j0 = Te_ptr_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:94.1:
+
+  j1 = Te_ptr_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:95.1:
+
+  call trSTe(nSv,Sv,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1),tr_SvTe(i
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:96.1:
+
+  Du = - tr_SvTe(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:97.1:
+
+  agrd(nv + i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:98.1:
+
+  max_rho = max(max_rho,abs(Du) / w(i))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:99.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:103.1:
+
+ rho(1) = max_rho
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:104.1:
+
+ cf = dexp((dlog(min_rho) - dlog(max_rho)) / (nrho - 1))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:105.1:
+
+ do i = 2, nrho
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:106.1:
+
+  rho(i) = rho(i - 1) * cf
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:107.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:109.1:
+
+ n = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:110.1:
+
+ do nr = 1, nrho
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:112.1:
+
+  arho = rho(nr)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:113.1:
+
+  do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:114.1:
+
+   if(.not.A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:115.1:
+
+    if(abs(agrd(nv + i))/w(i).gt.arho) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:116.1:
+
+     A(i) = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:117.1:
+
+     df = df + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:118.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:119.1:
+
+   end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:120.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:122.1:
+
+  do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:123.1:
+
+   oth(1:nv) = ath(1:nv)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:124.1:
+
+   do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:125.1:
+
+    if(A(i)) oth(nv + i) = ath(nv + i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:126.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:128.1:
+
+   if(df.gt.nv) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:129.1:
+
+    do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:130.1:
+
+     if(A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:131.1:
+
+      i0 = Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:132.1:
+
+      i1 = Te_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:133.1:
+
+      j0 = Te_ptr_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:134.1:
+
+      j1 = Te_ptr_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:135.1:
+
+      h0 = Te_cl_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:136.1:
+
+      h1 = Te_cl_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:137.1:
+
+      do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:138.1:
+
+       n = n + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:139.1:
+
+       if(n.ge.nstep) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:140.1:
+
+        if(nr.eq.1) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:141.1:
+
+         nrho = nr
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:142.1:
+
+        else 
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:143.1:
+
+         nrho = nr - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:144.1:
+
+        end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:145.1:
+
+        conv = 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:146.1:
+
+        return
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:147.1:
+
+       end if     
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:148.1:
+
+       call trSTe(nSv,Svh,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1),Du)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:149.1:
+
+       Du = Du - tr_SvTe(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:150.1:
+
+       agrd(nv + i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:151.1:
+
+       Du_sgn = dsign(dble(1),Du)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:152.1:
+
+       Du = Du - arho * Du_sgn * w(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:153.1:
+
+       if(abs(Du).le.tol) exit
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:154.1:
+
+       call trSTeSTe(nSv,Svh,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1),
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:155.1:
+
+        Te_cl_sz(i),Te_cl(h0:h1),tr_SvhTeSvhTe)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:156.1:
+
+       dth = Du / tr_SvhTeSvhTe
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:162.1:
+
+       call updateSvh_e(p,nSv,Svh,dth,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_pt
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:163.1:
+
+      end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:164.1:
+
+     end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:165.1:
+
+    end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:166.1:
+
+   end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:168.1:
+
+   do i = 1, nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:169.1:
+
+    i0 = Tv_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:170.1:
+
+    i1 = Tv_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:171.1:
+
+    do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:172.1:
+
+     n = n + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:173.1:
+
+     if(n.ge.nstep) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:174.1:
+
+      if(nr.eq.1) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:175.1:
+
+       nrho = nr
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:176.1:
+
+      else 
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:177.1:
+
+       nrho = nr - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:178.1:
+
+      end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:179.1:
+
+      conv = 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:180.1:
+
+      return
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:181.1:
+
+     end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:182.1:
+
+     Du = sum(Svh(Tv_pkg(i0:i1))) - tr_SvTv(i) 
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:183.1:
+
+     agrd(i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:184.1:
+
+     if(abs(Du).le.tol) exit   
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:185.1:
+
+     tr_SvhTvSvhTv = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:186.1:
+
+     do h = i0 + 1, i1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:187.1:
+
+      do k = i0, h - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:188.1:
+
+       tr_SvhTvSvhTv = tr_SvhTvSvhTv + Svh(int(Tv_rw(k) + Tv_rw(h) * (Tv_rw(h) 
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:189.1:
+
+      end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:190.1:
+
+     end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:191.1:
+
+     tr_SvhTvSvhTv = 2 * tr_SvhTvSvhTv + sum(Svh(Tv_pkg(i0:i1))**2)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:192.1:
+
+     dth = Du / tr_SvhTvSvhTv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:197.1:
+
+     ath(i) = ath(i) + dth
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:198.1:
+
+     call updateSvh_v(p,nSv,Svh,dth,Tv_ptr(i+1)-Tv_ptr(i),Tv_pkg(i0:i1),Tv_rw(i
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:199.1:
+
+    end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:200.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:202.1:
+
+   th_diff = sum(abs(ath(1:nv) - oth(1:nv)))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:203.1:
+
+   if(th_diff/df.lt.tol) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:204.1:
+
+    do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:205.1:
+
+     if(A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:206.1:
+
+      th_diff = th_diff + abs(ath(nv + i) - oth(nv + i))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:207.1:
+
+     end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:208.1:
+
+    end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:209.1:
+
+   end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:211.1:
+
+   if(th_diff/df.lt.tol) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:212.1:
+
+    flg = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:225.1:
+
+     do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:226.1:
+
+      if(.not.A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:227.1:
+
+       call trSTe(nSv,Svh,Te_scn_sz(i),Te(Te_scn(i):(Te_scn(i + 1) - 1)), &
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:228.1:
+
+        Tv_ptr(nv+1),Te_ptr(Te_ptr_scn(i):(Te_ptr_scn(i + 1) - 1)),Du)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:229.1:
+
+       Du = Du - tr_SvTe(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:230.1:
+
+       agrd(nv + i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:231.1:
+
+       if(abs(Du)/w(i) - arho .gt. 0.) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:233.1:
+
+        A(i) = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:234.1:
+
+        df = df + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:235.1:
+
+       end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:236.1:
+
+      end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:237.1:
+
+     end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:238.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:239.1:
+
+    if(flg) exit
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:240.1:
+
+   end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:241.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:243.1:
+
+  th(:, nr) = ath
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:244.1:
+
+  grd(:, nr) = agrd
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90:246.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_path.f90: In function ‘sglasso_ccm_path’:
+sglasso_ccm_path.f90:217:0: warning: ‘j0’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+                             call updateSvh_e(p,nSv,Svh,-ath(nv + i),Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1))
+ ^
+sglasso_ccm_path.f90:217:0: warning: ‘i0’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+gfortran-4.8  -fno-common -Wall -g -O2  -c  sglasso_ccm_single.f90 -o sglasso_ccm_single.o
+gfortran-4.8: warning: couldn’t understand kern.osversion ‘14.3.0
+sglasso_ccm_single.f90:13.1:
+
+ nstep,trnc,tol,rho,grd,th,w,n,conv)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:14.1:
+
+ integer :: nSv,nTv,Tv_pkg(nTv),Tv_rw(nTv),nv,Tv_ptr(nv+1),nTe, Te(nTe),nTe_ptr
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:15.1:
+
+  Te_scn(ne+1),Te_ptr_scn(ne+1),nstep,n,conv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:16.1:
+
+ double precision :: grd(nv+ne),Sv(nSv),trnc,tol,rho,th(nv+ne),w(ne)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:18.1:
+
+ logical :: A(ne),flg
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:19.1:
+
+ integer :: p,i,j,h,k,i0,i1,j0,j1,h0,h1,Te_scn_sz(ne), &
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:20.1:
+
+  Te_cl_ptr(ne+1),Te_cl_sz(ne),Te_cl(ne*(Tv_ptr(nv+1)-1)),df,max_df
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:21.1:
+
+ double precision :: Svh(nSv),tr_SvTv(nv),tr_SvTe(ne),max_rho,Du,oth(nv+ne), &
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:22.1:
+
+  dth,tr_SvhTeSvhTe,tr_SvhTvSvhTv,th_diff,Du_sgn
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:24.1:
+
+ A = .false.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:25.1:
+
+ Svh = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:26.1:
+
+ oth = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:27.1:
+
+ df = nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:28.1:
+
+ max_df = nv + ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:29.1:
+
+ p = Tv_ptr(nv + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:31.1:
+
+ k = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:32.1:
+
+ Te_cl_ptr(1) = 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:33.1:
+
+ do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:34.1:
+
+  Te_scn_sz(i) = Te_scn(i + 1) - Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:35.1:
+
+  j = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:36.1:
+
+  do h = Te_ptr_scn(i), Te_ptr_scn(i + 1) - 2
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:37.1:
+
+   j = j + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:38.1:
+
+   if(Te_ptr(h).ne.Te_ptr(h + 1)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:39.1:
+
+    k = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:40.1:
+
+    Te_cl(k) = j
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:41.1:
+
+   end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:42.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:43.1:
+
+  Te_cl_ptr(i + 1) = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:44.1:
+
+  Te_cl_sz(i) = Te_cl_ptr(i + 1) - Te_cl_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:45.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:47.1:
+
+ do i = 1, nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:48.1:
+
+  i0 = Tv_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:49.1:
+
+  i1 = Tv_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:50.1:
+
+  tr_SvTv(i) = sum(Sv(Tv_pkg(i0:i1)))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:51.1:
+
+  th(i) = (i1 - i0 + 1)/tr_SvTv(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:52.1:
+
+  Svh(Tv_pkg(i0:i1)) = 1/th(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:53.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:55.1:
+
+ max_rho = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:56.1:
+
+ do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:57.1:
+
+  i0 = Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:58.1:
+
+  i1 = Te_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:59.1:
+
+  j0 = Te_ptr_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:60.1:
+
+  j1 = Te_ptr_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:61.1:
+
+  call trSTe(nSv,Sv,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1),tr_SvTe(i
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:62.1:
+
+  Du = - tr_SvTe(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:63.1:
+
+  grd(nv + i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:64.1:
+
+  max_rho = max(max_rho,abs(Du) / w(i))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:65.1:
+
+  if(abs(Du) / w(i).ge.rho) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:66.1:
+
+   A(i) = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:67.1:
+
+   df = df + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:68.1:
+
+  end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:69.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:71.1:
+
+ if(rho.ge.max_rho) return
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:73.1:
+
+ n = 0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:74.1:
+
+ do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:75.1:
+
+  oth(1:nv) = th(1:nv)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:76.1:
+
+  do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:77.1:
+
+   if(A(i)) oth(nv + i) = th(nv + i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:78.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:80.1:
+
+  if(df.gt.nv) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:81.1:
+
+   do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:82.1:
+
+    if(A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:83.1:
+
+     i0 = Te_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:84.1:
+
+     i1 = Te_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:85.1:
+
+     j0 = Te_ptr_scn(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:86.1:
+
+     j1 = Te_ptr_scn(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:87.1:
+
+     h0 = Te_cl_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:88.1:
+
+     h1 = Te_cl_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:89.1:
+
+     do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:90.1:
+
+      n = n + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:91.1:
+
+      if(n.ge.nstep) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:92.1:
+
+       conv = 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:93.1:
+
+       return
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:94.1:
+
+      end if     
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:95.1:
+
+      call trSTe(nSv,Svh,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1),Du)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:96.1:
+
+      Du = Du - tr_SvTe(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:97.1:
+
+      grd(nv + i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:98.1:
+
+      Du_sgn = dsign(dble(1),Du)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:99.1:
+
+      Du = Du - rho * Du_sgn * w(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:101.1:
+
+      call trSTeSTe(nSv,Svh,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1), &
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:102.1:
+
+       Te_cl_sz(i),Te_cl(h0:h1),tr_SvhTeSvhTe)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:103.1:
+
+      dth = Du / tr_SvhTeSvhTe
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:108.1:
+
+      th(nv + i) = th(nv + i) + dth
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:109.1:
+
+      call updateSvh_e(p,nSv,Svh,dth,Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:110.1:
+
+     end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:111.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:112.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:113.1:
+
+  end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:115.1:
+
+  do i = 1, nv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:116.1:
+
+   i0 = Tv_ptr(i)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:117.1:
+
+   i1 = Tv_ptr(i + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:118.1:
+
+   do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:119.1:
+
+    n = n + 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:120.1:
+
+    if(n.ge.nstep) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:121.1:
+
+     conv = 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:122.1:
+
+     return
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:123.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:124.1:
+
+    Du = sum(Svh(Tv_pkg(i0:i1))) - tr_SvTv(i) 
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:125.1:
+
+    grd(i) = Du
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:126.1:
+
+    if(abs(Du).le.tol) exit  
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:127.1:
+
+    tr_SvhTvSvhTv = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:128.1:
+
+    do h = i0 + 1, i1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:129.1:
+
+     do k = i0, h - 1
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:130.1:
+
+      tr_SvhTvSvhTv = tr_SvhTvSvhTv + Svh(int(Tv_rw(k) + Tv_rw(h) * (Tv_rw(h) -
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:131.1:
+
+     end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:132.1:
+
+    end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:133.1:
+
+    tr_SvhTvSvhTv = 2 * tr_SvhTvSvhTv + sum(Svh(Tv_pkg(i0:i1))**2)
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:134.1:
+
+    dth = Du / tr_SvhTvSvhTv
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:139.1:
+
+    th(i) = th(i) + dth
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:140.1:
+
+    call updateSvh_v(p,nSv,Svh,dth,Tv_ptr(i+1)-Tv_ptr(i),Tv_pkg(i0:i1),Tv_rw(i0
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:141.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:142.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:144.1:
+
+  th_diff = sum(abs(th(1:nv) - oth(1:nv)))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:145.1:
+
+  if(th_diff/df.lt.tol) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:146.1:
+
+   do i = 1, ne
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:147.1:
+
+    if(A(i)) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:148.1:
+
+     th_diff = th_diff + abs(th(nv + i) - oth(nv + i))
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:149.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:150.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:151.1:
+
+  end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:153.1:
+
+  if(th_diff/df.lt.tol) then
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:154.1:
+
+   flg = .true.
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:181.1:
+
+   if(flg) exit
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:182.1:
+
+  end if
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90:183.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+sglasso_ccm_single.f90: In function ‘sglasso_ccm_single’:
+sglasso_ccm_single.f90:159:0: warning: ‘j0’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+                         call updateSvh_e(p,nSv,Svh,-th(nv + i),Te_scn_sz(i),Te(i0:i1),Tv_ptr(nv+1),Te_ptr(j0:j1))
+ ^
+sglasso_ccm_single.f90:159:0: warning: ‘i0’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+gfortran-4.8  -fno-common -Wall -g -O2  -c  tools.f90 -o tools.o
+gfortran-4.8: warning: couldn’t understand kern.osversion ‘14.3.0
+tools.f90:2.1:
+
+ double precision :: tr_STe
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:3.1:
+
+ integer :: nSv,nTe,Te(nTe),nTe_ptr,Te_ptr(nTe_ptr)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:4.1:
+
+ double precision :: Sv(nSv)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:6.1:
+
+ integer :: j,h,k
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:7.1:
+
+ tr_STe = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:8.1:
+
+ do j = 1, nTe_ptr - 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:9.1:
+
+  k = j * (j - 1) / 2
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:10.1:
+
+  do h = Te_ptr(j), Te_ptr(j + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:11.1:
+
+   if(Te(h).le.j) tr_STe = tr_STe + Sv(Te(h) + k)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:12.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:13.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:14.1:
+
+ tr_STe = 2. * tr_STe
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:18.1:
+
+ integer :: nSvh,nTe,Te(nTe),nTe_ptr,Te_ptr(nTe_ptr),ncl,cl(ncl)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:19.1:
+
+ double precision :: Svh(nSvh),tr_SvhTeSvhTe
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:21.1:
+
+ integer :: i,j,h,k
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:22.1:
+
+ double precision :: B(ncl**2)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:23.1:
+
+ B = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:24.1:
+
+ k = 0
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:25.1:
+
+ do j = 1, ncl
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:26.1:
+
+  do i = 1, ncl
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:27.1:
+
+   k = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:28.1:
+
+   do h = Te_ptr(cl(j)), Te_ptr(cl(j) + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:29.1:
+
+    if(cl(i).le.Te(h)) then
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:30.1:
+
+     B(k) = B(k) + Svh(cl(i) + Te(h) * (Te(h) - 1) / 2)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:31.1:
+
+    else 
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:32.1:
+
+     B(k) = B(k) + Svh(Te(h) + cl(i) * (cl(i) - 1) / 2)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:33.1:
+
+    end if
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:34.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:35.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:36.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:37.1:
+
+ tr_SvhTeSvhTe = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:38.1:
+
+ do j = 1, ncl
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:39.1:
+
+  do i = j + 1, ncl
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:40.1:
+
+   tr_SvhTeSvhTe = tr_SvhTeSvhTe + B(i + ncl * (j - 1)) * B(j + ncl * (i - 1))
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:41.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:42.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:43.1:
+
+ tr_SvhTeSvhTe = 2. * tr_SvhTeSvhTe
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:44.1:
+
+ do j = 1, ncl
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:45.1:
+
+  tr_SvhTeSvhTe = tr_SvhTeSvhTe + B(j + ncl * (j - 1))**2
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:46.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:50.1:
+
+ integer :: p,nSvh,nTv,Tv_pkg(nTv),Tv_rw(nTv)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:51.1:
+
+ double precision :: Svh(nSvh),dth
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:53.1:
+
+ integer :: i0,i1,k,i,j,n,jj,ii
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:54.1:
+
+ double precision :: vk, B(nSvh) 
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:55.1:
+
+ do k = 1, nTv
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:56.1:
+
+  vk = dth / (1. + dth * Svh(Tv_pkg(k)))
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:57.1:
+
+  i0 = 1 + Tv_rw(k) * (Tv_rw(k) - 1) / 2
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:58.1:
+
+  i1 = Tv_rw(k) * (Tv_rw(k) + 1) / 2
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:59.1:
+
+  n = 0
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:60.1:
+
+  do j = i0, i1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:61.1:
+
+   do i = i0, j
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:62.1:
+
+    n = n + 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:63.1:
+
+    B(n) =  Svh(i) * Svh(j)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:64.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:65.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:66.1:
+
+  j = i1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:67.1:
+
+  do jj = Tv_rw(k), p - 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:68.1:
+
+   j = j + jj
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:69.1:
+
+   do i = i0, i1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:70.1:
+
+    n = n + 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:71.1:
+
+    B(n) =  Svh(i) * Svh(j)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:72.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:73.1:
+
+   i = i1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:74.1:
+
+   do ii = Tv_rw(k), jj
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:75.1:
+
+    i = i + ii
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:76.1:
+
+    n = n + 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:77.1:
+
+    B(n) =  Svh(i) * Svh(j)    
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:78.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:79.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:80.1:
+
+  Svh = Svh - vk * B
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:81.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:85.1:
+
+ integer :: p,nSv,nTe,Te(nTe),nTe_ptr,Te_ptr(nTe_ptr)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:86.1:
+
+ double precision :: Svh(nSv),dth
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:88.1:
+
+ integer :: i,j,k
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:89.1:
+
+ double precision :: Sh(p,p),v1(p),v2(p),vk
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:90.1:
+
+ k = 0
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:91.1:
+
+ do j = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:92.1:
+
+  do i = 1, j - 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:93.1:
+
+   k = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:94.1:
+
+   Sh(i,j) = Svh(k)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:95.1:
+
+   Sh(j,i) = Svh(k)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:96.1:
+
+  end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:97.1:
+
+  k = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:98.1:
+
+  Sh(j,j) = Svh(k)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:99.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:100.1:
+
+ do k = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:101.1:
+
+  if(Te_ptr(k).ne.Te_ptr(k + 1)) then
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:102.1:
+
+   v1 = 0.
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:103.1:
+
+   do j = Te_ptr(k), Te_ptr(k + 1) - 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:104.1:
+
+    v1 = v1 + Sh(:,Te(j))
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:105.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:106.1:
+
+   vk = dth / (1. + dth * v1(k))
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:107.1:
+
+   v2 = Sh(k,:)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:108.1:
+
+   do j = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:109.1:
+
+    do i = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:110.1:
+
+     Sh(i,j) = Sh(i,j) - vk * v1(i) * v2(j)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:111.1:
+
+    end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:112.1:
+
+   end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:113.1:
+
+  end if
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:114.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:115.1:
+
+ k = 0
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:116.1:
+
+ do j = 1, p
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:117.1:
+
+  do i = 1, j
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:118.1:
+
+   k = k + 1
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:119.1:
+
+   Svh(k) = Sh(i,j)
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:120.1:
+
+  end do 
+ 1
+Warning: Nonconforming tab character at (1)
+tools.f90:121.1:
+
+ end do
+ 1
+Warning: Nonconforming tab character at (1)
+gfortran-4.8 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o sglasso.so gdf_fun.o sglasso_ccd_path.o sglasso_ccd_single.o sglasso_ccm_path.o sglasso_ccm_single.o tools.o -L/Library/Frameworks/R.framework/Resources/lib -lRlapack -L/Library/Frameworks/R.framework/Resources/lib -lRblas -L/usr/local/lib/gcc/x86_64-apple-darwin13.0.0/4.8.2 -lgfortran -lquadmath -lm -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+gfortran-4.8: warning: couldn’t understand kern.osversion ‘14.3.0
+installing to /Users/gaborcsardi/works/igraph/revdep_check/sglasso.Rcheck/sglasso/libs
+** R
+** data
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (sglasso)

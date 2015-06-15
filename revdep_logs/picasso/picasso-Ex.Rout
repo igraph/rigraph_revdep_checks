@@ -1,0 +1,399 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "picasso"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "picasso-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('picasso')
+Loading required package: lattice
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: MASS
+Loading required package: Matrix
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("eyedata")
+> ### * eyedata
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: eyedata
+> ### Title: The Bardet-Biedl syndrome Gene expression data from Scheetz et
+> ###   al. (2006)
+> ### Aliases: eyedata
+> 
+> ### ** Examples
+> 
+> data(eyedata)
+> image(x)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("eyedata", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("picasso")
+> ### * picasso
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: picasso
+> ### Title: Pathwise Calibrated Sparse Shooting Algorithm
+> ### Aliases: picasso
+> 
+> ### ** Examples
+> 
+> ################################################################
+> ## Sparse linear regression
+> ## Generate the design matrix and regression coefficient vector
+> n = 100
+> d = 400
+> X = matrix(rnorm(n*d), n, d)
+> beta = c(3,2,0,1.5,rep(0,d-4))
+> 
+> ## Generate response using Gaussian noise, and fit sparse linear models
+> noise = rnorm(n)
+> Y = X%*%beta + noise
+> out.l1.cyclic = picasso(X, Y, nlambda=10)
+Sparse linear regression. 
+L1 regularization via cyclic active set identification and coordinate descent
+> out.l1.greedy = picasso(X, Y, nlambda=10, alg="greedy")
+Sparse linear regression. 
+L1 regularization via greedy active set identification and coordinate descent
+> out.mcp.cyclic = picasso(X, Y, nlambda=10, method="mcp")
+Sparse linear regression. 
+MCP regularization via cyclic active set identification and coordinate descent
+> out.gr.prox = picasso(X, Y, nlambda=10, method="group", alg="prox")
+Sparse linear regression. 
+Gropu L1 regularization via proximal gradient active set identification and coordinate descent
+> 
+> ## Visualize the solution path
+> plot(out.l1.cyclic)
+> plot(out.l1.greedy)
+> plot(out.mcp.cyclic)
+> plot(out.gr.prox)
+> 
+> 
+> ################################################################
+> ## Sparse logistic regression
+> ## Generate the design matrix and regression coefficient vector
+> n = 100
+> d = 400
+> X = matrix(rnorm(n*d), n, d)
+> beta = c(3,2,0,1.5,rep(0,d-4))
+> 
+> ## Generate response and fit sparse logistic models
+> p = exp(X%*%beta)/(1+exp(X%*%beta))
+> Y = rbinom(n,rep(1,n),p)
+> out.l1.cyclic = picasso(X, Y, nlambda=10, family="logit")
+Sparse logistic regression. 
+L1 regularization via cyclic active set identification and coordinate descent
+> out.l1.greedy = picasso(X, Y, nlambda=10, family="logit", alg="greedy")
+Sparse logistic regression. 
+L1 regularization via greedy active set identification and coordinate descent
+> out.mcp.cyclic = picasso(X, Y, nlambda=10, family="logit", method="mcp")
+Sparse logistic regression. 
+MCP regularization via cyclic active set identification and coordinate descent
+> out.gr.prox = picasso(X, Y, nlambda=10, family="logit", method="group", alg="prox")
+Sparse logistic regression. 
+Gropu L1 regularization via proximal gradient active set identification and coordinate descent
+> 
+> ## Visualize the solution path
+> plot(out.l1.cyclic)
+> plot(out.l1.greedy)
+> plot(out.mcp.cyclic)
+> plot(out.gr.prox)
+> 
+> ## Estimate of Bernoulli parameters
+> p.l1 = out.l1.cyclic$p
+> 
+> 
+> ################################################################
+> ## Sparse multivariate regression
+> ## Generate the design matrix and regression coefficient vector
+> n = 100
+> d = 200
+> p = 10
+> X = matrix(rnorm(n*d), n, d)
+> beta = matrix(0,d,p)
+> beta[c(1,2,4),] = c(3,2,1.5)
+> 
+> ## Generate response using Gaussian noise, and fit sparse linear models
+> noise = matrix(rnorm(n*p),nrow=n)
+> Y = X%*%beta + noise
+> out.cyclic = picasso(X, Y, nlambda=10)
+Sparse multivariate regression. 
+Multivariate regression with L1 regularization via cyclic active set identification and coordinate descent
+> 
+> 
+> ################################################################
+> ## Sparse column inverse operator
+> ## generating data
+> n = 100
+> d = 200
+> D = scio.generator(n=n,d=d,graph="band",g=1)
+Generating data from the multivariate normal distribution with the band graph structure...
+done.
+> plot(D)
+> 
+> ## sparse precision matrix estimation
+> out1 = picasso(D$data, nlambda=10, family="npn")
+Sparse column inverse operator 
+L1 regularization via cyclic active set identification and coordinate descent
+> plot(out1)
+> scio.plot(out1$path[[4]])
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("picasso", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("predict.lasso")
+> ### * predict.lasso
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: predict.lasso
+> ### Title: Prediction for an object with S3 class '"lasso"'
+> ### Aliases: predict.lasso
+> 
+> ### ** Examples
+> 
+> ## generate data
+> set.seed(123)
+> n = 100
+> d = 200
+> d1 = 10
+> rho0 = 0.3
+> lambda = c(3:1)*sqrt(log(d)/n)
+> Sigma = matrix(0,nrow=d,ncol=d)
+> Sigma[1:d1,1:d1] = rho0
+> diag(Sigma) = 1
+> mu = rep(0,d)
+> X = mvrnorm(n=2*n,mu=mu,Sigma=Sigma)
+> X.fit = X[1:n,]
+> X.pred = X[(n+1):(2*n),]
+> eps = rt(n=n,df=n-1)
+> beta = c(rep(sqrt(1/3),3),rep(0,d-3))
+> Y.fit = X.fit%*%beta+eps
+> 
+> ## Regression with "l1".
+> out=picasso(X=X.fit,Y=Y.fit,lambda=lambda,family="gaussian")
+Sparse linear regression. 
+L1 regularization via cyclic active set identification and coordinate descent
+> 
+> ## Display results
+> Y=predict(out,X.pred)
+
+ Values of predicted responses: 
+   index             1           2           3 
+   lambda       0.6905      0.4604      0.2302 
+    Y 1         0.2691      0.5031      0.7017 
+    Y 2        -0.4595     -0.7593      -1.059 
+    Y 3          0.215      0.3826      0.4957 
+    Y 4        -0.1423     -0.1609     -0.2041 
+    Y 5         0.3142      0.4923      0.6852 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("predict.lasso", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("predict.logit")
+> ### * predict.logit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: predict.logit
+> ### Title: Prediction for an object with S3 class '"logit"'
+> ### Aliases: predict.logit
+> 
+> ### ** Examples
+> 
+> ## generate data
+> set.seed(123)
+> n = 100
+> d = 200
+> d1 = 10
+> rho0 = 0.3
+> lambda = c(3:1)*sqrt(log(d)/n)
+> Sigma = matrix(0,nrow=d,ncol=d)
+> Sigma[1:d1,1:d1] = rho0
+> diag(Sigma) = 1
+> mu = rep(0,d)
+> X = mvrnorm(n=2*n,mu=mu,Sigma=Sigma)
+> X.fit = X[1:n,]
+> X.pred = X[(n+1):(2*n),]
+> beta = c(rep(sqrt(1/3),3),rep(0,d-3))
+> Y.fit = exp(X.fit%*%beta)/(1+exp(X.fit%*%beta))
+> 
+> ## Regression with "l1".
+> out=picasso(X=X.fit,Y=Y.fit,lambda=lambda,family="logit")
+Sparse logistic regression. 
+L1 regularization via cyclic active set identification and coordinate descent
+> 
+> ## Display results
+> p=predict(out,X.pred)
+
+ Values of predicted Bernoulli parameter: 
+   index             1           2           3 
+   lambda       0.6905      0.4604      0.2302 
+    Y 1         0.5981      0.4856      0.4874 
+    Y 2         0.5981      0.4856      0.4874 
+    Y 3         0.5981      0.4856      0.4874 
+    Y 4         0.5981      0.4856      0.4874 
+    Y 5         0.5981      0.4856      0.4874 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("predict.logit", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("scio.generator")
+> ### * scio.generator
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: scio.generator
+> ### Title: Data generator for sparse undirected graph estimation.
+> ### Aliases: scio.generator
+> 
+> ### ** Examples
+> 
+> ## band graph with bandwidth 3
+> L = scio.generator(graph = "band", g = 3)
+Generating data from the multivariate normal distribution with the band graph structure...
+done.
+> plot(L)
+> 
+> ## random sparse graph
+> L = scio.generator(vis = TRUE)
+Generating data from the multivariate normal distribution with the random graph structure...
+done.
+> 
+> ## random dense graph
+> L = scio.generator(prob = 0.5, vis = TRUE)
+Generating data from the multivariate normal distribution with the random graph structure...
+done.
+> 
+> ## hub graph with 6 hubs
+> L = scio.generator(graph = "hub", g = 6, vis = TRUE)
+Generating data from the multivariate normal distribution with the hub graph structure...
+done.
+> 
+> ## cluster graph with 8 clusters
+> L = scio.generator(graph = "cluster", g = 8, vis = TRUE)
+Generating data from the multivariate normal distribution with the cluster graph structure...
+done.
+> 
+> ## scale-free graphs
+> L = scio.generator(graph="scale-free", vis = TRUE)
+Generating data from the multivariate normal distribution with the scale-free graph structure...
+done.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("scio.generator", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("scio.plot")
+> ### * scio.plot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: scio.plot
+> ### Title: Graph visualization for an object with S3 class '"scio"'
+> ### Aliases: scio.plot
+> 
+> ### ** Examples
+> 
+> ## visualize the hub graph
+> L = scio.generator(graph = "hub")
+Generating data from the multivariate normal distribution with the hub graph structure...
+done.
+> scio.plot(L$theta)
+> 
+> ## visualize the band graph
+> L = scio.generator(graph = "band",g=5)
+Generating data from the multivariate normal distribution with the band graph structure...
+done.
+> scio.plot(L$theta)
+> 
+> ## visualize the cluster graph
+> L = scio.generator(graph = "cluster")
+Generating data from the multivariate normal distribution with the cluster graph structure...
+done.
+> scio.plot(L$theta)
+> 
+> #show working directory
+> getwd()
+[1] "/Users/gaborcsardi/works/igraph/revdep_check/picasso.Rcheck"
+> #plot 5 graphs and save the plots as eps files in the working directory  
+> scio.plot(L$theta, epsflag = TRUE, cur.num = 5)
+pdf 
+  2 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("scio.plot", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  9.199 0.123 9.353 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

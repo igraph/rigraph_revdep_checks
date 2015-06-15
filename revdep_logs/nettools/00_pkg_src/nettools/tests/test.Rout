@@ -1,0 +1,113 @@
+
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> ##--------------------------------------------------
+> ## Testing nettools usage
+> ##--------------------------------------------------
+> 
+> library(nettools)
+> 
+> ## Create toy dataset
+> a <- matrix(rnorm(1000),ncol=100)
+> b <- matrix(rnorm(1000),ncol=100)
+> 
+> ## Compute adjacency matrix!
+> ## For different methods check the mat2adj help page!
+> aadj <- mat2adj(a, method="MINE")
+Warning message:
+No measure selected for method MINE ; MIC will be used 
+> badj <- mat2adj(b, method="MINE")
+Warning message:
+No measure selected for method MINE ; MIC will be used 
+> 
+> ## Compute the him distance between the 2 matrix
+> 
+> ## Him distance
+> netdist(aadj,badj,method="HIM",n.cores=1,components=FALSE)
+      HIM 
+0.1091527 
+Warning message:
+For netdist function the parameter 'method' will be ignored 
+> ## HIM distance using list of matrices as input
+> netdist(list(aadj,badj),method="HIM", components=FALSE, n.cores=1)
+      HIM 
+0.1091527 
+Warning message:
+The parameter 'method' will be ignored 
+> 
+> 
+> ## Hamming distance
+> dd <- netdist(aadj,badj,method="ham", n.cores=1)
+Warning message:
+For netdist function the parameter 'method' will be ignored 
+> ## [1] 0.2134906
+> ##
+> 
+> ## Ipsen distance
+> netdist(aadj,badj,method="ips",gamma=0.09, n.cores=1)
+         H         IM        HIM 
+0.15399489 0.01068661 0.10915271 
+Warning message:
+For netdist function, the following parameters will be ignored:
+'method'
+'gamma'
+ 
+> ## [1] 0.1358396
+> ##
+> 
+> ##-------------------------------------------------
+> ## Using igraph
+> ##-------------------------------------------------
+> require(igraph)
+Loading required package: igraph
+> 
+> g1 <- barabasi.game(200,0.8)
+> g2 <- barabasi.game(200,0.2)
+> 
+> a1 <- get.adjacency(g1,type="both",sparse=TRUE)
+> a2 <- get.adjacency(g2,type="both",sparse=TRUE)
+> 
+> ## HIM distance
+> netdist(g1,g2,method="HIM", n.cores=1)
+          H          IM         HIM 
+0.009698492 0.025560956 0.019331622 
+Warning messages:
+1: For netdist function the parameter 'method' will be ignored 
+2: No weight attribute to the graph object
+Compute binary adjacency matrix 
+3: No weight attribute to the graph object
+Compute binary adjacency matrix 
+> 
+> 
+> ##-------------------------------------------------
+> ## Computing stability indicators
+> ##-------------------------------------------------
+> ssind <- netSI(a, n.cores=1)
+computing resampling...
+computing adjacency matrices...
+computing stability indicator S...
+computing stability indicator Sw...
+computing stability indicator Sd...
+computing stability indicator SI...
+> 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  9.099   0.311   9.447 

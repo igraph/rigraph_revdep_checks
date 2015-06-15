@@ -1,0 +1,12 @@
+* installing *source* package ‘matie’ ...
+** package ‘matie’ successfully unpacked and MD5 sums checked
+** libs
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c maxlike.c -o maxlike.o
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o matie.so maxlike.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/matie.Rcheck/matie/libs
+** R
+** data
+** preparing package for lazy loading
+Error : object ‘plot.igraph’ is not exported by 'namespace:igraph'
+ERROR: lazy loading failed for package ‘matie’
+* removing ‘/Users/gaborcsardi/works/igraph/revdep_check/matie.Rcheck/matie’

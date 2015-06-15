@@ -1,0 +1,100 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/locits.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘locits/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘locits’ version ‘1.4’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘locits’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... NOTE
+Packages in Depends field not imported from:
+  ‘igraph’ ‘wavethresh’
+  These packages need to be imported from (in the NAMESPACE file)
+  for when this namespace is loaded but not attached.
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+AutoBestBW : specerr: no visible global function definition for
+  ‘accessD’
+HwdS: no visible global function definition for ‘IsPowerOfTwo’
+HwdS: no visible global function definition for ‘wd’
+HwdS: no visible global function definition for ‘putD’
+Rvarlacf: no visible global function definition for ‘PsiJ’
+Rvarlacf: no visible global function definition for ‘ipndacw’
+Rvarlacf: no visible global function definition for ‘PsiJmat’
+ewspec3: no visible binding for global variable ‘madmad’
+ewspec3: no visible binding for global variable ‘l2norm’
+ewspec3: no visible global function definition for ‘IsPowerOfTwo’
+ewspec3: no visible global function definition for ‘wd’
+ewspec3: no visible global function definition for ‘LocalSpec’
+ewspec3: no visible global function definition for ‘ipndacw’
+ewspec3: no visible global function definition for ‘accessD’
+ewspec3: no visible global function definition for ‘wst’
+ewspec3: no visible global function definition for ‘threshold.wst’
+ewspec3: no visible global function definition for ‘AvBasis’
+ewspec3: no visible global function definition for ‘putD’
+ewspecHaarNonPer: no visible binding for global variable ‘madmad’
+ewspecHaarNonPer: no visible binding for global variable ‘l2norm’
+ewspecHaarNonPer: no visible global function definition for ‘LocalSpec’
+ewspecHaarNonPer: no visible global function definition for ‘ipndacw’
+ewspecHaarNonPer: no visible global function definition for ‘accessD’
+ewspecHaarNonPer: no visible global function definition for ‘wst’
+ewspecHaarNonPer: no visible global function definition for
+  ‘threshold.wst’
+ewspecHaarNonPer: no visible global function definition for ‘AvBasis’
+ewspecHaarNonPer: no visible global function definition for ‘putD’
+hwtos2: no visible global function definition for ‘PsiJ’
+hwtos2: no visible global function definition for ‘PsiJmat’
+hwtos2: no visible global function definition for ‘accessD’
+hwtos2: no visible global function definition for ‘wd’
+hwtos2: no visible global function definition for ‘putD’
+lacf: no visible global function definition for ‘PsiJmat’
+littlevar: no visible global function definition for ‘accessD’
+mkcoef: no visible global function definition for ‘wd’
+mkcoef: no visible global function definition for ‘wr’
+mkcoef: no visible global function definition for ‘guyrot’
+plot.tos: no visible global function definition for ‘IsPowerOfTwo’
+runmean: no visible global function definition for ‘running.mean’
+summary.tos: no visible global function definition for ‘accessD’
+whichlevel: no visible global function definition for ‘wd’
+whichlevel: no visible global function definition for ‘wr’
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking line endings in C/C++/Fortran sources/headers ... OK
+* checking compiled code ... OK
+* checking examples ... OK
+* DONE
+Status: 2 NOTEs

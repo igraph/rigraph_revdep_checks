@@ -1,0 +1,122 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "nets"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "nets-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('nets')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("nets")
+> ### * nets
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: nets
+> ### Title: Network Estimation for Time Series
+> ### Aliases: nets print.nets plot.nets
+> ### Keywords: network multivariate timeseries
+> 
+> ### ** Examples
+> 
+> 
+> N   <- 3
+> T   <- 500
+>  
+> # A
+> A      <- matrix( 0 , N , N )
+> A[1,1] <- 0.71; A[1,2] <- 0.00; A[1,3] <- 0.00; 
+> A[2,1] <- 0.00; A[2,2] <- 0.63; A[2,3] <- 0.00; 
+> A[3,1] <- 0.00; A[3,2] <- 0.00; A[3,3] <- 0.10; 
+> 
+> # Simulate Process
+> y <- matrix(0,T,N)
+> eps <- matrix( rnorm(T*N,0,1) , T , N )
+> for( t in 2:T ){ 
++ 	for( i in 1:N ) {
++ 		y[t,i] = sum( A[i,] * y[t-1,] ) + eps[t,i] 
++ 	}
++ }
+> 
+> network <- nets(y,type='g',lambda=1,verbose=TRUE)
+iter:   1 toll: 0.097838
+iter:   2 toll: 0.011344
+iter:   3 toll: 0.001617
+iter:   4 toll: 0.000187
+iter:   5 toll: 0.000027
+iter:   6 toll: 0.000003
+iter:   1 toll: 0.063730
+iter:   2 toll: 0.008657
+iter:   3 toll: 0.000991
+iter:   4 toll: 0.000135
+iter:   5 toll: 0.000015
+iter:   6 toll: 0.000002
+iter:   1 toll: 0.000160
+> 
+> print( cbind( A , rep(NA,N) , round( network$A[1,,] , 2 ) ) )
+     [,1] [,2] [,3] [,4]  [,5]  [,6] [,7]
+[1,] 0.71 0.00  0.0   NA  0.68 -0.01 0.06
+[2,] 0.00 0.63  0.0   NA -0.03  0.55 0.00
+[3,] 0.00 0.00  0.1   NA  0.00  0.08 0.18
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("nets", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.161 0.01 0.195 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

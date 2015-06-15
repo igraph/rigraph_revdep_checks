@@ -1,0 +1,647 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "NetSim"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "NetSim-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('NetSim')
+Loading required package: Rcpp
+
+Attaching package: ‘NetSim’
+
+The following object is masked from ‘package:stats’:
+
+    simulate
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("change_models")
+> ### * change_models
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: change_models
+> ### Title: Overview of change models implemented in NetSim
+> ### Aliases: create_multinomial_choice_network_change_model
+> ###   create_multinomial_choice_behavior_change_model
+> ###   create_jackson_rogers_change_model create_watts_strogatz_change_model
+> ###   create_attribute_multinomial_choice_network_change_model
+> 
+> ### ** Examples
+> 
+> ## The following example is taken from section 4.1 and 4.2 in package vignette
+> ## C. Stadtfeld: "Netsim: A Social Networks Simulation tool in R" (2013)
+> ## Examples of the other models can be taken from that source
+>  
+> # construct process state
+> nActors <- 21
+> mat <- matrix(0, nActors, nActors)
+> att <- c(rep(0, nActors/3),rep(1, nActors/3),rep(2, nActors/3))
+> network <- create_network(mat)
+> attributeContainer <- create_scale_attribute_container(att,
++ min=0, max=3, by = 1)
+> processState <- create_process_state()
+> processState <- add_network(processState, network, name = "network")
+> processState <- add_attribute_container(processState, attributeContainer,
++ name = "attribute")
+> networkIndex <- get_network_index(processState)
+> attributeIndex <- get_attribute_container_index(processState)
+> 
+> # construct effect container
+> # homophily model with basic network effects
+> effectContainerHomophily <- create_effect_container()
+> effectContainerHomophily <- add_to_effect_container(
++ 	effectContainerHomophily,
++ 	create_effect("density", networkIndex),
++ 	-2.5)
+> effectContainerHomophily <- add_to_effect_container(
++ 	effectContainerHomophily,
++ 	create_effect("recip", networkIndex),
++ 	2.5)
+> effectContainerHomophily <- add_to_effect_container(
++ 	effectContainerHomophily,
++ 	create_effect("transTrip", networkIndex),
++ 	0.5)
+> effectContainerHomophily <- add_to_effect_container(
++ 	effectContainerHomophily,
++ 	create_effect("cycle3", networkIndex),
++ 	-0.5)
+> effectContainerHomophily <- add_to_effect_container(
++ 	effectContainerHomophily,
++ 	create_effect("simX",
++ 		attributeIndex,
++ 		networkIndex,
++ 		0.5),
++ 	1.0)
+> 	
+> # effect container of the behavior change model
+> effectContainerInfluence <- create_effect_container()
+> effectContainerInfluence <- add_to_effect_container(
++ 	effectContainerInfluence,
++ 	create_effect("linear",
++ 		attributeIndex),
++ 	0.0)
+> effectContainerInfluence <- add_to_effect_container(
++ 	effectContainerInfluence,
++ 	create_effect("quad",
++ 		attributeIndex),
++ 	0.0)
+> effectContainerInfluence <- add_to_effect_container(
++ 	effectContainerInfluence,
++ 	create_effect("totSim",
++ 		attributeIndex,
++ 		networkIndex, 10/18),
++ 	2.0)
+> 
+> # Definition of SAOM network model manager
+> modelManager <- create_model_manager()
+> # assign homophily model to all actors
+> for (i in c(0 : (nActors - 1) ) ){
++ 	# Poisson models
++ 	poissonParameterInfluence <- 5
++ 	poissonModelInfluence <- create_poisson_model(
++ 	poissonParameterInfluence)
++ 	
++ 	poissonParameter <- 40
++ 	poissonModel <- create_poisson_model(poissonParameter)
++ 	
++ 	# saom change models
++ 	saomHomophilyModel <- create_multinomial_choice_network_change_model(
++ 		i,
++ 		networkIndex,
++ 		effectContainerHomophily)
++ 	behaviorSaom <- create_multinomial_choice_behavior_change_model(
++ 		i,
++ 		attributeIndex,
++ 		effectContainerInfluence
++ 	)
++ 	# updaters
++ 	setAttributeUpdater <- create_actor_attribute_set_updater(
++ 	attributeIndex, i)
++ 		
++ 	tieSwapUpdater <- create_tie_swap_updater(networkIndex)
++ 	
++ 	# define model chains
++ 	modelManager <<- add_time_model(modelManager,
++ 		poissonModel)
++ 	modelManager <<- add_change_model(modelManager,
++ 		poissonModel,
++ 		saomHomophilyModel)
++ 	modelManager <<- add_updater(modelManager,
++ 		saomHomophilyModel,
++ 		tieSwapUpdater)
++ 	modelManager <<- add_time_model(modelManager,
++         poissonModelInfluence)
++ 	modelManager <<- add_change_model(modelManager,
++         poissonModelInfluence,
++         behaviorSaom)
++ 	modelManager <<- add_updater(modelManager,
++         behaviorSaom,
++         setAttributeUpdater)
++ 		
++ } # for loop
+> 
+> simulator <- create_simulator(processState, modelManager, 10)
+> # commented out due to Windows compilation problems. Further tests needed!
+> ## Not run: simulate(simulator)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("change_models", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("create_attribute_container")
+> ### * create_attribute_container
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: create_attribute_container
+> ### Title: Create an attribute container object and maintain it
+> ### Aliases: create_attribute_container create_scale_attribute_container
+> ###   set_value attribute_container_as_list
+> ###   as.numeric.NetSimAttributeContainer
+> ###   as.double.NetSimAttributeContainer print.NetSimAttributeContainer
+> 
+> ### ** Examples
+> 
+> nActors <- 5
+> numericVector <- c(rep(0, nActors%/%2), rep(1, nActors - nActors%/%2))
+> attributeContainer1 <- create_attribute_container(numericVector)
+> attributeContainer2 <- 
++ 	create_scale_attribute_container(numericVector, min = 0, max = 2, by = 1)
+> 
+> attributeContainer1 <- set_value(attributeContainer1, i = 0, value = 5)
+> # does not change anything as 5 is out of range
+> attributeContainer2 <- set_value(attributeContainer2, i = 0, value = 5)
+> 
+> as.numeric(attributeContainer1)
+[1] 5 0 1 1 1
+> as.numeric(attributeContainer2)
+[1] 0 0 1 1 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("create_attribute_container", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("create_network")
+> ### * create_network
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: create_network
+> ### Title: Create an network object and maintain it
+> ### Aliases: create_network set_tie network_as_matrix
+> ###   as.matrix.NetSimNetwork print.NetSimNetwork
+> 
+> ### ** Examples
+> 
+> nActors <- 5
+> network <- create_network(matrix(1, nActors, nActors))
+Warning: 5 ties could not be set.
+> 
+> # set ties
+> set_tie(network, i = 0, j = 1, value = 0)
+[1] TRUE
+> set_tie(network, i = 0, j = 2, value = 0)
+[1] TRUE
+> # returns FALSE and keeps the network unchanged as the network is not reflexive
+> set_tie(network, i = 0, j = 0, value = 1)
+[1] FALSE
+> 
+> # there are two equivalent ways to re-transform the network into a matrix
+> as.matrix(network)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    0    0    1    1
+[2,]    1    0    1    1    1
+[3,]    1    1    0    1    1
+[4,]    1    1    1    0    1
+[5,]    1    1    1    1    0
+> network_as_matrix(network)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    0    0    1    1
+[2,]    1    0    1    1    1
+[3,]    1    1    0    1    1
+[4,]    1    1    1    0    1
+[5,]    1    1    1    1    0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("create_network", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("effect_container")
+> ### * effect_container
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: effect_container
+> ### Title: Overview of SAOM-related functions
+> ### Aliases: create_effect_container add_to_effect_container create_effect
+> ###   create_effect.OneModeNetworkEffect
+> ###   create_effect.AttributeOneModeNetworkEffect
+> ###   create_effect.SimilarityAttributeOneModeNetworkEffect
+> ###   create_effect.AttributeEffect create_effect.MultiplexNetworkEffect
+> ###   add_effect add_effect.AttributeMultinomialChoiceNetworkChangeModel
+> ###   get_effect_type
+> 
+> ### ** Examples
+> 
+> ## See sections 4.1, 4.2 and 4.5 in the package vignette for detailed examples
+> ## Small example:
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("effect_container", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("model_manager")
+> ### * model_manager
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: model_manager
+> ### Title: Manage models using a model manager object
+> ### Aliases: create_model_manager add_time_model add_time_updater
+> ###   add_change_model add_updater
+> 
+> ### ** Examples
+> 
+> # minimal code example model manager
+> modelManager <- create_model_manager()
+> 
+> processState <- create_process_state()
+> processState <- add_global_attribute(processState, 0.0, name = "timer")
+> timerIndex <- get_global_attribute_index(processState, name = "timer")
+> 
+> myTimeModel <- create_round_based_time_model(timerIndex)
+> 
+> modelManager <- add_time_model(modelManager, myTimeModel)
+> 
+> simulator <- create_simulator(processState, modelManager, 20)
+> simulate(simulator)
+Starting simulation. Length = 20, Time = 0
+Progress (in 10%) [==========] done.
+Iteration steps: 20
+Simulation time: 0s
+Time per iteration: 0s
+[1] 1
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("model_manager", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("network_utils")
+> ### * network_utils
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: network_utils
+> ### Title: Utility functions for NetSim network objects
+> ### Aliases: add_random_ties_to_network add_ring_lattice_to_network
+> 
+> ### ** Examples
+> 
+>  nActors <- 5
+>  network <- create_network(matrix(0, nActors, nActors))
+>  
+>  add_random_ties_to_network(network, probability = 0.5)
+[1] Pointer to NetSim network object:
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    0    0    0    0
+[2,]    0    0    1    1    1
+[3,]    0    1    0    1    1
+[4,]    0    0    0    0    1
+[5,]    0    0    0    0    0
+>  add_random_ties_to_network(network, probability = 1)
+[1] Pointer to NetSim network object:
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    1    1    1    1
+[2,]    1    0    1    1    1
+[3,]    1    1    0    1    1
+[4,]    1    1    1    0    1
+[5,]    1    1    1    1    0
+>  
+>  # reset network to an empty network
+>  network <- create_network(matrix(0, nActors, nActors))
+>  add_ring_lattice_to_network(network, nReciprocalTies = 2)
+[1] Pointer to NetSim network object:
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    1    0    0    1
+[2,]    1    0    1    0    0
+[3,]    0    1    0    1    0
+[4,]    0    0    1    0    1
+[5,]    1    0    0    1    0
+>  ## Not run: 
+> ##D  add_ring_lattice_to_network(network, nReciprocalTies = 0) # throws an error message
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("network_utils", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("package_integration")
+> ### * package_integration
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: package-integration
+> ### Title: Functions to transform NetSim objects to objects of other
+> ###   network classes
+> ### Aliases: as.igraph.NetSimNetwork
+> 
+> ### ** Examples
+> 
+> 	nActors <- 4
+> 	network <- create_network(matrix(0, nActors, nActors))
+> 
+> 	# set ties
+> 	set_tie(network, i = 0, j = 1, value = 1)
+[1] TRUE
+> 	set_tie(network, i = 0, j = 2, value = 1)
+[1] TRUE
+> 	
+> 	## Not run: library(igraph)
+> 	## Not run: myIGraph <- as.igraph(network, mode = "directed")
+> 	## Not run: plot(myIgraph) # now using the igraph package
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("package_integration", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("process_state")
+> ### * process_state
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: process_state
+> ### Title: Manage the process state
+> ### Aliases: create_process_state add_network get_network_index get_network
+> ###   add_attribute_container get_attribute_container_index
+> ###   get_attribute_container add_global_attribute
+> ###   get_global_attribute_index get_global_attribute
+> ###   get_process_state_name
+> 
+> ### ** Examples
+> 
+> # create an empty process state
+> processState <- create_process_state()
+> 
+> nActors <- 5
+> 
+> # create network object and add to process state
+> network <- create_network(matrix(1, nActors, nActors))
+Warning: 5 ties could not be set.
+> processState <- add_network(processState, network, name = "friendship")
+> get_network_index(processState, name = "friendship")
+[1] 0
+> 
+> # create attribute container and add to process state
+> attribute1 <- create_attribute_container(c(rep(0, nActors%/%2), rep(1, nActors - nActors%/%2)))
+> attribute2 <- create_attribute_container(c(rep(0, nActors%/%2), rep(1, nActors - nActors%/%2)))
+> processState <- add_attribute_container(processState, attribute1, name = "gender")
+> processState <- add_attribute_container(processState, attribute2, name = "age")
+> as.numeric(attribute1)
+[1] 0 0 1 1 1
+> get_attribute_container_index(processState, name="gender")
+[1] 0
+> get_attribute_container_index(processState, name="age")
+[1] 1
+> 
+> # add a global variable to the process state
+> processState <- add_global_attribute(processState, value = 1, name = "timer")
+> get_global_attribute(processState, name="timer")
+[1] 1
+> get_global_attribute_index(processState, name="timer")
+[1] 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("process_state", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("simulator")
+> ### * simulator
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: simulator
+> ### Title: Functions related to run a simulation
+> ### Aliases: create_simulator simulate get_iteration_steps
+> 
+> ### ** Examples
+> 
+> 	## Detailed examples of process states and model managers can be found in 
+> 	## section 4 of the package vignette.
+> 	processState <- create_process_state()
+> 	modelManager <- create_model_manager()
+> 	
+> 	processState <- create_process_state()
+> 	processState <- add_global_attribute(processState, 0.0, name = "timer")
+> 	timerIndex <- get_global_attribute_index(processState, name = "timer")
+> 	myTimeModel <- create_round_based_time_model(timerIndex)
+> 	modelManager <- add_time_model(modelManager, myTimeModel)
+> 	
+> 	timeSpan <- 20
+> 	simulator <- create_simulator(processState, modelManager, timeSpan,
++ 	verbose = TRUE, debug = FALSE)
+> 	simulate(simulator)
+Starting simulation. Length = 20, Time = 0
+Progress (in 10%) [==========] done.
+Iteration steps: 20
+Simulation time: 0s
+Time per iteration: 0s
+[1] 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("simulator", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("time_models")
+> ### * time_models
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: time_models
+> ### Title: Overview of time models implemented in NetSim
+> ### Aliases: create_round_based_time_model create_poisson_model
+> ###   create_attribute_poisson_model
+> 
+> ### ** Examples
+> 
+> 	processState <- create_process_state()
+> 
+> 	# add attribute container to process state	
+> 	attribute <- create_attribute_container(rep(2.0, 5))
+> 	processState <- add_attribute_container(processState, attribute, name = "poissonAttribute")
+> 	attributeIndex <- get_attribute_container_index(processState, name = "poissonAttribute")
+> 	
+> 	# add timer variable to process state
+> 	processState <- add_global_attribute(processState, name = "timer", value = 0)
+> 	timerIndex <- get_global_attribute_index(processState, name = "timer")
+> 	
+> 	
+> 	# create time models based on process state pointers
+> 	timeModel1 <- create_round_based_time_model(timerIndex)
+> 	timeModel2 <- create_poisson_model(3.0)
+> 	timeModel3 <- create_attribute_poisson_model(attributeIndex)
+> 	
+> 	# a change of the attribute container changes time model 3
+> 	set_value(attribute, 0, 0.5)
+[1] Pointer to NetSim attribute container object:
+[1] 0.5 2.0 2.0 2.0 2.0
+> 	
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("time_models", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("time_updater")
+> ### * time_updater
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: time_updater
+> ### Title: Overview of time updaters implemented in NetSim
+> ### Aliases: create_timer_updater
+> 
+> ### ** Examples
+> 
+> 	processState <- create_process_state()
+> 	
+> 	# add timer variable to process state
+> 	processState <- add_global_attribute(processState, name = "timer", value = 0)
+> 	timerIndex <- get_global_attribute_index(processState, name = "timer")
+> 	
+> 	# create time updater based on the timer index
+> 	timeUpdater <- create_timer_updater(timerIndex)
+> 	
+> 	modelManager <- create_model_manager()
+> 	
+> 	myTimeModel <- create_round_based_time_model(timerIndex)
+> 	modelManager <- add_time_model(modelManager, myTimeModel)
+> 	
+> 	timeSpan <- 20
+> 	simulator <- create_simulator(processState, modelManager, timeSpan,
++ 	verbose = TRUE, debug = FALSE)
+> 	simulate(simulator)
+Starting simulation. Length = 20, Time = 0
+Progress (in 10%) [==========] done.
+Iteration steps: 20
+Simulation time: 0s
+Time per iteration: 0s
+[1] 1
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("time_updater", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("updater")
+> ### * updater
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: updater
+> ### Title: Overview of updaters implemented in NetSim
+> ### Aliases: create_tie_swap_updater create_actor_attribute_set_updater
+> ###   create_add_actor_updater create_add_ties_from_newborn_actor_updater
+> ###   create_set_attribute_of_newborn_actor_updater
+> ###   create_rewire_tie_updater
+> 
+> ### ** Examples
+> 
+> 	## Extensive examples can be found in section 4 of the package vignette
+> 	## A more detailed description is given in section 3.3 of the package vignette
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("updater", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("utils")
+> ### * utils
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: utils
+> ### Title: General utility functions
+> ### Aliases: reset_random_seed get_random_seed
+> 
+> ### ** Examples
+> 
+> 	reset_random_seed(12)
+[1] 1
+> 	get_random_seed()
+[1] 12
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("utils", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.241 0.007 0.25 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

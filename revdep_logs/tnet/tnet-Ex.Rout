@@ -1,0 +1,1642 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "tnet"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "tnet-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('tnet')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: survival
+tnet: Analysis of Weighted, Two-mode, and Longitudinal networks.
+Type ?tnet for help.
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("add_window_l")
+> ### * add_window_l
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: add_window_l
+> ### Title: Add smoothing window to a longitudinal network
+> ### Aliases: add_window_l
+> 
+> ### ** Examples
+> 
+> t <- c('2007-09-12 13:45:00', 
++ '2007-09-12 13:46:31',
++ '2007-09-12 13:47:54',
++ '2007-09-12 13:48:21',
++ '2007-09-12 13:49:27',
++ '2007-09-12 13:58:14',
++ '2007-09-12 13:52:17',
++ '2007-09-12 13:56:59');
+> i <- c(1,1,1,1,1,1,1,1);
+> j <- c(2,2,2,2,2,2,3,3);
+> w <- c(1,1,1,1,1,1,1,1);
+> sample <- data.frame(t, i, j, w);
+> 
+> ## Run the programme
+> add_window_l(sample, window=21)
+Warning in as.tnet(net, type = "longitudinal tnet") :
+  Adding node joining data
+                     t i j  w
+1  2007-09-12 13:45:00 1 1  1
+2  2007-09-12 13:45:00 1 2  1
+3  2007-09-12 13:45:00 2 2  1
+4  2007-09-12 13:46:31 1 2  1
+5  2007-09-12 13:47:54 1 2  1
+6  2007-09-12 13:48:21 1 2  1
+7  2007-09-12 13:49:27 1 2  1
+8  2007-09-12 13:52:17 1 3  1
+9  2007-09-12 13:52:17 3 3  1
+10 2007-09-12 13:56:59 1 3  1
+11 2007-09-12 13:58:14 1 2  1
+12 2007-10-03 13:45:00 1 2 -1
+13 2007-10-03 13:46:31 1 2 -1
+14 2007-10-03 13:47:54 1 2 -1
+15 2007-10-03 13:48:21 1 2 -1
+16 2007-10-03 13:49:27 1 2 -1
+17 2007-10-03 13:52:17 1 3 -1
+18 2007-10-03 13:56:59 1 3 -1
+19 2007-10-03 13:58:14 1 2 -1
+20 2007-10-24 13:56:59 3 3 -1
+21 2007-10-24 13:58:14 1 1 -1
+22 2007-10-24 13:58:14 2 2 -1
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("add_window_l", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("as.static.tnet")
+> ### * as.static.tnet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as.static.tnet
+> ### Title: Transform a longitudinal network to a static edgelist network
+> ### Aliases: as.static.tnet
+> 
+> ### ** Examples
+> 
+> t <- c('2007-09-12 13:45:00', 
++ '2007-09-12 13:46:31',
++ '2007-09-12 13:47:54',
++ '2007-09-12 13:48:21',
++ '2007-09-12 13:49:27',
++ '2007-09-12 13:58:14',
++ '2007-09-12 13:52:17',
++ '2007-09-12 13:56:59');
+> i <- c(1,1,1,1,1,1,1,1);
+> j <- c(2,2,2,2,2,2,3,3);
+> w <- c(1,1,1,1,1,-1,1,1);
+> net <- data.frame(t, i, j, w);
+> 
+> ## Run the programme
+> as.static.tnet(net)
+Warning in as.tnet(net, type = "longitudinal tnet") :
+  Adding node joining data
+Warning in as.tnet(net, type = "weighted one-mode tnet") :
+  The network might be undirected. If this is the case, each tie should be mention twice. The symmetrise-function can be used to include reverse version of each tie.
+  i j w
+1 1 2 4
+2 1 3 2
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("as.static.tnet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("as.tnet")
+> ### * as.tnet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as.tnet
+> ### Title: Ensures that networks conform to the tnet stardards
+> ### Aliases: as.tnet
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sample <- rbind(
++ c(1,2,4),
++ c(1,3,2),
++ c(2,1,4),
++ c(2,3,4),
++ c(2,4,1),
++ c(2,5,2),
++ c(3,1,2),
++ c(3,2,4),
++ c(4,2,1),
++ c(5,2,2),
++ c(5,6,1),
++ c(6,5,1))
+> 
+> ## Run the programme
+> as.tnet(sample)
+Warning in as.tnet(sample) :
+  Data assumed to be weighted one-mode tnet (if this is not correct, specify type)
+   i j w
+1  1 2 4
+2  1 3 2
+3  2 1 4
+4  2 3 4
+5  2 4 1
+6  2 5 2
+7  3 1 2
+8  3 2 4
+9  4 2 1
+10 5 2 2
+11 5 6 1
+12 6 5 1
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("as.tnet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("betweenness_w")
+> ### * betweenness_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: betweenness_w
+> ### Title: Betweenness centrality in a weighted network
+> ### Aliases: betweenness_w
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sampledata <- rbind(
++ c(1,2,1),
++ c(1,3,5),
++ c(2,1,1),
++ c(2,4,6),
++ c(3,1,5),
++ c(3,4,10),
++ c(4,2,6),
++ c(4,3,10))
+> 
+> ## Run the programme
+> betweenness_w(sampledata)
+     node betweenness
+[1,]    1           0
+[2,]    2           0
+[3,]    3           2
+[4,]    4           2
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("betweenness_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("closeness_w")
+> ### * closeness_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: closeness_w
+> ### Title: Closeness centrality in a weighted network
+> ### Aliases: closeness_w
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sampledata <- rbind(
++ c(1,2,4),
++ c(1,3,2),
++ c(2,1,4),
++ c(2,3,4),
++ c(2,4,1),
++ c(2,5,2),
++ c(3,1,2),
++ c(3,2,4),
++ c(4,2,1),
++ c(5,2,2),
++ c(5,6,1),
++ c(6,5,1))
+> 
+> ## Run the programme
+> closeness_w(sampledata)
+     node  closeness n.closeness
+[1,]    1 0.09523810  0.01904762
+[2,]    2 0.12244898  0.02448980
+[3,]    3 0.09523810  0.01904762
+[4,]    4 0.05714286  0.01142857
+[5,]    5 0.09523810  0.01904762
+[6,]    6 0.05042017  0.01008403
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("closeness_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("clustering_local_tm")
+> ### * clustering_local_tm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clustering_local_tm
+> ### Title: Redefined local clusering coefficient for two-mode networks
+> ### Aliases: clustering_local_tm
+> 
+> ### ** Examples
+> 
+> # Weighted two-mode network
+> net <- cbind(
++ i=c(1,1,2,2,2,3,3,4,5,5,6),
++ p=c(1,2,1,3,4,2,3,4,3,5,5),
++ w=c(3,5,6,1,2,6,2,1,3,1,2))
+> 
+> ## Run binary clustering function
+> clustering_local_tm(net[,1:2])
+  node  lc
+1    1 1.0
+2    2 0.2
+3    3 0.5
+4    4 NaN
+5    5 0.0
+6    6 NaN
+> 
+> ## Run weighted clustering function
+> clustering_local_tm(net)
+  node  lc     lc.am     lc.gm     lc.ma     lc.mi
+1    1 1.0 1.0000000 1.0000000 1.0000000 1.0000000
+2    2 0.2 0.2400000 0.2313222 0.2608696 0.2000000
+3    3 0.5 0.4666667 0.4317651 0.5000000 0.3333333
+4    4 NaN       NaN       NaN       NaN       NaN
+5    5 0.0 0.0000000 0.0000000 0.0000000 0.0000000
+6    6 NaN       NaN       NaN       NaN       NaN
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("clustering_local_tm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("clustering_local_w")
+> ### * clustering_local_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clustering_local_w
+> ### Title: Barrat et al. (2004) generalised local clusering coefficient
+> ### Aliases: clustering_local_w
+> 
+> ### ** Examples
+> 
+> ## Generate a random graph
+> #density: 300/(100*99)=0.03030303; 
+> #this should be average from random samples
+> rg <- rg_w(nodes=100,arcs=300,weights=1:10,directed=FALSE)
+> 
+> ## Run clustering function
+> clustering_local_w(rg)
+       node        am
+  [1,]    1       NaN
+  [2,]    2       NaN
+  [3,]    3       NaN
+  [4,]    4       NaN
+  [5,]    5 0.0000000
+  [6,]    6 0.0000000
+  [7,]    7 0.0000000
+  [8,]    8 0.0000000
+  [9,]    9 0.0000000
+ [10,]   10 0.0000000
+ [11,]   11 0.0000000
+ [12,]   12       NaN
+ [13,]   13 0.0000000
+ [14,]   14 0.0000000
+ [15,]   15 0.0000000
+ [16,]   16 0.0000000
+ [17,]   17 0.0000000
+ [18,]   18 1.0000000
+ [19,]   19 0.0000000
+ [20,]   20 0.0000000
+ [21,]   21       NaN
+ [22,]   22 0.0000000
+ [23,]   23 0.0000000
+ [24,]   24 0.0000000
+ [25,]   25 0.0000000
+ [26,]   26 0.0000000
+ [27,]   27 0.0000000
+ [28,]   28       NaN
+ [29,]   29 0.0000000
+ [30,]   30 0.1666667
+ [31,]   31       NaN
+ [32,]   32 0.0000000
+ [33,]   33       NaN
+ [34,]   34 0.0000000
+ [35,]   35 0.0000000
+ [36,]   36 0.0000000
+ [37,]   37       NaN
+ [38,]   38 0.0000000
+ [39,]   39 0.2941176
+ [40,]   40 0.0000000
+ [41,]   41 0.0000000
+ [42,]   42 0.0000000
+ [43,]   43 0.0000000
+ [44,]   44 0.0000000
+ [45,]   45 0.0000000
+ [46,]   46       NaN
+ [47,]   47 0.2500000
+ [48,]   48 0.1185185
+ [49,]   49 0.0000000
+ [50,]   50 0.0000000
+ [51,]   51 0.0000000
+ [52,]   52 0.1538462
+ [53,]   53 0.0000000
+ [54,]   54 0.0000000
+ [55,]   55 0.0000000
+ [56,]   56 0.0000000
+ [57,]   57 0.0000000
+ [58,]   58 0.0000000
+ [59,]   59 0.0000000
+ [60,]   60 0.0000000
+ [61,]   61 0.0000000
+ [62,]   62       NaN
+ [63,]   63 0.0000000
+ [64,]   64 0.0000000
+ [65,]   65 0.0000000
+ [66,]   66 0.0000000
+ [67,]   67 0.0000000
+ [68,]   68 0.0000000
+ [69,]   69       NaN
+ [70,]   70 0.0000000
+ [71,]   71 0.0000000
+ [72,]   72 0.0952381
+ [73,]   73 0.0000000
+ [74,]   74 0.0000000
+ [75,]   75       NaN
+ [76,]   76 0.3750000
+ [77,]   77 0.0000000
+ [78,]   78 0.0000000
+ [79,]   79 0.0000000
+ [80,]   80 0.0000000
+ [81,]   81       NaN
+ [82,]   82 0.0000000
+ [83,]   83 0.0000000
+ [84,]   84 0.0000000
+ [85,]   85 0.0000000
+ [86,]   86 0.0000000
+ [87,]   87       NaN
+ [88,]   88 0.0000000
+ [89,]   89       NaN
+ [90,]   90 0.0000000
+ [91,]   91 0.0000000
+ [92,]   92 0.0000000
+ [93,]   93       NaN
+ [94,]   94 0.0000000
+ [95,]   95 0.0000000
+ [96,]   96 0.0000000
+ [97,]   97 0.0000000
+ [98,]   98 0.0000000
+ [99,]   99 0.0000000
+[100,]  100 0.0000000
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("clustering_local_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("clustering_tm")
+> ### * clustering_tm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clustering_tm
+> ### Title: Redefined clusering coefficient for two-mode networks
+> ### Aliases: clustering_tm
+> 
+> ### ** Examples
+> 
+> # Weighted two-mode network
+> net <- cbind(
++ i=c(1,1,2,2,2,3,3,4,5,5,6),
++ p=c(1,2,1,3,4,2,3,4,3,5,5),
++ w=c(3,5,6,1,2,6,2,1,3,1,2))
+> 
+> ## Run binary clustering function
+> clustering_tm(net[,1:2])
+[1] 0.3
+> 
+> ## Run weighted clustering function
+> clustering_tm(net)
+       bi        am        gm        ma        mi 
+0.3000000 0.4000000 0.3976441 0.3829787 0.3846154 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("clustering_tm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("clustering_w")
+> ### * clustering_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: clustering_w
+> ### Title: Generalised clusering coefficient
+> ### Aliases: clustering_w
+> 
+> ### ** Examples
+> 
+> ## Generate a random graph
+> #density: 300/(100*99)=0.03030303; 
+> #this should be average from random samples
+> rg <- rg_w(nodes=100,arcs=300,weights=1:10)
+> 
+> ## Run clustering function
+> clustering_w(rg)
+       am 
+0.0377129 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("clustering_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("compress_ids")
+> ### * compress_ids
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: compress_ids
+> ### Title: Remove non-active nodes from one-mode/two-mode/longitudinal
+> ###   networks
+> ### Aliases: compress_ids
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> t <- c("2007-09-12 13:45:00",
++   "2007-09-12 13:45:00",
++   "2007-09-12 13:45:01",
++   "2007-09-12 13:46:31",
++   "2007-09-12 13:46:31",
++   "2007-09-12 13:47:54",
++   "2007-09-12 13:48:21",
++   "2007-09-12 13:49:27",
++   "2007-09-12 13:49:27",
++   "2007-09-12 13:52:17",
++   "2007-09-12 13:56:59",
++   "2007-09-12 13:58:14")
+> i <- c(1,2,1,3,1,2,3,5,1,3,1,1);
+> j <- c(1,2,2,3,3,1,2,5,5,2,3,5);
+> w <- c(1,1,1,1,1,1,1,1,1,1,1,1);
+> samplenet <- data.frame(t, i, j, w);
+> 
+> ## Run the function
+> compress_ids(samplenet)
+Warning in as.tnet(net) :
+  Data assumed to be longitudinal tnet (if this is not correct, specify type)
+[[1]]
+                     t i j w
+1  2007-09-12 13:45:00 1 1 1
+2  2007-09-12 13:45:00 2 2 1
+3  2007-09-12 13:45:01 1 2 1
+4  2007-09-12 13:46:31 1 3 1
+5  2007-09-12 13:46:31 3 3 1
+6  2007-09-12 13:47:54 2 1 1
+7  2007-09-12 13:48:21 3 2 1
+8  2007-09-12 13:49:27 1 4 1
+9  2007-09-12 13:49:27 4 4 1
+10 2007-09-12 13:52:17 3 2 1
+11 2007-09-12 13:56:59 1 3 1
+12 2007-09-12 13:58:14 1 4 1
+
+[[2]]
+  old new
+1   1   1
+2   2   2
+3   3   3
+4   5   4
+
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("compress_ids", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("degree_tm")
+> ### * degree_tm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: degree_tm
+> ### Title: Degree centrality in a two-mode network
+> ### Aliases: degree_tm
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> network <- cbind(
++ i=c(1,1,2,2,2,3,3,4,5,5,6),
++ p=c(1,2,1,3,4,2,3,4,3,5,5),
++ w=c(3,5,6,1,2,6,2,1,3,1,2))
+> 
+> ## Run the programme
+> degree_tm(network)
+  node degree output
+1    1      2      8
+2    2      3      9
+3    3      2      8
+4    4      1      1
+5    5      2      4
+6    6      1      2
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("degree_tm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("degree_w")
+> ### * degree_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: degree_w
+> ### Title: Degree centrality in a weighted network
+> ### Aliases: degree_w
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> network <- rbind(
++ c(1,2,4),
++ c(1,3,2),
++ c(2,1,4),
++ c(2,3,4),
++ c(2,4,1),
++ c(2,5,2),
++ c(3,1,2),
++ c(3,2,4),
++ c(4,2,1),
++ c(5,2,2),
++ c(5,6,1),
++ c(6,5,1))
+> 
+> ## Run the programme
+> degree_w(network)
+     node degree output
+[1,]    1      2      6
+[2,]    2      4     11
+[3,]    3      2      6
+[4,]    4      1      1
+[5,]    5      2      3
+[6,]    6      1      1
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("degree_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dichotomise_tm")
+> ### * dichotomise_tm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dichotomise_tm
+> ### Title: Dichotomise a weighted two-mode network into a binary two-mode
+> ###   network
+> ### Aliases: dichotomise_tm
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sample <- cbind(
++  i=c(1,1,2,2,2,3,3,4,5,5,6),
++  p=c(1,2,1,3,4,2,3,4,3,5,5),
++  w=c(3,5,6,1,2,6,2,1,3,1,2))
+> 
+> ## Run the programme
+> dichotomise_tm(sample, GT=2)
+  i p
+1 1 1
+2 1 2
+3 2 1
+4 3 2
+5 5 3
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dichotomise_tm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dichotomise_w")
+> ### * dichotomise_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dichotomise_w
+> ### Title: Dichotomise a weighted one-mode network into a binary one-mode
+> ###   network
+> ### Aliases: dichotomise_w
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sample <- rbind(
++ c(1,2,4),
++ c(1,3,2),
++ c(2,1,4),
++ c(2,3,4),
++ c(2,4,1),
++ c(2,5,2),
++ c(3,1,2),
++ c(3,2,4),
++ c(4,2,1),
++ c(5,2,2),
++ c(5,6,1),
++ c(6,5,1))
+> 
+> ## Run the programme
+> dichotomise_w(sample, GT=2)
+  i j w
+1 1 2 1
+2 2 1 1
+3 2 3 1
+4 3 2 1
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dichotomise_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("distance_tm")
+> ### * distance_tm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: distance_tm
+> ### Title: Distance in a two-mode network
+> ### Aliases: distance_tm
+> 
+> ### ** Examples
+> 
+> # Load networks
+> net <- cbind(
++  i=c(1,1,2,2,2,3,3,4,5,5,6),
++  p=c(1,2,1,3,4,2,3,4,3,5,5),
++  w=c(3,5,6,1,2,6,2,1,3,1,2))
+> 
+> # Run the function
+> distance_tm(net)
+          [,1]      [,2]      [,3]     [,4]     [,5]     [,6]
+[1,]        NA 0.9047619 0.5428571 2.261905 1.900000 4.614286
+[2,] 0.9047619        NA 1.4476190 1.357143 2.714286 5.428571
+[3,] 0.5428571 1.4476190        NA 2.804762 1.357143 4.071429
+[4,] 2.2619048 1.3571429 2.8047619       NA 4.071429 6.785714
+[5,] 1.9000000 2.7142857 1.3571429 4.071429       NA 2.714286
+[6,] 4.6142857 5.4285714 4.0714286 6.785714 2.714286       NA
+attr(,"nodes")
+[1] 1 2 3 4 5 6
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("distance_tm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("distance_w")
+> ### * distance_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: distance_w
+> ### Title: Distance in a weighted network
+> ### Aliases: distance_w
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sample <- rbind(
++ c(1,2,8),
++ c(1,4,1),
++ c(2,1,8),
++ c(2,3,6),
++ c(3,2,6),
++ c(3,4,10),
++ c(4,1,1),
++ c(4,3,10))
+> 
+> ## Run the programme
+> distance_w(sample)
+         [,1]     [,2]     [,3]     [,4]
+[1,]       NA 0.781250 1.822917 2.447917
+[2,] 0.781250       NA 1.041667 1.666667
+[3,] 1.822917 1.041667       NA 0.625000
+[4,] 2.447917 1.666667 0.625000       NA
+attr(,"nodes")
+[1] 1 2 3 4
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("distance_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("growth_l")
+> ### * growth_l
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: growth_l
+> ### Title: Identifies growth mechanisms responsible for tie generation in
+> ###   longitudinal networks
+> ### Aliases: growth_l
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> t <- c('2007-09-12 13:45:00', 
++ '2007-09-12 13:46:31',
++ '2007-09-12 13:47:54',
++ '2007-09-12 13:48:21',
++ '2007-09-12 13:49:27',
++ '2007-09-12 13:58:14',
++ '2007-09-12 13:52:17',
++ '2007-09-12 13:56:59');
+> i <- c(1,1,2,3,1,3,1,1);
+> j <- c(2,3,1,2,4,2,3,4);
+> w <- c(1,1,1,1,1,1,1,1);
+> sample <- data.frame(t, i, j, w);
+> 
+> ## Run the function
+> growth_l(sample, effects="indegree", nstrata=2)
+1/3: Preparing data
+Warning in as.tnet(net, type = "longitudinal tnet") :
+  Adding node joining data
+2/3: Calculating measures
+0%  10%  20%  30%  40%  50%  60%  70%  80%  90%  100%
++----+----+----+----+----+----+----+----+----+----+
+|||||||||||||
+3/3: Running regression
+Call:
+clogit(w ~ indegree + cluster(i) + strata(tie), data = o, method = "approximate")
+
+
+          coef exp(coef) se(coef) robust se     z    p
+indegree -1.39      0.25     1.12      1.27 -1.09 0.28
+
+Likelihood ratio test=1.93  on 1 df, p=0.165  n= 14, number of events= 7 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("growth_l", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("projecting_tm")
+> ### * projecting_tm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: projecting_tm
+> ### Title: Projecting binary and weighted two-mode networks onto weighted
+> ###   one-mode networks.
+> ### Aliases: projecting_tm
+> 
+> ### ** Examples
+> 
+> ## define two-mode network
+> two.mode.net <- cbind(
++ i=c(1,1,2,2,2,2,2,3,4,5,5,5,6),
++ p=c(1,2,1,2,3,4,5,2,3,4,5,6,6))
+> 
+> ## Run the function
+> projecting_tm(two.mode.net, method="Newman")
+   i j   w
+1  1 2 1.5
+2  1 3 0.5
+3  2 1 1.5
+4  2 3 0.5
+5  2 4 1.0
+6  2 5 2.0
+7  3 1 0.5
+8  3 2 0.5
+9  4 2 1.0
+10 5 2 2.0
+11 5 6 1.0
+12 6 5 1.0
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("projecting_tm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("reinforcement_tm")
+> ### * reinforcement_tm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: reinforcement_tm
+> ### Title: Reinforcement_tm
+> ### Aliases: reinforcement_tm
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> net <- rg_tm(10, 7, 0.4)
+> 
+> ## Run the programme
+> reinforcement_tm(net)
+[1] 0.3743842
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("reinforcement_tm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rg_reshuffling_l")
+> ### * rg_reshuffling_l
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rg_reshuffling_l
+> ### Title: Reshuffling a longitudinal network
+> ### Aliases: rg_reshuffling_l
+> 
+> ### ** Examples
+> 
+> t <- c('2007-09-12 13:45:00', 
++ '2007-09-12 13:46:31',
++ '2007-09-12 13:47:54',
++ '2007-09-12 13:48:21',
++ '2007-09-12 13:49:27',
++ '2007-09-12 13:58:14',
++ '2007-09-12 13:52:17',
++ '2007-09-12 13:56:59');
+> i <- c(1,1,1,1,1,1,1,1);
+> j <- c(2,2,2,2,2,2,3,3);
+> w <- c(1,1,1,1,1,1,1,1);
+> sample <- data.frame(t, i, j, w);
+> 
+> rg_reshuffling_l(sample)
+Warning in as.tnet(net, type = "longitudinal tnet") :
+  Adding node joining data
+                     t i j w
+1  2007-09-12 13:45:00 1 1 1
+2  2007-09-12 13:45:00 2 2 1
+3  2007-09-12 13:45:00 1 2 1
+4  2007-09-12 13:46:31 2 1 1
+5  2007-09-12 13:47:54 1 2 1
+6  2007-09-12 13:48:21 2 1 1
+7  2007-09-12 13:49:27 2 1 1
+8  2007-09-12 13:52:17 3 3 1
+9  2007-09-12 13:52:17 1 3 1
+10 2007-09-12 13:56:59 3 1 1
+11 2007-09-12 13:58:14 3 1 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rg_reshuffling_l", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rg_reshuffling_tm")
+> ### * rg_reshuffling_tm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rg_reshuffling_tm
+> ### Title: Reshuffle of a binary two-mode network
+> ### Aliases: rg_reshuffling_tm
+> 
+> ### ** Examples
+> 
+> ## Load data
+> net <- rg_tm(10, 8, 0.4)
+> 
+> ## Run the function on a subset
+> rg_reshuffling_tm(net, seed=1)
+    i p
+1   1 1
+2   1 2
+3   1 3
+4   2 1
+5   2 3
+6   2 4
+7   2 5
+8   3 6
+9   4 2
+10  4 3
+11  4 4
+12  4 6
+13  4 7
+14  4 8
+15  5 2
+16  5 3
+17  5 8
+18  6 1
+19  6 7
+20  6 8
+21  7 3
+22  7 6
+23  7 7
+24  8 3
+25  8 6
+26  8 8
+27  9 1
+28  9 2
+29 10 3
+30 10 7
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rg_reshuffling_tm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rg_reshuffling_w")
+> ### * rg_reshuffling_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rg_reshuffling_w
+> ### Title: Reshuffle of a weighted network
+> ### Aliases: rg_reshuffling_w
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sampledata<-rbind(
++ c(1,2,4),
++ c(1,3,2),
++ c(2,1,4),
++ c(2,3,4),
++ c(2,4,1),
++ c(2,5,2),
++ c(3,1,2),
++ c(3,2,4),
++ c(4,2,1),
++ c(5,2,2),
++ c(5,6,1),
++ c(6,5,1));
+> 
+> ## Run the function
+> rg_reshuffling_w(sampledata, option="weights", directed=FALSE)
+   i j w
+1  1 2 2
+2  1 3 1
+3  2 1 2
+4  2 3 4
+5  2 4 1
+6  2 5 4
+7  3 1 1
+8  3 2 4
+9  4 2 1
+10 5 2 4
+11 5 6 2
+12 6 5 2
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rg_reshuffling_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rg_tm")
+> ### * rg_tm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rg_tm
+> ### Title: Random binary and weighted two-mode network
+> ### Aliases: rg_tm
+> 
+> ### ** Examples
+> 
+> ## Run the programme
+> rg_tm(ni=10,np=10,ties=20)
+    i p
+1   1 5
+2   2 3
+3   2 7
+4   3 1
+5   3 5
+6   3 9
+7   4 6
+8   4 8
+9   5 8
+10  6 5
+11  7 2
+12  7 5
+13  7 8
+14  8 1
+15  8 6
+16  8 7
+17  9 7
+18 10 2
+19 10 5
+20 10 8
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rg_tm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rg_w")
+> ### * rg_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rg_w
+> ### Title: Random weighted network generator
+> ### Aliases: rg_w
+> 
+> ### ** Examples
+> 
+> rg_w(nodes=10,arcs=30,directed=FALSE,seed=1)
+    i  j w
+1   1  9 1
+2   2  4 1
+3   2  8 1
+4   3  5 1
+5   3  7 1
+6   3  8 1
+7   3  9 1
+8   4  2 1
+9   4  5 1
+10  4  7 1
+11  5  3 1
+12  5  4 1
+13  5  8 1
+14  5  9 1
+15  5 10 1
+16  6  9 1
+17  7  3 1
+18  7  4 1
+19  7  8 1
+20  8  2 1
+21  8  3 1
+22  8  5 1
+23  8  7 1
+24  9  1 1
+25  9  3 1
+26  9  5 1
+27  9  6 1
+28  9 10 1
+29 10  5 1
+30 10  9 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rg_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("shrink_to_weighted_network")
+> ### * shrink_to_weighted_network
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: shrink_to_weighted_network
+> ### Title: Shrink a repetative edgelist into a weighted
+> ### Aliases: shrink_to_weighted_network
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sample <- rbind(
++ c(1,2),
++ c(1,2),
++ c(1,2),
++ c(1,2),
++ c(1,3),
++ c(1,3),
++ c(2,1),
++ c(2,1),
++ c(2,1),
++ c(2,1),
++ c(2,3),
++ c(2,3),
++ c(2,3),
++ c(2,3),
++ c(2,4),
++ c(2,5),
++ c(2,5),
++ c(3,1),
++ c(3,1),
++ c(3,2),
++ c(3,2),
++ c(3,2),
++ c(3,2),
++ c(4,2),
++ c(5,2),
++ c(5,2),
++ c(5,6),
++ c(6,5))
+> 
+> ## Run the programme
+> shrink_to_weighted_network(sample)
+   i j w
+1  1 2 4
+2  1 3 2
+3  2 1 4
+4  2 3 4
+5  2 4 1
+6  2 5 2
+7  3 1 2
+8  3 2 4
+9  4 2 1
+10 5 2 2
+11 5 6 1
+12 6 5 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("shrink_to_weighted_network", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("symmetrise_w")
+> ### * symmetrise_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: symmetrise_w
+> ### Title: Symmetrise_w
+> ### Aliases: symmetrise_w
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sample <- rbind(
++ c(1,2,2),
++ c(1,3,2),
++ c(2,1,4),
++ c(2,3,4),
++ c(2,4,1),
++ c(2,5,2),
++ c(3,1,2),
++ c(3,2,4),
++ c(5,2,2),
++ c(5,6,1))
+> 
+> ## Run the programme
+> symmetrise_w(sample, method="MAX")
+      i j w
+ [1,] 1 2 4
+ [2,] 1 3 2
+ [3,] 2 1 4
+ [4,] 2 3 4
+ [5,] 2 4 1
+ [6,] 2 5 2
+ [7,] 3 1 2
+ [8,] 3 2 4
+ [9,] 4 2 1
+[10,] 5 2 2
+[11,] 5 6 1
+[12,] 6 5 1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("symmetrise_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("tnet-package")
+> ### * tnet-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: tnet-package
+> ### Title: Collection of functions for analysing weighted networks,
+> ###   two-mode networks, and longitudinal networks
+> ### Aliases: tnet
+> 
+> ### ** Examples
+> 
+> # Generate a random weighted graph
+> rg <- rg_w(nodes=100,arcs=300,directed=TRUE)
+> 
+> # Calculate clustering coefficient
+> clustering_w(rg)
+       am 
+0.0324826 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("tnet-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("tnet_igraph")
+> ### * tnet_igraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: tnet_igraph
+> ### Title: Exports a tnet network to an igraph object
+> ### Aliases: tnet_igraph
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sample <- rbind(
++ c(1,2,4),
++ c(1,3,2),
++ c(2,1,4),
++ c(2,3,4),
++ c(2,4,1),
++ c(2,5,2),
++ c(3,1,2),
++ c(3,2,4),
++ c(4,2,1),
++ c(5,2,2),
++ c(5,6,1),
++ c(6,5,1))
+> 
+> ## Run the programme
+> tnet_igraph(sample, type="weighted one-mode tnet")
+IGRAPH U-W- 6 6 -- 
++ attr: weight (e/n)
++ edges:
+[1] 1--2 1--3 2--3 2--4 2--5 5--6
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("tnet_igraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("tnet_ucinet")
+> ### * tnet_ucinet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: tnet_ucinet
+> ### Title: Exports a tnet network to a DL file for UCINET
+> ### Aliases: tnet_ucinet
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sample <- rbind(
++ c(1,2,4),
++ c(1,3,2),
++ c(2,1,4),
++ c(2,3,4),
++ c(2,4,1),
++ c(2,5,2),
++ c(3,1,2),
++ c(3,2,4),
++ c(4,2,1),
++ c(5,2,2),
++ c(5,6,1),
++ c(6,5,1))
+> 
+> ## Run the programme
+> tnet_ucinet(sample, type="weighted one-mode tnet")
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("tnet_ucinet", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("weighted_richclub_local_w")
+> ### * weighted_richclub_local_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: weighted_richclub_local_w
+> ### Title: The weighted rich-club effect (local measure)
+> ### Aliases: weighted_richclub_local_w
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sample <- cbind(
++ i=c(1,1,2,2,2,2,3,3,4,5,5,6),
++ j=c(2,3,1,3,4,5,1,2,2,2,6,5),
++ w=c(4,2,4,4,1,2,2,4,1,2,1,1))
+> prominence <- c(1,1,1,0,0,0)
+> 
+> ## Run the function
+> weighted_richclub_local_w(sample, prominence)
+     node    ratio
+[1,]    1 1.000000
+[2,]    2 1.454545
+[3,]    3 1.000000
+[4,]    4 1.000000
+[5,]    5 1.333333
+[6,]    6 1.000000
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("weighted_richclub_local_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("weighted_richclub_tm")
+> ### * weighted_richclub_tm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: weighted_richclub_tm
+> ### Title: The weighted rich-club effect (two-mode networks)
+> ### Aliases: weighted_richclub_tm
+> 
+> ### ** Examples
+> 
+> ## Load  data
+> data(tnet)
+> 
+> ## Run the function on a subset
+> weighted_richclub_tm(Newman.Condmat.95.99.net.2mode[1:100,], NR=10)
+Random network 10/10 @ Sat Jun 13 15:55:23 2015
+           x        y l99 l95 h95 h99
+1   1.999990 1.000000   0   0   0   0
+2   2.165263 1.010668   0   0   0   0
+3   2.344194 1.010668   0   0   0   0
+4   2.537910 1.010668   0   0   0   0
+5   2.747636 1.010668   0   0   0   0
+6   2.974692 1.010668   0   0   0   0
+7   3.220511 1.034833   0   0   0   0
+8   3.486644 1.034833   0   0   0   0
+9   3.774769 1.034833   0   0   0   0
+10  4.086705 1.034833   0   0   0   0
+11  4.424417 1.034833   0   0   0   0
+12  4.790037 1.034833   0   0   0   0
+13  5.185871 1.034833   0   0   0   0
+14  5.614416 1.034833   0   0   0   0
+15  6.078374 1.046730   0   0   0   0
+16  6.580672 1.046730   0   0   0   0
+17  7.124478 1.046730   0   0   0   0
+18  7.713223 1.046730   0   0   0   0
+19  8.350619 1.046730   0   0   0   0
+20  9.040689 1.046730   0   0   0   0
+21  9.787783 1.046730   0   0   0   0
+22 10.596615 1.046730   0   0   0   0
+23 11.472287 1.046730   0   0   0   0
+24 12.420321 1.046730   0   0   0   0
+25 13.446698 0.000000   0   0   0   0
+26 14.557891 0.000000   0   0   0   0
+27 15.760910 0.000000   0   0   0   0
+28 17.063343 0.000000   0   0   0   0
+29 18.473405 0.000000   0   0   0   0
+30 19.999990 0.000000   0   0   0   0
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("weighted_richclub_tm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("weighted_richclub_w")
+> ### * weighted_richclub_w
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: weighted_richclub_w
+> ### Title: The weighted rich-club effect
+> ### Aliases: weighted_richclub_w
+> 
+> ### ** Examples
+> 
+> ## Load sample data
+> sample <- cbind(
++ i=c(1,1,2,2,2,2,3,3,4,5,5,6),
++ j=c(2,3,1,3,4,5,1,2,2,2,6,5),
++ w=c(4,2,4,4,1,2,2,4,1,2,1,1))
+> 
+> ## Run the function
+> weighted_richclub_w(sample, rich="k", reshuffle="weights")
+Random network 10/1000 @ Sat Jun 13 15:55:23 2015
+Random network 20/1000 @ Sat Jun 13 15:55:23 2015
+Random network 30/1000 @ Sat Jun 13 15:55:24 2015
+Random network 40/1000 @ Sat Jun 13 15:55:24 2015
+Random network 50/1000 @ Sat Jun 13 15:55:24 2015
+Random network 60/1000 @ Sat Jun 13 15:55:24 2015
+Random network 70/1000 @ Sat Jun 13 15:55:24 2015
+Random network 80/1000 @ Sat Jun 13 15:55:24 2015
+Random network 90/1000 @ Sat Jun 13 15:55:24 2015
+Random network 100/1000 @ Sat Jun 13 15:55:24 2015
+Random network 110/1000 @ Sat Jun 13 15:55:24 2015
+Random network 120/1000 @ Sat Jun 13 15:55:24 2015
+Random network 130/1000 @ Sat Jun 13 15:55:24 2015
+Random network 140/1000 @ Sat Jun 13 15:55:25 2015
+Random network 150/1000 @ Sat Jun 13 15:55:25 2015
+Random network 160/1000 @ Sat Jun 13 15:55:25 2015
+Random network 170/1000 @ Sat Jun 13 15:55:25 2015
+Random network 180/1000 @ Sat Jun 13 15:55:25 2015
+Random network 190/1000 @ Sat Jun 13 15:55:25 2015
+Random network 200/1000 @ Sat Jun 13 15:55:25 2015
+Random network 210/1000 @ Sat Jun 13 15:55:25 2015
+Random network 220/1000 @ Sat Jun 13 15:55:25 2015
+Random network 230/1000 @ Sat Jun 13 15:55:25 2015
+Random network 240/1000 @ Sat Jun 13 15:55:25 2015
+Random network 250/1000 @ Sat Jun 13 15:55:25 2015
+Random network 260/1000 @ Sat Jun 13 15:55:25 2015
+Random network 270/1000 @ Sat Jun 13 15:55:25 2015
+Random network 280/1000 @ Sat Jun 13 15:55:25 2015
+Random network 290/1000 @ Sat Jun 13 15:55:25 2015
+Random network 300/1000 @ Sat Jun 13 15:55:26 2015
+Random network 310/1000 @ Sat Jun 13 15:55:26 2015
+Random network 320/1000 @ Sat Jun 13 15:55:26 2015
+Random network 330/1000 @ Sat Jun 13 15:55:26 2015
+Random network 340/1000 @ Sat Jun 13 15:55:26 2015
+Random network 350/1000 @ Sat Jun 13 15:55:26 2015
+Random network 360/1000 @ Sat Jun 13 15:55:26 2015
+Random network 370/1000 @ Sat Jun 13 15:55:26 2015
+Random network 380/1000 @ Sat Jun 13 15:55:26 2015
+Random network 390/1000 @ Sat Jun 13 15:55:26 2015
+Random network 400/1000 @ Sat Jun 13 15:55:26 2015
+Random network 410/1000 @ Sat Jun 13 15:55:26 2015
+Random network 420/1000 @ Sat Jun 13 15:55:26 2015
+Random network 430/1000 @ Sat Jun 13 15:55:26 2015
+Random network 440/1000 @ Sat Jun 13 15:55:26 2015
+Random network 450/1000 @ Sat Jun 13 15:55:26 2015
+Random network 460/1000 @ Sat Jun 13 15:55:26 2015
+Random network 470/1000 @ Sat Jun 13 15:55:26 2015
+Random network 480/1000 @ Sat Jun 13 15:55:26 2015
+Random network 490/1000 @ Sat Jun 13 15:55:26 2015
+Random network 500/1000 @ Sat Jun 13 15:55:26 2015
+Random network 510/1000 @ Sat Jun 13 15:55:27 2015
+Random network 520/1000 @ Sat Jun 13 15:55:27 2015
+Random network 530/1000 @ Sat Jun 13 15:55:27 2015
+Random network 540/1000 @ Sat Jun 13 15:55:27 2015
+Random network 550/1000 @ Sat Jun 13 15:55:27 2015
+Random network 560/1000 @ Sat Jun 13 15:55:27 2015
+Random network 570/1000 @ Sat Jun 13 15:55:27 2015
+Random network 580/1000 @ Sat Jun 13 15:55:27 2015
+Random network 590/1000 @ Sat Jun 13 15:55:27 2015
+Random network 600/1000 @ Sat Jun 13 15:55:27 2015
+Random network 610/1000 @ Sat Jun 13 15:55:27 2015
+Random network 620/1000 @ Sat Jun 13 15:55:27 2015
+Random network 630/1000 @ Sat Jun 13 15:55:27 2015
+Random network 640/1000 @ Sat Jun 13 15:55:27 2015
+Random network 650/1000 @ Sat Jun 13 15:55:27 2015
+Random network 660/1000 @ Sat Jun 13 15:55:27 2015
+Random network 670/1000 @ Sat Jun 13 15:55:27 2015
+Random network 680/1000 @ Sat Jun 13 15:55:27 2015
+Random network 690/1000 @ Sat Jun 13 15:55:28 2015
+Random network 700/1000 @ Sat Jun 13 15:55:28 2015
+Random network 710/1000 @ Sat Jun 13 15:55:28 2015
+Random network 720/1000 @ Sat Jun 13 15:55:28 2015
+Random network 730/1000 @ Sat Jun 13 15:55:28 2015
+Random network 740/1000 @ Sat Jun 13 15:55:28 2015
+Random network 750/1000 @ Sat Jun 13 15:55:28 2015
+Random network 760/1000 @ Sat Jun 13 15:55:28 2015
+Random network 770/1000 @ Sat Jun 13 15:55:28 2015
+Random network 780/1000 @ Sat Jun 13 15:55:28 2015
+Random network 790/1000 @ Sat Jun 13 15:55:28 2015
+Random network 800/1000 @ Sat Jun 13 15:55:28 2015
+Random network 810/1000 @ Sat Jun 13 15:55:28 2015
+Random network 820/1000 @ Sat Jun 13 15:55:28 2015
+Random network 830/1000 @ Sat Jun 13 15:55:28 2015
+Random network 840/1000 @ Sat Jun 13 15:55:28 2015
+Random network 850/1000 @ Sat Jun 13 15:55:28 2015
+Random network 860/1000 @ Sat Jun 13 15:55:28 2015
+Random network 870/1000 @ Sat Jun 13 15:55:28 2015
+Random network 880/1000 @ Sat Jun 13 15:55:28 2015
+Random network 890/1000 @ Sat Jun 13 15:55:28 2015
+Random network 900/1000 @ Sat Jun 13 15:55:29 2015
+Random network 910/1000 @ Sat Jun 13 15:55:29 2015
+Random network 920/1000 @ Sat Jun 13 15:55:29 2015
+Random network 930/1000 @ Sat Jun 13 15:55:29 2015
+Random network 940/1000 @ Sat Jun 13 15:55:29 2015
+Random network 950/1000 @ Sat Jun 13 15:55:29 2015
+Random network 960/1000 @ Sat Jun 13 15:55:29 2015
+Random network 970/1000 @ Sat Jun 13 15:55:29 2015
+Random network 980/1000 @ Sat Jun 13 15:55:29 2015
+Random network 990/1000 @ Sat Jun 13 15:55:29 2015
+Random network 1000/1000 @ Sat Jun 13 15:55:29 2015
+          x        y       l99       l95      h95      h99
+1  0.999990 1.000000 1.0000000 1.0000000 1.000000 1.000000
+2  1.024179 1.287554 0.6437768 0.6437768 1.287554 1.287554
+3  1.048954 1.287554 0.6437768 0.6437768 1.287554 1.287554
+4  1.074328 1.287554 0.6437768 0.6437768 1.287554 1.287554
+5  1.100316 1.287554 0.6437768 0.6437768 1.287554 1.287554
+6  1.126932 1.287554 0.6437768 0.6437768 1.287554 1.287554
+7  1.154192 1.287554 0.6437768 0.6437768 1.287554 1.287554
+8  1.182112 1.287554 0.6437768 0.6437768 1.287554 1.287554
+9  1.210707 1.287554 0.6437768 0.6437768 1.287554 1.287554
+10 1.239994 1.287554 0.6437768 0.6437768 1.287554 1.287554
+11 1.269989 1.287554 0.6437768 0.6437768 1.287554 1.287554
+12 1.300709 1.287554 0.6437768 0.6437768 1.287554 1.287554
+13 1.332173 1.287554 0.6437768 0.6437768 1.287554 1.287554
+14 1.364398 1.287554 0.6437768 0.6437768 1.287554 1.287554
+15 1.397403 1.287554 0.6437768 0.6437768 1.287554 1.287554
+16 1.431205 1.287554 0.6437768 0.6437768 1.287554 1.287554
+17 1.465826 1.287554 0.6437768 0.6437768 1.287554 1.287554
+18 1.501284 1.287554 0.6437768 0.6437768 1.287554 1.287554
+19 1.537599 1.287554 0.6437768 0.6437768 1.287554 1.287554
+20 1.574794 1.287554 0.6437768 0.6437768 1.287554 1.287554
+21 1.612887 1.287554 0.6437768 0.6437768 1.287554 1.287554
+22 1.651903 1.287554 0.6437768 0.6437768 1.287554 1.287554
+23 1.691862 1.287554 0.6437768 0.6437768 1.287554 1.287554
+24 1.732788 1.287554 0.6437768 0.6437768 1.287554 1.287554
+25 1.774703 1.287554 0.6437768 0.6437768 1.287554 1.287554
+26 1.817633 1.287554 0.6437768 0.6437768 1.287554 1.287554
+27 1.861601 1.287554 0.6437768 0.6437768 1.287554 1.287554
+28 1.906632 1.287554 0.6437768 0.6437768 1.287554 1.287554
+29 1.952753 1.287554 0.6437768 0.6437768 1.287554 1.287554
+30 1.999990 1.287554 0.6437768 0.6437768 1.287554 1.287554
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("weighted_richclub_w", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  8.907 0.098 9.114 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

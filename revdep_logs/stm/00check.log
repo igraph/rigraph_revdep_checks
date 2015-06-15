@@ -1,0 +1,102 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/stm.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘stm/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘stm’ version ‘1.0.8’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘stm’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... NOTE
+Missing or unexported objects:
+  ‘igraph::plot.igraph’ ‘tm::meta’
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking sizes of PDF files under ‘inst/doc’ ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... ERROR
+Running examples in ‘stm-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.topicCorr
+> ### Title: Plot a topic correlation graph
+> ### Aliases: plot.topicCorr
+> 
+> ### ** Examples
+> 
+> #This function becomes more useful with larger numbers of topics.
+> #it is demonstrated here with a small model simply to show how the syntax works.
+> cormat <- topicCorr(gadarianFit)
+> plot(cormat)
+Error: 'plot.igraph' is not an exported object from 'namespace:igraph'
+Execution halted
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking running R code from vignettes ... [25s/47s] ERROR
+Errors in running code in vignettes:
+when running code in ‘stmVignette.Rnw’
+  ...
+> plot.STM(poliblogPrevFit, type = "summary", xlim = c(0, 
++     0.4))
+
+> mod.out.corr <- topicCorr(poliblogPrevFit)
+
+> plot.topicCorr(mod.out.corr)
+
+  When sourcing ‘stmVignette.R’:
+Error: 'plot.igraph' is not an exported object from 'namespace:igraph'
+Execution halted
+
+* checking re-building of vignette outputs ... NOTE
+Error in re-building vignettes:
+  ...
+stm v1.0.8 (2014-11-07) successfully loaded. See ?stm for help.
+
+Error: processing vignette 'stmVignette.Rnw' failed with diagnostics:
+ chunk 25 
+Error : 'plot.igraph' is not an exported object from 'namespace:igraph'
+Execution halted
+
+* DONE
+Status: 2 ERRORs, 2 NOTEs

@@ -1,0 +1,103 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "spatgraphs"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "spatgraphs-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('spatgraphs')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("spatgraphs-package")
+> ### * spatgraphs-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: spatgraphs-package
+> ### Title: Graphs for spatial point patterns
+> ### Aliases: spatgraphs-package spatgraphs
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+>   graph_example2d<-function(n=50,k=2,R=0.2)
++   {
++    pp2d<-list(x=runif(n),y=runif(n),n=n,window=list(x=c(0,1),y=c(0,1)))
++    e1<-spatgraph(pp2d,"geometric",par=R)
++    e2<-spatgraph(pp2d,"knn",par=k)
++    e3<-spatgraph(pp2d,"MST")
++    A<-spatcluster(e2)
++    par(mfrow=c(1,3))
++    plot(pp2d,main=paste("Geometric,R =",R))
++    plot(e1,pp2d)
++    plot(pp2d,main=paste("k-nn, k =",k))
++    plot(e2,pp2d)
++    plot(A,pp2d,pch=19)
++    plot(pp2d, main="Minimum spanning tree")
++    plot(e3,pp2d)
++   }
+>   graph_example2d()
+> 
+> ## Not run: 
+> ##D ## 3d example, requires library rgl
+> ##D   library(rgl)
+> ##D   graph_example3d<-function(n=200)
+> ##D   {
+> ##D 	w<-c(0,1)
+> ##D 	phi<-runif(n,0,pi);tau<-runif(n,0,2*pi);r<-runif(n)^0.33
+> ##D 	pp3d<-list(x=r*sin(tau)*cos(phi),y=r*cos(phi)*cos(tau),z=r*cos(phi),n=n,window=list(x=w,y=w,z=w))
+> ##D 	e<-spatgraph(pp3d,"RST",par=c(x=0,y=0,z=0))
+> ##D 	plot3d(pp3d,size=2, main="Radial spanning tree",col="black")
+> ##D 	plot(e,pp3d,col="plum")
+> ##D   }
+> ##D   graph_example3d()
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("spatgraphs-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.088 0.003 0.092 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

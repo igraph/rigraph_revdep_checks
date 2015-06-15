@@ -1,0 +1,23 @@
+* installing *source* package ‘PGRdup’ ...
+** package ‘PGRdup’ successfully unpacked and MD5 sums checked
+** libs
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -fPIC  -Wall -mtune=core2 -g -O2  -c fdouble_metaphone.c -o fdouble_metaphone.o
+fdouble_metaphone.c:285:9: warning: comparison of array 'test_string' equal to a null pointer is always false [-Wtautological-pointer-compare]
+    if (test_string == ((void *)0))
+        ^~~~~~~~~~~    ~~~~~~~~~~~
+fdouble_metaphone.c:304:9: warning: comparison of array 'test_string' equal to a null pointer is always false [-Wtautological-pointer-compare]
+    if (test_string == ((void *)0))
+        ^~~~~~~~~~~    ~~~~~~~~~~~
+2 warnings generated.
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o PGRdup.so fdouble_metaphone.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/PGRdup.Rcheck/PGRdup/libs
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (PGRdup)

@@ -1,0 +1,16 @@
+* installing *source* package ‘rtop’ ...
+** package ‘rtop’ successfully unpacked and MD5 sums checked
+** libs
+gfortran-4.8   -fPIC  -g -O2  -c vred.f -o vred.o
+gfortran-4.8: warning: couldn’t understand kern.osversion ‘14.3.0
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o rtop.so vred.o -L/usr/local/lib/gcc/x86_64-apple-darwin13.0.0/4.8.2 -lgfortran -lquadmath -lm -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+installing to /Users/gaborcsardi/works/igraph/revdep_check/rtop.Rcheck/rtop/libs
+** R
+** demo
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (rtop)

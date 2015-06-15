@@ -1,0 +1,46 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> require(PBC)
+Loading required package: PBC
+Loading required package: igraph
+
+Attaching package: 'igraph'
+
+The following objects are masked from 'package:stats':
+
+    decompose, spectrum
+
+The following object is masked from 'package:base':
+
+    union
+
+> 
+> ################
+> ## Parameters ##
+> ################
+> theta <- runif(4)
+> g <- graph.formula(X1-X4,X4-X2,X2-X3,X4-X5,simplify = FALSE)
+> 
+> ##########################
+> ## PBC objects Creation ##
+> ##########################
+> myPBCGumbel <- pbcGumbel(g)
+Error in matrix(res, ncol = 2, byrow = TRUE) : 
+  unimplemented type 'expression' in 'copyMatrix'
+Calls: pbcGumbel ... as.igraph.es -> inherits -> na.omit -> E -> ends -> matrix
+Execution halted

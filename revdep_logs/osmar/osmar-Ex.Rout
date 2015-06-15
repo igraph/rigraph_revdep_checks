@@ -1,0 +1,608 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "osmar"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "osmar-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('osmar')
+Loading required package: XML
+Loading required package: RCurl
+Loading required package: bitops
+Loading required package: geosphere
+Loading required package: sp
+
+Attaching package: ‘osmar’
+
+The following object is masked from ‘package:utils’:
+
+    find
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("as_igraph")
+> ### * as_igraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as_igraph
+> ### Title: Convert osmar object to igraph
+> ### Aliases: as_igraph
+> 
+> ### ** Examples
+> 
+> file <- system.file("extdata", "kaufstr.xml", package = "osmar")
+> raw <- readLines(file)
+> kaufstr <- as_osmar(xmlParse(raw))
+> kaufstrGraph <- as_igraph(kaufstr)
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("as_igraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:igraph’
+
+> nameEx("as_osmar")
+> ### * as_osmar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as_osmar
+> ### Title: Convert OSM-XML to an osmar object
+> ### Aliases: as_osmar osmar
+> 
+> ### ** Examples
+> 
+> file <- system.file("extdata", "kaufstr.xml", package = "osmar")
+>   raw <- readLines(file)
+>   kaufstr <- as_osmar(xmlParse(raw))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("as_osmar", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("as_osmar_sp")
+> ### * as_osmar_sp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as_osmar_bbox.Spatial
+> ### Title: Convert sp object to an osmar object
+> ### Aliases: as_osmar_bbox.Spatial
+> 
+> ### ** Examples
+> 
+> data("muc", package = "osmar")
+>   muc_points <- as_sp(muc, "points")
+>   bbox(muc_points)           # sp::bbox object
+         min      max
+lon 11.56647 11.58206
+lat 48.13488 48.14304
+>   as_osmar_bbox(muc_points)  # osmar::bbox object
+    left   bottom    right      top 
+11.56647 48.13488 11.58206 48.14304 
+attr(,"class")
+[1] "bbox"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("as_osmar_sp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("as_sp")
+> ### * as_sp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: as_sp
+> ### Title: Convert osmar object to sp object
+> ### Aliases: as_sp
+> 
+> ### ** Examples
+> 
+> data("muc", package = "osmar")
+>   muc_points <- as_sp(muc, "points")
+>   muc_lines <- as_sp(muc, "lines")
+>   muc_polygons <- as_sp(muc, "polygons")
+> 
+>   bbox(muc_points)
+         min      max
+lon 11.56647 11.58206
+lat 48.13488 48.14304
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("as_sp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("c.osmar")
+> ### * c.osmar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: c.osmar
+> ### Title: Combine osmar objects
+> ### Aliases: c.osmar
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D     muc <- get_osm(center_bbox(11.575278, 48.137222, 200, 200))
+> ##D     o1 <- subset(muc, node_ids = find(muc, node(tags(v == "Marienplatz"))))
+> ##D     o2 <- subset(muc, ids = find_down(muc, way(c(96619179, 105071000))))
+> ##D 
+> ##D     o1
+> ##D     o2
+> ##D     c(o1, o2)
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("c.osmar", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dim.osmar")
+> ### * dim.osmar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dim.osmar
+> ### Title: Dimension of osmar objects
+> ### Aliases: dim.osmar
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D     muc <- get_osm(center_bbox(11.575278, 48.137222, 200, 200))
+> ##D     dim(muc)
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dim.osmar", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("find")
+> ### * find
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: find
+> ### Title: Find element for a given condition
+> ### Aliases: find
+> 
+> ### ** Examples
+> 
+> data("muc", package = "osmar")
+>   find(muc, node(tags(v == "Marienplatz")))
+ [1]   19475890   60013073  254057401  332792583  332792584  339957726
+ [7]  339957783  339957784  339957785  340082061  393490778  447786250
+[13]  447786251  478521714  635847293  699722109  703294147  921892747
+[19] 1132414558
+>   find(muc, node(tags(v %agrep% "marienplatz")))
+ [1]   19475890   19475890   60013073  254057401  254277590  332792583
+ [7]  332792583  332792584  339957726  339957782  339957783  339957784
+[13]  339957785  340003272  340081204  340082061  341303651  341306421
+[19]  393490778  447786250  447786251  478521714  478521714  635847293
+[25]  699722109  699722109  703294147  921892747  921892747 1132414558
+>   find(muc, node(attrs(id == 19475890)))
+[1] 19475890
+>   find(muc, way(tags(k == "highway" & v == "pedestrian")))
+ [1]  96619179  46506591  47430746   4016226   3810397 142980388  96619174
+ [8] 105070991  46515625  96619169  35829389  35829386   3810479  96619175
+[15]  35829390  35829384  46517477  35829383  35829387  46515632  96619172
+[22]  96619173
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("find", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("find_down")
+> ### * find_down
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: find_down
+> ### Title: Find all elements related to an ID
+> ### Aliases: find_down find_up
+> 
+> ### ** Examples
+> 
+> data("muc", package = "osmar")
+>   o1 <- find(muc, way(tags(k == "highway" & v == "pedestrian")))
+> 
+>   find_down(muc, way(o1))
+$node_ids
+  [1] 1119123666  339957782  594679403  594693368  595060409  594823238
+  [7]  594679403  594822140  594822144  594822151  594686324  594822154
+ [13]  594822156  594822160  939213698  939213653  939213548  594822170
+ [19]  939213722  594683853  594822173  939213559  939213591  939213674
+ [25]  664011707  594679397  595060409   18959541   21280142 1244326845
+ [31]   19105469    1955016   30959079   18929522 1119123629  332790687
+ [37] 1562439663   19105466  750096033   19084925   21280135   19105469
+ [43]  656252964  656252947 1119123624  418873515 1119123629  339957783
+ [49] 1211172389 1211172591 1211172612 1211172300 1211172780 1211172410
+ [55] 1211172331 1211172526 1211172447 1211172660 1211172683 1211172346
+ [61] 1211172472 1211172848 1211172468 1211172603 1211172374 1211172658
+ [67] 1211172524 1211172569 1211172578 1211172501 1211172733  701279555
+ [73] 1211172531 1211172758 1211172395 1211172320 1211172460  701279556
+ [79] 1211172512 1211172402 1211172354 1211172503 1211172631 1211172434
+ [85] 1211172640 1211172535 1211172382 1211172719 1211172546 1211172807
+ [91] 1211172517 1211172830 1211172454 1211172357 1211172384 1211172363
+ [97] 1211172568 1211172482 1211172712 1211172594 1211172287 1211172305
+[103] 1211172506 1211172352 1211172414 1211172615 1211172530 1211172783
+[109] 1211172492 1211172601 1211172667 1211172736 1211172722 1211172336
+[115] 1211172661 1211172334 1211172827 1211172451 1211172356 1211172566
+[121] 1211172481 1211172764 1211172857 1211172710 1211172735 1211172792
+[127] 1211172375 1211172302 1211172504 1211172852 1211172413 1211172613
+[133] 1211172527 1211172389  594679397  594693370 1119123658 1555586807
+[139]  339957785  418873513 1119123658 1555586881  418873521  301008067
+[145]  595025836  418873516 1119123655  656252946 1075266562   21474407
+[151]   21474406  312391020 1313365822   20259951   18929510   18961430
+[157]   21280140 1119123633   18959566  342243836  701009943   18929515
+[163] 1119123657  539181087  418873513 1119123619 1119123660  339957726
+[169]  418873515   18929522  418873515 1119123666  418873513  595060409
+[175]  595050522  418873513 1119123619  418873516  418873520  418873526
+[181] 1368309492 1368355881 1368355873 1368355871 1368355857  418873519
+[187] 1119123655   19085332 1119123660  539181087   19085232   19085229
+[193] 1119123624  418873520  595005506  595005509  699711844  595005512
+[199]  595010339  595005515  595006992  663976955  595005519  595005522
+[205]  595020267  595020271  595020277  595020282  595020285  939213651
+[211]  939213696  664011706  664011707  594679397  595020297  595025836
+[217]  595020300  595020303 1368355866  595020307 1119123630  595020310
+[223] 1368355848  595020312  595005525  595005528  595005530  595005532
+[229]  595005506 1119123657  339957605 1119123618 1119123630  340081204
+
+$way_ids
+ [1]  96619179  46506591  47430746   4016226   3810397 142980388  96619174
+ [8] 105070991  46515625  96619169  35829389  35829386   3810479  96619175
+[15]  35829390  35829384  46517477  35829383  35829387  46515632  96619172
+[22]  96619173
+
+$relation_ids
+NULL
+
+>   find_up(muc, way(o1))
+$node_ids
+NULL
+
+$way_ids
+ [1]  96619179  46506591  47430746   4016226   3810397 142980388  96619174
+ [8] 105070991  46515625  96619169  35829389  35829386   3810479  96619175
+[15]  35829390  35829384  46517477  35829383  35829387  46515632  96619172
+[22]  96619173
+
+$relation_ids
+[1]   34444  375399   38409 1490831   38227   34432   38365
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("find_down", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("find_nearest_node")
+> ### * find_nearest_node
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: find_nearest_node
+> ### Title: Find nearest node with given conditions
+> ### Aliases: find_nearest_node
+> 
+> ### ** Examples
+> 
+> data("muc", package = "osmar")
+>   id <- find(muc, node(tags(v == "Marienplatz")))[1]
+> 
+>   find_nearest_node(muc, id, way(tags(k == "highway" & v == "pedestrian")))
+[1] 1211172658
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("find_nearest_node", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("get_osm")
+> ### * get_osm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get_osm
+> ### Title: Get OSM data
+> ### Aliases: get_osm
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D   api <- osmsource_api()
+> ##D 
+> ##D   box <- corner_bbox(11.579341, 48.15102, 11.582852, 48.1530)
+> ##D   gschw <- get_osm(box, source = api)
+> ##D 
+> ##D   kaufstr <- get_osm(way(3810479))
+> ##D   kaufstr_full <- get_osm(way(3810479), full = TRUE)
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get_osm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("muc")
+> ### * muc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: muc
+> ### Title: Object of class osmar from central Munich
+> ### Aliases: muc
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data("muc", package = "osmar")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("muc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("osm_crs")
+> ### * osm_crs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: osm_crs
+> ### Title: CRS for OpenStreetMap
+> ### Aliases: osm_crs
+> 
+> ### ** Examples
+> 
+> osm_crs()
+CRS arguments:
+ +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 
+>   class(osm_crs())
+[1] "CRS"
+attr(,"package")
+[1] "sp"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("osm_crs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("osm_descriptors")
+> ### * osm_descriptors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: node
+> ### Title: Element descriptors
+> ### Aliases: attrs node node.condition node.default osm_descriptors refs
+> ###   relation relation.condition relation.default tags way way.condition
+> ###   way.default
+> 
+> ### ** Examples
+> 
+> ## Description by ID (*.default):
+>   node(1)
+id 
+ 1 
+attr(,"element")
+[1] "node"
+attr(,"class")
+[1] "node"    "element"
+> way(1)
+id 
+ 1 
+attr(,"element")
+[1] "way"
+attr(,"class")
+[1] "way"     "element"
+> relation(1)
+id 
+ 1 
+attr(,"element")
+[1] "relation"
+attr(,"class")
+[1] "relation" "element" 
+> ## Description by condition (*.condition):
+>   node(tags(v == "Marienplatz"))
+<condition: >
+> ## Description by condition (*.condition):
+>   way(attrs(id == 17458))
+<condition: >
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("osm_descriptors", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("osmsource_api")
+> ### * osmsource_api
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: osmsource_api
+> ### Title: API OSM data source
+> ### Aliases: osmsource_api
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D     api <- osmsource_api()
+> ##D 
+> ##D     box <- corner_bbox(11.579341, 48.15102, 11.582852, 48.1530)
+> ##D     gschw <- get_osm(box, source = api)
+> ##D 
+> ##D     kaufstr <- get_osm(way(3810479))
+> ##D     kaufstr_full <- get_osm(way(3810479), full = TRUE)
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("osmsource_api", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("osmsource_file")
+> ### * osmsource_file
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: osmsource_file
+> ### Title: OSM file data source
+> ### Aliases: complete_file osmsource_file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D     get_osm(complete_file(), source = osmsource_file("muc.osm"))
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("osmsource_file", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("osmsource_osmosis")
+> ### * osmsource_osmosis
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: osmsource_osmosis
+> ### Title: Osmosis OSM data source
+> ### Aliases: osmsource_osmosis
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D     ## Download and extract a planet file:
+> ##D     download.file("http://osmar.r-forge.r-project.org/",
+> ##D                   "muenchen.osm.gz")
+> ##D     system("gzip -d muenchen.osm.gz")
+> ##D 
+> ##D     ## Define osmosis source; note that we assume that
+> ##D     ## osmosis is in our path environment variable (if
+> ##D     ## not, set osmosis argument to the executable):
+> ##D     src <- osmsource_osmosis(file = "muenchen.osm")
+> ##D 
+> ##D     ## Get the center of Munich:
+> ##D     muc_bbox <- center_bbox(11.575278, 48.137222,
+> ##D                             3000, 3000)
+> ##D     muc <- get_osm(muc_bbox, src)
+> ##D     muc
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("osmsource_osmosis", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("subset.osmar")
+> ### * subset.osmar
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: subset.osmar
+> ### Title: Subset an osmar object
+> ### Aliases: subset.osmar
+> 
+> ### ** Examples
+> 
+> data("muc", package = "osmar")
+>   id <- find(muc, node(tags(v == "Marienplatz")))
+> 
+>   subset(muc, node_ids = id)
+osmar object
+19 nodes, 0 ways, 0 relations 
+> 
+>   subset(muc, ids = find_up(muc, node(id)))
+osmar object
+19 nodes, 10 ways, 20 relations 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("subset.osmar", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  2.155 0.068 2.253 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

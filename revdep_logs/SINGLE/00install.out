@@ -1,0 +1,13 @@
+* installing *source* package ‘SINGLE’ ...
+** package ‘SINGLE’ successfully unpacked and MD5 sums checked
+** R
+** inst
+** preparing package for lazy loading
+Warning: replacing previous import by ‘dse::permute’ when loading ‘SINGLE’
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+Warning: replacing previous import by ‘dse::permute’ when loading ‘SINGLE’
+* DONE (SINGLE)

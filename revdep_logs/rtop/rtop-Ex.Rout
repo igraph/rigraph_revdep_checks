@@ -1,0 +1,499 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "rtop"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "rtop-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('rtop')
+Loading required package: sp
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("checkVario")
+> ### * checkVario
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: checkVario
+> ### Title: Plot variogram fitted to data with support
+> ### Aliases: checkVario checkVario.rtop checkVario.rtopVariogramModel
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(rgdal)
+> ##D rpath = system.file("extdata",package="rtop")
+> ##D observations = readOGR(rpath,"observations")
+> ##D # Create a column with the specific runoff:
+> ##D observations$obs = observations$QSUMMER_OB/observations$AREASQKM
+> ##D predictionLocations = readOGR(rpath,"predictionLocations")
+> ##D params = list(cloud = TRUE, gDist = TRUE)
+> ##D rtopObj = createRtopObject(observations,predictionLocations, params = params)
+> ##D  # Fit a variogram (function also creates it)
+> ##D rtopObj = rtopFitVariogram(rtopObj)
+> ##D checkVario(rtopObj, compVar = list(first = vgm(5e-6, "Sph", 30000,5e-8), 
+> ##D                                    second = vgm(2e-6, "Sph", 30000,5e-8)))
+> ##D rtopObj = checkVario(rtopObj, acor = 0.000001, 
+> ##D          acomp = data.frame(acl1 = c(2,2,2,2,3,3,3,4,4), acl2 = c(2,3,4,5,3,4,5,4,5)))
+> ##D rtopObj = checkVario(rtopObj, cloud = TRUE, identify = TRUE, acor = 0.000001)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("checkVario", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("createRtopObject")
+> ### * createRtopObject
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: createRtopObject
+> ### Title: Create an object for interpolation within the rtop package
+> ### Aliases: createRtopObject
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+>  ## Not run: 
+> library(rgdal)
+rgdal: version: 0.9-3, (SVN revision 530)
+ Geospatial Data Abstraction Library extensions to R successfully loaded
+ Loaded GDAL runtime: GDAL 1.11.2, released 2015/02/10
+ Path to GDAL shared files: /Users/gaborcsardi/works/igraph/revdep_lib/rgdal/gdal
+ Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
+ Path to PROJ.4 shared files: /Users/gaborcsardi/works/igraph/revdep_lib/rgdal/proj
+ Linking to sp version: 1.1-0 
+> rpath = system.file("extdata",package="rtop")
+> observations = readOGR(rpath,"observations")
+OGR data source with driver: ESRI Shapefile 
+Source: "/Users/gaborcsardi/works/igraph/revdep_check/rtop.Rcheck/rtop/extdata", layer: "observations"
+with 57 features
+It has 7 fields
+> # Create a column with the specific runoff:
+> observations$obs = observations$QSUMMER_OB/observations$AREASQKM
+> predictionLocations = readOGR(rpath,"predictionLocations")
+OGR data source with driver: ESRI Shapefile 
+Source: "/Users/gaborcsardi/works/igraph/revdep_check/rtop.Rcheck/rtop/extdata", layer: "predictionLocations"
+with 235 features
+It has 5 fields
+> 
+> # Setting some parameters 
+> params = list(gDist = TRUE, cloud = FALSE)
+> # Create a column with the specific runoff:
+> observations$obs = observations$QSUMMER_OB/observations$AREASQKM
+> # Build an object
+> rtopObj = createRtopObject(observations,predictionLocations, params = params)
+Warning in createRtopObject(observations, predictionLocations, params = params) :
+  formulaString missing, using obs ~ 1
+> 
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("createRtopObject", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:rgdal’
+
+> nameEx("downloadRtopExampleData")
+> ### * downloadRtopExampleData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: downloadRtopExampleData
+> ### Title: Download additional example data
+> ### Aliases: downloadRtopExampleData
+> ### Keywords: plot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D   downloadRtopExampleData()
+> ##D   rpath = system.file("extdata",package="rtop")
+> ##D   observations = readOGR(rpath,"observations") 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("downloadRtopExampleData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gDist")
+> ### * gDist
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gDist
+> ### Title: calculate geostatistical distances between areas
+> ### Aliases: gDist gDist.rtop gDist.SpatialPolygonsDataFrame
+> ###   gDist.SpatialPolygons gDist.list
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(rgdal)
+> ##D rpath = system.file("extdata",package="rtop")
+> ##D observations = readOGR(rpath,"observations")
+> ##D gDist = gDist(observations)
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gDist", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getRtopParams")
+> ### * getRtopParams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getRtopParams
+> ### Title: Setting parameters for the intamap package
+> ### Aliases: getRtopParams
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> # Create a new set of intamapParameters, with default parameters:
+> params = getRtopParams()
+> # Make modifications to the default list of parameters
+> params = getRtopParams(newPar=list(gDist = TRUE,nugget = FALSE))
+> # Make modifications to an existing list of parameters
+> params = getRtopParams(params = params,newPar = list(gDist = TRUE,nugget = FALSE))
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getRtopParams", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("netProp")
+> ### * netProp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: netProp
+> ### Title: Propagate values along a river network
+> ### Aliases: netProp
+> ### Keywords: plot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(rgdal)
+> ##D rpath = system.file("extdata",package="rtop")
+> ##D observations = readOGR(rpath,"observations")
+> ##D predictionLocations = readOGR(rpath,"predictionLocations")
+> ##D observations$obs = observations$QSUMMER/observations$AREASQKM
+> ##D 
+> ##D # Setting some parameters 
+> ##D params = list(geoDist = TRUE, rresol = 25, cloud = FALSE, model = "Sph")
+> ##D # Build an object
+> ##D rtopObj = createRtopObject(observations,predictionLocations, formulaString = obs~1,params = params)
+> ##D # Fit a variogram (function also creates it)
+> ##D rtopObj = rtopFitVariogram(rtopObj)
+> ##D # Check the variogram fit
+> ##D rtopObj = checkVario(rtopObj, cloud = TRUE, identify = TRUE)
+> ##D # Predicting at prediction locations
+> ##D rtopObj = rtopKrige(rtopObj)
+> ##D # Cross-validation
+> ##D rtopObj = rtopKrige(rtopObj,cv=TRUE)
+> ##D cor(rtopObj$predictions$observed,rtopObj$predictions$var1.pred)
+> ##D 
+> ##D rnet = readOGR(".", "rnet")
+> ##D pred = rtopObj$predictions
+> ##D rnet$pred = 
+> ##D     pred$var1.pred[match(rnet$TOJCT, pred$JCTID)]
+> ##D 
+> ##D # will only plot for a few discontinous river segments
+> ##D spplot(rnet, "pred", col.regions = bpy.colors())
+> ##D rnet = netProp(rnet)
+> ##D # will show a prediction for all segments
+> ##D spplot(rnet, "pred", col.regions = bpy.colors())
+> ##D 
+> ##D  
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("netProp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.rtopVariogramCloud")
+> ### * plot.rtopVariogramCloud
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.rtopVariogramCloud
+> ### Title: Plot and Identify Data Pairs on Sample Variogram Cloud
+> ### Aliases: plot.rtopVariogramCloud
+> ### Keywords: dplot
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D rpath = system.file("extdata",package="rtop")
+> ##D observations = readOGR(rpath,"observations")
+> ##D observations$obs = observations$QSUMMER/observations$AREASQKM
+> ##D 
+> ##D # Create the sample variogram
+> ##D rtopVario = rtopVariogram(observations, params = list(cloud = TRUE))
+> ##D plot(rtopVario)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.rtopVariogramCloud", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rtopFitVariogram")
+> ### * rtopFitVariogram
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rtopFitVariogram
+> ### Title: Fit variogram model to sample variogram of data with spatial
+> ###   support
+> ### Aliases: rtopFitVariogram rtopFitVariogram.rtop
+> ###   rtopFitVariogram.SpatialPolygonsDataFrame
+> ###   rtopFitVariogram.SpatialPointsDataFrame
+> ###   rtopFitVariogram.rtopVariogram rtopFitVariogram.rtopVariogramCloud
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(rgdal)
+> ##D rpath = system.file("extdata",package="rtop")
+> ##D observations = readOGR(rpath,"observations")
+> ##D # Create a column with the specific runoff:
+> ##D observations$obs = observations$QSUMMER_OB/observations$AREASQKM
+> ##D predictionLocations = readOGR(rpath,"predictionLocations")
+> ##D 
+> ##D # Setting some parameters 
+> ##D params = list(gDist = TRUE, cloud = FALSE)
+> ##D # Create a column with the specific runoff:
+> ##D observations$obs = observations$QSUMMER_OB/observations$AREASQKM
+> ##D # Build an object
+> ##D rtopObj = createRtopObject(observations,predictionLocations, params = params)
+> ##D # Fit a variogram (function also creates it)
+> ##D rtopObj = rtopFitVariogram(rtopObj)
+> ##D rtopObj$variogramModel
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rtopFitVariogram", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rtopKrige")
+> ### * rtopKrige
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rtopKrige
+> ### Title: Spatial interpolation of data with spatial support
+> ### Aliases: rtopKrige rtopKrige.rtop rtopKrige.SpatialPolygonsDataFrame
+> ###   rtopKrige.default
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(rgdal)
+> ##D rpath = system.file("extdata",package="rtop")
+> ##D observations = readOGR(rpath,"observations")
+> ##D predictionLocations = readOGR(rpath,"predictionLocations")
+> ##D 
+> ##D # Setting some parameters 
+> ##D params = list(gDist = TRUE, cloud = FALSE)
+> ##D # Create a column with the specific runoff:
+> ##D observations$obs = observations$QSUMMER_OB/observations$AREASQKM
+> ##D # Build an object
+> ##D rtopObj = createRtopObject(observations,predictionLocations, params = params)
+> ##D # Fit a variogram (function also creates it)
+> ##D rtopObj = rtopFitVariogram(rtopObj)
+> ##D # Predicting at prediction locations
+> ##D rtopObj = rtopKrige(rtopObj)
+> ##D # Cross-validation
+> ##D rtopObj = rtopKrige(rtopObj,cv=TRUE)
+> ##D cor(rtopObj$predictions$observed,rtopObj$predictions$var1.pred)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rtopKrige", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rtopVariogram")
+> ### * rtopVariogram
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rtopVariogram
+> ### Title: create variogram for data with spatial support
+> ### Aliases: rtopVariogram rtopVariogram.rtop
+> ###   rtopVariogram.SpatialPolygonsDataFrame
+> ###   rtopVariogram.SpatialPointsDataFrame
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(rgdal)
+> ##D rpath = system.file("extdata",package="rtop")
+> ##D observations = readOGR(rpath,"observations")
+> ##D # Create a column with the specific runoff:
+> ##D observations$obs = observations$QSUMMER_OB/observations$AREASQKM
+> ##D 
+> ##D vario = rtopVariogram(observations, cloud = TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rtopVariogram", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("useRtopWithIntamap")
+> ### * useRtopWithIntamap
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: useRtopWithIntamap
+> ### Title: Integrates the rtop package with the intamap package
+> ### Aliases: useRtopWithIntamap
+> ### Keywords: plot
+> 
+> ### ** Examples
+> 
+> useRtopWithIntamap()
+Loading optional package: intamap 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("useRtopWithIntamap", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:intamap’
+
+> nameEx("varMat")
+> ### * varMat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: varMat
+> ### Title: create a semivariogram matrix between a set of locations, or
+> ###   semivariogram matrices between and within two sets of locations
+> ### Aliases: varMat varMat.rtop varMat.SpatialPolygonsDataFrame
+> ###   varMat.SpatialPolygons varMat.matrix varMat.list
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(rgdal)
+> ##D rpath = system.file("extdata",package="rtop")
+> ##D observations = readOGR(rpath,"observations")
+> ##D gDist = gDist(observations)
+> ##D vmod = list(model = "Ex1", params = c(0.00001,0.007,350000,0.9,1000))
+> ##D vm = varMat(gDist$gDistObs, variogramModel = vmod)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("varMat", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("variogramModel")
+> ### * variogramModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: variogramModel
+> ### Title: create or update variogram model
+> ### Aliases: rtopVariogramModel updateRtopVariogram
+> ###   updateRtopVariogram.rtop updateRtopVariogram.rtopVariogramModel
+> ### Keywords: spatial
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(rgdal)
+> ##D rpath = system.file("extdata",package="rtop")
+> ##D observations = readOGR(rpath,"observations")
+> ##D # Create a column with the specific runoff:
+> ##D observations$obs = observations$QSUMMER_OB/observations$AREASQKM
+> ##D predictionLocations = readOGR(rpath,"predictionLocations")
+> ##D rtopObj = createRtopObject(observations,predictionLocations)
+> ##D  # Fit a variogram (function also creates it)
+> ##D rtopObj = rtopFitVariogram(rtopObj)
+> ##D rtopObj = updateRtopVariogram(rtopObj, exp = 1.5, action = "mult", checkVario = TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("variogramModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  1.262 0.042 1.317 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

@@ -1,0 +1,704 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "semPlot"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "semPlot-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('semPlot')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("lisrelModel")
+> ### * lisrelModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: lisrelModel
+> ### Title: Construct SEM model using LISREL matrix specification.
+> ### Aliases: lisrelModel
+> 
+> ### ** Examples
+> 
+> ## Example of a Full LISREL model path diagram with the same number of exgenous 
+> ## and endogenous variables:
+> 
+> # Lambda matrices:
+> Loadings <- rbind(diag(1,2,2),diag(1,2,2),diag(1,2,2))
+> 
+> # Phi and Psi matrices:
+> LatVar <- diag(1,2,2)
+> 
+> # Beta matrix:
+> Beta <- matrix(0,2,2)
+> Beta[1,2] <- 1
+> 
+> # Theta matrices:
+> ManVar <- diag(1,nrow(Loadings),nrow(Loadings))
+> 
+> # Gamma matrix:
+> Gamma <- diag(1,2,2)
+> 
+> # Tau matrices:
+> ManInts <- rep(1,6)
+> 
+> # Alpha and Kappa matrices:
+> LatInts <- rep(1,2)
+> 
+> # Combine model:
+> mod <- lisrelModel(LY=Loadings,PS=LatVar,BE=Beta,TE=ManVar,
++                    LX=Loadings,PH=LatVar,GA=Gamma,TD=ManVar,
++                    TY=ManInts,TX=ManInts,AL=LatInts,KA=LatInts)
+> 
+> # Plot path diagram:
+> semPaths(mod, as.expression=c("nodes","edges"), sizeMan = 3, sizeInt = 1, 
++   sizeLat = 4)
+> 
+> # Plot path diagram with more graphical options:
+> semPaths(mod, as.expression=c("nodes","edges"), sizeMan = 3, sizeInt = 1, 
++   sizeLat = 4, label.prop=0.5, curve=0.5, bg="black", groups="latents", 
++     intercepts=FALSE, borders=FALSE, label.norm="O")
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("lisrelModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("modelMatrices")
+> ### * modelMatrices
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: modelMatrices
+> ### Title: Extract SEM model matrices
+> ### Aliases: modelMatrices
+> ### Keywords: ~kwd1 ~kwd2
+> 
+> ### ** Examples
+> 
+> ## Mplus user guide SEM example:
+> outfile <- tempfile(fileext=".out")
+> download.file("http://www.statmodel.com/usersguide/chap5/ex5.11.out",outfile)
+trying URL 'http://www.statmodel.com/usersguide/chap5/ex5.11.out'
+Content type 'text/plain' length 6129 bytes
+==================================================
+downloaded 6129 bytes
+
+> 
+> # Plot model:
+> semPaths(outfile, intercepts = FALSE)
+Loading required package: MplusAutomation
+Reading model:  /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpWIlb2U/file16e3f521973a6.out 
+> 
+> # Extract RAM:
+> RAM <- modelMatrices(outfile, "ram")
+Reading model:  /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpWIlb2U/file16e3f521973a6.out 
+> semPaths(do.call(ramModel, RAM), as.expression = "edges", intercepts = FALSE)
+> 
+> # Extract LISREL:
+> LISREL <- modelMatrices(outfile, "lisrel")
+Reading model:  /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpWIlb2U/file16e3f521973a6.out 
+> semPaths(do.call(lisrelModel, LISREL), as.expression = "edges", intercepts = FALSE)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("modelMatrices", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:MplusAutomation’
+
+> nameEx("semMatrixAlgebra")
+> ### * semMatrixAlgebra
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: semMatrixAlgebra
+> ### Title: Extract or calculate with model matrices
+> ### Aliases: semMatrixAlgebra
+> 
+> ### ** Examples
+> 
+> ## Mplus user guide SEM example:
+> outfile <- tempfile(fileext=".out")
+> download.file("http://www.statmodel.com/usersguide/chap5/ex5.11.out",outfile)
+trying URL 'http://www.statmodel.com/usersguide/chap5/ex5.11.out'
+Content type 'text/plain' length 6129 bytes
+==================================================
+downloaded 6129 bytes
+
+> 
+> # Plot model:
+> semPaths(outfile,intercepts=FALSE)
+Loading required package: MplusAutomation
+Reading model:  /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpWIlb2U/file16e3f2f9e696e.out 
+> 
+> # Obtain latent regressions (mplus)
+> semMatrixAlgebra(outfile, Beta)
+model set to 'mplus'
+Reading model:  /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpWIlb2U/file16e3f2f9e696e.out 
+      F1   F2    F3 F4
+F1 0.000 0.00 0.000  0
+F2 0.000 0.00 0.000  0
+F3 0.563 0.79 0.000  0
+F4 0.000 0.00 0.473  0
+> 
+> # mplus model implied covariance:
+> mat1 <- semMatrixAlgebra(outfile, 
++   Lambda %*% Imin(Beta, TRUE) %*% Psi %*% t(Imin(Beta, TRUE)) %*% t(Lambda) + Theta)
+model set to 'mplus'
+Reading model:  /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpWIlb2U/file16e3f2f9e696e.out 
+> 
+> # Lisrel model implied covariance:
+> mat2 <- semMatrixAlgebra(outfile, 
++   LY %*% Imin(BE, TRUE) %*% PS %*% t(Imin(BE, TRUE)) %*% t(LY) + TE, endoOnly = TRUE)
+model set to 'lisrel'
+Reading model:  /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpWIlb2U/file16e3f2f9e696e.out 
+> 
+> # RAM model implied covariance:
+> mat3 <- semMatrixAlgebra(outfile, 
++                  F %*% Imin(A,TRUE) %*% S %*% t(Imin(A, TRUE)) %*% t(F))
+model set to 'ram'
+Reading model:  /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpWIlb2U/file16e3f2f9e696e.out 
+> 
+> ## Not run: 
+> ##D # Plot:
+> ##D library("qgraph")
+> ##D 
+> ##D pdf("Models.pdf",width=15,height=5)
+> ##D layout(t(1:3))
+> ##D qgraph(round(cov2cor(mat1),5), maximum=1, edge.labels=TRUE, layout = "spring", 
+> ##D   cut = 0.4, minimum = 0.1)
+> ##D title("Mplus model")
+> ##D qgraph(round(cov2cor(mat2),5), maximum=1, edge.labels=TRUE, layout = "spring", 
+> ##D   cut = 0.4, minimum = 0.1)
+> ##D title("LISREL model")
+> ##D qgraph(round(cov2cor(mat3),5), maximum=1, edge.labels=TRUE, layout = "spring", 
+> ##D   cut = 0.4, minimum = 0.1)
+> ##D title("RAM model")
+> ##D dev.off()
+> ## End(Not run)
+> # They are the same.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("semMatrixAlgebra", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:MplusAutomation’
+
+> nameEx("semPaths")
+> ### * semPaths
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: semPaths
+> ### Title: Plot path diagram for SEM models.
+> ### Aliases: semPaths
+> 
+> ### ** Examples
+>  # Regression analysis with interaction effects ----------------------------
+> 
+> # A silly dataset:
+> X <- rnorm(100)
+> Y <- rnorm(100)
+> Z <- rnorm(1)*X + rnorm(1)*Y + rnorm(1)*X*Y
+> DF <- data.frame(X,Y,Z)
+> 
+> # Regression including interaction:
+> res <- lm(Z ~ X*Y, data = DF)
+> 
+> # Path diagram:
+> semPaths(res, intAtSide=TRUE)
+> 
+> # Standardized estimates:
+> semPaths(res,"std","hide", intAtSide=TRUE)
+Warning in qgraph(Edgelist, labels = nLab, bidirectional = Bidir, directed = Directed,  :
+  Non-finite weights are omitted
+> 
+> # Simple CFA -------------------------------------------
+> library("lavaan")
+This is lavaan 0.5-18
+lavaan is BETA software! Please report any bugs.
+> example(cfa)
+
+cfa> ## The famous Holzinger and Swineford (1939) example
+cfa> HS.model <- ' visual  =~ x1 + x2 + x3
+cfa+               textual =~ x4 + x5 + x6
+cfa+               speed   =~ x7 + x8 + x9 '
+
+cfa> fit <- cfa(HS.model, data=HolzingerSwineford1939)
+
+cfa> summary(fit, fit.measures=TRUE)
+lavaan (0.5-18) converged normally after  35 iterations
+
+  Number of observations                           301
+
+  Estimator                                         ML
+  Minimum Function Test Statistic               85.306
+  Degrees of freedom                                24
+  P-value (Chi-square)                           0.000
+
+Model test baseline model:
+
+  Minimum Function Test Statistic              918.852
+  Degrees of freedom                                36
+  P-value                                        0.000
+
+User model versus baseline model:
+
+  Comparative Fit Index (CFI)                    0.931
+  Tucker-Lewis Index (TLI)                       0.896
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -3737.745
+  Loglikelihood unrestricted model (H1)      -3695.092
+
+  Number of free parameters                         21
+  Akaike (AIC)                                7517.490
+  Bayesian (BIC)                              7595.339
+  Sample-size adjusted Bayesian (BIC)         7528.739
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.092
+  90 Percent Confidence Interval          0.071  0.114
+  P-value RMSEA <= 0.05                          0.001
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.065
+
+Parameter estimates:
+
+  Information                                 Expected
+  Standard Errors                             Standard
+
+                   Estimate  Std.err  Z-value  P(>|z|)
+Latent variables:
+  visual =~
+    x1                1.000
+    x2                0.554    0.100    5.554    0.000
+    x3                0.729    0.109    6.685    0.000
+  textual =~
+    x4                1.000
+    x5                1.113    0.065   17.014    0.000
+    x6                0.926    0.055   16.703    0.000
+  speed =~
+    x7                1.000
+    x8                1.180    0.165    7.152    0.000
+    x9                1.082    0.151    7.155    0.000
+
+Covariances:
+  visual ~~
+    textual           0.408    0.074    5.552    0.000
+    speed             0.262    0.056    4.660    0.000
+  textual ~~
+    speed             0.173    0.049    3.518    0.000
+
+Variances:
+    x1                0.549    0.114
+    x2                1.134    0.102
+    x3                0.844    0.091
+    x4                0.371    0.048
+    x5                0.446    0.058
+    x6                0.356    0.043
+    x7                0.799    0.081
+    x8                0.488    0.074
+    x9                0.566    0.071
+    visual            0.809    0.145
+    textual           0.979    0.112
+    speed             0.384    0.086
+
+> 
+> semPaths(fit, 'std', 'est', curveAdjacent = TRUE, style = "lisrel")
+> 
+> 
+> # MIMIC model ----------------------------------------------------
+> ## Lavaan
+> ## Not run: 
+> ##D library("lavaan")
+> ##D 
+> ##D # Example 5.8 from mplus user guide:
+> ##D Data <- read.table("http://www.statmodel.com/usersguide/chap5/ex5.8.dat")
+> ##D names(Data) <- c(paste("y", 1:6, sep=""),
+> ##D                  paste("x", 1:3, sep=""))
+> ##D 
+> ##D # Model:
+> ##D model.Lavaan <- 'f1 =~ y1 + y2 + y3
+> ##D f2 =~ y4 + y5 + y6
+> ##D f1 + f2 ~ x1 + x2 + x3 '
+> ##D 
+> ##D # Run Lavaan:
+> ##D library("lavaan")
+> ##D fit <- lavaan:::cfa(model.Lavaan, data=Data, std.lv=TRUE)
+> ##D 
+> ##D # Plot path diagram:
+> ##D semPaths(fit,title=FALSE)
+> ##D 
+> ##D # Omit exogenous covariances:
+> ##D semPaths(fit,title=FALSE, exoVar = FALSE, exoCov = FALSE)
+> ##D 
+> ##D # Standardized parameters:
+> ##D semPaths(fit,"std", edge.label.cex = 0.5, exoVar = FALSE, 
+> ##D   exoCov = FALSE)
+> ##D 
+> ## End(Not run)
+> ## Mplus
+> 
+> # Same model, now using mplus output:
+> outfile <- tempfile(fileext=".out")
+> download.file("http://www.statmodel.com/usersguide/chap5/ex5.8.out",outfile)
+trying URL 'http://www.statmodel.com/usersguide/chap5/ex5.8.out'
+Content type 'text/plain' length 5016 bytes
+==================================================
+downloaded 5016 bytes
+
+> 
+> # Plot model:
+> semPaths(outfile,intercepts=FALSE)
+Loading required package: MplusAutomation
+Reading model:  /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpWIlb2U/file16e3f248b3dd1.out 
+> # Note that mplus did not report the fixed variances of the exogenous variables.
+> 
+> 
+> 
+> 
+> # Thresholds  -----------------------------------------------------
+> ## Not run: 
+> ##D ## Lavaan
+> ##D 
+> ##D # Example 5.8 from mplus user guide:
+> ##D Data <- read.table("http://www.statmodel.com/usersguide/chap5/ex5.2.dat")
+> ##D names(Data) <- c("u1","u2","u3","u4","u5","u6")
+> ##D Data <- as.data.frame(lapply(Data, ordered))
+> ##D 
+> ##D # Lavaan model:
+> ##D model <- ' f1 =~ u1 + u2 + u3; f2 =~ u4 + u5 + u6 '
+> ##D 
+> ##D # Run Lavaan:
+> ##D fit <- lavaan::cfa(model, data=Data)
+> ##D 
+> ##D # Plot path diagram:
+> ##D semPaths(fit,intercepts=FALSE)
+> ## End(Not run)
+> 
+> ## Mplus
+> 
+> # Same model, now using mplus output:
+> outfile <- tempfile(fileext=".out")
+> download.file("http://www.statmodel.com/usersguide/chap5/ex5.2.out",outfile)
+trying URL 'http://www.statmodel.com/usersguide/chap5/ex5.2.out'
+Content type 'text/plain' length 5043 bytes
+==================================================
+downloaded 5043 bytes
+
+> 
+> # Plot model:
+> semPaths(outfile)
+Reading model:  /var/folders/ws/7rmdm_cn2pd8l1c3lqyycv0c0000gn/T//RtmpWIlb2U/file16e3f349b1d1a.out 
+> 
+> 
+> 
+> 
+> # OpenMx ----------------------------------------------------------
+> ## Not run: 
+> ##D # To isntall OpenMx see:
+> ##D # http://openmx.psyc.virginia.edu/
+> ##D 
+> ##D library("OpenMx")
+> ##D 
+> ##D # Example from mxRun help page:
+> ##D # Create and run the 1-factor CFA on the openmx.psyc.virginia.edu front page
+> ##D data(demoOneFactor)  # load the demoOneFactor dataframe
+> ##D manifests <- names(demoOneFactor) # set the manifest to the 5 demo variables
+> ##D latents   <- c("G")  # define 1 latent variable
+> ##D model <- mxModel("One Factor", type="RAM",
+> ##D   manifestVars = manifests,
+> ##D 	latentVars   = latents,
+> ##D 	mxPath(from=latents  , to=manifests),
+> ##D 	mxPath(from=manifests, arrows=2),
+> ##D 	mxPath(from=latents  , arrows=2, free=FALSE, values=1.0),
+> ##D 	mxData(cov(demoOneFactor), type="cov", numObs=500)
+> ##D )
+> ##D model <- mxRun(model) #run model, returning the result
+> ##D 
+> ##D # Plot with colors from OpenMx front page:
+> ##D semPaths(model, color = list(
+> ##D               lat = rgb(245, 253, 118, maxColorValue = 255), 
+> ##D               man = rgb(155, 253, 175, maxColorValue = 255)),
+> ##D           mar = c(10, 5, 10, 5))
+> ##D 
+> ##D ## Factor Analysis:
+> ##D source("http://openmx.psyc.virginia.edu/svn/trunk/demo/TwoFactorModel_PathCov.R")
+> ##D semPaths(twoFactorFit, layout = "tree2")
+> ##D 
+> ##D 
+> ##D 
+> ##D 
+> ##D 
+> ##D # Multi-group analysis -------------------------------------------
+> ##D ## LISREL:
+> ##D # Download measurment invariance example:
+> ##D modFile <- tempfile(fileext=".OUT")
+> ##D download.file("http://sachaepskamp.com/files/mi1.OUT",modFile)
+> ##D layout(t(1:2))
+> ##D semPaths(modFile,"eq",ask=FALSE, intAtSide = TRUE, mar = c(8, 1, 5, 1))
+> ##D # Color indicates equality constraints.
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("semPaths", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:MplusAutomation’, ‘package:lavaan’
+
+> nameEx("semPlotModel-class")
+> ### * semPlotModel-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: semPlotModel-class
+> ### Title: Class '"semPlotModel"'
+> ### Aliases: semPlotModel-class
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> showClass("semPlotModel")
+Class "semPlotModel" [package "semPlot"]
+
+Slots:
+                                                                        
+Name:        Pars       Vars Thresholds   Computed    ObsCovs    ImpCovs
+Class: data.frame data.frame data.frame    logical       list       list
+                 
+Name:    Original
+Class:       list
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("semPlotModel-class", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("semSyntax")
+> ### * semSyntax
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: semSyntax
+> ### Title: Produce model syntax for various SEM software
+> ### Aliases: semSyntax
+> 
+> ### ** Examples
+> 
+> # MIMIC model, example 5.8 from mplus user guide:
+> Data <- read.table("http://www.statmodel.com/usersguide/chap5/ex5.8.dat")
+> names(Data) <- c(paste("y", 1:6, sep=""),
++                  paste("x", 1:3, sep=""))
+> 
+> # Data <- Data[,c(7:9,1:6)]
+> 
+> # Model:
+> model.Lavaan <- 'f1 =~ y1 + y2 + y3
++ f2 =~ y4 + y5 + y6
++ f1 + f2 ~ x1 + x2 + x3 '
+> 
+> # Run Lavaan:
+> library("lavaan")
+This is lavaan 0.5-18
+lavaan is BETA software! Please report any bugs.
+> fit.Lavaan <- lavaan:::cfa(model.Lavaan, data=Data, std.lv=TRUE)
+> 
+> # Obtain Lavaan syntax:
+> model.Lavaan2 <- semSyntax(fit.Lavaan, "lavaan")
+
+Model <- '
+f1 =~ y1
+f1 =~ y2
+f1 =~ y3
+f2 =~ y4
+f2 =~ y5
+f2 =~ y6
+f1 ~ x1
+f1 ~ x2
+f1 ~ x3
+f2 ~ x1
+f2 ~ x2
+f2 ~ x3
+y1 ~~ y1
+y2 ~~ y2
+y3 ~~ y3
+y4 ~~ y4
+y5 ~~ y5
+y6 ~~ y6
+f1 ~~ 1*f1
+f2 ~~ 1*f2
+f1 ~~ f2
+x1 ~~ 2.92060364355652*x1
+x1 ~~ 0.175914393445822*x2
+x1 ~~ -0.150978787074975*x3
+x2 ~~ 2.08178484352461*x2
+x2 ~~ 0.125476432507783*x3
+x3 ~~ 1.04155105145699*x3
+'
+> 
+> # Run Lavaan again:
+> fit.Lavaan2 <- lavaan:::lavaan(model.Lavaan2, data=Data)
+Warning in vnames(FLAT, "ov.x", warn = TRUE) :
+  lavaan WARNING: model syntax contains variance/covariance/intercept formulas
+  involving (an) exogenous variable(s): [x1 x2 x3];
+  Please use fixed.x=FALSE or leave them alone
+> 
+> # Compare models:
+> layout(t(1:2))
+> semPaths(fit.Lavaan,"std",title=FALSE)
+> title("Lavaan model 1",line=3)
+> semPaths(fit.Lavaan2, "std",title=FALSE)
+> title("Lavaan model 2",line=3)
+> 
+> # Convert to sem model:
+> model.sem <- semSyntax(fit.Lavaan, "sem")
+Called from: semSyntax(fit.Lavaan, "sem")
+Browse[1]> 
+
+Model <- specifyModel()
+f1 -> y1,par1,NA
+f1 -> y2,par2,NA
+f1 -> y3,par3,NA
+f2 -> y4,par4,NA
+f2 -> y5,par5,NA
+f2 -> y6,par6,NA
+x1 -> f1,par7,NA
+x2 -> f1,par8,NA
+x3 -> f1,par9,NA
+x1 -> f2,par10,NA
+x2 -> f2,par11,NA
+x3 -> f2,par12,NA
+y1 <-> y1,par13,NA
+y2 <-> y2,par14,NA
+y3 <-> y3,par15,NA
+y4 <-> y4,par16,NA
+y5 <-> y5,par17,NA
+y6 <-> y6,par18,NA
+f1 <-> f1,NA,1
+f2 <-> f2,NA,1
+f1 <-> f2,par19,NA
+x1 <-> x1,NA,2.92060364355652
+x1 <-> x2,NA,0.175914393445822
+x1 <-> x3,NA,-0.150978787074975
+x2 <-> x2,NA,2.08178484352461
+x2 <-> x3,NA,0.125476432507783
+x3 <-> x3,NA,1.04155105145699
+
+Read 27 records
+NOTE: it is generally simpler to use specifyEquations() or cfa()
+      see ?specifyEquations
+> # Run sem:
+> library("sem")
+
+Attaching package: ‘sem’
+
+The following objects are masked from ‘package:lavaan’:
+
+    cfa, sem
+
+> fit.sem <- sem:::sem(model.sem, data = Data)
+> 
+> # Compare models:
+> layout(t(1:2))
+> semPaths(fit.Lavaan,"std",title=FALSE)
+> title("Lavaan",line=3)
+> semPaths(fit.sem, "std",title=FALSE)
+> title("sem",line=3)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("semSyntax", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:sem’, ‘package:lavaan’
+
+> nameEx("tricks")
+> ### * tricks
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: semPlot-tricks
+> ### Title: Tricks that can be used in semPlot.
+> ### Aliases: +.semPlotModel semPlotModel.list
+> 
+> ### ** Examples
+> 
+> # A silly dataset:
+> A <- rnorm(100)
+> B <- A + rnorm(100)
+> C <- B + rnorm(100)
+> DF <- data.frame(A,B,C)
+> 
+> # Two regressions:
+> res1 <- lm(B ~ C, data = DF)
+> res2 <- lm(A ~ B + C, data = DF)
+> 
+> # Plot both in the same path diagram in two ways:
+> semPaths(res1 + res2, "model", "est", intercepts=FALSE)
+> semPaths(list(res1,res2), "model", "est", intercepts=FALSE)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("tricks", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  7.624 0.549 9.025 0.002 0.002 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

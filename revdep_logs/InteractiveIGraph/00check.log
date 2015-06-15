@@ -1,0 +1,86 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/InteractiveIGraph.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘InteractiveIGraph/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘InteractiveIGraph’ version ‘1.0.6.1’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘InteractiveIGraph’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... NOTE
+Malformed Title field: should not end in a period.
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... NOTE
+Rd file 'InteractiveIGraph.Rd':
+  \examples lines wider than 100 characters:
+     # this is an 'InteractiveIGraph' object, up till now there is not much difference. Just some extra attributes.
+
+Rd file 'MenuAddItems.Rd':
+  \examples lines wider than 100 characters:
+       Item = list(list(label=msg, RegionParams=list(XBufCof = 0, YBufCof=0.2), RecParams=list(lwd = NA, border=NA), TextParams=list(cex=0.8 ... [TRUNCATED]
+
+These lines will be truncated in the PDF manual.
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking sizes of PDF files under ‘inst/doc’ ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking examples ... ERROR
+Running examples in ‘InteractiveIGraph-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: InteractiveIGraph-package
+> ### Title: Interactive igraph
+> ### Aliases: InteractiveIGraph-package
+> 
+> ### ** Examples
+> 
+> 
+> 
+> # this is a regular igraph object
+> gOrg <- erdos.renyi.game(15, 1/10,  directed = TRUE)
+> plot(gOrg) 
+> 
+> # this is an 'InteractiveIGraph' object, up till now there is not much difference. 
+> # Just some extra attributes.
+> g = InteractiveIGraph.Constructor(gOrg)
+> g = plot(g) 
+Error in do.call("plot.igraph", args = PlotParam) : 
+  could not find function "plot.igraph"
+Calls: plot -> plot.InteractiveIGraph -> do.call
+Execution halted
+* DONE
+Status: 1 ERROR, 2 NOTEs

@@ -1,0 +1,616 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "stm"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "stm-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('stm')
+stm v1.0.8 (2014-11-07) successfully loaded. See ?stm for help.
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("checkResiduals")
+> ### * checkResiduals
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: checkResiduals
+> ### Title: Residual dispersion test for topic number
+> ### Aliases: checkResiduals
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D #An example using the Gadarian data.  From Raw text to fitted model.
+> ##D temp<-textProcessor(documents=gadarian$open.ended.response,metadata=gadarian)
+> ##D meta<-temp$meta
+> ##D vocab<-temp$vocab
+> ##D docs<-temp$documents
+> ##D out <- prepDocuments(docs, vocab, meta)
+> ##D docs<-out$documents
+> ##D vocab<-out$vocab
+> ##D meta <-out$meta
+> ##D set.seed(02138)
+> ##D mod.out <- stm(docs, vocab, 3, prevalence=~treatment + s(pid_rep), data=meta)
+> ##D checkResiduals(mod.out, docs)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("checkResiduals", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cloud")
+> ### * cloud
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cloud
+> ### Title: Plot a wordcloud
+> ### Aliases: cloud
+> 
+> ### ** Examples
+> 
+> cloud(gadarianFit, 1)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cloud", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("estimateEffect")
+> ### * estimateEffect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: estimateEffect
+> ### Title: Estimates regressions using an STM object
+> ### Aliases: estimateEffect
+> 
+> ### ** Examples
+> 
+> #Just one topic (note we need c() to indicate it is a vector)
+> prep <- estimateEffect(c(1) ~ treatment, gadarianFit, gadarian)
+> plot.estimateEffect(prep, "treatment", model=gadarianFit, method="pointestimate")
+> 
+> #three topics at once
+> ## Not run: 
+> ##D prep <- estimateEffect(1:3 ~ treatment, gadarianFit, gadarian)
+> ##D plot.estimateEffect(prep, "treatment", model=gadarianFit, method="pointestimate")
+> ## End(Not run)
+> #See vignette for examples of ploting models with an interaction.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("estimateEffect", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("findThoughts")
+> ### * findThoughts
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: findThoughts
+> ### Title: Find Thoughts
+> ### Aliases: findThoughts print.findThoughts plot.findThoughts
+> 
+> ### ** Examples
+> 
+> findThoughts(gadarianFit, texts=gadarian$open.ended.response, topics=c(1,2), n=3)
+
+ Topic 1: 
+ 	 the amount of illegal immigration, and exceptions to the legal immigration quotas that happen all the time.  i'm concerned that abuses will sink us soon.
+ 	1. boarders need to be secured. 2. illegals need to be deported. 3.legals need to be treated fairly
+ 	college students, grad students, foreign motel owners,stolen technology, passports, migrant workers, landscape workers, legal and illegal immigration 
+ Topic 2: 
+ 	 taking our jobs, not paying taxes, using public services for free
+ 	drain on us social services and medical service.
+increased crime rates
+ 	leaching on our social structure, hospitals, welfare, jails--all the things we pay taxes for that they do not
+more tererism> 
+> #We can also use the plot command as a shorthand for the plotQuote function
+> thought <- findThoughts(gadarianFit, texts=gadarian$open.ended.response, topics=1, n=3)
+> plot(thought)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("findThoughts", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gadarian")
+> ### * gadarian
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gadarian
+> ### Title: Gadarian and Albertson data
+> ### Aliases: gadarian gadarianFit
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> head(gadarian)
+  MetaID treatment pid_rep
+1      0         1 1.00000
+2      0         1 1.00000
+3      0         0 0.33300
+4      0         0 0.50000
+5      0         1 0.66667
+6      0         1 0.00000
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          open.ended.response
+1                                                                                                                                                                                                                                                                                                                                                                                        problems caused by the influx of illegal immigrants who are crowding our schools and hospitals, lowering the level of ducation and the quality of care in hospitals.
+2                                                                                                                                                                                                                                                                                                                                                                                                                                                 if you mean illegal immigration, i'm afraid of who might be getting into this country in unsecured borders.
+3                                                                                                                                                                                                                                                                                                                          that they should enter the same way my grandparents did, legally. learn english and pay taxes. i don't think that a lot of these asians and east indians should be getting a tax free ride. i'm tired of paying for everyone else.
+4 legally entering the usa meeting the requirements is the law. entering the usa improperly is a crime. it is unfortunate that the american bar association has fought treating entering the usa as a crime. and our politicians from both parties have been so anxious to get the "vote" that they refuse to inforce the law. meanwhile, terorists can walk right in without any problem. no accountability on the part of politicians supported by the news media will bring our nation down eventually. and the normal person will wonder how it happened.
+5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               terror\nbombings\nkilling us\nrobbing america
+6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             having criminals immigrate here
+> #Process the data for analysis.
+> temp<-textProcessor(documents=gadarian$open.ended.response,metadata=gadarian)
+Building corpus... 
+Converting to Lower Case... 
+Removing stopwords... 
+Removing numbers... 
+Removing punctuation... 
+Stemming... 
+Creating Output... 
+> meta<-temp$meta
+> vocab<-temp$vocab
+> docs<-temp$documents
+> out <- prepDocuments(docs, vocab, meta)
+Removing 619 of 1074 terms (619 of 3731 tokens) due to frequency 
+Your corpus now has 341 documents, 455 terms and 3112 tokens.> docs<-out$documents
+> vocab<-out$vocab
+> meta <-out$meta
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gadarian", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("heldout")
+> ### * heldout
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: make.heldout
+> ### Title: Heldout Likelihood by Document Completion
+> ### Aliases: make.heldout eval.heldout
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D prep <- prepDocuments(poliblog5k.docs, poliblog5k.voc, 
+> ##D                       poliblog5k.meta,subsample=500,
+> ##D                       lower.thresh=20,upper.thresh=200)
+> ##D heldout <- make.heldout(prep$documents, prep$vocab)
+> ##D documents <- heldout$documents
+> ##D vocab <- heldout$vocab
+> ##D meta <- out$meta
+> ##D 
+> ##D stm1<- stm(documents, vocab, 5, 
+> ##D            prevalence =~ rating+ s(day), 
+> ##D            init.type="Random",
+> ##D            data=meta, max.em.its=5)
+> ##D eval.heldout(stm1, heldout$missing)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("heldout", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("labelTopics")
+> ### * labelTopics
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: labelTopics
+> ### Title: Label topics
+> ### Aliases: labelTopics print.labelTopics
+> 
+> ### ** Examples
+> 
+> labelTopics(gadarianFit)
+Topic 1 Top Words:
+ 	 Highest Prob: immigr, illeg, legal, border, will, need, worri 
+ 	 FREX: border, mexico, mexican, need, concern, fine, make 
+ 	 Lift: cross, racism, happen, other, continu, concern, deport 
+ 	 Score: immigr, border, need, will, mexico, illeg, mexican 
+Topic 2 Top Words:
+ 	 Highest Prob: job, illeg, tax, pay, american, take, care 
+ 	 FREX: cost, health, servic, welfar, increas, loss, school 
+ 	 Lift: violenc, expens, opportun, cost, healthcar, loss, increas 
+ 	 Score: job, welfar, crime, cost, tax, care, servic 
+Topic 3 Top Words:
+ 	 Highest Prob: peopl, come, countri, think, get, english, mani 
+ 	 FREX: english, get, come, mani, back, becom, like 
+ 	 Lift: anyth, send, still, just, receiv, deserv, back 
+ 	 Score: think, peopl, come, get, english, countri, mani 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("labelTopics", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("manyTopics")
+> ### * manyTopics
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: manyTopics
+> ### Title: Performs model selection across separate STM's that each assume
+> ###   different numbers of topics.
+> ### Aliases: manyTopics
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D temp<-textProcessor(documents=gadarian$open.ended.response,metadata=gadarian)
+> ##D meta<-temp$meta
+> ##D vocab<-temp$vocab
+> ##D docs<-temp$documents
+> ##D out <- prepDocuments(docs, vocab, meta)
+> ##D docs<-out$documents
+> ##D vocab<-out$vocab
+> ##D meta <-out$meta
+> ##D 
+> ##D set.seed(02138)
+> ##D storage<-manyTopics(docs,vocab,K=3:4, prevalence=~treatment + s(pid_rep),data=meta, runs=10)
+> ##D #This chooses the output, a single run of STM that was selected,
+> ##D #from the runs of the 3 topic model
+> ##D t<-storage$out[[1]]
+> ##D #This chooses the output, a single run of STM that was selected,
+> ##D #from the runs of the 4 topic model
+> ##D t<-storage$out[[2]]
+> ##D #Please note that the way to extract a result for manyTopics is different from selectModel.
+> ## End(Not run)
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("manyTopics", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("multiSTM")
+> ### * multiSTM
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: multiSTM
+> ### Title: Analyze Stability of Local STM Mode
+> ### Aliases: multiSTM print.MultimodDiagnostic
+> ### Keywords: stm multimodality
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D # Example using Gadarian data
+> ##D temp<-textProcessor(documents=gadarian$open.ended.response, 
+> ##D                     metadata=gadarian)
+> ##D meta<-temp$meta
+> ##D vocab<-temp$vocab
+> ##D docs<-temp$documents
+> ##D out <- prepDocuments(docs, vocab, meta)
+> ##D docs<-out$documents
+> ##D vocab<-out$vocab
+> ##D meta <-out$meta
+> ##D set.seed(02138)
+> ##D mod.out <- selectModel(docs, vocab, K=3, 
+> ##D                        prevalence=~treatment + s(pid_rep), 
+> ##D                        data=meta, runs=20)
+> ##D 
+> ##D out <- multiSTM(mod.out, mass.threshold = .75, 
+> ##D                 reg.formula = ~ treatment,
+> ##D                 metadata = gadarian)
+> ##D plot(out)
+> ##D 
+> ##D # Same example as above, but loading from disk
+> ##D mod.out <- selectModel(docs, vocab, K=3, 
+> ##D                        prevalence=~treatment + s(pid_rep), 
+> ##D                        data=meta, runs=20, to.disk=T)
+> ##D 
+> ##D out <- multiSTM(from.disk=T, mass.threshold = .75, 
+> ##D                 reg.formula = ~ treatment,
+> ##D                 metadata = gadarian)
+> ##D 
+> ## End(Not run)
+> ## Not run: 
+> ##D # One more example using Poliblog data
+> ##D load(url("http://goo.gl/91KbfS"))
+> ##D meta <- poliblogPrevFit$settings$covariates$X
+> ##D out <- multiSTM(poliblogSelect, mass.threshold=.75, 
+> ##D                 reg.formula= ~ ratingLiberal,
+> ##D                 metadata=meta)
+> ##D 
+> ##D plot(out, 1:4)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("multiSTM", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("permutationTest")
+> ### * permutationTest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: permutationTest
+> ### Title: Permutation test of a binary covariate.
+> ### Aliases: permutationTest
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D temp<-textProcessor(documents=gadarian$open.ended.response,metadata=gadarian)
+> ##D out <- prepDocuments(temp$documents, temp$vocab, temp$meta)
+> ##D documents <- out$documents
+> ##D vocab <- out$vocab
+> ##D meta <- out$meta
+> ##D set.seed(02138)
+> ##D mod.out <- stm(documents, vocab, 3, prevalence=~treatment + s(pid_rep), data=meta)
+> ##D summary(mod.out)
+> ##D prep <- estimateEffect(1:3 ~ treatment + s(pid_rep), mod.out, meta)
+> ##D plot.estimateEffect(prep, "treatment", model=mod.out,
+> ##D                     method="difference",cov.value1=1,cov.value2=0)
+> ##D test <- permutationTest(formula=~ treatment + s(pid_rep), stmobj=mod.out, 
+> ##D                         treatment="treatment", nruns=25, documents=documents,
+> ##D                         vocab=vocab,data=meta, stmverbose=FALSE)
+> ##D plot.STMpermute(test,2, xlab="Effect", ylab="Model Index", main="Topic 2 Placebo Test")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("permutationTest", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.MultimodDiagnostic")
+> ### * plot.MultimodDiagnostic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.MultimodDiagnostic
+> ### Title: Plotting Method for Multimodality Diagnostic Objects
+> ### Aliases: plot.MultimodDiagnostic
+> ### Keywords: stm multimodality
+> 
+> ### ** Examples
+> 
+> 
+> ## Not run: 
+> ##D # Example using Gadarian data
+> ##D 
+> ##D temp<-textProcessor(documents=gadarian$open.ended.response, 
+> ##D                     metadata=gadarian)
+> ##D meta<-temp$meta
+> ##D vocab<-temp$vocab
+> ##D docs<-temp$documents
+> ##D out <- prepDocuments(docs, vocab, meta)
+> ##D docs<-out$documents
+> ##D vocab<-out$vocab
+> ##D meta <-out$meta
+> ##D set.seed(02138)
+> ##D mod.out <- selectModel(docs, vocab, K=3, 
+> ##D                        prevalence=~treatment + s(pid_rep), 
+> ##D                        data=meta, runs=20)
+> ##D 
+> ##D out <- multiSTM(mod.out, mass.threshold = .75, 
+> ##D                 reg.formula = ~ treatment,
+> ##D                 metadata = gadarian)
+> ##D 
+> ##D plot(out)
+> ##D plot(out, 1)
+> ##D 
+> ##D # One more example using Poliblog data
+> ##D 
+> ##D load(url("http://goo.gl/91KbfS"))
+> ##D meta <- poliblogPrevFit$settings$covariates$X
+> ##D out <- multiSTM(poliblogSelect, mass.threshold=.75, 
+> ##D                 reg.formula= ~ ratingLiberal,
+> ##D                 metadata=meta)
+> ##D 
+> ##D plot(out, ind=(1:4), topics=1)
+> ##D plot(out, 16)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.MultimodDiagnostic", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.STM")
+> ### * plot.STM
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.STM
+> ### Title: Plot summary of an STM object
+> ### Aliases: plot.STM
+> 
+> ### ** Examples
+> 
+> #Examples with the Gadarian Data
+> plot(gadarianFit)
+> plot(gadarianFit,type="labels")
+> plot(gadarianFit, type="perspectives", topics=c(1,2))
+> plot(gadarianFit,type="hist")
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.STM", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.STMpermute")
+> ### * plot.STMpermute
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.STMpermute
+> ### Title: Plot an STM permutation test.
+> ### Aliases: plot.STMpermute
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D temp<-textProcessor(documents=gadarian$open.ended.response,metadata=gadarian)
+> ##D out <- prepDocuments(temp$documents, temp$vocab, temp$meta)
+> ##D documents <- out$documents
+> ##D vocab <- out$vocab
+> ##D meta <- out$meta
+> ##D set.seed(02138)
+> ##D mod.out <- stm(documents, vocab, 3, prevalence=~treatment + s(pid_rep), data=meta)
+> ##D summary(mod.out)
+> ##D prep <- estimateEffect(1:3 ~ treatment + s(pid_rep), mod.out, meta)
+> ##D plot.estimateEffect(prep, "treatment", model=mod.out,
+> ##D                     method="difference",cov.value1=1,cov.value2=0)
+> ##D test <- permutationTest(formula=~ treatment + s(pid_rep), stmobj=mod.out, 
+> ##D                         treatment="treatment", nruns=25, documents=documents,
+> ##D                         vocab=vocab,data=meta, stmverbose=FALSE)
+> ##D plot.STMpermute(test,2, xlab="Effect", ylab="Model Index", main="Topic 2 Placebo Test")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.STMpermute", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.estimateEffect")
+> ### * plot.estimateEffect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.estimateEffect
+> ### Title: Plot effect of covariates on topics
+> ### Aliases: plot.estimateEffect
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D prep <- estimateEffect(1:3 ~ treatment, gadarianFit, gadarian)
+> ##D plot.estimateEffect(prep, "treatment", model=gadarianFit,
+> ##D method="pointestimate")
+> ##D plot.estimateEffect(prep, "treatment", model=gadarianFit,
+> ##D method="difference",cov.value1=1,cov.value2=0)
+> ##D 
+> ##D #If the covariate were a binary factor, 
+> ##D #the factor labels can be used to  
+> ##D #specify the values of cov.value1 (e.g., cov.value1="treat"). 
+> ##D 
+> ##D # String variables must be turned to factors prior to plotting. 
+> ##D #If you see this error, Error in rep.int(c(1, numeric(n)), n - 1L) : 
+> ##D # invalid 'times' value, then you likely have not done this.
+> ##D 
+> ##D #Example of binary times binary interaction
+> ##D gadarian$binaryvar <- sample(c(0,1), nrow(gadarian), replace=T)
+> ##D temp <- textProcessor(gadarian$open.ended.response,metadata=gadarian)
+> ##D out <- prepDocuments(temp$documents, temp$vocab, temp$meta)
+> ##D stm1 <- stm(out$documents, out$vocab, 3, prevalence=~treatment*binaryvar,
+> ##D  data=gadarian)
+> ##D prep <- estimateEffect(c(2) ~ treatment*binaryvar, stmobj=stm1,
+> ##D metadata=gadarian)
+> ##D 
+> ##D par(mfrow=c(1,2))
+> ##D plot.estimateEffect(prep, "treatment", method="pointestimate",
+> ##D cov.value1=1, cov.value2=0, xlim=c(-1,1), moderator="binaryvar", moderator.value=1)
+> ##D plot.estimateEffect(prep, "treatment", method="pointestimate",
+> ##D cov.value1=1, cov.value2=0, xlim=c(-1,1), moderator="binaryvar",
+> ##D moderator.value=0)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.estimateEffect", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.searchK")
+> ### * plot.searchK
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.searchK
+> ### Title: Plots diagnostic values resulting from searchK
+> ### Aliases: plot.searchK
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D K<-c(5,10,15) 
+> ##D temp<-textProcessor(documents=gadarian$open.ended.response,metadata=gadarian)
+> ##D out <- prepDocuments(temp$documents, temp$vocab, temp$meta)
+> ##D documents <- out$documents
+> ##D vocab <- out$vocab
+> ##D meta <- out$meta
+> ##D set.seed(02138)
+> ##D K<-c(5,10,15) 
+> ##D kresult <- searchK(documents, vocab, K, prevalence=~treatment + s(pid_rep), data=meta)
+> ##D 
+> ##D plot.searchK(kresult)
+> ## End(Not run)
+>  
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.searchK", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.topicCorr")
+> ### * plot.topicCorr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.topicCorr
+> ### Title: Plot a topic correlation graph
+> ### Aliases: plot.topicCorr
+> 
+> ### ** Examples
+> 
+> #This function becomes more useful with larger numbers of topics.
+> #it is demonstrated here with a small model simply to show how the syntax works.
+> cormat <- topicCorr(gadarianFit)
+> plot(cormat)
+Error: 'plot.igraph' is not an exported object from 'namespace:igraph'
+Execution halted

@@ -1,0 +1,43 @@
+* installing *source* package ‘lfe’ ...
+** package ‘lfe’ successfully unpacked and MD5 sums checked
+checking for gcc... clang
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether clang accepts -g... yes
+checking for clang option to accept ISO C89... none needed
+checking for gawk... gawk
+checking build system type... x86_64-apple-darwin14.3.0
+checking host system type... x86_64-apple-darwin14.3.0
+checking if compiler needs -Werror to reject unknown flags... yes
+checking whether pthreads work with -pthread... yes
+checking for joinable pthread attribute... PTHREAD_CREATE_JOINABLE
+checking if more special flags are required for pthreads... -D_THREAD_SAFE
+checking for PTHREAD_PRIO_INHERIT... yes
+checking for timed semaphore wait... no
+checking for library containing pthread_setname_np... none required
+configure: creating ./config.status
+config.status: creating src/Makevars
+config.status: creating src/config.h
+** libs
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -D_THREAD_SAFE -pthread  -fPIC  -Wall -mtune=core2 -g -O2  -c demean.c -o demean.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -D_THREAD_SAFE -pthread  -fPIC  -Wall -mtune=core2 -g -O2  -c factor.c -o factor.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -D_THREAD_SAFE -pthread  -fPIC  -Wall -mtune=core2 -g -O2  -c kaczmarz.c -o kaczmarz.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -D_THREAD_SAFE -pthread  -fPIC  -Wall -mtune=core2 -g -O2  -c lfe.c -o lfe.o
+clang -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include    -D_THREAD_SAFE -pthread  -fPIC  -Wall -mtune=core2 -g -O2  -c utils.c -o utils.o
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o lfe.so demean.o factor.o kaczmarz.o lfe.o utils.o -D_THREAD_SAFE -pthread -L/Library/Frameworks/R.framework/Resources/lib -lRblas -L/usr/local/lib/gcc/x86_64-apple-darwin13.0.0/4.8.2 -lgfortran -lquadmath -lm -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+clang: warning: argument unused during compilation: '-pthread'
+installing to /Users/gaborcsardi/works/igraph/revdep_check/lfe.Rcheck/lfe/libs
+** R
+** exec
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+* DONE (lfe)

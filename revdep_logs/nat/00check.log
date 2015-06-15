@@ -1,0 +1,95 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/nat.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘nat/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘nat’ version ‘1.6.6’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘nat’ can be installed ... WARNING
+Found the following significant warnings:
+  Warning: replacing previous import by ‘nabor::knn’ when loading ‘nat’
+See ‘/Users/gaborcsardi/works/igraph/revdep_check/nat.Rcheck/00install.out’ for details.
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... WARNING
+Missing link or links in documentation object 'ngraph.Rd':
+  ‘[igraph]{attributes}’
+
+See section 'Cross-references' in the 'Writing R Extensions' manual.
+
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... ERROR
+Running examples in ‘nat-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: MBL.surf
+> ### Title: Surface object (hxsurf) for the left mushroom body in FCWB
+> ###   template space
+> ### Aliases: MBL.surf
+> 
+> ### ** Examples
+> 
+> plot3d(kcs20)
+X Error of failed request:  BadDrawable (invalid Pixmap or Window parameter)
+  Major opcode of failed request:  14 (X_GetGeometry)
+  Resource id in failed request:  0x0
+  Serial number of failed request:  708
+  Current serial number in output stream:  708
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... ERROR
+Running the tests in ‘tests/test-all.R’ failed.
+Last 13 lines of output:
+  4: graph(NULL, n = 1) at test-seglist.R:50
+  5: stop("'edges' must be numeric of character")
+  
+  testthat results ================================================================
+  OK: 642 SKIPPED: 0 FAILED: 5
+  1. Failure (at test-neuroml-io.R#36): parse neuroml files 
+  2. Failure (at test-ngraph.R#63): equivalence of seglist and swc methods for as.ngraph.neuron 
+  3. Failure (at test-ngraph.R#64): equivalence of seglist and swc methods for as.ngraph.neuron 
+  4. Failure (at test-ngraph.R#65): equivalence of seglist and swc methods for as.ngraph.neuron 
+  5. Error: convert graph to seglist 
+  
+  Error: testthat unit tests failed
+  Execution halted
+* DONE
+Status: 2 ERRORs, 2 WARNINGs

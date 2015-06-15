@@ -1,0 +1,18 @@
+packdep (0.3.1)
+  * updated email addresses.
+  * imported functions from the igraph package.
+  * fixed imporper use of ":::" to call package.dependencies().
+
+packdep (0.3)
+  * added funcmap().
+  * added more measures to centrality().
+  * allow both decreasing and increasing sorting in centrality().
+
+packdep (0.2)
+  * fixed Maintainer in DESCRIPTION.
+  * fixed {get,map}.depends() errors in the documentation.
+  * added Changelog.
+
+packdep (0.1)
+  * initial release.
+

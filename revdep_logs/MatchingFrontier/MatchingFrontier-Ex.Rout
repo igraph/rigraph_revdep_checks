@@ -1,0 +1,337 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "MatchingFrontier"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "MatchingFrontier-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('MatchingFrontier')
+
+Loading MatchingFrontier Version 1.0.0
+
+## Citation ##
+King, Gary, Christopher Lucas, and Richard Nielsen. "MatchingFrontier:
+Automated Matching for Causal Inference." R package version 1.0.0.
+
+## BibTeX ##
+@manual{MatchingFrontier,
+	title={MatchingFrontier: Automated Matching for Causal Inference},
+	author={King, Gary and Lucas, Christopher and Nielsen, Richard},
+	year={2014},
+	note={R package version 1.0.0}
+}
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("estimateEffects")
+> ### * estimateEffects
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: estimateEffects
+> ### Title: Estimate Effects on the Frontier
+> ### Aliases: estimateEffects
+> 
+> ### ** Examples
+> 
+> data(lalonde)
+> 
+> match.on <- colnames(lalonde)[!(colnames(lalonde) %in% c('re78',
++                                 'treat'))]
+> 
+> my.frontier <- makeFrontier(dataset = lalonde,
++                             treatment = 'treat',
++                             outcome = 're78',
++                             match.on = match.on)
+Calculating Mahalanobis distances...
+Calculating theoretical frontier...
+Calculating information for plotting the frontier...
+> 
+> my.form <- as.formula(re78 ~ treat + age + black + education + hispanic +
++                           married + nodegree + re74 + re75)
+> ## Not run: 
+> ##D my.estimates <- estimateEffects(my.frontier, 're78 ~ treat',
+> ##D                                 mod.dependence.formula = my.form,
+> ##D                                 continuous.vars = c('age', 'education', 're74', 're75'),
+> ##D                                 prop.estimated = .1,
+> ##D                                 means.as.cutpoints = TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("estimateEffects", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("generateDataset")
+> ### * generateDataset
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: generateDataset
+> ### Title: Generate a data set that is on the balance - sample size
+> ###   frontier.
+> ### Aliases: generateDataset
+> 
+> ### ** Examples
+> 
+> data(lalonde)
+> 
+> match.on <- colnames(lalonde)[!(colnames(lalonde) %in% c('re78', 'treat'))]
+> my.frontier <- makeFrontier(dataset = lalonde,
++                             treatment = 'treat',
++                             outcome = 're78',
++                             match.on = match.on)
+Calculating Mahalanobis distances...
+Calculating theoretical frontier...
+Calculating information for plotting the frontier...
+> n <- 300 # Identify the point from which to select the data
+> matched.data <- generateDataset(my.frontier, N = n)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("generateDataset", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("makeFrontier")
+> ### * makeFrontier
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: makeFrontier
+> ### Title: Compute the balance - sample size frontier.
+> ### Aliases: makeFrontier
+> 
+> ### ** Examples
+> 
+> data(lalonde)
+> 
+> match.on <- colnames(lalonde)[!(colnames(lalonde) %in% c('re78', 'treat'))]
+> my.frontier <- makeFrontier(dataset = lalonde,
++                             treatment = 'treat',
++                             outcome = 're78',
++                             match.on = match.on)
+Calculating Mahalanobis distances...
+Calculating theoretical frontier...
+Calculating information for plotting the frontier...
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("makeFrontier", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("modelDependence")
+> ### * modelDependence
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: modelDependence
+> ### Title: Compute the Athey-Imbens measure of sensitivity to model
+> ###   specification.
+> ### Aliases: modelDependence
+> 
+> ### ** Examples
+> 
+> data(lalonde)
+> 
+> treatment <- 'treat'
+> base.form <- as.formula('re78 ~ treat + age + education
++                          + black + hispanic + married +
++                          nodegree + re74 + re75')
+> 
+> md <- modelDependence(lalonde, treatment, base.form,
++                       cutpoints = list('age' = mean(lalonde$age)))
+Estimate from base model: -5805.93 
+Estimate from age partition: -6485.76 
+Estimate from education partition: -6063.62 
+> print(md)
+[1] 514.0836
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("modelDependence", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("parallelPlot")
+> ### * parallelPlot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: parallelPlot
+> ### Title: Create a parallel plot for a specified point on the frontier.
+> ### Aliases: parallelPlot
+> 
+> ### ** Examples
+> 
+> data(lalonde)
+> 
+> match.on <- colnames(lalonde)[!(colnames(lalonde) %in% c('re78', 'treat'))]
+> mahal.frontier <- makeFrontier(dataset = lalonde,
++                             treatment = 'treat',
++                             outcome = 're78',
++                             match.on = match.on)
+Calculating Mahalanobis distances...
+Calculating theoretical frontier...
+Calculating information for plotting the frontier...
+> parallelPlot(mahal.frontier,
++              N = 300,
++              variables = c('age',
++              're74',
++              're75',
++              'black'),
++              treated.col = 'grey',
++              control.col = 'blue'
++              )
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("parallelPlot", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotEstimates")
+> ### * plotEstimates
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotEstimates
+> ### Title: Plot estimates along the frontier.
+> ### Aliases: plotEstimates
+> 
+> ### ** Examples
+> 
+> data(lalonde)
+> 
+> match.on <- colnames(lalonde)[!(colnames(lalonde) %in% c('re78', 'treat'))]
+> my.frontier <- makeFrontier(dataset = lalonde,
++                             treatment = 'treat',
++                             outcome = 're78',
++                             match.on = match.on)
+Calculating Mahalanobis distances...
+Calculating theoretical frontier...
+Calculating information for plotting the frontier...
+> 
+> base.form <- as.formula('re78 ~ treat + age + education
++                          + black + hispanic + married +
++                          nodegree + re74 + re75')
+> ## Not run: 
+> ##D my.estimates <- estimateEffects(my.frontier,
+> ##D                                 're78 ~ treat',
+> ##D                                 mod.dependence.formula = base.form,
+> ##D                                 continuous.vars = c('age', 'education', 're74', 're75'),
+> ##D                                 prop.estimated = .1,
+> ##D                                 means.as.cutpoints = TRUE)
+> ##D 
+> ##D plotEstimates(my.estimates)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotEstimates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotFrontier")
+> ### * plotFrontier
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotFrontier
+> ### Title: Plot the balance - sample size frontier.
+> ### Aliases: plotFrontier
+> 
+> ### ** Examples
+> 
+> data(lalonde)
+> 
+> match.on <- colnames(lalonde)[!(colnames(lalonde) %in% c('re78', 'treat'))]
+> my.frontier <- makeFrontier(dataset = lalonde,
++                             treatment = 'treat',
++                             outcome = 're78',
++                             match.on = match.on)
+Calculating Mahalanobis distances...
+Calculating theoretical frontier...
+Calculating information for plotting the frontier...
+> 
+> plotFrontier(my.frontier)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotFrontier", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotMeans")
+> ### * plotMeans
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotMeans
+> ### Title: Plot covariate means along the frontier.
+> ### Aliases: plotMeans
+> 
+> ### ** Examples
+> 
+> data(lalonde)
+> 
+> match.on <- colnames(lalonde)[!(colnames(lalonde) %in% c('re78', 'treat'))]
+> my.frontier <- makeFrontier(dataset = lalonde,
++                             treatment = 'treat',
++                             outcome = 're78',
++                             match.on = match.on)
+Calculating Mahalanobis distances...
+Calculating theoretical frontier...
+Calculating information for plotting the frontier...
+> 
+> plotMeans(my.frontier)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotMeans", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  4.585 0.284 4.879 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

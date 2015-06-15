@@ -1,0 +1,88 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/rags2ridges.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘rags2ridges/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘rags2ridges’ version ‘1.4’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘rags2ridges’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking examples ... ERROR
+Running examples in ‘rags2ridges-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: GGMpathStats
+> ### Title: Gaussian graphical model node pair path statistics
+> ### Aliases: GGMpathStats
+> 
+> ### ** Examples
+> 
+> ## Obtain some (high-dimensional) data
+> p = 25
+> n = 10
+> set.seed(333)
+> X = matrix(rnorm(n*p), nrow = n, ncol = p)
+> colnames(X)[1:25] = letters[1:25]
+> 
+> ## Obtain regularized precision under optimal penalty
+> OPT <- optPenalty.LOOCVauto(X, lambdaMin = .5, lambdaMax = 30)
+> 
+> ## Determine support regularized standardized precision under optimal penalty
+> PC0 <- sparsify(OPT$optPrec, threshold = "localFDR")$sparseParCor
+Step 1... determine cutoff point
+Step 2... estimate parameters of null distribution and eta0
+Step 3... compute p-values and estimate empirical PDF/CDF
+Step 4... compute q-values and local fdr
+Step 5... prepare for plotting
+
+- Retained elements:  11 
+- Corresponding to 3.67 % of possible edges 
+ 
+> 
+> ## Obtain information on mediating and moderating paths between nodes 14 and 23
+> pathStats <- GGMpathStats(PC0, 14, 23, verbose = TRUE, prune = FALSE)
+Error in switch(mode, out = 1, `in` = 2, all = 3, total = 3) : 
+  EXPR must be a length 1 vector
+Calls: GGMpathStats -> neighbors
+Execution halted
+* DONE
+Status: 1 ERROR

@@ -1,0 +1,903 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # setwd("/home/p694382/Projects/simcausal_Rpackage/simcausal/tests")
+> 
+> 
+> ## unit tests will not be done if RUnit is not available
+> if(require("RUnit", quietly=TRUE)) {
++     ## --- Setup ---
++ 
++     pkg <- "simcausal" # <-- Tested package name
++ 
++     if(Sys.getenv("RCMDCHECK") == "FALSE") {
++     ## Path to unit tests for standalone running under Makefile (not R CMD check)
++     ## PKG/tests/../inst/unitTests
++     # path <- file.path(getwd(), "..", "inst", "unitTests")
++     } else {
++     ## Path to unit tests for R CMD check
++     ## PKG.Rcheck/tests/../PKG/unitTests        
++     # path <- system.file(package=pkg, "RUnit")
++ 
++     # REPLACED WITH:
++     path <- file.path(getwd(), "RUnit")
++     }
++ 
++     cat("\nRunning unit tests\n")
++     print(list(pkg=pkg, getwd=getwd(), pathToUnitTests=path))
++ 
++     library(package=pkg, character.only=TRUE)
++ 
++     ## If desired, load the name space to allow testing of private functions
++     ## if (is.element(pkg, loadedNamespaces()))
++     ##     attach(loadNamespace(pkg), name=paste("namespace", pkg, sep=":"), pos=3)
++     ##
++     ## or simply call PKG:::myPrivateFunction() in tests
++ 
++     ## --- Testing ---
++ 
++     ## Define tests
++     test.suite <- defineTestSuite(name=paste(pkg, "unit testing"), 
++                                         # dirs="./RUnit",
++                                         dirs=path,
++                                         testFileRegexp="runittests.R",
++                                         testFuncRegexp = "^test.+",
++                                         rngKind = "Marsaglia-Multicarry",
++                                         rngNormalKind = "Kinderman-Ramage")
++     ## Run
++     tests <- runTestSuite(test.suite)
++ 
++     ## Default report name
++     pathReport <- file.path(path, "report")
++ 
++     ## Report to stdout and text files
++     cat("------------------- UNIT TEST SUMMARY ---------------------\n\n")
++     printTextProtocol(tests, showDetails=FALSE)
++     printTextProtocol(tests, showDetails=FALSE,
++                         fileName=paste0(pathReport, "Summary.txt"))
++     printTextProtocol(tests, showDetails=TRUE,
++                         fileName=paste0(pathReport, ".txt")) 
++     ## Report to HTML file
++     printHTMLProtocol(tests, fileName=paste0(pathReport, ".html"))
++  
++     ## Return stop() to cause R CMD check stop in case of
++     ##  - failures i.e. FALSE to unit tests or
++     ##  - errors i.e. R errors
++     tmp <- getErrors(tests)
++     if(tmp$nFail > 0 | tmp$nErr > 0) {
++         stop(paste("\n\nunit testing failed (#test failures: ", tmp$nFail,
++                ", #R errors: ",  tmp$nErr, ")\n\n", sep=""))
++     }
++     } else {
++         warning("cannot run unit tests -- package RUnit is not available")
++ }
+
+Running unit tests
+$pkg
+[1] "simcausal"
+
+$getwd
+[1] "/Users/gaborcsardi/works/igraph/revdep_check/simcausal.Rcheck/tests"
+
+$pathToUnitTests
+[1] "/Users/gaborcsardi/works/igraph/revdep_check/simcausal.Rcheck/tests/RUnit"
+
+simcausal
+Version: 0.2.0
+Package created on 2015-06-11
+
+Please note this package is still in its early stages of development. Check for updates and report bugs at http://github.com/osofr/simcausal.
+
+To see the vignette use vignette("simcausal_vignette", package="simcausal"). To see all available package documentation use help(package = "simcausal") and ?simcausal.
+
+To see the latest updates for this version, use news(package = "simcausal").
+
+
+
+Executing test function test.bugfixes  ... ...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+node L1_0, order:2
+node A1_0, order:3
+node L2_1, order:5
+node L2_2, order:6
+node L2_3, order:7
+node L2_4, order:8
+node L2_5, order:9
+node L2_6, order:10
+node L2_7, order:11
+node L2_8, order:12
+node L2_9, order:13
+node L2_10, order:14
+node L2_11, order:15
+node L2_12, order:16
+node L2_13, order:17
+node L2_14, order:18
+node L2_15, order:19
+node L2_16, order:20
+...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+node L1_0, order:2
+node L2_1, order:3
+node L1_1, order:4
+node L2_2, order:5
+node L1_2, order:6
+node L2_3, order:7
+node L1_3, order:8
+node L2_4, order:9
+node L1_4, order:10
+node L2_5, order:11
+node L1_5, order:12
+node L2_6, order:13
+node L1_6, order:14
+node L2_7, order:15
+node L1_7, order:16
+node L2_8, order:17
+node L1_8, order:18
+node L2_9, order:19
+node L1_9, order:20
+node L2_10, order:21
+node L1_10, order:22
+node L2_11, order:23
+node L1_11, order:24
+node L2_12, order:25
+node L1_12, order:26
+node L2_13, order:27
+node L1_13, order:28
+node L2_14, order:29
+node L1_14, order:30
+node L2_15, order:31
+node L1_15, order:32
+node L2_16, order:33
+node L1_16, order:34
+Error in add.nodes(DAG = obj1, nodes = obj2) : 
+  DAG object is locked: nodes in this DAG cannot be modified or added after set.DAG()
+In addition: Warning messages:
+1: In add.nodes(DAG = obj1, nodes = obj2) :
+  existing non-time-varying node L2 was overwritten with a time-varying node
+2: In add.nodes(DAG = obj1, nodes = obj2) :
+  existing non-time-varying node L2 was overwritten with a time-varying node
+3: In set.DAG(D) :
+  trying to lock an empty DAG, add nodes before calling set.DAG()
+simulating observed dataset from the DAG object
+simulating observed dataset from the DAG object
+simulating observed dataset from the DAG object
+...automatically assigning order attribute to some nodes...
+node L0, order:1
+node L1, order:2
+node L2, order:3
+simulating observed dataset from the DAG object
+...automatically assigning order attribute to some nodes...
+node L0, order:1
+node L1, order:2
+node L2, order:3
+...automatically assigning order attribute to some nodes...
+node L0, order:1
+node L1, order:2
+simulating observed dataset from the DAG object
+...automatically assigning order attribute to some nodes...
+node L0, order:1
+node L1, order:2
+simulating observed dataset from the DAG object
+ done successfully.
+
+
+
+Executing test function test.experimental_parsingMSMs  ... Error in simcausal:::parse.MSMform(msm.form = msm.form_3_error, t_vec = t_vec,  : 
+  unable to map some of S() expressions in MSM formula, check that all of the summary measure expressions have been previously defined
+In addition: Warning messages:
+1: In rcategor(n = 100L, probs = c(0.0715837995828457, 0.0793279371211667,  :
+  some categorical probabilities add up to more than 1, normalizing to add to 1
+2: In rcategor(n = 100L, probs = c(0.0715837995828457, 0.0793279371211667,  :
+  some categorical probabilities add up to more than 1, normalizing to add to 1
+3: In rcategor(n = 100L, probs = c(0.0715837995828457, 0.0793279371211667,  :
+  some categorical probabilities add up to more than 1, normalizing to add to 1
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 100 simulated samples per action
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+simulating action-specific datasets for action(s): A1_th0 A1_th1
+simulating action-specific datasets for action(s): A1_th0 A1_th1
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 100 simulated samples per action
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+simulating action-specific datasets for action(s): A1_th0 A1_th1
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+simulating action-specific datasets for action(s): A1_th0 A1_th1
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+...for df_full in long format new summary measures cannot be calculated, using whatever summary measures already exist in df_full...
+...for df_full in long format outcome is pooled over the same t vector as defined in the first MSM that generated the long format data, changing pooling t requires re-generating the full data...
+...assuming the data is based on the following map of MSM terms to variable names...
+        S_exprs_vec  XMSMterms
+1 A1[max(0, t - 2)] XMSMterm.4
+MSM: fitting glm to full data...
+...for df_full in long format new summary measures cannot be calculated, using whatever summary measures already exist in df_full...
+...for df_full in long format outcome is pooled over the same t vector as defined in the first MSM that generated the long format data, changing pooling t requires re-generating the full data...
+...assuming the data is based on the following map of MSM terms to variable names...
+        S_exprs_vec  XMSMterms
+1 A1[max(0, t - 2)] XMSMterm.4
+2 A1[max(0, t - 1)] XMSMterm.1
+MSM: fitting glm to full data...
+Error in parse.MSMform(msm.form = form, t_vec = t_vec, term_map_tab_old = term_maptab_old) : 
+  unable to map some of S() expressions in MSM formula, check that all of the summary measure expressions have been previously defined
+ done successfully.
+
+
+
+Executing test function test.faster_tolongdata  ...  done successfully.
+
+
+
+Executing test function test.node  ... ...automatically assigning order attribute to some nodes...
+node L0, order:1
+node L1, order:2
+...automatically assigning order attribute to some nodes...
+node L0, order:1
+node L1, order:2
+...automatically assigning order attribute to some nodes...
+node L0, order:1
+...automatically assigning order attribute to some nodes...
+node L0, order:1
+node L1, order:2
+node L2, order:3
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node W3, order:3
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node W3, order:3
+...automatically assigning order attribute to some nodes...
+node W1, order:1
+node W2, order:2
+node W3, order:3
+...automatically assigning order attribute to some nodes...
+node L1_0, order:1
+node L2_0, order:2
+Error in add.nodes(DAG = obj1, nodes = obj2) : 
+  cannot define nodes with missing t after nodes with t non-missing were already defined
+In addition: Warning message:
+In rcategor(n = 20L, probs = c(0.195050732955971, 0.138961769772252,  :
+  some categorical probabilities add up to more than 1, normalizing to add to 1
+...automatically assigning order attribute to some nodes...
+node L1_0, order:1
+node L2_0, order:2
+node L1_1, order:3
+node L2_1, order:4
+node L1_2, order:5
+node L2_2, order:6
+node L1_3, order:7
+node L2_3, order:8
+node L1_4, order:9
+node L2_4, order:10
+node L1_5, order:11
+node L2_5, order:12
+...automatically assigning order attribute to some nodes...
+node L3_0, order:1
+node L3_1, order:2
+node L1_2, order:3
+node L2_2, order:4
+node L3_2, order:5
+node L1_3, order:6
+node L2_3, order:7
+node L3_3, order:8
+node L1_4, order:9
+node L2_4, order:10
+node L3_4, order:11
+node L1_5, order:12
+node L2_5, order:13
+node L3_5, order:14
+...automatically assigning order attribute to some nodes...
+node L3_0, order:1
+node L3_1, order:2
+node L1_2, order:3
+node L2_2, order:4
+node L3_2, order:5
+node L1_3, order:6
+node L2_3, order:7
+node L3_3, order:8
+node L1_4, order:9
+node L2_4, order:10
+node L3_4, order:11
+node L1_5, order:12
+node L2_5, order:13
+node L3_5, order:14
+...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+node L1_0, order:2
+node A1_0, order:3
+node A2_0, order:4
+node Y_0, order:5
+node L2_1, order:6
+node A1_1, order:7
+node A2_1, order:8
+node Y_1, order:9
+node L2_2, order:10
+node A1_2, order:11
+node A2_2, order:12
+node Y_2, order:13
+node L2_3, order:14
+node A1_3, order:15
+node A2_3, order:16
+node Y_3, order:17
+node L2_4, order:18
+node A1_4, order:19
+node A2_4, order:20
+node Y_4, order:21
+node L2_5, order:22
+node A1_5, order:23
+node A2_5, order:24
+node Y_5, order:25
+node L2_6, order:26
+node A1_6, order:27
+node A2_6, order:28
+node Y_6, order:29
+node L2_7, order:30
+node A1_7, order:31
+node A2_7, order:32
+node Y_7, order:33
+node L2_8, order:34
+node A1_8, order:35
+node A2_8, order:36
+node Y_8, order:37
+node L2_9, order:38
+node A1_9, order:39
+node A2_9, order:40
+node Y_9, order:41
+node L2_10, order:42
+node A1_10, order:43
+node A2_10, order:44
+node Y_10, order:45
+node L2_11, order:46
+node A1_11, order:47
+node A2_11, order:48
+node Y_11, order:49
+node L2_12, order:50
+node A1_12, order:51
+node A2_12, order:52
+node Y_12, order:53
+node L2_13, order:54
+node A1_13, order:55
+node A2_13, order:56
+node Y_13, order:57
+node L2_14, order:58
+node A1_14, order:59
+node A2_14, order:60
+node Y_14, order:61
+node L2_15, order:62
+node A1_15, order:63
+node A2_15, order:64
+node Y_15, order:65
+node L2_16, order:66
+node A1_16, order:67
+node A2_16, order:68
+node Y_16, order:69
+ done successfully.
+
+
+
+Executing test function test.plotting  ... ...automatically assigning order attribute to some nodes...
+node L2_0, order:1
+node L1_0, order:2
+node A1_0, order:3
+node A2_0, order:4
+node Y_0, order:5
+node L2_1, order:6
+node A1_1, order:7
+node A2_1, order:8
+node Y_1, order:9
+node L2_2, order:10
+node A1_2, order:11
+node A2_2, order:12
+node Y_2, order:13
+node L2_3, order:14
+node A1_3, order:15
+node A2_3, order:16
+node Y_3, order:17
+node L2_4, order:18
+node A1_4, order:19
+node A2_4, order:20
+node Y_4, order:21
+node L2_5, order:22
+node A1_5, order:23
+node A2_5, order:24
+node Y_5, order:25
+node L2_6, order:26
+node A1_6, order:27
+node A2_6, order:28
+node Y_6, order:29
+node L2_7, order:30
+node A1_7, order:31
+node A2_7, order:32
+node Y_7, order:33
+node L2_8, order:34
+node A1_8, order:35
+node A2_8, order:36
+node Y_8, order:37
+node L2_9, order:38
+node A1_9, order:39
+node A2_9, order:40
+node Y_9, order:41
+node L2_10, order:42
+node A1_10, order:43
+node A2_10, order:44
+node Y_10, order:45
+node L2_11, order:46
+node A1_11, order:47
+node A2_11, order:48
+node Y_11, order:49
+node L2_12, order:50
+node A1_12, order:51
+node A2_12, order:52
+node Y_12, order:53
+node L2_13, order:54
+node A1_13, order:55
+node A2_13, order:56
+node Y_13, order:57
+node L2_14, order:58
+node A1_14, order:59
+node A2_14, order:60
+node Y_14, order:61
+node L2_15, order:62
+node A1_15, order:63
+node A2_15, order:64
+node Y_15, order:65
+node L2_16, order:66
+node A1_16, order:67
+node A2_16, order:68
+node Y_16, order:69
+ done successfully.
+
+
+
+Executing test function test.set.DAG_DAG1  ... ...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+ done successfully.
+
+
+
+Executing test function test.set.DAG_DAG2_errors  ... Error in node("A_2", distr = "rbern", prob = 0.5, order = 1) : 
+  ...node names with underscore characters '_' are not allowed...
+In addition: Warning messages:
+1: In add.nodes(DAG = obj1, nodes = obj2) :
+  existing node L1_3 was modified
+2: In add.nodes(DAG = obj1, nodes = obj2) :
+  existing node L1_4 was modified
+3: In add.nodes(DAG = obj1, nodes = obj2) :
+  existing node L1_5 was modified
+4: In add.nodes(DAG = obj1, nodes = obj2) :
+  existing node L1_4 was modified
+5: In add.nodes(DAG = obj1, nodes = obj2) :
+  existing node L1_5 was modified
+6: In add.nodes(DAG = obj1, nodes = obj2) :
+  existing node L1_2 was modified
+7: In add.nodes(DAG = obj1, nodes = obj2) :
+  existing node L1_3 was modified
+8: In add.nodes(DAG = obj1, nodes = obj2) :
+  existing node L1_4 was modified
+9: In add.nodes(DAG = obj1, nodes = obj2) :
+  existing node L1_5 was modified
+Error in L2[0] : undefined time-dependent variable(s): L2_0
+Error in eval_nodeform(as.character(expr), cur.node) : 
+  error while evaluating node L2_0 parameters: ifelse(L2[0] == 1, 0.5, 0.1).
+Check syntax specification.
+Error in set.DAG(c(L2_0, L1_0)) : 
+...attempt to simulate data from DAG failed...
+Error in set.DAG(testDAG_2_err1a) : 
+  All DAG nodes must have unique name attributes
+Error in set.DAG(testDAG_2_err1b) : 
+  All DAG nodes must have unique name attributes
+ done successfully.
+
+
+
+Executing test function test.set.DAG_DAG2b_newactions  ... simulating observed dataset from the DAG object
+simulating action-specific datasets for action(s): A1 A0
+simulating action-specific datasets for action(s): A1 A0
+simulating action-specific datasets for action(s): A1 A0
+Error in getactions(DAG, actions) : 
+  Couldn't locate action: A4 , first define action by adding it to the DAG object with DAG+action
+In addition: There were 13 warnings (use warnings() to see them)
+simulating observed dataset from the DAG object
+simulating action-specific datasets for action(s): A1 A0
+simulating action-specific datasets for action(s): A1 A0
+simulating observed dataset from the DAG object
+simulating action-specific datasets for action(s): A1 A0
+simulating action-specific datasets for action(s): A1 A0
+simulating action-specific datasets for action(s): A1
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+Error in X_dat_th0[[2]] : subscript out of bounds
+In addition: There were 11 warnings (use warnings() to see them)
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...evaluating the target on 500 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...evaluating the target on 500 simulated samples per action
+Error in eval.target(D, n = 500, actions = "A1_th1", rndseed = 123) : 
+  some of the actions in param argument could not be found in the simulated full data
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...evaluating the target on 500 simulated samples per action
+MSM: fitting glm to full data...
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+MSM: fitting glm to full data...
+ done successfully.
+
+
+
+Executing test function test.set.DAG_DAG3_wlong  ...  done successfully.
+
+
+
+Executing test function test.set.DAG_DAG_informcens  ... ...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 100 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 100 simulated samples per action
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...some outcome nodes have EFU=TRUE, applying Last Time Point Carry Forward function: doLTCF()...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+MSM: fitting glm to full data...
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+MSM: fitting glm to full data...
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+ done successfully.
+
+
+
+Executing test function test.set.DAG_general  ... Error in set.DAG(testDAG_listobj1) : DAG must be a list
+In addition: Warning messages:
+1: In predict.lm(object, newdata, se.fit, scale = 1, type = ifelse(type ==  :
+  prediction from a rank-deficient fit may be misleading
+2: In predict.lm(object, newdata, se.fit, scale = 1, type = ifelse(type ==  :
+  prediction from a rank-deficient fit may be misleading
+3: In melt.data.table(dat_df, id.vars = "ID", measure.vars = value_vars,  :
+  All 'measure.vars are NOT of the SAME type. By order of hierarchy, the molten data value column will be of type 'integer'. Therefore all measure variables that are not of type 'integer' will be coerced to. Check the DETAILS section of ?melt.data.table for more on coercion.
+Error in set.DAG(testDAG_listobj2) : 
+  each of DAG items must be a list specifying DAG node(s)
+...automatically assigning order attribute to some nodes...
+node nm, order:1
+node nm, order:2
+node nm, order:3
+Error in set.DAG(testDAG_names1) : 
+  some nodes are missing required named arguments, check node(s): 1,2,3
+...automatically assigning order attribute to some nodes...
+node nm, order:2
+node nm, order:3
+Error in set.DAG(testDAG_names2) : 
+  All DAG nodes must have unique name attributes
+Error in sortbyorder(DAG) : 
+  DAG list names of node objects and node name arguments don't match
+ done successfully.
+
+
+
+Executing test function test.tswitch_2MSMs  ... [1] 0
+[1] "abar"
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[1] 3
+[1] "abar"
+ [1] 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[1] 6
+[1] "abar"
+ [1] 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1
+[1] 10
+[1] "abar"
+ [1] 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1
+[1] 13
+[1] "abar"
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1
+[1] 17
+[1] "abar"
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[1] "tswitch_i"
+[1] 0
+[1] "meanExposureVec"
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[1] "tswitch_i"
+[1] 3
+[1] "meanExposureVec"
+ [1] 0.000 0.000 0.000 0.250 0.400 0.500 0.571 0.625 0.667 0.700 0.727 0.750
+[13] 0.769 0.786 0.800 0.812 0.824
+[1] "tswitch_i"
+[1] 6
+[1] "meanExposureVec"
+ [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.143 0.250 0.333 0.400 0.455 0.500
+[13] 0.538 0.571 0.600 0.625 0.647
+[1] "tswitch_i"
+[1] 10
+[1] "meanExposureVec"
+ [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.091 0.167
+[13] 0.231 0.286 0.333 0.375 0.412
+[1] "tswitch_i"
+[1] 13
+[1] "meanExposureVec"
+ [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+[13] 0.000 0.071 0.133 0.188 0.235
+[1] "tswitch_i"
+[1] 17
+[1] "meanExposureVec"
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+MSM: fitting glm to full data...
+[1] "MSMtermName used"
+[1] "XMSMterm.1"
+[1] "MSMterm_vals last"
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[1] "MSMterm_vals last"
+ [1] 0.0000000 0.0000000 0.0000000 0.2500000 0.4000000 0.5000000 0.5714286
+ [8] 0.6250000 0.6666667 0.7000000 0.7272727 0.7500000 0.7692308 0.7857143
+[15] 0.8000000 0.8125000 0.8235294
+[1] "MSMterm_vals last"
+ [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.1428571
+ [8] 0.2500000 0.3333333 0.4000000 0.4545455 0.5000000 0.5384615 0.5714286
+[15] 0.6000000 0.6250000 0.6470588
+[1] "MSMterm_vals last"
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.09090909 0.16666667
+[13] 0.23076923 0.28571429 0.33333333 0.37500000 0.41176471
+[1] "MSMterm_vals last"
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+[13] 0.00000000 0.07142857 0.13333333 0.18750000 0.23529412
+[1] "MSMterm_vals last"
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[1] "MSMtermName used"
+[1] "meanExposure"
+[1] "MSMterm_vals last"
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[1] "MSMterm_vals last"
+ [1] 0.0000000 0.0000000 0.0000000 0.2500000 0.4000000 0.5000000 0.5714286
+ [8] 0.6250000 0.6666667 0.7000000 0.7272727 0.7500000 0.7692308 0.7857143
+[15] 0.8000000 0.8125000 0.8235294
+[1] "MSMterm_vals last"
+ [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.1428571
+ [8] 0.2500000 0.3333333 0.4000000 0.4545455 0.5000000 0.5384615 0.5714286
+[15] 0.6000000 0.6250000 0.6470588
+[1] "MSMterm_vals last"
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.09090909 0.16666667
+[13] 0.23076923 0.28571429 0.33333333 0.37500000 0.41176471
+[1] "MSMterm_vals last"
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+[13] 0.00000000 0.07142857 0.13333333 0.18750000 0.23529412
+[1] "MSMterm_vals last"
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+...evaluating MSM summary measures and converting full data to long format for MSM target parameter...
+MSM: fitting glm to full data...
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 500 simulated samples per action
+MSM: fitting glm to full data...
+[1] "MSMtermName used"
+[1] "XMSMterm.1"
+[1] "MSMterm_vals last"
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[1] "MSMterm_vals last"
+ [1] 0.0000000 0.0000000 0.0000000 0.2500000 0.4000000 0.5000000 0.5714286
+ [8] 0.6250000 0.6666667 0.7000000 0.7272727 0.7500000 0.7692308 0.7857143
+[15] 0.8000000 0.8125000 0.8235294
+[1] "MSMterm_vals last"
+ [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.1428571
+ [8] 0.2500000 0.3333333 0.4000000 0.4545455 0.5000000 0.5384615 0.5714286
+[15] 0.6000000 0.6250000 0.6470588
+[1] "MSMterm_vals last"
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.09090909 0.16666667
+[13] 0.23076923 0.28571429 0.33333333 0.37500000 0.41176471
+[1] "MSMterm_vals last"
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+[13] 0.00000000 0.07142857 0.13333333 0.18750000 0.23529412
+[1] "MSMterm_vals last"
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[1] "MSMtermName used"
+[1] "XMSMterm.1"
+[1] "MSMterm_vals last"
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[1] "MSMterm_vals last"
+ [1] 0.0000000 0.0000000 0.0000000 0.2500000 0.4000000 0.5000000 0.5714286
+ [8] 0.6250000 0.6666667 0.7000000 0.7272727 0.7500000 0.7692308 0.7857143
+[15] 0.8000000 0.8125000 0.8235294
+[1] "MSMterm_vals last"
+ [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.1428571
+ [8] 0.2500000 0.3333333 0.4000000 0.4545455 0.5000000 0.5384615 0.5714286
+[15] 0.6000000 0.6250000 0.6470588
+[1] "MSMterm_vals last"
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.09090909 0.16666667
+[13] 0.23076923 0.28571429 0.33333333 0.37500000 0.41176471
+[1] "MSMterm_vals last"
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+[13] 0.00000000 0.07142857 0.13333333 0.18750000 0.23529412
+[1] "MSMterm_vals last"
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[1] "MSMtermName used"
+[1] "meanExposure"
+[1] "MSMterm_vals last"
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[1] "MSMterm_vals last"
+ [1] 0.0000000 0.0000000 0.0000000 0.2500000 0.4000000 0.5000000 0.5714286
+ [8] 0.6250000 0.6666667 0.7000000 0.7272727 0.7500000 0.7692308 0.7857143
+[15] 0.8000000 0.8125000 0.8235294
+[1] "MSMterm_vals last"
+ [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.1428571
+ [8] 0.2500000 0.3333333 0.4000000 0.4545455 0.5000000 0.5384615 0.5714286
+[15] 0.6000000 0.6250000 0.6470588
+[1] "MSMterm_vals last"
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.09090909 0.16666667
+[13] 0.23076923 0.28571429 0.33333333 0.37500000 0.41176471
+[1] "MSMterm_vals last"
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+[13] 0.00000000 0.07142857 0.13333333 0.18750000 0.23529412
+[1] "MSMterm_vals last"
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[1] 0
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[1] 5
+ [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.1666667 0.2857143
+ [8] 0.3750000 0.4444444 0.5000000 0.5454545 0.5833333 0.6153846 0.6428571
+[15] 0.6666667 0.6875000 0.7058824
+[1] 10
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.09090909 0.16666667
+[13] 0.23076923 0.28571429 0.33333333 0.37500000 0.41176471
+[1] 17
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+...data not specified, simulating full data
+...no actions specified, sampling full data for ALL actions from the DAG
+...evaluating the target on 200 simulated samples per action
+MSM: fitting glm to full data...
+[1] "MSMtermName used"
+[1] "meanExposure"
+[1] "MSMterm_vals last"
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[1] "MSMterm_vals last"
+ [1] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.1666667 0.2857143
+ [8] 0.3750000 0.4444444 0.5000000 0.5454545 0.5833333 0.6153846 0.6428571
+[15] 0.6666667 0.6875000 0.7058824
+[1] "MSMterm_vals last"
+ [1] 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+ [7] 0.00000000 0.00000000 0.00000000 0.00000000 0.09090909 0.16666667
+[13] 0.23076923 0.28571429 0.33333333 0.37500000 0.41176471
+[1] "MSMterm_vals last"
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ done successfully.
+
+------------------- UNIT TEST SUMMARY ---------------------
+
+RUNIT TEST PROTOCOL -- Sat Jun 13 13:17:43 2015 
+*********************************************** 
+Number of test functions: 12 
+Number of errors: 0 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+simcausal unit testing - 12 test functions, 0 errors, 0 failures
+> 
+> proc.time()
+   user  system elapsed 
+ 64.064   1.225  65.473 

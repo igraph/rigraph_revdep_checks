@@ -1,0 +1,467 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "SEMID"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "SEMID-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('SEMID')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("graphID")
+> ### * graphID
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: graphID
+> ### Title: Identifiability of Linear Structural Equation Models
+> ### Aliases: graphID
+> 
+> ### ** Examples
+> 
+> L = t(matrix(
++   c(0, 1, 0, 0, 0,
++     0, 0, 1, 0, 0,
++     0, 0, 0, 1, 0,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 0), 5, 5))
+> O = t(matrix(
++   c(0, 0, 1, 1, 0,
++     0, 0, 0, 1, 1,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+> graphID(L,O)
+                                                                           
+ Component                Nodes                    HTC-ID'able nodes       
+ 1                        1,2,3,4,5                1,2,3,4,5               
+                         
+ Identifiability         
+ Generically ID'able     
+> 
+> ## Examples from Foygel, Draisma & Drton (2012)
+> demo(SEMID)
+
+
+	demo(SEMID)
+	---- ~~~~~
+
+> ## Empty graph 
+> 
+> L = t(matrix(
++   c(0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                                                     
+ Component              Nodes                  HTC-ID'able nodes     
+ 1                      1                      1                     
+ 2                      2                      2                     
+ 3                      3                      3                     
+ 4                      4                      4                     
+ 5                      5                      5                     
+                       
+ Identifiability       
+ Globally ID'able      
+ Globally ID'able      
+ Globally ID'able      
+ Globally ID'able      
+ Globally ID'able      
+
+> ## Ex. 3a HTC id
+> 
+> L = t(matrix(
++   c(0, 1, 0, 0, 0,
++     0, 0, 1, 0, 0,
++     0, 0, 0, 1, 0,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 0, 1, 1, 0,
++     0, 0, 0, 1, 1,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                                                           
+ Component                Nodes                    HTC-ID'able nodes       
+ 1                        1,2,3,4,5                1,2,3,4,5               
+                         
+ Identifiability         
+ Generically ID'able     
+
+> ## Ex 3b HTC id
+> 
+> L = t(matrix(
++   c(0, 1, 0, 0, 1,
++     0, 0, 1, 1, 0,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 0, 1, 1, 1,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                                                           
+ Component                Nodes                    HTC-ID'able nodes       
+ 1                        1,3,4,5                  1,3,4,5                 
+ 2                        2                        2                       
+                         
+ Identifiability         
+ Generically ID'able     
+ Globally ID'able        
+
+> ## Ex 3c HTC inc
+> 
+> L = t(matrix(
++   c(0, 1, 1, 1, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 1, 1, 1, 1,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                                                     
+ Component              Nodes                  HTC-ID'able nodes     
+ 1                      1,2,3,4,5              1                     
+                       
+ Identifiability       
+ HTC-inconclusive      
+
+> ## Ex 3d HTC id
+> 
+> L = t(matrix(
++   c(0, 1, 0, 0, 0,
++     0, 0, 1, 0, 0,
++     0, 1, 0, 1, 0,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 1, 0, 1, 1,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 1, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                                  
+ HTC-ID'able nodes        Identifiability         
+ 1,3,5,2,4                Generically ID'able     
+
+> ## Ex 3e HTC inc
+> 
+> L = t(matrix(
++   c(0, 1, 0, 0, 0,
++     0, 0, 1, 0, 0,
++     0, 0, 0, 1, 1,
++     0, 0, 0, 0, 1,
++     1, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 0, 1, 0, 0,
++     0, 0, 1, 1, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                              
+ HTC-ID'able nodes      Identifiability       
+ none                   HTC-inconclusive      
+
+> ## Ex 4a HTC nonid
+> 
+> L = t(matrix(
++   c(0, 1, 1, 1, 1,
++     0, 0, 1, 1, 0,
++     0, 0, 0, 1, 1,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 0, 0, 0, 0,
++     0, 0, 1, 0, 1,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                                          
+ Component                    Nodes                       
+ 1                            1                           
+ 2                            2,3,5                       
+ 3                            4                           
+                                                          
+ HTC-ID'able nodes            Identifiability             
+ 1                            Globally ID'able            
+ 2                            Generically non-ID'able     
+ 4                            Globally ID'able            
+
+> ## Ex 4b HTC inc
+> 
+> L = t(matrix(
++   c(0, 1, 1, 1, 1,
++     0, 0, 1, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 1, 1, 1, 1,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                                                     
+ Component              Nodes                  HTC-ID'able nodes     
+ 1                      1,2,3,4,5              1                     
+                       
+ Identifiability       
+ HTC-inconclusive      
+
+> ## Ex 4c HTC nonid
+> 
+> L = t(matrix(
++   c(0, 1, 1, 0, 0,
++     1, 0, 0, 0, 0,
++     1, 0, 0, 0, 0,
++     1, 0, 0, 0, 0,
++     1, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 1, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                                          
+ HTC-ID'able nodes            Identifiability             
+ 4,5,2,3                      Generically non-ID'able     
+
+> ## Ex 4d HTC inc
+> 
+> L = t(matrix(
++   c(0, 0, 0, 1, 1,
++     0, 0, 1, 0, 1,
++     1, 1, 0, 1, 0,
++     0, 0, 0, 0, 1,
++     0, 1, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                              
+ HTC-ID'able nodes      Identifiability       
+ none                   HTC-inconclusive      
+
+> ## Ex 5a HTC inc
+> 
+> L = t(matrix(
++   c(0, 1, 1, 1, 1,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 1, 1, 1, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                                                     
+ Component              Nodes                  HTC-ID'able nodes     
+ 1                      1,2,3,4                1                     
+ 2                      5                      5                     
+                       
+ Identifiability       
+ HTC-inconclusive      
+ Globally ID'able      
+
+> ## Ex 5b HTC inc
+> 
+> L = t(matrix(
++   c(0, 1, 0, 1, 1,
++     0, 0, 1, 0, 1,
++     0, 0, 0, 1, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 1, 1, 0, 1,
++     0, 0, 0, 1, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                                                     
+ Component              Nodes                  HTC-ID'able nodes     
+ 1                      1,2,3,4,5              1                     
+                       
+ Identifiability       
+ HTC-inconclusive      
+
+> ## Ex 5c HTC inc
+> 
+> L = t(matrix(
++   c(0, 1, 0, 0, 0,
++     0, 0, 1, 0, 0,
++     0, 0, 0, 1, 0,
++     0, 0, 0, 0, 1,
++     1, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                              
+ HTC-ID'able nodes      Identifiability       
+ none                   HTC-inconclusive      
+
+> ## Ex 5d HTC inc
+> 
+> L = t(matrix(
++   c(0, 1, 0, 1, 1,
++     0, 0, 1, 0, 1,
++     1, 0, 0, 1, 0,
++     0, 1, 0, 0, 0,
++     1, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 1, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                              
+ HTC-ID'able nodes      Identifiability       
+ none                   HTC-inconclusive      
+
+> ## Ex 7a (Fig 9a)
+> 
+> L = t(matrix(
++   c(0, 1, 1, 0, 0,
++     0, 0, 1, 1, 1,
++     0, 0, 0, 1, 0,
++     0, 0, 0, 0, 1,
++     0, 0, 0, 0, 0), 5, 5))
+
+> O = t(matrix(
++   c(0, 0, 0, 1, 0,
++     0, 0, 1, 0, 1,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0,
++     0, 0, 0, 0, 0), 5, 5)); O=O+t(O)
+
+> graphID(L,O)
+                                                                           
+ Component                Nodes                    HTC-ID'able nodes       
+ 1                        1,4                      1,4                     
+ 2                        2,3,5                    2,5,3                   
+                         
+ Identifiability         
+ Globally ID'able        
+ Generically ID'able     
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("graphID", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.418 0.019 0.455 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

@@ -1,0 +1,707 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "markovchain"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "markovchain-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('markovchain')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("absorbingStates")
+> ### * absorbingStates
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: absorbingStates
+> ### Title: Various function to perform statistical and probabilistic
+> ###   analysis
+> ### Aliases: absorbingStates transientStates canonicForm period
+> 
+> ### ** Examples
+> 
+> statesNames=c("a","b","c")
+> markovB<-new("markovchain", states=statesNames, transitionMatrix=
++           matrix(c(0.2,0.5,0.3,
++                    0,1,0,
++                    0.1,0.8,0.1),nrow=3, byrow=TRUE, dimnames=list(statesNames,statesNames)
++                  ))
+> absorbingStates(markovB)
+[1] "b"
+> transientStates(markovB)
+[1] "a" "c"
+> canonicForm(markovB)
+Unnamed Markov chain 
+ A  3 - dimensional discrete Markov Chain with following states 
+ b a c 
+ The transition matrix   (by rows)  is defined as follows 
+    b   a   c
+b 1.0 0.0 0.0
+a 0.5 0.2 0.3
+c 0.8 0.1 0.1
+
+> #periodicity analysis
+> E=matrix(0,nrow=4,ncol=4)
+> E[1,2]=1
+> #E[2,c(1, 3)]=1/2;
+> E[2,1]=1/3;E[2,3]=2/3
+> #E[3,c(2, 4)]=1/2;
+> E[3,2]=1/4;E[3,4]=3/4
+> E[4,3]=1
+> mcE <- new("markovchain", states = c("a", "b", "c", "d"), 
++                  transitionMatrix = E, 
++                  name = "E")
+> 
+> is.irreducible(mcE) #true
+[1] TRUE
+> period(mcE) #2
+[1] 2
+> 
+> myMatr<-matrix(c(0,0,1/2,1/4,1/4,0,0,
++ 0,0,1/3,0,2/3,0,0,
++ 0,0,0,0,0,1/3,2/3,
++ 0,0,0,0,0,1/2,1/2,
++ 0,0,0,0,0,3/4,1/4,
++ 1/2,1/2,0,0,0,0,0,
++ 1/4,3/4,0,0,0,0,0),byrow=TRUE,ncol=7)
+> myMc<-new("markovchain",transitionMatrix=myMatr)
+> period(myMc)
+[1] 3
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("absorbingStates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("blanden")
+> ### * blanden
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: blanden
+> ### Title: Mobility between income quartiles
+> ### Aliases: blanden
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(blanden)
+> mobilityMc<-as(blanden, "markovchain")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("blanden", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("conditionalDistribution")
+> ### * conditionalDistribution
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: conditionalDistribution
+> ### Title: 'conditionalDistribution' of a Markov Chain
+> ### Aliases: conditionalDistribution
+> 
+> ### ** Examples
+> 
+> #define a markov chain
+> statesNames=c("a","b","c")
+> markovB<-new("markovchain", states=statesNames, transitionMatrix=matrix(c(0.2,0.5,0.3,
++ 0,1,0,0.1,0.8,0.1),nrow=3, byrow=TRUE, dimnames=list(statesNames,statesNames)))
+> conditionalDistribution(markovB,"b")
+a b c 
+0 1 0 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("conditionalDistribution", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("craigsendi")
+> ### * craigsendi
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: craigsendi
+> ### Title: CD4 cells counts on HIV Infects between zero and six month
+> ### Aliases: craigsendi
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(craigsendi)
+> csMc<-as(craigsendi, "markovchain")
+> steadyStates(csMc)
+          0-49      50-74      75-UP
+[1,] 0.8343668 0.07659214 0.08904103
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("craigsendi", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("firstPassage")
+> ### * firstPassage
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: firstPassage
+> ### Title: First passage across states
+> ### Aliases: firstPassage
+> 
+> ### ** Examples
+> 
+> #create a simple Markov chain
+> simpleMc<-new("markovchain", states=c("a","b"),
++ transitionMatrix=matrix(c(0.4,0.6,.3,.7),nrow=2,byrow=TRUE))
+> firstPassage(simpleMc,"b",20)
+              a            b
+1  0.3000000000 7.000000e-01
+2  0.2100000000 1.800000e-01
+3  0.1470000000 7.200000e-02
+4  0.1029000000 2.880000e-02
+5  0.0720300000 1.152000e-02
+6  0.0504210000 4.608000e-03
+7  0.0352947000 1.843200e-03
+8  0.0247062900 7.372800e-04
+9  0.0172944030 2.949120e-04
+10 0.0121060821 1.179648e-04
+11 0.0084742575 4.718592e-05
+12 0.0059319802 1.887437e-05
+13 0.0041523862 7.549747e-06
+14 0.0029066703 3.019899e-06
+15 0.0020346692 1.207960e-06
+16 0.0014242685 4.831838e-07
+17 0.0009969879 1.932735e-07
+18 0.0006978915 7.730941e-08
+19 0.0004885241 3.092376e-08
+20 0.0003419669 1.236951e-08
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("firstPassage", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("holson")
+> ### * holson
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: holson
+> ### Title: Holson data set
+> ### Aliases: holson
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(holson)
+> head(holson)
+  id time1 time2 time3 time4 time5 time6 time7 time8 time9 time10 time11
+1  1     1     1     1     1     1     1     1     1     1      1      1
+2  2     1     1     1     1     1     1     1     1     1      1      1
+3  3     1     1     1     1     1     1     1     1     1      1      1
+4  4     1     1     1     1     2     1     1     1     1      1      1
+5  5     1     1     1     1     1     1     1     1     1      1      1
+6  6     1     1     1     1     1     1     1     1     1      1      1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("holson", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("is.accessible")
+> ### * is.accessible
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: is.accessible
+> ### Title: Verify if a state j is reachable from state i.
+> ### Aliases: is.accessible
+> 
+> ### ** Examples
+> 
+> statesNames<-c("a","b","c")
+> markovB<-new("markovchain", states=statesNames, transitionMatrix=
++           matrix(c(0.2,0.5,0.3,
++                    0,1,0,
++                    0.1,0.8,0.1),nrow=3, byrow=TRUE, dimnames=list(statesNames,statesNames)
++                  ))
+> is.accessible(markovB,"a","c")
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("is.accessible", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("is.irreducible")
+> ### * is.irreducible
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: is.irreducible
+> ### Title: Function to check if a Markov chain is irreducible
+> ### Aliases: is.irreducible
+> 
+> ### ** Examples
+> 
+> statesNames=c("a","b")
+> mcA<-new("markovchain", transitionMatrix=matrix(c(0.7,0.3,0.1,0.9),byrow=TRUE, nrow=2, 
++                                                   dimnames=list(statesNames,statesNames)
++                                                   ))
+> is.irreducible(mcA)
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("is.irreducible", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("markovchain-class")
+> ### * markovchain-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: markovchain-class
+> ### Title: Class '"markovchain"'
+> ### Aliases: markovchain-class *,markovchain,markovchain-method
+> ###   *,markovchain,matrix-method *,markovchain,numeric-method
+> ###   *,matrix,markovchain-method *,numeric,markovchain-method
+> ###   [,markovchain,ANY,ANY,ANY-method ^,markovchain,numeric-method
+> ###   ==,markovchain,markovchain-method absorbingStates,markovchain-method
+> ###   conditionalDistribution,markovchain-method
+> ###   canonicForm,markovchain-method coerce,data.frame,markovchain-method
+> ###   coerce,markovchain,data.frame-method coerce,table,markovchain-method
+> ###   coerce,markovchain,igraph-method coerce,markovchain,matrix-method
+> ###   coerce,matrix,markovchain-method dim,markovchain-method
+> ###   initialize,markovchain-method plot,markovchain,missing-method
+> ###   predict,markovchain-method print,markovchain-method
+> ###   show,markovchain-method states,markovchain-method
+> ###   steadyStates,markovchain-method summary,markovchain-method
+> ###   transientStates,markovchain-method t,markovchain-method
+> ###   transitionProbability,markovchain-method
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> #show markovchain definition
+> showClass("markovchain")
+Class "markovchain" [package "markovchain"]
+
+Slots:
+                                                                          
+Name:            states            byrow transitionMatrix             name
+Class:        character          logical           matrix        character
+> #create a simple Markov chain
+> transMatr<-matrix(c(0.4,0.6,.3,.7),nrow=2,byrow=TRUE)
+> simpleMc<-new("markovchain", states=c("a","b"),
++ transitionMatrix=transMatr, 
++ name="simpleMc")
+> #power
+> simpleMc^4
+simpleMc^4 
+ A  2 - dimensional discrete Markov Chain with following states 
+ a b 
+ The transition matrix   (by rows)  is defined as follows 
+       a      b
+a 0.3334 0.6666
+b 0.3333 0.6667
+
+> #some methods
+> steadyStates(simpleMc)
+             a         b
+[1,] 0.3333333 0.6666667
+> absorbingStates(simpleMc)
+character(0)
+> simpleMc[2,1]
+[1] 0.3
+> t(simpleMc)
+Unnamed Markov chain 
+ A  2 - dimensional discrete Markov Chain with following states 
+ a b 
+ The transition matrix   (by cols)  is defined as follows 
+    a   b
+a 0.4 0.3
+b 0.6 0.7
+
+> is.irreducible(simpleMc)
+[1] TRUE
+> #conditional distributions
+> conditionalDistribution(simpleMc, "b")
+  a   b 
+0.3 0.7 
+> #example for predict method
+> sequence<-c("a", "b", "a", "a", "a", "a", "b", "a", "b", "a", "b", "a", "a", "b", "b", "b", "a")
+> mcFit<-markovchainFit(data=sequence)
+> predict(mcFit$estimate, newdata="b",n.ahead=3)
+[1] "a" "b" "a"
+> #direct conversion
+> myMc<-as(transMatr, "markovchain")
+> 
+> #example of summary
+> summary(simpleMc)
+simpleMc  Markov chain that is composed by: 
+Closed classes: 
+a b 
+Transient classes: 
+NONE 
+The Markov chain is irreducible 
+The absorbing states are: NONE
+> ## Not run: plot(simpleMc)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("markovchain-class", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("markovchain-package")
+> ### * markovchain-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: markovchain-package
+> ### Title: Easy Handling Discrete Time Markov Chains
+> ### Aliases: markovchain-package markovchain
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+> #create some markov chains
+> statesNames=c("a","b")
+>  mcA<-new("markovchain", transitionMatrix=matrix(c(0.7,0.3,0.1,0.9),byrow=TRUE,
++  nrow=2, dimnames=list(statesNames,statesNames)))
+> 
+> statesNames=c("a","b","c")
+> mcB<-new("markovchain", states=statesNames, transitionMatrix=
++           matrix(c(0.2,0.5,0.3,
++                    0,1,0,
++                    0.1,0.8,0.1),nrow=3, byrow=TRUE, dimnames=list(statesNames,
++ 				   statesNames)
++                  ))
+> 
+> statesNames=c("a","b","c","d")
+> matrice<-matrix(c(0.25,0.75,0,0,0.4,0.6,0,0,0,0,0.1,0.9,0,0,0.7,0.3), 
++ nrow=4, byrow=TRUE)
+> mcC<-new("markovchain", states=statesNames, transitionMatrix=matrice)
+> mcD<-new("markovchain", transitionMatrix=matrix(c(0,1,0,1), nrow=2,byrow=TRUE))
+> 
+> 
+> 
+> #operations with S4 methods
+> 
+> mcA^2
+Unnamed Markov chain^2 
+ A  2 - dimensional discrete Markov Chain with following states 
+ a b 
+ The transition matrix   (by rows)  is defined as follows 
+     a    b
+a 0.52 0.48
+b 0.16 0.84
+
+> steadyStates(mcB)
+     a b c
+[1,] 0 1 0
+> absorbingStates(mcB)
+[1] "b"
+> markovchainSequence(n=20, markovchain=mcC, include=TRUE)
+ [1] "b" "b" "b" "a" "b" "a" "a" "b" "a" "b" "b" "b" "a" "b" "a" "b" "a" "a" "b"
+[20] "a" "a"
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("markovchain-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("markovchainFit")
+> ### * markovchainFit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: markovchainFit
+> ### Title: Function to fit a discrete Markov chain
+> ### Aliases: markovchainFit createSequenceMatrix
+> 
+> ### ** Examples
+> 
+> sequence<-c("a", "b", "a", "a", "a", "a", "b", "a", "b", "a", "b", "a", "a", 
++ "b", "b", "b", "a")
+> sequenceMatr<-createSequenceMatrix(sequence,sanitize=FALSE)
+> mcFitMLE<-markovchainFit(data=sequence)
+> mcFitBSP<-markovchainFit(data=sequence,method="bootstrap",nboot=5, name="Bootstrap Mc")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("markovchainFit", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("markovchainList-class")
+> ### * markovchainList-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: markovchainList-class
+> ### Title: Class '"markovchainList"'
+> ### Aliases: markovchainList-class [[,markovchainList-method
+> ###   dim,markovchainList-method predict,markovchainList-method
+> ###   print,markovchainList-method show,markovchainList-method
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> showClass("markovchainList")
+Class "markovchainList" [package "markovchain"]
+
+Slots:
+                                
+Name:  markovchains         name
+Class:         list    character
+> #define a markovchainList
+> statesNames=c("a","b")
+> 
+> mcA<-new("markovchain",name="MCA", transitionMatrix=matrix(c(0.7,0.3,0.1,0.9),
++ byrow=TRUE, nrow=2, dimnames=list(statesNames,statesNames)))
+> 
+> mcB<-new("markovchain", states=c("a","b","c"), name="MCB",
++ transitionMatrix=matrix(c(0.2,0.5,0.3,0,1,0,0.1,0.8,0.1),
++ nrow=3, byrow=TRUE))
+> 
+> mcC<-new("markovchain", states=c("a","b","c","d"), name="MCC",
++   	transitionMatrix=matrix(c(0.25,0.75,0,0,0.4,0.6,
++     0,0,0,0,0.1,0.9,0,0,0.7,0.3), nrow=4, byrow=TRUE)
++ )
+> mcList<-new("markovchainList",markovchains=list(mcA, mcB, mcC), 
++ name="Non - homogeneous Markov Chain")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("markovchainList-class", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("markovchainListFit")
+> ### * markovchainListFit
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: markovchainListFit
+> ### Title: Fit a markovchainList
+> ### Aliases: markovchainListFit
+> 
+> ### ** Examples
+> 
+> #using holson dataset
+> data(holson)
+> #fitting a single markovchain
+> singleMc<-markovchainFit(data=holson[,2:12])
+> #fitting a markovchainList
+> mclistFit<-markovchainListFit(data=holson[,2:12],name="holsonMcList")
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("markovchainListFit", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("preproglucacon")
+> ### * preproglucacon
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: preproglucacon
+> ### Title: Preprogluccacon DNA protein bases sequences
+> ### Aliases: preproglucacon
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(preproglucacon)
+> preproglucaconMc<-markovchainFit(data=preproglucacon$preproglucacon)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("preproglucacon", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rain")
+> ### * rain
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rain
+> ### Title: Alofi island daily rainfall
+> ### Aliases: rain
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(rain)
+> rainMc<-markovchainFit(data=rain$rain)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rain", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("randomSampler")
+> ### * randomSampler
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rmarkovchain
+> ### Title: Function to generate a sequence of states from homogeneous or
+> ###   non-homogeneous Markov chains.
+> ### Aliases: rmarkovchain markovchainSequence
+> 
+> ### ** Examples
+> 
+> #define the Markov chain
+> statesNames=c("a","b","c")
+> mcB<-new("markovchain", states=statesNames, transitionMatrix=matrix(c(0.2,0.5,0.3,
++ 0,0.2,0.8,0.1,0.8,0.1),nrow=3, byrow=TRUE, dimnames=list(statesNames,statesNames)
++                  ))
+> #show the sequence
+> outs<-markovchainSequence(n=100,markovchain=mcB, t0="a")
+> outs2<-rmarkovchain(n=20, object=mcB)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("randomSampler", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("states")
+> ### * states
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: states
+> ### Title: Defined states of a transition matrix
+> ### Aliases: states
+> 
+> ### ** Examples
+> 
+> statesNames=c("a","b","c")
+> markovB<-new("markovchain", states=statesNames, transitionMatrix=
++           matrix(c(0.2,0.5,0.3,
++                    0,1,0,
++                    0.1,0.8,0.1),nrow=3, byrow=TRUE, dimnames=list(statesNames,statesNames)
++                  ))
+> states(markovB)
+[1] "a" "b" "c"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("states", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("steadyStates")
+> ### * steadyStates
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: steadyStates
+> ### Title: Stationary states of a 'markovchain' objeect
+> ### Aliases: steadyStates
+> 
+> ### ** Examples
+> 
+> statesNames=c("a","b","c")
+> markovB<-new("markovchain", states=statesNames, transitionMatrix=
++           matrix(c(0.2,0.5,0.3,
++                    0,1,0,
++                    0.1,0.8,0.1),nrow=3, byrow=TRUE, dimnames=list(statesNames,statesNames)
++                  ))
+> steadyStates(markovB)
+     a b c
+[1,] 0 1 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("steadyStates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("transitionProbability")
+> ### * transitionProbability
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: transitionProbability
+> ### Title: Function to get the transition probabilities from initial to
+> ###   subsequent status.
+> ### Aliases: transitionProbability
+> 
+> ### ** Examples
+> 
+> #define a markov chain
+> statesNames=c("a","b","c")
+> markovB<-new("markovchain", states=statesNames, transitionMatrix=
++           matrix(c(0.2,0.5,0.3,
++                    0,1,0,
++                    0.1,0.8,0.1),nrow=3, byrow=TRUE, dimnames=list(statesNames,statesNames)
++                  ))
+> transitionProbability(markovB,"b", "c")
+[1] 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("transitionProbability", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  1.821 0.06 1.887 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

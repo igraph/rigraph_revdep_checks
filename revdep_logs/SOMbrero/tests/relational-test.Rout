@@ -1,0 +1,59 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(SOMbrero)
+Loading required package: knitr
+Loading required package: igraph
+
+Attaching package: 'igraph'
+
+The following objects are masked from 'package:stats':
+
+    decompose, spectrum
+
+The following object is masked from 'package:base':
+
+    union
+
+
+***********************************************************
+
+      This is 'SOMbrero' package, v 1.0
+
+Citation details with citation('SOMbrero')
+
+Further information with help(SOMbrero)...
+
+Use sombreroGUI() to start the Graphical Interface.
+
+Warning! This package has been implemented by girls.
+Default colors may not be suited for men.
+
+***********************************************************
+> 
+> iris.dist <- dist(iris[1:30,1:4], method="minkowski", diag=TRUE, upper=TRUE, 
++                   p=4)
+> rsom <- trainSOM(x.data=iris.dist, type="relational")
+> 
+> stopifnot(all.equal(as.vector(rowSums(rsom$prototypes)), 
++                     rep(1, prod(rsom$parameters$the.grid$dim))))
+> 
+> stopifnot(!sum(rsom$prototypes<0))
+> 
+> proc.time()
+   user  system elapsed 
+  0.594   0.041   0.629 

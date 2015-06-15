@@ -1,0 +1,6 @@
+* installing *source* package ‘outbreaker’ ...
+** package ‘outbreaker’ successfully unpacked and MD5 sums checked
+checking for gsl-config... no
+configure: error: gsl-config not found, is GSL installed?
+ERROR: configuration failed for package ‘outbreaker’
+* removing ‘/Users/gaborcsardi/works/igraph/revdep_check/outbreaker.Rcheck/outbreaker’

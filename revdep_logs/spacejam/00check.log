@@ -1,0 +1,114 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/spacejam.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘spacejam/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘spacejam’ version ‘1.1’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘spacejam’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... NOTE
+Malformed Title field: should not end in a period.
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... NOTE
+'library' or 'require' call to ‘Matrix’ which was already attached by Depends.
+  Please remove these calls from your code.
+Packages in Depends field not imported from:
+  ‘Matrix’ ‘igraph’ ‘splines’
+  These packages need to be imported from (in the NAMESPACE file)
+  for when this namespace is loaded but not attached.
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+SJ: no visible binding for global variable ‘bs’
+SJ: no visible global function definition for ‘get.adjacency’
+SJ : <anonymous>: no visible global function definition for
+  ‘graph.adjacency’
+SJ: no visible binding for global variable ‘ecount’
+SJ.dag: no visible binding for global variable ‘bs’
+SJ.dag : <anonymous>: no visible global function definition for
+  ‘graph.adjacency’
+SJ.dag: no visible binding for global variable ‘ecount’
+SJpath: no visible global function definition for ‘get.adjacency’
+SJpath : <anonymous>: no visible global function definition for
+  ‘graph.adjacency’
+generate.dag.data: no visible global function definition for ‘vcount’
+generate.dag.data: no visible global function definition for
+  ‘topological.sort’
+generate.dag.data: no visible global function definition for
+  ‘neighbors’
+grpsel: no visible global function definition for ‘Matrix’
+moralize: no visible global function definition for ‘vcount’
+moralize: no visible global function definition for ‘as.undirected’
+moralize: no visible global function definition for ‘get.adjacency’
+moralize: no visible global function definition for ‘add.edges’
+moralize: no visible global function definition for ‘simplify’
+plot.SJ: no visible global function definition for
+  ‘layout.fruchterman.reingold’
+plot.SJ.dag: no visible global function definition for
+  ‘layout.fruchterman.reingold’
+print.SJ: no visible binding for global variable ‘ecount’
+print.SJ: no visible global function definition for ‘ecount’
+print.SJ.dag: no visible binding for global variable ‘ecount’
+print.SJ.dag: no visible global function definition for ‘ecount’
+rdag: no visible global function definition for ‘graph.adjacency’
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... NOTE
+Rd file 'SJ.Rd':
+  \examples lines wider than 100 characters:
+     #with standard deviations of 1, 0.5 and 0.5, (i.e. giving more weight to linear association than quadratic or cubic)
+     #Fit conditional independence graph at one lambda , using the default basis functions (cubic polynomials).
+     plot(g, layout=mylayout, edge.color = "gray50", vertex.color = "red", vertex.size = 3, vertex.label = NA, edge.arrow.size = 0.4, main=" ... [TRUNCATED]
+
+Rd file 'generate.dag.data.Rd':
+  \usage lines wider than 90 characters:
+     generate.dag.data(g, n, basesd = 1, basemean = 0, bfuns = function(x){cbind(x, x^2, x^3)}, 
+  \examples lines wider than 100 characters:
+     #with standard deviations of 1, 0.5 and 0.5, (i.e. giving more weight to linear association than quadratic or cubic)
+
+Rd file 'spacejam-package.Rd':
+  \examples lines wider than 100 characters:
+     #with standard deviations of 1, 0.5 and 0.5, (i.e. giving more weight to linear association than quadratic or cubic)
+     plot(g, layout=mylayout, edge.color = "gray50", vertex.color = "red", vertex.size = 3, vertex.label = NA, edge.arrow.size = 0.4, main=" ... [TRUNCATED]
+
+These lines will be truncated in the PDF manual.
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking line endings in C/C++/Fortran sources/headers ... OK
+* checking compiled code ... OK
+* checking examples ... [23s/312s] OK
+Examples with CPU or elapsed time > 5s
+                  user system elapsed
+SJ               8.961  0.209   9.191
+spacejam-package 8.780  0.283   9.818
+plot.SJ          2.353  0.060 290.834
+* DONE
+Status: 4 NOTEs

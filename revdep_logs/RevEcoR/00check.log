@@ -1,0 +1,20 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/RevEcoR.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘RevEcoR/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘RevEcoR’ version ‘0.99.2’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘RevEcoR’ can be installed ... ERROR
+Installation failed.
+See ‘/Users/gaborcsardi/works/igraph/revdep_check/RevEcoR.Rcheck/00install.out’ for details.
+Status: 1 ERROR

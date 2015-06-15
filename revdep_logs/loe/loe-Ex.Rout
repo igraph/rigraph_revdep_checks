@@ -1,0 +1,230 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "loe"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "loe-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('loe')
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+Loading required package: MASS
+Loading required package: vegan
+Loading required package: permute
+
+Attaching package: ‘permute’
+
+The following object is masked from ‘package:igraph’:
+
+    permute
+
+Loading required package: lattice
+This is vegan 2.3-0
+
+Attaching package: ‘vegan’
+
+The following object is masked from ‘package:igraph’:
+
+    diversity
+
+Loading required package: Matrix
+Warning: replacing previous import by ‘vegan::diversity’ when loading ‘loe’
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("GARI")
+> ### * GARI
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: GARI
+> ### Title: Graph Adjusted Rand Index
+> ### Aliases: GARI
+> 
+> ### ** Examples
+> 
+> ###########
+> #Based on the distance matrix of an embedding, 
+> #this function provides the recovered adjacency matrix for given number of nearest neighbors.
+> ###########
+> rec.graph <- function(DM, k, symm =FALSE, weight=FALSE ) {
++ N <- nrow(DM)
++ ADM <- matrix(0, N, N)
++ #Search kNN point
++ if(weight==TRUE){
++  for (i in 1:N) {
++   nid <- order(DM[i,])
++   ADM[ i, nid[2:(k[i]+1)] ] <- DM[ i, nid[2:(k[i]+1)] ]
++  }
++ }else{
++  for (i in 1:N) {
++   nid <- order(DM[i,])
++   ADM[i,nid[2:(k[i]+1)] ] <- 1
++  }
++ }
++ if(symm==TRUE){
++  SADM <- ADM+t(ADM)
++  SADM[SADM==2*ADM] <- ADM[SADM==2*ADM]
++  ADM <- SADM
++ }
++ return(ADM)
++ }
+> 						
+> 
+> ADM <- as.matrix( get.adjacency(graph.famous("Thomassen")) )
+> #Apply LOE
+> result.LOE <- LOE(ADM=ADM,p=2,c=0.1,method="BFGS",report=1000)
+initial  value 7.531723 
+final  value 3.054988 
+converged
+> 
+> #Compute the vector of numbers of nearest neighbors with each verteces
+> true.nn <- apply(X=ADM,1,sum)
+> 
+> #Reconstracte the adjacency matrix based on the result embedding
+> EDM <- as.matrix( dist(result.LOE$X) )
+> EADM <- rec.graph(EDM,k=true.nn )
+> 
+> #Compute GARI between ADM and EADM
+> GARI(ADM,EADM)
+[1] 0.5864396
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("GARI", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("LOE")
+> ### * LOE
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: LOE
+> ### Title: LOE for a unweighted Graph.
+> ### Aliases: LOE
+> 
+> ### ** Examples
+> 
+> #################
+> #Realizable case#
+> #################
+> ###############################
+> #Create a toy data
+> x <- seq(-5,5,by=1)
+> y <- seq(1,6,by=1)
+> hx1 <- seq(-3.5,-1.5,by=0.5)
+> hx2 <- seq(1.5,3.5,by=0.5)
+> hy <- seq(2.5,4.5,by=0.5)
+> D1 <- matrix(0,66,2)
+> for(i in 1:11){
++ 	for(j in 1:6){
++ 		D1[i+11*(j-1),] <- c(x[i],y[j])
++ 	}
++ }
+> D2n <- matrix(0,25,2)
+> D2p <- matrix(0,25,2)
+> for(i in 1:5){
++ 	for(j in 1:5){
++ 		D2n[i+5*(j-1),] <- c(hx1[i],hy[j])
++ 		D2p[i+5*(j-1),] <- c(hx2[i],hy[j])
++ 	}
++ }
+> D2n <- D2n[-c(7,9,17,19),]
+> D2p <- D2p[-c(7,9,17,19),]
+> Data <- rbind(D1,D2n,D2p)
+> Data <- scale(Data[order(Data[,1]),], scale=FALSE)
+> N <- nrow(Data)
+> #Visualization of the original data
+> plot(Data,pch=20,xlab="",ylab="",cex=1,col=rainbow(N,start=.7,end=.9),
++ xlim=c(-7,7),ylim=c(-7,7),main="Original data")
+> 
+> #Creating a k-NN graph based on Data
+> DM <- as.matrix(dist(Data))
+> ADM <- make.kNNG(DM,k=25)
+> 
+> #plot of the adjacency matrix
+> AADM <- ADM
+> diag(AADM) <- NA
+> image(AADM[N:1,],col=topo.colors(3),ann=FALSE,axes=FALSE)
+> 
+> #Apply some graph embedding methods
+> LE <-spec.emb(A=ADM,2,norm=FALSE)
+> result.LOE <- LOE(ADM=ADM,p=2,c=0.1,method="BFGS",report=1000,iniX=LE)
+initial  value 590.780031 
+final  value 0.000000 
+converged
+> 
+> #Procrustes transform
+> PLOE <- procrustes(Data,scale(result.LOE$X,scale=FALSE), scale = TRUE)$Yrot
+> plot(PLOE,pch=20,xlab="",ylab="",cex=1,col=rainbow(N,start=.7,end=.9),
++ xlim=c(-7,7),ylim=c(-7,7),main="LOE")
+> ###############################
+> 
+> #############
+> #This function provide appropriate vectors of xlim and ylim
+> #for given embedding matrix X.
+> #############
+> make.lim <- function(X){
++ 			mima <- matrix(0, 2,2)
++ 			mima[,1] <- apply(X, 2, min)
++ 			mima[,2] <- apply(X, 2, max)
++ 			han <- mima[,2] - mima[,1]
++ 			cent <-  (mima[,2] + mima[,1])/2
++ 			tmpr <- max(han)+max(han)*0.05
++ 			for(s in 1:2){
++ 				mima[s,] <- c(cent[s]-tmpr/2,cent[s]+tmpr/2)
++ 			}
++ 			return(mima)
++ 		}
+> ##############################
+> #Standered graph-drawing task#
+> ##############################
+> ###############################
+> ADM <- as.matrix( get.adjacency(graph.famous("Thomassen")) )
+> TG <- graph.adjacency(ADM)
+> 
+> #Apply some graph embedding methods
+> LE <-spec.emb(A=ADM,2,norm=FALSE)
+> KK <- layout.kamada.kawai(TG,maxiter=1000,start=LE)
+Error in layout.kamada.kawai(TG, maxiter = 1000, start = LE) : 
+  unused argument (start = LE)
+Execution halted

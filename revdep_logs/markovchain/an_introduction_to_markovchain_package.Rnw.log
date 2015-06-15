@@ -1,0 +1,128 @@
+
+> options(prompt = "R> ", continue = "+  ", width = 70, 
++     useFancyQuotes = FALSE)
+
+> set.seed(123)
+
+> library("markovchain")
+
+> showClass("markovchain")
+Class "markovchain" [package "markovchain"]
+
+Slots:
+                                                         
+Name:            states            byrow transitionMatrix
+Class:        character          logical           matrix
+                       
+Name:              name
+Class:        character
+
+> showClass("markovchainList")
+Class "markovchainList" [package "markovchain"]
+
+Slots:
+                                
+Name:  markovchains         name
+Class:         list    character
+
+> weatherStates <- c("sunny", "cloudy", "rain")
+
+> byRow <- TRUE
+
+> weatherMatrix <- matrix(data = c(0.7, 0.2, 0.1, 0.3, 
++     0.4, 0.3, 0.2, 0.45, 0.35), byrow = byRow, nrow = 3, dimnames = list(weatherStates, 
++   .... [TRUNCATED] 
+
+> mcWeather <- new("markovchain", states = weatherStates, 
++     byrow = byRow, transitionMatrix = weatherMatrix, name = "Weather")
+
+> mcWeather <- new("markovchain", states = c("sunny", 
++     "cloudy", "rain"), transitionMatrix = matrix(data = c(0.7, 
++     0.2, 0.1, 0.3, 0.4, 0.3 .... [TRUNCATED] 
+
+> defaultMc <- new("markovchain")
+
+> mcList <- new("markovchainList", markovchains = list(mcWeather, 
++     defaultMc), name = "A list of Markov chains")
+
+> initialState <- c(0, 1, 0)
+
+> after2Days <- initialState * (mcWeather * mcWeather)
+
+> after7Days <- initialState * (mcWeather^7)
+
+> after2Days
+     sunny cloudy  rain
+[1,]  0.39  0.355 0.255
+
+> round(after7Days, 3)
+     sunny cloudy  rain
+[1,] 0.462  0.319 0.219
+
+> initialState <- c(0, 1, 0)
+
+> after2Days <- (t(mcWeather) * t(mcWeather)) * initialState
+
+> after7Days <- (t(mcWeather)^7) * initialState
+
+> after2Days
+        [,1]
+sunny  0.390
+cloudy 0.355
+rain   0.255
+
+> round(after7Days, 3)
+        [,1]
+sunny  0.462
+cloudy 0.319
+rain   0.219
+
+> states(mcWeather)
+[1] "sunny"  "cloudy" "rain"  
+
+> dim(mcWeather)
+[1] 3
+
+> transitionProbability(mcWeather, "cloudy", "rain")
+[1] 0.3
+
+> mcWeather[2, 3]
+[1] 0.3
+
+> print(mcWeather)
+       sunny cloudy rain
+sunny    0.7   0.20 0.10
+cloudy   0.3   0.40 0.30
+rain     0.2   0.45 0.35
+
+
+> show(mcWeather)
+Weather 
+ A  3 - dimensional discrete Markov Chain with following states 
+ sunny cloudy rain 
+ The transition matrix   (by rows)  is defined as follows 
+       sunny cloudy rain
+sunny    0.7   0.20 0.10
+cloudy   0.3   0.40 0.30
+rain     0.2   0.45 0.35
+
+
+> library("igraph")
+
+Attaching package: 'igraph'
+
+The following objects are masked from 'package:stats':
+
+    decompose, spectrum
+
+The following object is masked from 'package:base':
+
+    union
+
+
+> plot(mcWeather, layout = layout.fruchterman.reingold, 
++     main = "Weather transition matrix")
+
+  When sourcing 'an_introduction_to_markovchain_package.R':
+Error: could not find function "plot.igraph"
+Execution halted

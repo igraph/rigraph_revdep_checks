@@ -1,0 +1,119 @@
+* using log directory ‘/Users/gaborcsardi/works/igraph/revdep_check/secrlinear.Rcheck’
+* using R version 3.2.0 (2015-04-16)
+* using platform: x86_64-apple-darwin13.4.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-codoc --no-manual’
+* checking for file ‘secrlinear/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘secrlinear’ version ‘1.0.5’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘secrlinear’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... NOTE
+Malformed Description field: should contain one or more complete sentences.
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... SKIPPED
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking sizes of PDF files under ‘inst/doc’ ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... ERROR
+Running examples in ‘secrlinear-Ex.R’ failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Arvicola
+> ### Title: Water Vole Capture Dataset
+> ### Aliases: arvicola
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> 
+> summary(arvicola)
+Object class      capthist 
+Detector type     multi 
+Detector number   88 
+Average spacing   19.80165 m 
+x-range           163.85 835.61 m 
+y-range           457.67 684.59 m 
+Counts by occasion 
+                   1  2  3  4  5  6 Total
+n                 16 11 18 12 16 11    84
+u                 16  2  6  1  1  0    26
+f                  7  3  4  5  3  4    26
+M(t+1)            16 18 24 25 26 26    26
+losses             0  0  0  0  0  0     0
+detections        16 11 18 12 16 11    84
+detectors visited 16 11 18 12 16 11    84
+detectors used    88 88 88 88 88 88   528
+
+> head(traps(arvicola))
+          x      y
+0.A  164.86 609.69
+0.B  164.86 609.69
+20.A 163.85 629.66
+20.B 163.85 629.66
+40.A 164.88 649.19
+40.B 164.88 649.19
+> 
+> ## for speed, pre-compute distance matrix
+> userd <- networkdistance (traps(arvicola), glymemask, glymemask)
+Error in check_version(graph) : 
+  This graph was created by an old(er) igraph version.
+  Call upgrade_graph() on it to use with the current igraph version
+Calls: networkdistance -> cbind -> V -> update_vs_ref -> check_version
+Execution halted
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking running R code from vignettes ... OK
+* checking re-building of vignette outputs ... NOTE
+Error in re-building vignettes:
+  ...
+Warning in engine$weave(file, quiet = quiet, encoding = enc) :
+  The vignette engine knitr::rmarkdown is not available, because the rmarkdown package is not installed. Please install it.
+Warning in in_dir(opts_knit$get("root.dir") %n% input_dir(), evaluate::evaluate(code,  :
+  You changed the working directory to /Users/gaborcsardi/works/igraph/revdep_check/secrlinear.Rcheck/secrlinear/extdata (probably via setwd()). It will be restored to /Users/gaborcsardi/works/igraph/revdep_check/secrlinear.Rcheck/vign_test/secrlinear/vignettes. See the Note section in ?knitr::knit
+Quitting from lines 72-74 (secrlinear-vignette.Rmd) 
+Error: processing vignette 'secrlinear-vignette.Rmd' failed with diagnostics:
+non-numeric argument to binary operator
+Execution halted
+
+* DONE
+Status: 1 ERROR, 2 NOTEs

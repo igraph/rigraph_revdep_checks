@@ -1,0 +1,421 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "SubpathwayGMir"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "SubpathwayGMir-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('SubpathwayGMir')
+Loading required package: XML
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("GetK2riData")
+> ### * GetK2riData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: GetK2riData
+> ### Title: Get the environment data
+> ### Aliases: GetK2riData
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D # obtain all miRNA-target interactions #
+> ##D expMir2Tar <- GetK2riData(K2riData="expMir2Tar")
+> ##D expMir2Tar[1:6,]
+> ##D 
+> ##D # obtain miRNA background #
+> ##D BGMiRNA <- GetK2riData(K2riData="BGMiRNA")
+> ##D BGMiRNA[1:10]
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("GetK2riData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getBackground")
+> ### * getBackground
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getBackground
+> ### Title: Get the background of molecules
+> ### Aliases: getBackground
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D ## get all background of genes
+> ##D  bgGene <- getBackground(type="gene")
+> ##D 
+> ##D ## get all background of miRNAs
+> ##D  bgMir  <- getBackground(type="miRNA")
+> ##D 
+> ##D ## get all background of miRNAs and genes
+> ##D  bgGMir <- getBackground(type="gene_miRNA")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getBackground", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getInteGraphList")
+> ### * getInteGraphList
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getInteGraphList
+> ### Title: Get the reconstructed metabolic pathway graphs
+> ### Aliases: getInteGraphList
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D ### Integrate miRNAs into KEGG pathway graphs ###
+> ##D 
+> ##D ## get hsa-specificd miRNA-target interactions ##
+> ##D  expMir2Tar <- GetK2riData(K2riData="expMir2Tar")
+> ##D  row1 <- which(expMir2Tar[["LowTHExps"]]=="YES")
+> ##D  row2 <- which(expMir2Tar[["Species"]]=="hsa")
+> ##D  relations <- unique(expMir2Tar[intersect(row1,row2),c(2:3)])
+> ##D 
+> ##D ## get direct KEGG metabolic pathway graphs ## 
+> ##D  graphList <- GetK2riData(K2riData="MetabolicGEGEEMGraph")
+> ##D # get reconstructed pathway graph list #
+> ##D  InteGraphList <- getInteGraphList(graphList, relations) 
+> ##D # visualize the reconstructed pathways #
+> ##D  plotGraph(InteGraphList[[1]],layout=layout.random)
+> ##D 
+> ##D ## get undirect KEGG metabolic pathway graphs ##
+> ##D  graphList <- GetK2riData(K2riData="MetabolicGEGEUEMGraph")
+> ##D # get reconstructed pathway graph list #
+> ##D  InteGraphList <- getInteGraphList(graphList, relations) 
+> ##D # visualize the reconstructed pathways #
+> ##D  plotGraph(InteGraphList[[1]],layout=layout.random)
+> ##D  
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getInteGraphList", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("getLocSubGraph")
+> ### * getLocSubGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: getLocSubGraph
+> ### Title: Get the located metabolic subpathways
+> ### Aliases: getLocSubGraph
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D ### Integrate miRNAs to KEGG pathway graphs ###
+> ##D 
+> ##D ## get hsa-specificd miRNA-target interactions ##
+> ##D  expMir2Tar <- GetK2riData(K2riData="expMir2Tar")
+> ##D  row1 <- which(expMir2Tar[["LowTHExps"]]=="YES")
+> ##D  row2 <- which(expMir2Tar[["Species"]]=="hsa")
+> ##D  relations <- unique(expMir2Tar[intersect(row1,row2),c(2:3)])
+> ##D 
+> ##D # get user-interested miRNAs and genes sets.
+> ##D  moleculeList <- c(getBackground(type="gene")[1:1000],
+> ##D                  getBackground(type="miRNA")[1:2000])
+> ##D 
+> ##D ## get direct KEGG metabolic pathway graphs ##
+> ##D  graphList <- GetK2riData(K2riData="MetabolicGEGEEMGraph")
+> ##D # get reconstructed pathway graph list.
+> ##D  InteGraphList <- getInteGraphList(graphList, relations) 
+> ##D # get locate subpathways.
+> ##D  subGraphList <- getLocSubGraph(moleculeList,InteGraphList,
+> ##D                  type="gene_miRNA",n=1,s=10)
+> ##D # visualize the located subpathways.
+> ##D  plotGraph(subGraphList[[1]],layout=layout.random)
+> ##D 
+> ##D 
+> ##D ## get undirect KEGG metabolic pathway graphs ##
+> ##D  graphList <- GetK2riData(K2riData="MetabolicGEGEUEMGraph")
+> ##D # get reconstructed pathway graph list.
+> ##D  InteGraphList <- getInteGraphList(graphList, relations) 
+> ##D # get locate subpathways.
+> ##D  subGraphList <- getLocSubGraph(moleculeList,InteGraphList,
+> ##D                  type="gene_miRNA",n=1,s=10)
+> ##D # visualize the located subpathways.
+> ##D  plotGraph(subGraphList[[1]],layout=layout.random)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("getLocSubGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("identifyGraph")
+> ### * identifyGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: identifyGraph
+> ### Title: Annotate and identify subpathways
+> ### Aliases: identifyGraph
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D ###    Annotate and identify subpathways   ###
+> ##D 
+> ##D ## get hsa-specificd miRNA-target interactions ##
+> ##D  expMir2Tar <- GetK2riData(K2riData="expMir2Tar")
+> ##D  row1 <- which(expMir2Tar[["LowTHExps"]]=="YES")
+> ##D  row2 <- which(expMir2Tar[["Species"]]=="hsa")
+> ##D  relations <- unique(expMir2Tar[intersect(row1,row2),c(2:3)])
+> ##D 
+> ##D # get user-interested miRNAs and genes sets.
+> ##D  moleculeList <- c(getBackground(type="gene")[1:1000],
+> ##D                   getBackground(type="miRNA")[1:2000])
+> ##D 
+> ##D 
+> ##D ## get direct KEGG metabolic pathway graphs ##
+> ##D  graphList <- GetK2riData(K2riData="MetabolicGEGEEMGraph")
+> ##D # get reconstructed pathway graph list.
+> ##D  InteGraphList <- getInteGraphList(graphList, relations) 
+> ##D # get locate subpathways.
+> ##D  subGraphList <- getLocSubGraph(moleculeList,InteGraphList,
+> ##D                  type="gene_miRNA",n=1,s=10)
+> ##D # annotate and identify subpathways.
+> ##D  ann <- identifyGraph(moleculeList,subGraphList,type="gene_miRNA")
+> ##D # convert ann to a data frame.
+> ##D  result <- printGraph(ann,detail=TRUE)
+> ##D 
+> ##D ## get undirect KEGG metabolic pathway graphs ##
+> ##D  graphList <- GetK2riData(K2riData="MetabolicGEGEUEMGraph")
+> ##D # get reconstructed pathway graph list.
+> ##D  InteGraphList <- getInteGraphList(graphList, relations) 
+> ##D # get locate subpathways.
+> ##D  subGraphList <- getLocSubGraph(moleculeList,InteGraphList,
+> ##D                  type="gene_miRNA",n=1,s=10)
+> ##D # annotate and identify subpathways.
+> ##D  ann <- identifyGraph(moleculeList,subGraphList,type="gene_miRNA")
+> ##D  result <- printGraph(ann,detail=TRUE)
+> ##D 
+> ##D # save the result.
+> ##D  write.table(head(result),"result.txt",sep="\t",col.names=TRUE,row.names=FALSE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("identifyGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("initializeK2ri")
+> ### * initializeK2ri
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: initializeK2ri
+> ### Title: Initialize environment variable k2ri
+> ### Aliases: initializeK2ri
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # initialize environment k2ri.
+> ##D  initializeK2ri()
+> ##D   
+> ##D # see whether k2ri is exist in R or not.
+> ##D  ls()
+> ##D 
+> ##D # see all environment variable contained in k2ri.
+> ##D  ls(k2ri)
+> ##D  
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("initializeK2ri", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plotGraph")
+> ### * plotGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plotGraph
+> ### Title: Visualize a pathway graph
+> ### Aliases: plotGraph
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D ###  get  metabolic pathway graphs   ###
+> ##D 
+> ##D g<- GetK2riData(K2riData="MetabolicGEGEEMGraph")
+> ##D 
+> ##D # visualize the graph 
+> ##D plotGraph(g[[1]],layout=layout.random)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plotGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("printGraph")
+> ### * printGraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: printGraph
+> ### Title: Print the results of graph annotation and identification
+> ### Aliases: printGraph
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D # get hsa-specificd miRNA-target interactions 
+> ##D  expMir2Tar <- GetK2riData(K2riData="expMir2Tar")
+> ##D  row1 <- which(expMir2Tar[["LowTHExps"]]=="YES")
+> ##D  row2 <- which(expMir2Tar[["Species"]]=="hsa")
+> ##D  relations <- unique(expMir2Tar[intersect(row1,row2),c(2:3)])
+> ##D 
+> ##D # get direct KEGG metabolic pathway graphs 
+> ##D  graphList <- GetK2riData(K2riData="MetabolicGEGEEMGraph")
+> ##D 
+> ##D # get reconstructed pathway graph list.
+> ##D  InteGraphList <- getInteGraphList(graphList, relations) 
+> ##D 
+> ##D # get user-interested miRNAs and genes sets.
+> ##D  moleculeList <- c(getBackground(type="gene")[1:1000],
+> ##D                   getBackground(type="miRNA")[1:2000])
+> ##D 				  
+> ##D # get locate subpathways.
+> ##D  subGraphList <- getLocSubGraph(moleculeList,InteGraphList,
+> ##D                  type="gene_miRNA",n=1,s=10)
+> ##D 				 
+> ##D # annotate and identify subpathways.
+> ##D  ann <- identifyGraph(moleculeList,subGraphList,type="gene_miRNA")
+> ##D 
+> ##D # convert ann to a data frame.
+> ##D  result <- printGraph(ann,detail=TRUE)
+> ##D 
+> ##D # save the result.
+> ##D  write.table(head(result),"result.txt",sep="\t",col.names=TRUE,row.names=FALSE)
+> ##D 
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("printGraph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("updateOrgEnvir")
+> ### * updateOrgEnvir
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: updateOrgEnvir
+> ### Title: Update the organism-specific environment variables
+> ### Aliases: updateOrgEnvir
+> ### Keywords: file
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D 
+> ##D ## update organism and the type of gene identifiers ##
+> ##D  
+> ##D  updateOrgEnvir("mmu")
+> ##D  
+> ##D # show the current environment variables
+> ##D  ls(k2ri)
+> ##D 
+> ##D # show the background of miRNAs
+> ##D  k2ri$BGMiRNA[1:3]
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("updateOrgEnvir", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.436 0.019 0.573 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

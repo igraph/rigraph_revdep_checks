@@ -1,0 +1,261 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "sglasso"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "sglasso-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('sglasso')
+Loading required package: Matrix
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("Kh")
+> ### * Kh
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Kh
+> ### Title: Extract Sparse Structured Precision Matrices
+> ### Aliases: Kh
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> N <- 100
+> p <- 5
+> X <- matrix(rnorm(N * p), N, p)
+> S <- crossprod(X) / N
+> mask <- outer(1:p, 1:p, function(i, j) 0.5^abs(i - j))
+> out.sglasso_path <- sglasso(S, mask, nrho = 5, tol = 1.0e-13)
+> out.sglasso_path
+
+Call:  sglasso(S = S, mask = mask, nrho = 5, tol = 1e-13)
+
+      rho  df
+  0.14868   1
+  0.07572   2
+  0.03856   3
+  0.01964   3
+  0.01000   4
+
+Algorithm ccd with exit = 0 
+
+> Kh(out.sglasso_path)
+$`rho = 0.148677828044217`
+5 x 5 Matrix of class "dspMatrix"
+          X1        X2        X3        X4        X5
+X1 0.9780298 0.0000000 0.0000000 0.0000000 0.0000000
+X2 0.0000000 0.9780298 0.0000000 0.0000000 0.0000000
+X3 0.0000000 0.0000000 0.9780298 0.0000000 0.0000000
+X4 0.0000000 0.0000000 0.0000000 0.9780298 0.0000000
+X5 0.0000000 0.0000000 0.0000000 0.0000000 0.9780298
+
+$`rho = 0.0757154758428794`
+5 x 5 Matrix of class "dspMatrix"
+            X1      X2      X3      X4          X5
+X1  0.98001995 0.00000 0.00000 0.00000 -0.06972122
+X2  0.00000000 0.98002 0.00000 0.00000  0.00000000
+X3  0.00000000 0.00000 0.98002 0.00000  0.00000000
+X4  0.00000000 0.00000 0.00000 0.98002  0.00000000
+X5 -0.06972122 0.00000 0.00000 0.00000  0.98001995
+
+$`rho = 0.0385587639900733`
+5 x 5 Matrix of class "dspMatrix"
+            X1          X2        X3          X4          X5
+X1  0.98279144  0.00000000 0.0000000 -0.01691933 -0.10508268
+X2  0.00000000  0.98279144 0.0000000  0.00000000 -0.01691933
+X3  0.00000000  0.00000000 0.9827914  0.00000000  0.00000000
+X4 -0.01691933  0.00000000 0.0000000  0.98279144  0.00000000
+X5 -0.10508268 -0.01691933 0.0000000  0.00000000  0.98279144
+
+$`rho = 0.0196363856119382`
+5 x 5 Matrix of class "dspMatrix"
+            X1          X2       X3          X4          X5
+X1  0.98520804  0.00000000 0.000000 -0.03501831 -0.12233095
+X2  0.00000000  0.98520804 0.000000  0.00000000 -0.03501831
+X3  0.00000000  0.00000000 0.985208  0.00000000  0.00000000
+X4 -0.03501831  0.00000000 0.000000  0.98520804  0.00000000
+X5 -0.12233095 -0.03501831 0.000000  0.00000000  0.98520804
+
+$`rho = 0.01`
+5 x 5 Matrix of class "dspMatrix"
+            X1          X2          X3          X4          X5
+X1  0.98682168 -0.00856938  0.00000000 -0.04307535 -0.13070689
+X2 -0.00856938  0.98682168 -0.00856938  0.00000000 -0.04307535
+X3  0.00000000 -0.00856938  0.98682168 -0.00856938  0.00000000
+X4 -0.04307535  0.00000000 -0.00856938  0.98682168 -0.00856938
+X5 -0.13070689 -0.04307535  0.00000000 -0.00856938  0.98682168
+
+> rho <- out.sglasso_path$rho[3]
+> out.sglasso_single <- sglasso(S, mask, nrho = 1, min_rho = rho, 
++    tol = 1.0e-13, algorithm = "ccm")
+> Kh(out.sglasso_single)
+$`rho = 0.0385587639900733`
+5 x 5 Matrix of class "dspMatrix"
+            X1          X2        X3          X4          X5
+X1  0.98279144  0.00000000 0.0000000 -0.01691933 -0.10508268
+X2  0.00000000  0.98279144 0.0000000  0.00000000 -0.01691933
+X3  0.00000000  0.00000000 0.9827914  0.00000000  0.00000000
+X4 -0.01691933  0.00000000 0.0000000  0.98279144  0.00000000
+X5 -0.10508268 -0.01691933 0.0000000  0.00000000  0.98279144
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Kh", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fglasso")
+> ### * fglasso
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fglasso
+> ### Title: L1-penalized Factorial Graphical Lasso Model
+> ### Aliases: fglasso
+> ### Keywords: models graph multivariate
+> 
+> ### ** Examples
+> 
+> #######################
+> # fglasso solution path
+> #######################
+> N <- 50
+> tp <- 3
+> p <- 3
+> X <- matrix(rnorm(N * p * tp), N, tp * p)
+> S <- crossprod(X) / N
+> model <- list(lag0 = c(s = "c", n = "ut"), lag1 = c(s = "t", n = "."))
+> out.fglasso <- fglasso(S = S, model = model, tp = tp, p = p)
+> out.fglasso
+
+Call:  fglasso(S = S, model = model, tp = tp, p = p)
+
+      rho  df
+  0.22755   1
+  0.21350   2
+  0.20031   2
+  0.18793   2
+  0.17632   2
+  0.16543   2
+  0.15521   2
+  0.14562   2
+  0.13662   3
+  0.12818   3
+  0.12026   3
+  0.11283   3
+  0.10586   3
+  0.09932   4
+  0.09318   4
+  0.08743   5
+  0.08203   5
+  0.07696   5
+  0.07220   5
+  0.06774   5
+  0.06356   5
+  0.05963   5
+  0.05595   6
+  0.05249   6
+  0.04925   6
+  0.04621   6
+  0.04335   6
+  0.04067   6
+  0.03816   6
+  0.03580   6
+  0.03359   6
+  0.03152   6
+  0.02957   6
+  0.02774   7
+  0.02603   7
+  0.02442   7
+  0.02291   7
+  0.02150   7
+  0.02017   7
+  0.01892   8
+  0.01775   8
+  0.01666   8
+  0.01563   8
+  0.01466   9
+  0.01376   9
+  0.01291   9
+  0.01211   9
+  0.01136   9
+  0.01066   9
+  0.01000   9
+
+Algorithm ccd with exit = 0 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fglasso", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gplot.fglasso")
+> ### * gplot.fglasso
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gplot.fglasso
+> ### Title: Plotting Sparse Factorial Dynamic Gaussian Graphical Model
+> ### Aliases: gplot.fglasso
+> ### Keywords: models
+> 
+> ### ** Examples
+> 
+> N <- 50
+> tp <- 3
+> p <- 3
+> X <- matrix(rnorm(N * p * tp), N, tp * p)
+> S <- crossprod(X) / N
+> model <- list(lag0 = c(s = "c", n = "ut"), lag1 = c(s = "t", n = "t"))
+> out.fglasso <- fglasso(S = S, model = model, tp = tp, p = p)
+> gplot(out.fglasso, rhoid = 50, sub.tp1 = "First graph", 
++    sub.tp2 = "Second graph")
+Error in gplot.fglasso(out.fglasso, rhoid = 50, sub.tp1 = "First graph",  : 
+  could not find function "plot.igraph"
+Calls: gplot -> gplot.fglasso
+Execution halted

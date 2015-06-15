@@ -1,0 +1,43 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> require(testthat)
+Loading required package: testthat
+> test_package("popgraph")
+as_popgraph.R : ....
+bootstrap_popgraph.R : .
+congruence_topology.R : ....
+decorate_popgraph.R : ......
+ops_popgraph.R : ......
+overlay_popgraph.R : ....
+popgraph.R : 
+read.popgraph.R : ....
+test_congruence.R : .....
+to_SpatialLines.R : ....
+to_SpatialPoints.R : ...
+to_html.R : ....
+as_json.R : ...
+to_kml.R : ...
+to_matrix.R : .........
+to_pgraph.R : ..
+write_popgraph.R : ..
+
+DONE 
+> 
+> proc.time()
+   user  system elapsed 
+  1.958   0.075   2.027 

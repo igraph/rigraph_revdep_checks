@@ -1,0 +1,409 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "rgexf"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "rgexf-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('rgexf')
+Loading required package: XML
+Loading required package: Rook
+Loading required package: igraph
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("add.gexf.edge")
+> ### * add.gexf.edge
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: add.gexf.node
+> ### Title: Adding and removing nodes/edges from 'gexf' objects
+> ### Aliases: add.gexf.node add.gexf.edge rm.gexf.node rm.gexf.edge
+> ###   add.node.spell add.edge.spell
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+>   ## Not run: 
+> ##D   demo(gexfbuildfromscratch)
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("add.gexf.edge", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("check.dpl.edges")
+> ### * check.dpl.edges
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: check.dpl.edges
+> ### Title: Check (and count) duplicated edges
+> ### Aliases: check.dpl.edges
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+>   # An edgelist with duplicated dyads
+>   relations <- cbind(c(1,1,3,4,2,5,6), c(2,3,1,2,4,1,1))
+>   
+>   # Checking duplicated edges (undirected graph)
+>   check.dpl.edges(edges=relations, undirected=TRUE)
+  source target reps
+1      1      2    1
+2      1      3    2
+3      1      3   -1
+6      1      5    1
+7      1      6    1
+4      2      4    2
+5      2      4   -1
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("check.dpl.edges", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("checkTimes")
+> ### * checkTimes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: checkTimes
+> ### Title: Checks for correct time format
+> ### Aliases: checkTimes
+> ### Keywords: utilities
+> 
+> ### ** Examples
+> 
+>   test <- c("2012-01-17T03:46:41", "2012-01-17T03:46:410")
+>   checkTimes(test, format="dateTime")
+[1]  TRUE FALSE
+>   checkTimes("2012-02-01T00:00:00", "dateTime")
+[1] TRUE
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("checkTimes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("edge.list")
+> ### * edge.list
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: edge.list
+> ### Title: Decompose an edge list
+> ### Aliases: edge.list
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+>   edgelist <- matrix(
++     c("matthew","john",
++       "max","stephen",
++       "matthew","stephen"),
++     byrow=TRUE, ncol=2)
+>   
+>   edge.list(edgelist)
+$nodes
+  id   label
+1  1    john
+2  2 matthew
+3  3     max
+4  4 stephen
+
+$edges
+     source target
+[1,]      2      1
+[2,]      3      4
+[3,]      2      4
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("edge.list", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("igraph.to.gexf")
+> ### * igraph.to.gexf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: igraph.to.gexf
+> ### Title: Converting between 'gexf' and 'igraph' classes
+> ### Aliases: igraph.to.gexf gexf.to.igraph
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+>  ## Not run: 
+> ##D  
+> ##D   # Running demo
+> ##D   demo(gexfigraph)
+> ##D  
+> ##D   # A simple graph without
+> ##D   gexf1 <- read.gexf("http://gephi.org/datasets/LesMiserables.gexf")
+> ##D   igraph1 <- gexf.to.igraph(gexf1)
+> ##D   gexf2 <- igraph.to.gexf(igraph1)
+> ##D   
+> ##D   # A graph with attributes  
+> ##D   gexf3 <- read.gexf("http://gexf.net/data/data.gexf")
+> ##D   igraph2 <- gexf.to.igraph(gexf3)
+> ##D   gexf4 <- igraph.to.gexf(igraph2)
+> ##D  
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("igraph.to.gexf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("new.gexf.graph")
+> ### * new.gexf.graph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: new.gexf.graph
+> ### Title: Build an empty 'gexf' graph
+> ### Aliases: new.gexf.graph
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+>   ## Not run: 
+> ##D   demo(gexfbuildfromscratch)
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("new.gexf.graph", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("read.gexf")
+> ### * read.gexf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: read.gexf
+> ### Title: Reads gexf (.gexf) file
+> ### Aliases: read.gexf
+> ### Keywords: IO
+> 
+> ### ** Examples
+> 
+>   ## Not run: 
+> ##D   mygraph <- read.gexf("http://gephi.org/datasets/LesMiserables.gexf")
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("read.gexf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rgexf")
+> ### * rgexf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rgexf-package
+> ### Title: Build, Import and Export GEXF Graph Files
+> ### Aliases: rgexf-package rgexf gexf gephi
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+>   ## Not run: 
+> ##D     demo(gexf) # Example of gexf command using fictional data.
+> ##D     demo(gexfattributes) # Working with attributes.
+> ##D     demo(gexfbasic) # Basic net.
+> ##D     demo(gexfdynamic) # Dynamic net.
+> ##D     demo(edge.list) # Working with edges lists.
+> ##D     demo(gexffull) # All the package.
+> ##D     demo(gexftwitter) # Example with real data of chilean twitter accounts.
+> ##D     demo(gexfdynamicandatt) # Dynamic net with static attributes.
+> ##D     demo(gexfbuildfromscratch) # Example building a net from scratch.
+> ##D     demo(gexfigraph) # Two-way gexf-igraph conversion
+> ##D     demo(gexfrandom) # A nice routine creating a good looking graph
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rgexf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rgexfmethods")
+> ### * rgexfmethods
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: rgexf Methods
+> ### Title: S3 methods for 'gexf' objects
+> ### Aliases: print.gexf export-gexf plot.gexf summary.gexf
+> ### Keywords: methods
+> 
+> ### ** Examples
+> 
+>   ## Not run: 
+> ##D     # Data frame of nodes
+> ##D     people <- data.frame(id=1:4, label=c("juan", "pedro", "matthew", "carlos"),
+> ##D                      stringsAsFactors=F)
+> ##D     
+> ##D     # Data frame of edges
+> ##D     relations <- data.frame(source=c(1,1,1,2,3,4,2,4,4), 
+> ##D                         target=c(4,2,3,3,4,2,4,1,1))
+> ##D     
+> ##D     # Building gexf graph
+> ##D     mygraph <- write.gexf(nodes=people, edges=relations)
+> ##D     
+> ##D     # Summary and pring
+> ##D     summary(mygraph)
+> ##D     
+> ##D     print(mygraph, file="mygraph.gexf", replace=T)
+> ##D     
+> ##D     # Plotting
+> ##D     plot(mygraph)
+> ##D     
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rgexfmethods", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("switch.edges")
+> ### * switch.edges
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: switch.edges
+> ### Title: Switches between source and target
+> ### Aliases: switch.edges
+> ### Keywords: manip
+> 
+> ### ** Examples
+> 
+>   relations <- cbind(c(1,1,3,4,2,5,6), c(2,3,1,2,4,1,1))
+>   relations
+     [,1] [,2]
+[1,]    1    2
+[2,]    1    3
+[3,]    3    1
+[4,]    4    2
+[5,]    2    4
+[6,]    5    1
+[7,]    6    1
+>   
+>   switch.edges(relations)
+  source target
+1      1      2
+2      1      3
+3      1      3
+4      2      4
+5      2      4
+6      1      5
+7      1      6
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("switch.edges", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("write.gexf")
+> ### * write.gexf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: write.gexf
+> ### Title: Builds a graph of 'gexf' class
+> ### Aliases: write.gexf
+> ### Keywords: IO
+> 
+> ### ** Examples
+> 
+>   ## Not run: 
+> ##D   demo(gexf) # Example of gexf command using fictional data.
+> ##D   demo(gexfattributes) # Working with attributes.
+> ##D   demo(gexfbasic) # Basic net.
+> ##D   demo(gexfdynamic) # Dynamic net.
+> ##D   demo(edge.list) # Working with edges lists.
+> ##D   demo(gexffull) # All the package.
+> ##D   demo(gexftwitter) # Example with real data of chilean twitter accounts.
+> ##D   demo(gexfdynamicandatt) # Dynamic net with static attributes.
+> ##D   demo(gexfbuildfromscratch) # Example building a net from scratch.
+> ##D   
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("write.gexf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.397 0.013 0.411 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')
