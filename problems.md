@@ -29,7 +29,7 @@
 
 # Known errors
 
-- [ ] FCMapper Negative loop and KK layout in example.
+- [x] FCMapper Negative loop and KK layout in example.
       Solution is to switch to another layout. Need to email.
 
 # Cannot check
@@ -43,19 +43,19 @@
 
 # Sent email to maintainers about the problem
 
-- [ ] BoolNet Warnings about docs links, fine. Email them.
-- [ ] causaleffect
+- [x] BoolNet Warnings about docs links, fine. Email them.
+- [x] causaleffect
     - Replaces an import, need to email them.
     - Has a bug, uses 0 eid, which is not caught in igraph 0.7.1
-- [ ] clickstream union overridden, need to email them
-- [ ] fuzzyMM Replacing union?
-- [ ] loe Replace previous import diversity.
-- [ ] nat `knn` import overwritten.
-- [ ] netgen Replacing imports: `normalize`.
-- [ ] restlos `normalize` import replaced
-- [ ] SINGLE replaced import `permute`
-- [ ] TDA Replace imported `knn`.
-- [ ] FCMapper Negative loop and KK layout in example.
+- [x] clickstream union overridden, need to email them
+- [x] fuzzyMM Replacing union?
+- [x] loe Replace previous import diversity.
+- [x] nat `knn` import overwritten.
+- [x] netgen Replacing imports: `normalize`.
+- [x] restlos `normalize` import replaced
+- [x] SINGLE replaced import `permute`
+- [x] TDA Replace imported `knn`.
+- [x] FCMapper Negative loop and KK layout in example.
       Solution is to switch to another layout. Need to email.
 
 # Problematic packages after the first round
@@ -265,9 +265,9 @@
 Maintainer: Thibaut Jombart <t.jombart@imperial.ac.uk>
 
 ```
-checking whether package ‘adegenet’ can be installed ... ERROR
+checking whether package âadegenetâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/adegenet.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/adegenet.Rcheck/00install.outâ for details.
 Status: 1 ERROR
 ```
 
@@ -277,8 +277,8 @@ Maintainer: S. Lebre <sophie.lebre@icube.unistra.fr>
 ```
 checking R code for possible problems ... NOTE
 traceNetworks: no visible global function definition for
-  ‘layout.spring’
-traceNetworks: no visible global function definition for ‘layout.svd’
+  âlayout.springâ
+traceNetworks: no visible global function definition for âlayout.svdâ
 ```
 ```
 DONE
@@ -290,13 +290,13 @@ Maintainer: Michael Hahsler <mhahsler@lyle.smu.edu>
 
 ```
 checking package dependencies ... ERROR
-Packages suggested but not available: ‘Rgraphviz’ ‘graph’
+Packages suggested but not available: âRgraphvizâ âgraphâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -305,9 +305,9 @@ Status: 1 ERROR
 Maintainer: Christina Heinze <heinze@stat.math.ethz.ch>
 
 ```
-checking whether package ‘backShift’ can be installed ... ERROR
+checking whether package âbackShiftâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/backShift.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/backShift.Rcheck/00install.outâ for details.
 Status: 1 ERROR
 ```
 
@@ -324,31 +324,31 @@ Authors@R field gives more than one person with maintainer role:
 ```
 checking top-level files ... NOTE
 Non-standard file/directory found at top level:
-  ‘docs’
+  âdocsâ
 ```
 ```
 checking dependencies in R code ... NOTE
 Packages in Depends field not imported from:
-  ‘Matrix’ ‘c3net’ ‘igraph’ ‘infotheo’ ‘lattice’
+  âMatrixâ âc3netâ âigraphâ âinfotheoâ âlatticeâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
 ```
 checking R code for possible problems ... NOTE
 .mat2igraph: no visible global function definition for
-  ‘graph.data.frame’
-.mat2igraph: no visible global function definition for ‘E’
-.mat2igraph: no visible global function definition for ‘E<-’
-.mat2igraph: no visible global function definition for ‘V’
-.mat2igraph: no visible global function definition for ‘add.vertices’
-.mat2igraph: no visible global function definition for ‘V<-’
-.mat2igraph: no visible global function definition for ‘graph’
-bc3net: no visible global function definition for ‘c3’
-bc3net: no visible global function definition for ‘forceSymmetric’
-c3mtc: no visible global function definition for ‘c3’
-c3mtc: no visible global function definition for ‘forceSymmetric’
-mimwrap: no visible global function definition for ‘discretize’
-mimwrap: no visible global function definition for ‘mutinformation’
+  âgraph.data.frameâ
+.mat2igraph: no visible global function definition for âEâ
+.mat2igraph: no visible global function definition for âE<-â
+.mat2igraph: no visible global function definition for âVâ
+.mat2igraph: no visible global function definition for âadd.verticesâ
+.mat2igraph: no visible global function definition for âV<-â
+.mat2igraph: no visible global function definition for âgraphâ
+bc3net: no visible global function definition for âc3â
+bc3net: no visible global function definition for âforceSymmetricâ
+c3mtc: no visible global function definition for âc3â
+c3mtc: no visible global function definition for âforceSymmetricâ
+mimwrap: no visible global function definition for âdiscretizeâ
+mimwrap: no visible global function definition for âmutinformationâ
 ```
 ```
 DONE
@@ -360,13 +360,13 @@ Maintainer: Abdolreza Mohammadi <a.mohammadi@rug.nl>
 
 ```
 checking R code for possible problems ... NOTE
-bdgraph.sim: no visible global function definition for ‘plot.igraph’
-compare: no visible global function definition for ‘plot.igraph’
-plot.bdgraph: no visible global function definition for ‘plot.igraph’
-plot.simulate: no visible global function definition for ‘plot.igraph’
-select: no visible global function definition for ‘plot.igraph’
+bdgraph.sim: no visible global function definition for âplot.igraphâ
+compare: no visible global function definition for âplot.igraphâ
+plot.bdgraph: no visible global function definition for âplot.igraphâ
+plot.simulate: no visible global function definition for âplot.igraphâ
+select: no visible global function definition for âplot.igraphâ
 summary.bdgraph: no visible global function definition for
-  ‘plot.igraph’
+  âplot.igraphâ
 ```
 ```
 DONE
@@ -378,11 +378,11 @@ Maintainer: Barry Grant <bjgrant@umich.edu>
 
 ```
 checking dependencies in R code ... NOTE
-Missing or unexported object: ‘igraph::plot.igraph’
+Missing or unexported object: âigraph::plot.igraphâ
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘bio3d-Ex.R’ failed
+Running examples in âbio3d-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -412,7 +412,7 @@ Execution halted
 ```
 ```
 checking tests ... ERROR
-Running the tests in ‘tests/testthat.R’ failed.
+Running the tests in âtests/testthat.Râ failed.
 Last 13 lines of output:
   .......... .......... .......... .......... ..........
   .......... .......... .......... .......... ..........
@@ -444,7 +444,7 @@ Malformed Title field: should not end in a period.
 checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   plot.wine
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
@@ -458,20 +458,20 @@ Maintainer: Hans A. Kestler <hans.kestler@uni-ulm.de>
 ```
 checking Rd cross-references ... WARNING
 Missing link or links in documentation object 'plotAttractors.Rd':
-  ‘[igraph]{layout}’ ‘[igraph:plot.graph]{plot.igraph}’
+  â[igraph]{layout}â â[igraph:plot.graph]{plot.igraph}â
 
 Missing link or links in documentation object 'plotNetworkWiring.Rd':
-  ‘[igraph]{layout}’ ‘[igraph:plot.graph]{plot.igraph}’
-  ‘[igraph:plot.graph]{igraph.plotting}’
+  â[igraph]{layout}â â[igraph:plot.graph]{plot.igraph}â
+  â[igraph:plot.graph]{igraph.plotting}â
 
 Missing link or links in documentation object 'plotPBNTransitions.Rd':
-  ‘[igraph]{layout}’ ‘[igraph:plot.graph]{plot.igraph}’
+  â[igraph]{layout}â â[igraph:plot.graph]{plot.igraph}â
 
 Missing link or links in documentation object 'plotSequence.Rd':
-  ‘[igraph]{layout}’ ‘[igraph:plot.graph]{plot.igraph}’
+  â[igraph]{layout}â â[igraph:plot.graph]{plot.igraph}â
 
 Missing link or links in documentation object 'plotStateGraph.Rd':
-  ‘[igraph]{layout}’ ‘[igraph:plot.graph]{plot.igraph}’
+  â[igraph]{layout}â â[igraph:plot.graph]{plot.igraph}â
 
 See section 'Cross-references' in the 'Writing R Extensions' manual.
 
@@ -486,7 +486,7 @@ Maintainer: Gokmen Altay <altayscience@gmail.com>
 
 ```
 checking examples ... ERROR
-Running examples in ‘c3net-Ex.R’ failed
+Running examples in âc3net-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -517,21 +517,21 @@ Maintainer: Xingguo Li <xingguo.leo@gmail.com>
 checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   plot.slim
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
 checking compiled code ... NOTE
-File ‘camel/libs/camel.so’:
-  Found ‘_rand’, possibly from ‘rand’ (C)
-    Object: ‘SFGen.o’
-  Found ‘_srand’, possibly from ‘srand’ (C)
-    Object: ‘SFGen.o’
+File âcamel/libs/camel.soâ:
+  Found â_randâ, possibly from ârandâ (C)
+    Object: âSFGen.oâ
+  Found â_srandâ, possibly from âsrandâ (C)
+    Object: âSFGen.oâ
 
 Compiled code should not call entry points which might terminate R nor
 write to stdout/stderr instead of to the console, nor the system RNG.
 
-See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
+See âWriting portable packagesâ in the âWriting R Extensionsâ manual.
 ```
 ```
 DONE
@@ -542,14 +542,14 @@ Status: 2 NOTEs
 Maintainer: Santtu Tikka <santtuth@gmail.com>
 
 ```
-checking whether package ‘causaleffect’ can be installed ... WARNING
+checking whether package âcausaleffectâ can be installed ... WARNING
 Found the following significant warnings:
-  Warning: replacing previous import by ‘igraph::pa’ when loading ‘causaleffect’
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/causaleffect.Rcheck/00install.out’ for details.
+  Warning: replacing previous import by âigraph::paâ when loading âcausaleffectâ
+See â/Users/gaborcsardi/works/igraph/revdep_check/causaleffect.Rcheck/00install.outâ for details.
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘causaleffect-Ex.R’ failed
+Running examples in âcausaleffect-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -561,13 +561,13 @@ The error most likely occurred in:
 > 
 > library(igraph)
 
-Attaching package: ‘igraph’
+Attaching package: âigraphâ
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from âpackage:statsâ:
 
     decompose, spectrum
 
-The following object is masked from ‘package:base’:
+The following object is masked from âpackage:baseâ:
 
     union
 
@@ -595,7 +595,7 @@ Maintainer: David J. Marchette <dmarchette@gmail.com>
 
 ```
 checking examples ... ERROR
-Running examples in ‘cccd-Ex.R’ failed
+Running examples in âcccd-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -631,7 +631,7 @@ Maintainer: Zuguang Gu <jokergoo@gmail.com>
 ```
 checking dependencies in R code ... NOTE
 Packages in Depends field not imported from:
-  ‘igraph’ ‘snow’
+  âigraphâ âsnowâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
@@ -640,51 +640,51 @@ checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   plot.cepa plot.cepa.all plot.pathway.catalogue print.cepa
   print.cepa.all print.pathway.catalogue
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
 checking R code for possible problems ... NOTE
-centrality: no visible global function definition for ‘vcount’
-centrality: no visible global function definition for ‘degree’
-centrality: no visible global function definition for ‘betweenness’
+centrality: no visible global function definition for âvcountâ
+centrality: no visible global function definition for âdegreeâ
+centrality: no visible global function definition for âbetweennessâ
 cepa.all.parallel.by.snow: no visible global function definition for
-  ‘makeCluster’
+  âmakeClusterâ
 cepa.all.parallel.by.snow: no visible global function definition for
-  ‘clusterCall’
+  âclusterCallâ
 cepa.all.parallel.by.snow: no visible global function definition for
-  ‘clusterApply’
+  âclusterApplyâ
 cepa.all.parallel.by.snow: no visible global function definition for
-  ‘stopCluster’
+  âstopClusterâ
 generate.pathway: no visible global function definition for
-  ‘graph.edgelist’
-pathway.nodes: no visible global function definition for ‘vcount’
+  âgraph.edgelistâ
+pathway.nodes: no visible global function definition for âvcountâ
 pathway.nodes: no visible global function definition for
-  ‘get.vertex.attribute’
-plot.igraph2: no visible binding for global variable ‘layout.random’
-plot.igraph2: no visible global function definition for ‘V’
-plot.igraph2: no visible global function definition for ‘E’
-plot.igraph2: no visible global function definition for ‘get.edgelist’
-plot.igraph2: no visible global function definition for ‘ecount’
-plotGraph: no visible global function definition for ‘V’
-plotGraph: no visible global function definition for ‘V<-’
-plotGraph: no visible global function definition for ‘E’
-plotGraph: no visible global function definition for ‘E<-’
+  âget.vertex.attributeâ
+plot.igraph2: no visible binding for global variable âlayout.randomâ
+plot.igraph2: no visible global function definition for âVâ
+plot.igraph2: no visible global function definition for âEâ
+plot.igraph2: no visible global function definition for âget.edgelistâ
+plot.igraph2: no visible global function definition for âecountâ
+plotGraph: no visible global function definition for âVâ
+plotGraph: no visible global function definition for âV<-â
+plotGraph: no visible global function definition for âEâ
+plotGraph: no visible global function definition for âE<-â
 plotGraph : layout.method: no visible global function definition for
-  ‘layout.reingold.tilford’
-radiality: no visible global function definition for ‘shortest.paths’
-radiality: no visible global function definition for ‘vcount’
-radiality: no visible global function definition for ‘diameter’
-reach: no visible global function definition for ‘E’
-reach: no visible global function definition for ‘shortest.paths’
-report: no visible global function definition for ‘write.graph’
-spread: no visible global function definition for ‘E’
-spread: no visible global function definition for ‘shortest.paths’
+  âlayout.reingold.tilfordâ
+radiality: no visible global function definition for âshortest.pathsâ
+radiality: no visible global function definition for âvcountâ
+radiality: no visible global function definition for âdiameterâ
+reach: no visible global function definition for âEâ
+reach: no visible global function definition for âshortest.pathsâ
+report: no visible global function definition for âwrite.graphâ
+spread: no visible global function definition for âEâ
+spread: no visible global function definition for âshortest.pathsâ
 
 Found the following calls to attach():
-File ‘CePa/R/report.R’:
+File âCePa/R/report.Râ:
   attach(replacement, warn.conflicts = FALSE)
-See section ‘Good practice’ in ‘?attach’.
+See section âGood practiceâ in â?attachâ.
 ```
 ```
 checking Rd line widths ... NOTE
@@ -732,7 +732,7 @@ These lines will be truncated in the PDF manual.
 ```
 checking Rd cross-references ... WARNING
 Missing link or links in documentation object 'plotGraph.Rd':
-  ‘[igraph]{layout}’
+  â[igraph]{layout}â
 
 See section 'Cross-references' in the 'Writing R Extensions' manual.
 
@@ -746,9 +746,9 @@ Status: 1 WARNING, 4 NOTEs
 Maintainer: Beau Dabbs <bdabbs@andrew.cmu.edu>
 
 ```
-checking whether package ‘CIDnetworks’ can be installed ... ERROR
+checking whether package âCIDnetworksâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/CIDnetworks.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/CIDnetworks.Rcheck/00install.outâ for details.
 Status: 1 ERROR
 ```
 
@@ -756,10 +756,10 @@ Status: 1 ERROR
 Maintainer: Michael Scholz <michael.scholz@uni-passau.de>
 
 ```
-checking whether package ‘clickstream’ can be installed ... WARNING
+checking whether package âclickstreamâ can be installed ... WARNING
 Found the following significant warnings:
-  Warning: replacing previous import by ‘igraph::union’ when loading ‘clickstream’
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/clickstream.Rcheck/00install.out’ for details.
+  Warning: replacing previous import by âigraph::unionâ when loading âclickstreamâ
+See â/Users/gaborcsardi/works/igraph/revdep_check/clickstream.Rcheck/00install.outâ for details.
 ```
 ```
 DONE
@@ -772,13 +772,13 @@ Maintainer: Andreas Muehling <andreas.muehling@tum.de>
 ```
 checking R code for possible problems ... NOTE
 plot.conceptmap: no visible global function definition for
-  ‘layout.spring’
+  âlayout.springâ
 plot.conceptmaps: no visible global function definition for
-  ‘layout.spring’
+  âlayout.springâ
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘comato-Ex.R’ failed
+Running examples in âcomato-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -792,13 +792,13 @@ The error most likely occurred in:
 > require("igraph")
 Loading required package: igraph
 
-Attaching package: ‘igraph’
+Attaching package: âigraphâ
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from âpackage:statsâ:
 
     decompose, spectrum
 
-The following object is masked from ‘package:base’:
+The following object is masked from âpackage:baseâ:
 
     union
 
@@ -826,13 +826,13 @@ Maintainer: David M. Kaplan <dmkaplan2000@gmail.com>
 
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘igraph’ in package code.
+'library' or 'require' call to âigraphâ in package code.
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
 ```
 checking R code for possible problems ... NOTE
-eigs: no visible global function definition for ‘arpack’
+eigs: no visible global function definition for âarpackâ
 ```
 ```
 DONE
@@ -844,10 +844,10 @@ Maintainer: Andrei Boutyline <andrei.boutyline@gmail.com>
 
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘Cairo’ in package code.
+'library' or 'require' call to âCairoâ in package code.
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
-Package in Depends field not imported from: ‘igraph’
+Package in Depends field not imported from: âigraphâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
@@ -855,19 +855,19 @@ Package in Depends field not imported from: ‘igraph’
 checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   plot.cca print.cca
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
 checking R code for possible problems ... NOTE
 .cormat.to.igraph: no visible global function definition for
-  ‘graph.adjacency’
+  âgraph.adjacencyâ
 cca: no visible global function definition for
-  ‘leading.eigenvector.community’
-plot.cca: no visible binding for global variable ‘layout.kamada.kawai’
-plot.cca: no visible global function definition for ‘delete.edges’
-plot.cca: no visible global function definition for ‘E’
-plot.cca: no visible global function definition for ‘CairoPDF’
+  âleading.eigenvector.communityâ
+plot.cca: no visible binding for global variable âlayout.kamada.kawaiâ
+plot.cca: no visible global function definition for âdelete.edgesâ
+plot.cca: no visible global function definition for âEâ
+plot.cca: no visible global function definition for âCairoPDFâ
 ```
 ```
 DONE
@@ -881,7 +881,7 @@ Maintainer: Eric C. Chi <ecchi1105@gmail.com>
 checking line endings in Makefiles ... NOTE
 Found the following Makefile(s) without a final LF:
   src/Makevars
-Some ‘make’ programs ignore lines not ending in LF.
+Some âmakeâ programs ignore lines not ending in LF.
 ```
 ```
 DONE
@@ -893,9 +893,9 @@ Maintainer: Bao-Hong Liu <bhliu@scbit.org>
 
 ```
 checking package dependencies ... ERROR
-Package required but not available: ‘limma’
+Package required but not available: âlimmaâ
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -904,9 +904,9 @@ Status: 1 ERROR
 Maintainer: Hai Fang <hfang@cs.bris.ac.uk>
 
 ```
-checking whether package ‘dcGOR’ can be installed ... ERROR
+checking whether package âdcGORâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/dcGOR.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/dcGOR.Rcheck/00install.outâ for details.
 Status: 1 ERROR
 ```
 
@@ -915,9 +915,9 @@ Maintainer: Atsushi Fukushima <atsushi.fukushima@riken.jp>
 
 ```
 checking package dependencies ... ERROR
-Packages required but not available: ‘pcaMethods’ ‘multtest’
+Packages required but not available: âpcaMethodsâ âmulttestâ
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -929,7 +929,7 @@ Maintainer: Joseph Richards <joeyrichar@gmail.com>
 checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   plot.dmap print.dmap
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
@@ -947,41 +947,41 @@ Malformed Title field: should not end in a period.
 ```
 checking dependencies in R code ... NOTE
 Packages in Depends field not imported from:
-  ‘Rcpp’ ‘igraph’
+  âRcppâ âigraphâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
 ```
 checking R code for possible problems ... NOTE
 EdgelistFromIgraph: no visible global function definition for
-  ‘get.adjacency’
-EdgelistFromIgraph: no visible global function definition for ‘V’
-EdgelistFromIgraph: no visible global function definition for ‘vcount’
+  âget.adjacencyâ
+EdgelistFromIgraph: no visible global function definition for âVâ
+EdgelistFromIgraph: no visible global function definition for âvcountâ
 IgraphFromEdgelist: no visible global function definition for
-  ‘graph.adjacency’
-IgraphFromEdgelist: no visible global function definition for ‘V’
-IgraphFromEdgelist: no visible global function definition for ‘V<-’
+  âgraph.adjacencyâ
+IgraphFromEdgelist: no visible global function definition for âVâ
+IgraphFromEdgelist: no visible global function definition for âV<-â
 MeasureNetworkInformation: no visible binding for global variable
-  ‘betweenness’
+  âbetweennessâ
 MeasureNetworkInformation: no visible global function definition for
-  ‘vcount’
+  âvcountâ
 MeasureNetworkInformation : SampleIgraph: no visible global function
-  definition for ‘ecount’
+  definition for âecountâ
 MeasureNetworkInformation : SampleIgraph: no visible global function
-  definition for ‘delete.edges’
+  definition for âdelete.edgesâ
 MeasureNetworkInformation : SampleIgraph: no visible global function
-  definition for ‘E’
+  definition for âEâ
 RelativeNetworkInformation: no visible binding for global variable
-  ‘betweenness’
+  âbetweennessâ
 RssSuggestedNetwork: no visible global function definition for
-  ‘get.adjacency’
+  âget.adjacencyâ
 RssSuggestedNetwork: no visible global function definition for
-  ‘is.directed’
-RssSuggestedNetwork: no visible global function definition for ‘vcount’
+  âis.directedâ
+RssSuggestedNetwork: no visible global function definition for âvcountâ
 RssSuggestedNetwork: no visible global function definition for
-  ‘graph.adjacency’
+  âgraph.adjacencyâ
 RssSuggestedNetwork: no visible global function definition for
-  ‘graph.density’
+  âgraph.densityâ
 ```
 ```
 DONE
@@ -993,19 +993,19 @@ Maintainer: Ryan Gill <ryan.gill@louisville.edu>
 
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘igraph’ in package code.
+'library' or 'require' call to âigraphâ in package code.
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
 ```
 checking R code for possible problems ... NOTE
 network.modules: no visible global function definition for
-  ‘graph.empty’
+  âgraph.emptyâ
 network.modules: no visible global function definition for
-  ‘add.vertices’
-network.modules: no visible global function definition for ‘add.edges’
-network.modules: no visible global function definition for ‘tkplot’
-network.modules: no visible global function definition for ‘V’
+  âadd.verticesâ
+network.modules: no visible global function definition for âadd.edgesâ
+network.modules: no visible global function definition for âtkplotâ
+network.modules: no visible global function definition for âVâ
 ```
 ```
 DONE
@@ -1018,15 +1018,15 @@ Maintainer: Hai Fang <hfang@cs.bris.ac.uk>
 ```
 checking package dependencies ... ERROR
 Packages required but not available:
-  ‘supraHex’ ‘graph’ ‘Rgraphviz’ ‘Biobase’
+  âsupraHexâ âgraphâ âRgraphvizâ âBiobaseâ
 
-Package suggested but not available: ‘limma’
+Package suggested but not available: âlimmaâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -1041,11 +1041,11 @@ Malformed Description field: should contain one or more complete sentences.
 ```
 ```
 checking R code for possible problems ... NOTE
-Sociogram: no visible global function definition for ‘plot.igraph’
+Sociogram: no visible global function definition for âplot.igraphâ
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘Dominance-Ex.R’ failed
+Running examples in âDominance-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -1220,102 +1220,102 @@ dpa.start: warning in assign("variables", variables, env = .GlobalEnv):
   partial argument match of 'env' to 'envir'
 dpa.start: warning in assign("dpa", dpa, env = .GlobalEnv): partial
   argument match of 'env' to 'envir'
-dpa.analysis.options: no visible binding for global variable ‘e’
+dpa.analysis.options: no visible binding for global variable âeâ
 dpa.analysis.options : OnOK : OnSave: no visible binding for global
-  variable ‘e’
+  variable âeâ
 dpa.analysis.performDPA : dpa.analysis.doPerform: no visible binding
-  for global variable ‘rbVal’
+  for global variable ârbValâ
 dpa.analysis.performDPA : dpa.analysis.doPerform: no visible binding
-  for global variable ‘variables’
+  for global variable âvariablesâ
 dpa.analysis.performDPA : dpa.analysis.doPerform: no visible binding
-  for global variable ‘e’
+  for global variable âeâ
 dpa.analysis.performDPA : dpa.analysis.doPerform: no visible binding
-  for global variable ‘NumTick’
-dpa.analysis.performDPA: no visible binding for global variable ‘rbVal’
+  for global variable âNumTickâ
+dpa.analysis.performDPA: no visible binding for global variable ârbValâ
 dpa.analysis.performDPA: no visible binding for global variable
-  ‘sem.DPA’
-dpa.analysis.performDPA: no visible binding for global variable ‘e’
+  âsem.DPAâ
+dpa.analysis.performDPA: no visible binding for global variable âeâ
 dpa.analysis.saveDPA: no visible binding for global variable
-  ‘dataFileName’
+  âdataFileNameâ
 dpa.analysis.saveDPA: no visible binding for global variable
-  ‘sem.results.coefficients’
+  âsem.results.coefficientsâ
 dpa.data.authenticationCancel: no visible binding for global variable
-  ‘ak2’
+  âak2â
 dpa.data.authenticationSubmit: no visible binding for global variable
-  ‘dbServerType’
+  âdbServerTypeâ
 dpa.data.authenticationSubmit: no visible binding for global variable
-  ‘dbServer’
+  âdbServerâ
 dpa.data.authenticationSubmit: no visible binding for global variable
-  ‘dbTable’
+  âdbTableâ
 dpa.data.authenticationSubmit: no visible binding for global variable
-  ‘UserName’
+  âUserNameâ
 dpa.data.authenticationSubmit: no visible binding for global variable
-  ‘Password’
+  âPasswordâ
 dpa.data.authenticationSubmit: no visible global function definition
-  for ‘JDBC’
+  for âJDBCâ
 dpa.data.authenticationSubmit: no visible global function definition
-  for ‘dbConnect’
+  for âdbConnectâ
 dpa.data.authenticationSubmit: no visible global function definition
-  for ‘dbGetQuery’
+  for âdbGetQueryâ
 dpa.data.authenticationSubmit: no visible global function definition
-  for ‘dbReadTable’
+  for âdbReadTableâ
 dpa.data.checkData : dpa.data.checkData.sort: no visible binding for
-  global variable ‘e’
+  global variable âeâ
 dpa.data.checkData : dpa.data.missingRow: no visible binding for global
-  variable ‘e’
+  variable âeâ
 dpa.data.checkData : dpa.data.missingData: no visible binding for
-  global variable ‘e’
-dpa.data.loadCancel: no visible binding for global variable ‘ak1’
+  global variable âeâ
+dpa.data.loadCancel: no visible binding for global variable âak1â
 dpa.data.loadDataFromDatabase: no visible binding for global variable
-  ‘dpa.data.authentificationCancel’
-dpa.data.loadDataFromDisk: no visible binding for global variable ‘ak1’
-dpa.data.saveDataToDisk: no visible binding for global variable ‘e’
-dpa.exit: no visible binding for global variable ‘dpa’
+  âdpa.data.authentificationCancelâ
+dpa.data.loadDataFromDisk: no visible binding for global variable âak1â
+dpa.data.saveDataToDisk: no visible binding for global variable âeâ
+dpa.exit: no visible binding for global variable âdpaâ
 dpa.relations.addRelations: no visible binding for global variable
-  ‘dataframe’
-dpa.relations.editRelations: no visible binding for global variable ‘e’
+  âdataframeâ
+dpa.relations.editRelations: no visible binding for global variable âeâ
 dpa.results.generateCoefficientsPlots : dpa.plot.graph: no visible
-  binding for global variable ‘sem.results.coefficients’
+  binding for global variable âsem.results.coefficientsâ
 dpa.results.generateCoefficientsPlots : dpa.plot.graph: no visible
-  binding for global variable ‘sem.results.parameters’
+  binding for global variable âsem.results.parametersâ
 dpa.results.generateCoefficientsPlots : dpa.plot.graph: no visible
-  binding for global variable ‘graphDir’
+  binding for global variable âgraphDirâ
 dpa.results.generateCoefficientsPlots : dpa.plot.graph: no visible
-  binding for global variable ‘listOfTicks’
+  binding for global variable âlistOfTicksâ
 dpa.results.generateCoefficientsPlots : dpa.plot.graph: no visible
-  binding for global variable ‘e’
+  binding for global variable âeâ
 dpa.results.generateFitPlots : dpa.plot.graph: no visible binding for
-  global variable ‘sem.results.statistics’
+  global variable âsem.results.statisticsâ
 dpa.results.generateFitPlots : dpa.plot.graph: no visible binding for
-  global variable ‘graphDir’
+  global variable âgraphDirâ
 dpa.results.generateFitPlots : dpa.plot.graph: no visible binding for
-  global variable ‘listOfTicks’
+  global variable âlistOfTicksâ
 dpa.results.generateFitPlots : dpa.plot.graph: no visible binding for
-  global variable ‘e’
-dpa.results.viewNodePlots: no visible binding for global variable ‘e’
+  global variable âeâ
+dpa.results.viewNodePlots: no visible binding for global variable âeâ
 dpa.results.viewNodePlots : dpa.results.plotNodes : dpa.plot.scatter:
-  no visible binding for global variable ‘graphDir’
+  no visible binding for global variable âgraphDirâ
 dpa.results.viewNodePlots : dpa.results.plotNodes: no visible binding
-  for global variable ‘e’
+  for global variable âeâ
 dpa.results.viewNodePlots : dpa.results.plotNodesWithTime: no visible
-  binding for global variable ‘e’
+  binding for global variable âeâ
 dpa.results.viewNodePlots : dpa.results.plotNodesWithTime :
-  dpa.plot.scatter: no visible binding for global variable ‘graphDir’
+  dpa.plot.scatter: no visible binding for global variable âgraphDirâ
 dpa.results.viewRelationsPlots : dpa.plot.graph: no visible binding for
-  global variable ‘rbVal’
+  global variable ârbValâ
 dpa.results.viewRelationsPlots : dpa.plot.graph: no visible binding for
-  global variable ‘graphDir’
+  global variable âgraphDirâ
 dpa.results.viewRelationsPlots : dpa.plot.graph: no visible binding for
-  global variable ‘sem.standardized’
+  global variable âsem.standardizedâ
 dpa.results.viewRelationsPlots : dpa.plot.graph: no visible global
-  function definition for ‘plot.igraph’
+  function definition for âplot.igraphâ
 dpa.results.viewRelationsPlots: no visible binding for global variable
-  ‘variables’
+  âvariablesâ
 dpa.results.viewRelationsPlots: no visible binding for global variable
-  ‘e’
+  âeâ
 
 Found the following assignments to the global environment:
-File ‘dpa/R/dpa.r’:
+File âdpa/R/dpa.râ:
   assign("ak1", ak1, env = .GlobalEnv)
   assign("dataFileName", dataFileName, env = .GlobalEnv)
   assign("e", e, env = .GlobalEnv)
@@ -1352,9 +1352,9 @@ File ‘dpa/R/dpa.r’:
   assign("sem.standardized", sem.standardized, env = .GlobalEnv)
   assign("variables", variables, env = .GlobalEnv)
   assign("dpa", dpa, env = .GlobalEnv)
-File ‘dpa/R/plot.r’:
+File âdpa/R/plot.râ:
   assign("graphDir", graphDir, env = .GlobalEnv)
-File ‘dpa/R/sem.r’:
+File âdpa/R/sem.râ:
   assign("row", row, env = .GlobalEnv)
   assign("variables", baseVariables, env = .GlobalEnv)
   assign("sem", sem, env = .GlobalEnv)
@@ -1376,16 +1376,16 @@ File ‘dpa/R/sem.r’:
   assign("sem.results.coefficients", NULL, env = .GlobalEnv)
 
 Found the following calls to attach():
-File ‘dpa/R/dpa.r’:
+File âdpa/R/dpa.râ:
   attach(dataframe)
   attach(dataframe)
   attach(dataframe)
   attach(dataframe)
-File ‘dpa/R/plot.r’:
+File âdpa/R/plot.râ:
   attach(dataframe)
   attach(dataframe)
   attach(dataframe)
-See section ‘Good practice’ in ‘?attach’.
+See section âGood practiceâ in â?attachâ.
 ```
 ```
 checking Rd line widths ... NOTE
@@ -1409,45 +1409,45 @@ Maintainer: Peter Metcalfe <p.metcalfe@lancaster.ac.uk>
 
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘igraph’ in package code.
+'library' or 'require' call to âigraphâ in package code.
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
 ```
 checking R code for possible problems ... NOTE
 DisplayObservedFlows: no visible global function definition for
-  ‘plot.zoo’
+  âplot.zooâ
 GetTimeSeriesInputRange: no visible global function definition for
-  ‘index’
-RunTOPMODEL: no visible global function definition for ‘index’
+  âindexâ
+RunTOPMODEL: no visible global function definition for âindexâ
 SpatialLinesDataFrameToIgraph: no visible global function definition
-  for ‘graph.data.frame’
-aggregate.qobs: no visible global function definition for ‘zoo’
-aggregate.xts: no visible global function definition for ‘is.zoo’
-aggregate.xts: no visible global function definition for ‘zoo’
-allocate.rain: no visible global function definition for ‘index’
-disaggregate.xts: no visible global function definition for ‘is.zoo’
-disaggregate.xts: no visible global function definition for ‘index’
-disaggregate.xts: no visible global function definition for ‘coredata’
+  for âgraph.data.frameâ
+aggregate.qobs: no visible global function definition for âzooâ
+aggregate.xts: no visible global function definition for âis.zooâ
+aggregate.xts: no visible global function definition for âzooâ
+allocate.rain: no visible global function definition for âindexâ
+disaggregate.xts: no visible global function definition for âis.zooâ
+disaggregate.xts: no visible global function definition for âindexâ
+disaggregate.xts: no visible global function definition for âcoredataâ
 disp.discharge.selection: no visible global function definition for
-  ‘index’
-disp.discharges: no visible global function definition for ‘plot.zoo’
-disp.qsim: no visible global function definition for ‘plot.zoo’
-disp.rain: no visible global function definition for ‘plot.zoo’
-fix.obs: no visible global function definition for ‘na.approx’
-fix.run.dates: no visible global function definition for ‘index’
-get.obs: no visible global function definition for ‘is.zoo’
-gof.run: no visible global function definition for ‘index’
-init.input: no visible global function definition for ‘index’
-read.obs: no visible global function definition for ‘index’
-report.series: no visible global function definition for ‘is.zoo’
-report.series: no visible global function definition for ‘index’
-subset.zoo: no visible global function definition for ‘is.zoo’
-subset.zoo: no visible global function definition for ‘index’
+  âindexâ
+disp.discharges: no visible global function definition for âplot.zooâ
+disp.qsim: no visible global function definition for âplot.zooâ
+disp.rain: no visible global function definition for âplot.zooâ
+fix.obs: no visible global function definition for âna.approxâ
+fix.run.dates: no visible global function definition for âindexâ
+get.obs: no visible global function definition for âis.zooâ
+gof.run: no visible global function definition for âindexâ
+init.input: no visible global function definition for âindexâ
+read.obs: no visible global function definition for âindexâ
+report.series: no visible global function definition for âis.zooâ
+report.series: no visible global function definition for âindexâ
+subset.zoo: no visible global function definition for âis.zooâ
+subset.zoo: no visible global function definition for âindexâ
 time.interval.intersection: no visible global function definition for
-  ‘index’
-write.obs: no visible global function definition for ‘index’
-write.proj: no visible global function definition for ‘write.zoo’
+  âindexâ
+write.obs: no visible global function definition for âindexâ
+write.proj: no visible global function definition for âwrite.zooâ
 ```
 ```
 DONE
@@ -1471,13 +1471,13 @@ Maintainer: Xinrui Shi <xinrui103@163.com>
 
 ```
 checking package dependencies ... ERROR
-Package suggested but not available: ‘graph’
+Package suggested but not available: âgraphâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -1488,7 +1488,7 @@ Maintainer: Jana Fruth <fruth@statistik.tu-dortmund.de>
 ```
 checking dependencies in R code ... NOTE
 'library' or 'require' calls in package code:
-  ‘manipulate’ ‘tcltk’
+  âmanipulateâ âtcltkâ
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
@@ -1496,23 +1496,23 @@ checking dependencies in R code ... NOTE
 checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   plot.graphlist print.graphlist
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
 checking R code for possible problems ... NOTE
-plotTk: no visible global function definition for ‘tclVar’
-plotTk : refresh: no visible global function definition for ‘tclvalue’
-plotTk: no visible global function definition for ‘tktoplevel’
-plotTk: no visible global function definition for ‘tkwm.title’
-plotTk: no visible global function definition for ‘tkframe’
-plotTk: no visible global function definition for ‘tkscale’
-plotTk: no visible global function definition for ‘tkpack’
-plotTk: no visible global function definition for ‘tklabel’
+plotTk: no visible global function definition for âtclVarâ
+plotTk : refresh: no visible global function definition for âtclvalueâ
+plotTk: no visible global function definition for âtktoplevelâ
+plotTk: no visible global function definition for âtkwm.titleâ
+plotTk: no visible global function definition for âtkframeâ
+plotTk: no visible global function definition for âtkscaleâ
+plotTk: no visible global function definition for âtkpackâ
+plotTk: no visible global function definition for âtklabelâ
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘fanovaGraph-Ex.R’ failed
+Running examples in âfanovaGraph-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -1531,7 +1531,7 @@ Execution halted
 ```
 ```
 checking tests ... ERROR
-Running the tests in ‘tests/run-all.R’ failed.
+Running the tests in âtests/run-all.Râ failed.
 Last 13 lines of output:
   11: stop("Extra arguments in make_graph")
   
@@ -1558,168 +1558,168 @@ Maintainer: E Holmes <eeholmes@u.washington.edu>
 ```
 checking dependencies in R code ... NOTE
 'library' or 'require' calls in package code:
-  ‘RCurl’ ‘RJSONIO’ ‘XML’ ‘glmnet’ ‘httr’ ‘speedglm’ ‘tcltk’ ‘xtable’
+  âRCurlâ âRJSONIOâ âXMLâ âglmnetâ âhttrâ âspeedglmâ âtcltkâ âxtableâ
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
 ```
 checking R code for possible problems ... NOTE
-print.fbRanks: no visible global function definition for ‘xtable’
-rank.teams: no visible global function definition for ‘speedglm’
-rank.teams: no visible global function definition for ‘sparseMatrix’
-rank.teams: no visible binding for global variable ‘glmnet’
-scrape.custom1: no visible global function definition for ‘htmlParse’
-scrape.custom1: no visible global function definition for ‘getNodeSet’
-scrape.custom1: no visible global function definition for ‘xmlValue’
+print.fbRanks: no visible global function definition for âxtableâ
+rank.teams: no visible global function definition for âspeedglmâ
+rank.teams: no visible global function definition for âsparseMatrixâ
+rank.teams: no visible binding for global variable âglmnetâ
+scrape.custom1: no visible global function definition for âhtmlParseâ
+scrape.custom1: no visible global function definition for âgetNodeSetâ
+scrape.custom1: no visible global function definition for âxmlValueâ
 scrape.custom2: no visible global function definition for
-  ‘readHTMLTable’
+  âreadHTMLTableâ
 scrape.custom3: no visible global function definition for
-  ‘readHTMLTable’
+  âreadHTMLTableâ
 scrape.custom4: no visible global function definition for
-  ‘readHTMLTable’
+  âreadHTMLTableâ
 scrape.demosphere: no visible global function definition for
-  ‘readHTMLTable’
+  âreadHTMLTableâ
 scrape.demosphere : getthelink: no visible global function definition
-  for ‘xmlChildren’
+  for âxmlChildrenâ
 scrape.demosphere : getthelink: no visible global function definition
-  for ‘xmlAttrs’
-scrape.demosphere: no visible global function definition for ‘getURL’
+  for âxmlAttrsâ
+scrape.demosphere: no visible global function definition for âgetURLâ
 scrape.demosphere: no visible global function definition for
-  ‘htmlParse’
+  âhtmlParseâ
 scrape.demosphere.main : getthelink: no visible global function
-  definition for ‘xmlChildren’
+  definition for âxmlChildrenâ
 scrape.demosphere.main : getthelink: no visible global function
-  definition for ‘xmlAttrs’
+  definition for âxmlAttrsâ
 scrape.demosphere.main : getthelink: no visible global function
-  definition for ‘xmlValue’
+  definition for âxmlValueâ
 scrape.demosphere.main : getthelink3: no visible global function
-  definition for ‘xmlChildren’
+  definition for âxmlChildrenâ
 scrape.demosphere.main : getthelink3: no visible global function
-  definition for ‘xmlAttrs’
+  definition for âxmlAttrsâ
 scrape.demosphere.main : getthelink3: no visible global function
-  definition for ‘xmlValue’
+  definition for âxmlValueâ
 scrape.demosphere.main: no visible global function definition for
-  ‘readHTMLTable’
+  âreadHTMLTableâ
 scrape.gotsport: no visible global function definition for
-  ‘readHTMLTable’
+  âreadHTMLTableâ
 scrape.gotsport.main : getthelink: no visible global function
-  definition for ‘xmlChildren’
+  definition for âxmlChildrenâ
 scrape.gotsport.main : getthelink: no visible global function
-  definition for ‘xmlAttrs’
+  definition for âxmlAttrsâ
 scrape.gotsport.main : getthelink: no visible global function
-  definition for ‘xmlValue’
-scrape.gotsport.main: no visible global function definition for ‘GET’
+  definition for âxmlValueâ
+scrape.gotsport.main: no visible global function definition for âGETâ
 scrape.gotsport.main: no visible global function definition for
-  ‘user_agent’
+  âuser_agentâ
 scrape.gotsport.main: no visible global function definition for
-  ‘htmlParse’
+  âhtmlParseâ
 scrape.gotsport.main: no visible global function definition for
-  ‘text_content’
+  âtext_contentâ
 scrape.gotsport.main: no visible global function definition for
-  ‘readHTMLTable’
-scrape.json1: no visible global function definition for ‘getURL’
-scrape.json1: no visible global function definition for ‘fromJSON’
-scrape.korrio: no visible global function definition for ‘GET’
-scrape.korrio: no visible global function definition for ‘user_agent’
+  âreadHTMLTableâ
+scrape.json1: no visible global function definition for âgetURLâ
+scrape.json1: no visible global function definition for âfromJSONâ
+scrape.korrio: no visible global function definition for âGETâ
+scrape.korrio: no visible global function definition for âuser_agentâ
 scrape.korrio: no visible global function definition for
-  ‘readHTMLTable’
-scrape.korrio: no visible global function definition for ‘text_content’
-scrape.korrio: no visible global function definition for ‘htmlParse’
-scrape.korrio: no visible global function definition for ‘getNodeSet’
-scrape.korrio: no visible binding for global variable ‘xmlValue’
-scrape.korrio: no visible global function definition for ‘xmlAttrs’
-scrape.korrio: no visible global function definition for ‘content’
-scrape.korrio: no visible global function definition for ‘xmlValue’
+  âreadHTMLTableâ
+scrape.korrio: no visible global function definition for âtext_contentâ
+scrape.korrio: no visible global function definition for âhtmlParseâ
+scrape.korrio: no visible global function definition for âgetNodeSetâ
+scrape.korrio: no visible binding for global variable âxmlValueâ
+scrape.korrio: no visible global function definition for âxmlAttrsâ
+scrape.korrio: no visible global function definition for âcontentâ
+scrape.korrio: no visible global function definition for âxmlValueâ
 scrape.scoreboard: no visible global function definition for
-  ‘readHTMLTable’
+  âreadHTMLTableâ
 scrape.sportaffinity: no visible global function definition for
-  ‘readHTMLTable’
+  âreadHTMLTableâ
 scrape.sportaffinity: no visible global function definition for
-  ‘htmlParse’
+  âhtmlParseâ
 scrape.sportaffinity: no visible global function definition for
-  ‘getNodeSet’
-scrape.sportaffinity: no visible binding for global variable ‘xmlValue’
+  âgetNodeSetâ
+scrape.sportaffinity: no visible binding for global variable âxmlValueâ
 scrape.sportaffinity.brackets: no visible global function definition
-  for ‘GET’
+  for âGETâ
 scrape.sportaffinity.brackets: no visible global function definition
-  for ‘user_agent’
+  for âuser_agentâ
 scrape.sportaffinity.brackets: no visible global function definition
-  for ‘htmlParse’
+  for âhtmlParseâ
 scrape.sportaffinity.brackets: no visible global function definition
-  for ‘text_content’
+  for âtext_contentâ
 scrape.sportaffinity.brackets: no visible global function definition
-  for ‘getNodeSet’
+  for âgetNodeSetâ
 scrape.sportaffinity.brackets : <anonymous>: no visible global function
-  definition for ‘xmlValue’
+  definition for âxmlValueâ
 scrape.sportaffinity.brackets: no visible global function definition
-  for ‘xmlAttrs’
+  for âxmlAttrsâ
 scrape.sportaffinity.brackets: no visible global function definition
-  for ‘xmlValue’
+  for âxmlValueâ
 scrape.sportaffinity.main : getthelink3: no visible global function
-  definition for ‘xmlChildren’
+  definition for âxmlChildrenâ
 scrape.sportaffinity.main : getthelink3: no visible global function
-  definition for ‘xmlValue’
+  definition for âxmlValueâ
 scrape.sportaffinity.main : getthelink3: no visible global function
-  definition for ‘xmlAttrs’
+  definition for âxmlAttrsâ
 scrape.sportaffinity.main: no visible global function definition for
-  ‘readHTMLTable’
+  âreadHTMLTableâ
 scrape.usclub: no visible global function definition for
-  ‘readHTMLTable’
+  âreadHTMLTableâ
 team.name.select : gogetem: no visible global function definition for
-  ‘tclvalue<-’
+  âtclvalue<-â
 team.name.select : gogetem: no visible global function definition for
-  ‘tkcurselection’
+  âtkcurselectionâ
 team.name.select : clearteam: no visible global function definition for
-  ‘tclvalue<-’
+  âtclvalue<-â
 team.name.select : clearteam: no visible global function definition for
-  ‘tkselection.clear’
+  âtkselection.clearâ
 team.name.select : showteam: no visible global function definition for
-  ‘tclvalue<-’
+  âtclvalue<-â
 team.name.select : showteam: no visible global function definition for
-  ‘tkcurselection’
+  âtkcurselectionâ
 team.name.select : showteam: no visible global function definition for
-  ‘tclvalue’
+  âtclvalueâ
 team.name.select : enterteam: no visible global function definition for
-  ‘tclvalue<-’
+  âtclvalue<-â
 team.name.select : enterteam: no visible global function definition for
-  ‘tclvalue’
+  âtclvalueâ
 team.name.select : updateteam: no visible global function definition
-  for ‘tclvalue<-’
+  for âtclvalue<-â
 team.name.select : updateteam: no visible global function definition
-  for ‘tkcurselection’
+  for âtkcurselectionâ
 team.name.select : updateteam: no visible global function definition
-  for ‘tclvalue’
+  for âtclvalueâ
 team.name.select : showlist: no visible global function definition for
-  ‘tclvalue<-’
+  âtclvalue<-â
 team.name.select : showlist: no visible global function definition for
-  ‘tclvalue’
+  âtclvalueâ
 team.name.select : searchteam: no visible global function definition
-  for ‘tclvalue<-’
+  for âtclvalue<-â
 team.name.select : searchteam: no visible global function definition
-  for ‘tclvalue’
+  for âtclvalueâ
 team.name.select : skipteam: no visible global function definition for
-  ‘tclvalue<-’
+  âtclvalue<-â
 team.name.select: no visible global function definition for
-  ‘tktoplevel’
+  âtktoplevelâ
 team.name.select: no visible global function definition for
-  ‘tkwm.title’
-team.name.select: no visible global function definition for ‘tkframe’
-team.name.select: no visible global function definition for ‘tclVar’
-team.name.select: no visible global function definition for ‘tclObj<-’
-team.name.select: no visible global function definition for ‘tklistbox’
-team.name.select: no visible global function definition for ‘tkpack’
+  âtkwm.titleâ
+team.name.select: no visible global function definition for âtkframeâ
+team.name.select: no visible global function definition for âtclVarâ
+team.name.select: no visible global function definition for âtclObj<-â
+team.name.select: no visible global function definition for âtklistboxâ
+team.name.select: no visible global function definition for âtkpackâ
 team.name.select: no visible global function definition for
-  ‘tkradiobutton’
-team.name.select: no visible global function definition for ‘tklabel’
-team.name.select: no visible global function definition for ‘tkentry’
-team.name.select: no visible global function definition for ‘tkbutton’
-team.name.select: no visible global function definition for ‘tkgrid’
+  âtkradiobuttonâ
+team.name.select: no visible global function definition for âtklabelâ
+team.name.select: no visible global function definition for âtkentryâ
+team.name.select: no visible global function definition for âtkbuttonâ
+team.name.select: no visible global function definition for âtkgridâ
 team.name.select: no visible global function definition for
-  ‘tclvalue<-’
+  âtclvalue<-â
 team.name.select : <anonymous>: no visible global function definition
-  for ‘tkdestroy’
+  for âtkdestroyâ
 team.name.select: no visible global function definition for
-  ‘tkwait.window’
+  âtkwait.windowâ
 ```
 ```
 DONE
@@ -1731,7 +1731,7 @@ Maintainer: Shaun Turney <shaun.turney@mail.mcgill.ca>
 
 ```
 checking examples ... ERROR
-Running examples in ‘FCMapper-Ex.R’ failed
+Running examples in âFCMapper-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -1771,13 +1771,13 @@ Maintainer: R. Kyle Bocinsky <bocinsky@gmail.com>
 
 ```
 checking package dependencies ... ERROR
-Packages suggested but not available: ‘SSOAP’ ‘XMLSchema’
+Packages suggested but not available: âSSOAPâ âXMLSchemaâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -1787,7 +1787,7 @@ Maintainer: Yoli Shavit <ys388@cam.ac.uk>
 
 ```
 checking examples ... ERROR
-Running examples in ‘FisHiCal-Ex.R’ failed
+Running examples in âFisHiCal-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -1818,7 +1818,7 @@ Maintainer: Xingguo Li <xingguo.leo@gmail.com>
 checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   plot.slim
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
@@ -1831,15 +1831,15 @@ Maintainer: Ulrike Groemping <groemping@beuth-hochschule.de>
 
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘FrF2.catlg128’ in package code.
+'library' or 'require' call to âFrF2.catlg128â in package code.
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
 ```
 checking Rd cross-references ... WARNING
-Package unavailable to check Rd xrefs: ‘DoE.wrapper’
+Package unavailable to check Rd xrefs: âDoE.wrapperâ
 Missing link or links in documentation object 'CIG.Rd':
-  ‘[igraph]{layout}’
+  â[igraph]{layout}â
 
 See section 'Cross-references' in the 'Writing R Extensions' manual.
 
@@ -1853,40 +1853,40 @@ Status: 1 WARNING, 1 NOTE
 Maintainer: Nikolai Gorte <n.gorte@gmail.com>
 
 ```
-checking whether package ‘fuzzyMM’ can be installed ... WARNING
+checking whether package âfuzzyMMâ can be installed ... WARNING
 Found the following significant warnings:
-  Warning: replacing previous import by ‘rgeos::union’ when loading ‘fuzzyMM’
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/fuzzyMM.Rcheck/00install.out’ for details.
+  Warning: replacing previous import by ârgeos::unionâ when loading âfuzzyMMâ
+See â/Users/gaborcsardi/works/igraph/revdep_check/fuzzyMM.Rcheck/00install.outâ for details.
 ```
 ```
 checking R code for possible problems ... NOTE
-create_drn: no visible global function definition for ‘getURL’
-create_drn: no visible global function definition for ‘xmlParse’
-err_region: no visible global function definition for ‘coordinates<-’
-err_region: no visible global function definition for ‘proj4string<-’
-err_region: no visible global function definition for ‘CRS’
-err_region: no visible global function definition for ‘spTransform’
-err_region: no visible global function definition for ‘coordinates’
-err_region: no visible global function definition for ‘Polygons’
-err_region: no visible global function definition for ‘Polygon’
-err_region: no visible global function definition for ‘SpatialPolygons’
+create_drn: no visible global function definition for âgetURLâ
+create_drn: no visible global function definition for âxmlParseâ
+err_region: no visible global function definition for âcoordinates<-â
+err_region: no visible global function definition for âproj4string<-â
+err_region: no visible global function definition for âCRSâ
+err_region: no visible global function definition for âspTransformâ
+err_region: no visible global function definition for âcoordinatesâ
+err_region: no visible global function definition for âPolygonsâ
+err_region: no visible global function definition for âPolygonâ
+err_region: no visible global function definition for âSpatialPolygonsâ
 imp : <anonymous>: no visible global function definition for
-  ‘dist2Line’
-lines2segments: no visible global function definition for ‘coordinates’
-lines2segments: no visible global function definition for ‘Lines’
-lines2segments: no visible global function definition for ‘Line’
+  âdist2Lineâ
+lines2segments: no visible global function definition for âcoordinatesâ
+lines2segments: no visible global function definition for âLinesâ
+lines2segments: no visible global function definition for âLineâ
 lines2segments: no visible global function definition for
-  ‘SpatialLines’
-mm: no visible global function definition for ‘proj4string’
-mm: no visible global function definition for ‘spTransform’
-mm: no visible global function definition for ‘dist2Line’
-mm: no visible global function definition for ‘SpatialPointsDataFrame’
-smp1: no visible global function definition for ‘bearing’
-smp1: no visible global function definition for ‘spDists’
+  âSpatialLinesâ
+mm: no visible global function definition for âproj4stringâ
+mm: no visible global function definition for âspTransformâ
+mm: no visible global function definition for âdist2Lineâ
+mm: no visible global function definition for âSpatialPointsDataFrameâ
+smp1: no visible global function definition for âbearingâ
+smp1: no visible global function definition for âspDistsâ
 smp2 : <anonymous>: no visible global function definition for
-  ‘dist2Line’
-smp2: no visible global function definition for ‘spDists’
-smp2 : <anonymous>: no visible global function definition for ‘spDists’
+  âdist2Lineâ
+smp2: no visible global function definition for âspDistsâ
+smp2 : <anonymous>: no visible global function definition for âspDistsâ
 ```
 ```
 DONE
@@ -1903,14 +1903,14 @@ Malformed Title field: should not end in a period.
 ```
 checking dependencies in R code ... NOTE
 Packages in Depends field not imported from:
-  ‘MASS’ ‘igraph’
+  âMASSâ âigraphâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
 ```
 checking R code for possible problems ... NOTE
-DBNScoreStep1: no visible global function definition for ‘rlm’
-DBNScoreStep2: no visible global function definition for ‘rlm’
+DBNScoreStep1: no visible global function definition for ârlmâ
+DBNScoreStep2: no visible global function definition for ârlmâ
 ```
 ```
 DONE
@@ -1922,13 +1922,13 @@ Maintainer: Gert van Valkenhoef <g.h.m.van.valkenhoef@rug.nl>
 
 ```
 checking package dependencies ... ERROR
-Package suggested but not available: ‘BRugs’
+Package suggested but not available: âBRugsâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -1939,25 +1939,25 @@ Maintainer: Tao Huang <huangtao@sibs.ac.cn>
 ```
 checking dependencies in R code ... NOTE
 'library' or 'require' calls to packages already attached by Depends:
-  ‘igraph’ ‘splines’
+  âigraphâ âsplinesâ
   Please remove these calls from your code.
 ```
 ```
 checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   plot.GeneReg
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
 checking R code for possible problems ... NOTE
 Found an obsolete/platform-specific call in the following function:
-  ‘timedelay.lm’
+  âtimedelay.lmâ
 Found the platform-specific device:
-  ‘x11’
+  âx11â
 dev.new() is the preferred way to open a new device, in the unlikely
 event one is needed.
-plot.GeneReg: no visible global function definition for ‘plot.igraph’
+plot.GeneReg: no visible global function definition for âplot.igraphâ
 ```
 ```
 checking Rd files ... NOTE
@@ -1970,19 +1970,19 @@ Status: 4 NOTEs
 ```
 
 ## gRain (1.2-3)
-Maintainer: S�ren H�jsgaard <sorenh@math.aau.dk>
+Maintainer: Søren Højsgaard <sorenh@math.aau.dk>
 
 ```
 checking package dependencies ... ERROR
-Package required but not available: ‘graph’
+Package required but not available: âgraphâ
 
-Package suggested but not available: ‘Rgraphviz’
+Package suggested but not available: âRgraphvizâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -1992,7 +1992,7 @@ Maintainer: Smitha Ankinakatte <Smitha.AA@agrsci.dk>
 
 ```
 checking examples ... ERROR
-Running examples in ‘gRapfa-Ex.R’ failed
+Running examples in âgRapfa-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -2017,35 +2017,35 @@ Status: 1 ERROR
 ```
 
 ## gRbase (1.7-0.1)
-Maintainer: S�ren H�jsgaard <sorenh@math.aau.dk>
+Maintainer: Søren Højsgaard <sorenh@math.aau.dk>
 
 ```
 checking package dependencies ... ERROR
-Packages required but not available: ‘RBGL’ ‘graph’ ‘RcppEigen’
+Packages required but not available: âRBGLâ âgraphâ âRcppEigenâ
 
-Package suggested but not available: ‘Rgraphviz’
+Package suggested but not available: âRgraphvizâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
 
 ## gRim (0.1-17)
-Maintainer: S�ren H�jsgaard <sorenh@math.aau.dk>
+Maintainer: Søren Højsgaard <sorenh@math.aau.dk>
 
 ```
 checking package dependencies ... ERROR
-Package suggested but not available: ‘Rgraphviz’
+Package suggested but not available: âRgraphvizâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -2054,9 +2054,9 @@ Status: 1 ERROR
 Maintainer: Volkmar Liebscher <volkmar.liebscher@uni-greifswald.de>
 
 ```
-checking whether package ‘gromovlab’ can be installed ... ERROR
+checking whether package âgromovlabâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/gromovlab.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/gromovlab.Rcheck/00install.outâ for details.
 Status: 1 ERROR
 ```
 
@@ -2065,16 +2065,16 @@ Maintainer: Tuo Zhao <tzhao5@jhu.edu>
 
 ```
 checking compiled code ... NOTE
-File ‘huge/libs/huge.so’:
-  Found ‘_rand’, possibly from ‘rand’ (C)
-    Object: ‘SFGen.o’
-  Found ‘_srand’, possibly from ‘srand’ (C)
-    Object: ‘SFGen.o’
+File âhuge/libs/huge.soâ:
+  Found â_randâ, possibly from ârandâ (C)
+    Object: âSFGen.oâ
+  Found â_srandâ, possibly from âsrandâ (C)
+    Object: âSFGen.oâ
 
 Compiled code should not call entry points which might terminate R nor
 write to stdout/stderr instead of to the console, nor the system RNG.
 
-See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
+See âWriting portable packagesâ in the âWriting R Extensionsâ manual.
 ```
 ```
 DONE
@@ -2114,7 +2114,7 @@ These lines will be truncated in the PDF manual.
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘InteractiveIGraph-Ex.R’ failed
+Running examples in âInteractiveIGraph-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -2149,7 +2149,7 @@ Maintainer: Michal Bojanowski <m.bojanowski@icm.edu.pl>
 
 ```
 checking examples ... ERROR
-Running examples in ‘intergraph-Ex.R’ failed
+Running examples in âintergraph-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -2184,7 +2184,7 @@ Execution halted
 ```
 ```
 checking tests ... ERROR
-Running the tests in ‘tests/testall.R’ failed.
+Running the tests in âtests/testall.Râ failed.
 Last 13 lines of output:
   8: dumpAttr(object, "edge")
   9: dumpAttr.igraph(object, "edge")
@@ -2221,9 +2221,9 @@ Maintainer: Antonio Mora <antoniocmora@gmail.com>
 
 ```
 checking package dependencies ... ERROR
-Packages required but not available: ‘graph’ ‘RBGL’
+Packages required but not available: âgraphâ âRBGLâ
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -2233,14 +2233,14 @@ Maintainer: Patrick Danaher <pdanaher@uw.edu>
 
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘igraph’ which was already attached by Depends.
+'library' or 'require' call to âigraphâ which was already attached by Depends.
   Please remove these calls from your code.
 ```
 ```
 checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   plot.jgl print.jgl
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
@@ -2286,13 +2286,13 @@ Maintainer: Klaus K. Holst <klaus@holst.it>
 
 ```
 checking package dependencies ... ERROR
-Packages suggested but not available: ‘graph’ ‘Rgraphviz’
+Packages suggested but not available: âgraphâ âRgraphvizâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -2303,32 +2303,32 @@ Maintainer: Zongming Ma <zongming.ma@gmail.com>
 ```
 checking dependencies in R code ... NOTE
 Packages in Depends field not imported from:
-  ‘igraph’ ‘methods’
+  âigraphâ âmethodsâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
 ```
 checking R code for possible problems ... NOTE
 .break.tree: no visible global function definition for
-  ‘graph.adjacency’
-.break.tree: no visible global function definition for ‘clusters’
+  âgraph.adjacencyâ
+.break.tree: no visible global function definition for âclustersâ
 .lcd.cliques: no visible global function definition for
-  ‘graph.adjacency’
-.lcd.cliques: no visible global function definition for ‘cliques’
+  âgraph.adjacencyâ
+.lcd.cliques: no visible global function definition for âcliquesâ
 .valid.tree: no visible global function definition for
-  ‘graph.adjacency’
-.valid.tree: no visible global function definition for ‘clusters’
-draw: no visible global function definition for ‘graph.empty’
-draw: no visible global function definition for ‘add.vertices’
-draw: no visible global function definition for ‘V’
-draw: no visible global function definition for ‘V<-’
-draw: no visible global function definition for ‘add.edges’
-draw: no visible global function definition for ‘plot.igraph’
-draw: no visible global function definition for ‘tkplot’
-draw: no visible binding for global variable ‘layout.reingold.tilford’
+  âgraph.adjacencyâ
+.valid.tree: no visible global function definition for âclustersâ
+draw: no visible global function definition for âgraph.emptyâ
+draw: no visible global function definition for âadd.verticesâ
+draw: no visible global function definition for âVâ
+draw: no visible global function definition for âV<-â
+draw: no visible global function definition for âadd.edgesâ
+draw: no visible global function definition for âplot.igraphâ
+draw: no visible global function definition for âtkplotâ
+draw: no visible binding for global variable âlayout.reingold.tilfordâ
 is.chaingraph: no visible global function definition for
-  ‘graph.adjacency’
-is.chaingraph: no visible global function definition for ‘clusters’
+  âgraph.adjacencyâ
+is.chaingraph: no visible global function definition for âclustersâ
 ```
 ```
 DONE
@@ -2341,56 +2341,56 @@ Maintainer: Guy Nason <g.p.nason@bristol.ac.uk>
 ```
 checking dependencies in R code ... NOTE
 Packages in Depends field not imported from:
-  ‘igraph’ ‘wavethresh’
+  âigraphâ âwavethreshâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
 ```
 checking R code for possible problems ... NOTE
 AutoBestBW : specerr: no visible global function definition for
-  ‘accessD’
-HwdS: no visible global function definition for ‘IsPowerOfTwo’
-HwdS: no visible global function definition for ‘wd’
-HwdS: no visible global function definition for ‘putD’
-Rvarlacf: no visible global function definition for ‘PsiJ’
-Rvarlacf: no visible global function definition for ‘ipndacw’
-Rvarlacf: no visible global function definition for ‘PsiJmat’
-ewspec3: no visible binding for global variable ‘madmad’
-ewspec3: no visible binding for global variable ‘l2norm’
-ewspec3: no visible global function definition for ‘IsPowerOfTwo’
-ewspec3: no visible global function definition for ‘wd’
-ewspec3: no visible global function definition for ‘LocalSpec’
-ewspec3: no visible global function definition for ‘ipndacw’
-ewspec3: no visible global function definition for ‘accessD’
-ewspec3: no visible global function definition for ‘wst’
-ewspec3: no visible global function definition for ‘threshold.wst’
-ewspec3: no visible global function definition for ‘AvBasis’
-ewspec3: no visible global function definition for ‘putD’
-ewspecHaarNonPer: no visible binding for global variable ‘madmad’
-ewspecHaarNonPer: no visible binding for global variable ‘l2norm’
-ewspecHaarNonPer: no visible global function definition for ‘LocalSpec’
-ewspecHaarNonPer: no visible global function definition for ‘ipndacw’
-ewspecHaarNonPer: no visible global function definition for ‘accessD’
-ewspecHaarNonPer: no visible global function definition for ‘wst’
+  âaccessDâ
+HwdS: no visible global function definition for âIsPowerOfTwoâ
+HwdS: no visible global function definition for âwdâ
+HwdS: no visible global function definition for âputDâ
+Rvarlacf: no visible global function definition for âPsiJâ
+Rvarlacf: no visible global function definition for âipndacwâ
+Rvarlacf: no visible global function definition for âPsiJmatâ
+ewspec3: no visible binding for global variable âmadmadâ
+ewspec3: no visible binding for global variable âl2normâ
+ewspec3: no visible global function definition for âIsPowerOfTwoâ
+ewspec3: no visible global function definition for âwdâ
+ewspec3: no visible global function definition for âLocalSpecâ
+ewspec3: no visible global function definition for âipndacwâ
+ewspec3: no visible global function definition for âaccessDâ
+ewspec3: no visible global function definition for âwstâ
+ewspec3: no visible global function definition for âthreshold.wstâ
+ewspec3: no visible global function definition for âAvBasisâ
+ewspec3: no visible global function definition for âputDâ
+ewspecHaarNonPer: no visible binding for global variable âmadmadâ
+ewspecHaarNonPer: no visible binding for global variable âl2normâ
+ewspecHaarNonPer: no visible global function definition for âLocalSpecâ
+ewspecHaarNonPer: no visible global function definition for âipndacwâ
+ewspecHaarNonPer: no visible global function definition for âaccessDâ
+ewspecHaarNonPer: no visible global function definition for âwstâ
 ewspecHaarNonPer: no visible global function definition for
-  ‘threshold.wst’
-ewspecHaarNonPer: no visible global function definition for ‘AvBasis’
-ewspecHaarNonPer: no visible global function definition for ‘putD’
-hwtos2: no visible global function definition for ‘PsiJ’
-hwtos2: no visible global function definition for ‘PsiJmat’
-hwtos2: no visible global function definition for ‘accessD’
-hwtos2: no visible global function definition for ‘wd’
-hwtos2: no visible global function definition for ‘putD’
-lacf: no visible global function definition for ‘PsiJmat’
-littlevar: no visible global function definition for ‘accessD’
-mkcoef: no visible global function definition for ‘wd’
-mkcoef: no visible global function definition for ‘wr’
-mkcoef: no visible global function definition for ‘guyrot’
-plot.tos: no visible global function definition for ‘IsPowerOfTwo’
-runmean: no visible global function definition for ‘running.mean’
-summary.tos: no visible global function definition for ‘accessD’
-whichlevel: no visible global function definition for ‘wd’
-whichlevel: no visible global function definition for ‘wr’
+  âthreshold.wstâ
+ewspecHaarNonPer: no visible global function definition for âAvBasisâ
+ewspecHaarNonPer: no visible global function definition for âputDâ
+hwtos2: no visible global function definition for âPsiJâ
+hwtos2: no visible global function definition for âPsiJmatâ
+hwtos2: no visible global function definition for âaccessDâ
+hwtos2: no visible global function definition for âwdâ
+hwtos2: no visible global function definition for âputDâ
+lacf: no visible global function definition for âPsiJmatâ
+littlevar: no visible global function definition for âaccessDâ
+mkcoef: no visible global function definition for âwdâ
+mkcoef: no visible global function definition for âwrâ
+mkcoef: no visible global function definition for âguyrotâ
+plot.tos: no visible global function definition for âIsPowerOfTwoâ
+runmean: no visible global function definition for ârunning.meanâ
+summary.tos: no visible global function definition for âaccessDâ
+whichlevel: no visible global function definition for âwdâ
+whichlevel: no visible global function definition for âwrâ
 ```
 ```
 DONE
@@ -2401,14 +2401,14 @@ Status: 2 NOTEs
 Maintainer: Yoshikazu Terada <terada@sigmath.es.osaka-u.ac.jp>
 
 ```
-checking whether package ‘loe’ can be installed ... WARNING
+checking whether package âloeâ can be installed ... WARNING
 Found the following significant warnings:
-  Warning: replacing previous import by ‘vegan::diversity’ when loading ‘loe’
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/loe.Rcheck/00install.out’ for details.
+  Warning: replacing previous import by âvegan::diversityâ when loading âloeâ
+See â/Users/gaborcsardi/works/igraph/revdep_check/loe.Rcheck/00install.outâ for details.
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘loe-Ex.R’ failed
+Running examples in âloe-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -2515,12 +2515,12 @@ Bug reports: http://github.com/spedygiorgio/markovchain/issues
 ```
 checking R code for possible problems ... NOTE
 plot,markovchain-missing: no visible global function definition for
-  ‘plot.igraph’
+  âplot.igraphâ
 ```
 ```
 checking running R code from vignettes ... ERROR
 Errors in running code in vignettes:
-when running code in ‘an_introduction_to_markovchain_package.Rnw’
+when running code in âan_introduction_to_markovchain_package.Rnwâ
   ...
 
     union
@@ -2566,9 +2566,9 @@ Status: 1 ERROR, 2 NOTEs
 Maintainer: Hugh Murrell <hugh.murrell@gmail.com>
 
 ```
-checking whether package ‘matie’ can be installed ... ERROR
+checking whether package âmatieâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/matie.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/matie.Rcheck/00install.outâ for details.
 Status: 1 ERROR
 ```
 
@@ -2582,7 +2582,7 @@ Found the following apparent S3 methods exported but not registered:
   plot.Rarefac str.Binomix str.Fasta str.Panmat str.Panpca str.Pantree
   str.Rarefac summary.Binomix summary.Fasta summary.Panmat
   summary.Panpca summary.Pantree summary.Rarefac
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
@@ -2597,11 +2597,11 @@ Bug reports: https://github.com/RevolutionAnalytics/miniCRAN/issues
 
 ```
 checking dependencies in R code ... NOTE
-Missing or unexported object: ‘igraph::plot.igraph’
+Missing or unexported object: âigraph::plot.igraphâ
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘miniCRAN-Ex.R’ failed
+Running examples in âminiCRAN-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -2634,13 +2634,13 @@ Loading required namespace: igraph
 > if(require(igraph)) plot(p)
 Loading required package: igraph
 
-Attaching package: ‘igraph’
+Attaching package: âigraphâ
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from âpackage:statsâ:
 
     decompose, spectrum
 
-The following object is masked from ‘package:base’:
+The following object is masked from âpackage:baseâ:
 
     union
 
@@ -2667,13 +2667,13 @@ Maintainer: Chuang Ma <chuangma2006@gmail.com>
 
 ```
 checking package dependencies ... ERROR
-Package suggested but not available: ‘GeneSelector’
+Package suggested but not available: âGeneSelectorâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -2682,14 +2682,14 @@ Status: 1 ERROR
 Maintainer: Maria Schelling <schelling.rmaintainer@vodafone.de>
 
 ```
-checking whether package ‘modMax’ can be installed ... WARNING
+checking whether package âmodMaxâ can be installed ... WARNING
 Found the following significant warnings:
-  Warning: replacing previous import by ‘gtools::permute’ when loading ‘modMax’
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/modMax.Rcheck/00install.out’ for details.
+  Warning: replacing previous import by âgtools::permuteâ when loading âmodMaxâ
+See â/Users/gaborcsardi/works/igraph/revdep_check/modMax.Rcheck/00install.outâ for details.
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘modMax-Ex.R’ failed
+Running examples in âmodMax-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -2729,11 +2729,11 @@ Maintainer: Benjamin Haibe-Kains <benjamin.haibe.kains@utoronto.ca>
 ```
 checking R code for possible problems ... NOTE
 visualize,mRMRe.Network: no visible global function definition for
-  ‘plot.igraph’
+  âplot.igraphâ
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘mRMRe-Ex.R’ failed
+Running examples in âmRMRe-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -2767,22 +2767,22 @@ Maintainer: Greg Jefferis <jefferis@gmail.com>
 Bug reports: https://github.com/jefferis/nat/issues
 
 ```
-checking whether package ‘nat’ can be installed ... WARNING
+checking whether package ânatâ can be installed ... WARNING
 Found the following significant warnings:
-  Warning: replacing previous import by ‘nabor::knn’ when loading ‘nat’
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/nat.Rcheck/00install.out’ for details.
+  Warning: replacing previous import by ânabor::knnâ when loading ânatâ
+See â/Users/gaborcsardi/works/igraph/revdep_check/nat.Rcheck/00install.outâ for details.
 ```
 ```
 checking Rd cross-references ... WARNING
 Missing link or links in documentation object 'ngraph.Rd':
-  ‘[igraph]{attributes}’
+  â[igraph]{attributes}â
 
 See section 'Cross-references' in the 'Writing R Extensions' manual.
 
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘nat-Ex.R’ failed
+Running examples in ânat-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -2802,7 +2802,7 @@ X Error of failed request:  BadDrawable (invalid Pixmap or Window parameter)
 ```
 ```
 checking tests ... ERROR
-Running the tests in ‘tests/test-all.R’ failed.
+Running the tests in âtests/test-all.Râ failed.
 Last 13 lines of output:
   4: graph(NULL, n = 1) at test-seglist.R:50
   5: stop("'edges' must be numeric of character")
@@ -2828,7 +2828,7 @@ Maintainer: Benjamin Blonder <bblonder@gmail.com>
 
 ```
 checking examples ... ERROR
-Running examples in ‘netassoc-Ex.R’ failed
+Running examples in ânetassoc-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -2947,15 +2947,15 @@ Maintainer: Yupeng Cun <yupeng.cun@gmail.com>
 
 ```
 checking package dependencies ... ERROR
-Packages required but not available: ‘AnnotationDbi’ ‘graph’ ‘samr’
+Packages required but not available: âAnnotationDbiâ âgraphâ âsamrâ
 
-Packages suggested but not available: ‘Biobase’ ‘KEGG.db’
+Packages suggested but not available: âBiobaseâ âKEGG.dbâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -2965,11 +2965,11 @@ Maintainer: Jakob Bossek <j.bossek@gmail.com>
 Bug reports: https://github.com/jakobbossek/netgen/issues
 
 ```
-checking whether package ‘netgen’ can be installed ... WARNING
+checking whether package ânetgenâ can be installed ... WARNING
 Found the following significant warnings:
-  Warning: replacing previous import by ‘igraph::normalize’ when loading ‘netgen’
-  Warning: replacing previous import by ‘stringr::%>%’ when loading ‘netgen’
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/netgen.Rcheck/00install.out’ for details.
+  Warning: replacing previous import by âigraph::normalizeâ when loading ânetgenâ
+  Warning: replacing previous import by âstringr::%>%â when loading ânetgenâ
+See â/Users/gaborcsardi/works/igraph/revdep_check/netgen.Rcheck/00install.outâ for details.
 ```
 ```
 DONE
@@ -2981,7 +2981,7 @@ Maintainer: Jing Ma <mjing@umich.edu>
 
 ```
 checking examples ... ERROR
-Running examples in ‘netgsa-Ex.R’ failed
+Running examples in ânetgsa-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -3024,15 +3024,15 @@ Malformed Description field: should contain one or more complete sentences.
 ```
 ```
 checking dependencies in R code ... NOTE
-Package in Depends field not imported from: ‘igraph’
+Package in Depends field not imported from: âigraphâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
 ```
 checking R code for possible problems ... NOTE
-nets: no visible global function definition for ‘graph.adjacency’
-nets: no visible global function definition for ‘V’
-nets: no visible global function definition for ‘V<-’
+nets: no visible global function definition for âgraph.adjacencyâ
+nets: no visible global function definition for âVâ
+nets: no visible global function definition for âV<-â
 ```
 ```
 DONE
@@ -3044,10 +3044,10 @@ Maintainer: Christoph Stadtfeld <c.stadtfeld@rug.nl>
 
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘igraph’ in package code.
+'library' or 'require' call to âigraphâ in package code.
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
-Package in Depends field not imported from: ‘Rcpp’
+Package in Depends field not imported from: âRcppâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
@@ -3064,14 +3064,14 @@ Found the following apparent S3 methods exported but not registered:
   create_effect.SimilarityAttributeOneModeNetworkEffect
   create_effect.UnknownType create_effect.character
   print.NetSimAttributeContainer print.NetSimNetwork
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
 checking line endings in Makefiles ... NOTE
 Found the following Makefile(s) without a final LF:
   src/Makevars
-Some ‘make’ programs ignore lines not ending in LF.
+Some âmakeâ programs ignore lines not ending in LF.
 ```
 ```
 checking for GNU extensions in Makefiles ... NOTE
@@ -3079,16 +3079,16 @@ GNU make is a SystemRequirements.
 ```
 ```
 checking compiled code ... NOTE
-File ‘NetSim/libs/NetSim.so’:
-  Found ‘_rand’, possibly from ‘rand’ (C)
-    Object: ‘utils/Random.o’
-  Found ‘_srand’, possibly from ‘srand’ (C)
-    Object: ‘utils/Random.o’
+File âNetSim/libs/NetSim.soâ:
+  Found â_randâ, possibly from ârandâ (C)
+    Object: âutils/Random.oâ
+  Found â_srandâ, possibly from âsrandâ (C)
+    Object: âutils/Random.oâ
 
 Compiled code should not call entry points which might terminate R nor
 write to stdout/stderr instead of to the console, nor the system RNG.
 
-See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
+See âWriting portable packagesâ in the âWriting R Extensionsâ manual.
 ```
 ```
 DONE
@@ -3100,9 +3100,9 @@ Maintainer: Michele Filosi <filosi@fbk.eu>
 
 ```
 checking package dependencies ... ERROR
-Packages required but not available: ‘rootSolve’ ‘dtw’ ‘WGCNA’ ‘minet’
+Packages required but not available: ârootSolveâ âdtwâ âWGCNAâ âminetâ
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3112,9 +3112,9 @@ Maintainer: Elizabeth Ribble <emcclel3@msudenver.edu>
 
 ```
 checking package dependencies ... ERROR
-Packages required but not available: ‘BiocGenerics’ ‘Biobase’ ‘limma’
+Packages required but not available: âBiocGenericsâ âBiobaseâ âlimmaâ
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3124,11 +3124,11 @@ Maintainer: Manuel Fontenla <manu.fontenla@gmail.com>
 
 ```
 checking R code for possible problems ... NOTE
-repGraph: no visible global function definition for ‘plot.igraph’
+repGraph: no visible global function definition for âplot.igraphâ
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘optrees-Ex.R’ failed
+Running examples in âoptrees-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -3172,31 +3172,31 @@ Maintainer: Thomas Schlesinger <tho.schlesinger@googlemail.com>
 ```
 checking dependencies in R code ... NOTE
 'library' or 'require' calls in package code:
-  ‘igraph’ ‘sp’
+  âigraphâ âspâ
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
 ```
 checking R code for possible problems ... NOTE
 as_igraph : <anonymous>: no visible global function definition for
-  ‘distHaversine’
-as_igraph: no visible global function definition for ‘graph.edgelist’
-as_igraph: no visible global function definition for ‘E’
-as_igraph: no visible global function definition for ‘E<-’
-as_sp_lines: no visible global function definition for ‘Lines’
+  âdistHaversineâ
+as_igraph: no visible global function definition for âgraph.edgelistâ
+as_igraph: no visible global function definition for âEâ
+as_igraph: no visible global function definition for âE<-â
+as_sp_lines: no visible global function definition for âLinesâ
 as_sp_points: no visible global function definition for
-  ‘SpatialPointsDataFrame’
-as_sp_polygons: no visible global function definition for ‘Polygons’
+  âSpatialPointsDataFrameâ
+as_sp_polygons: no visible global function definition for âPolygonsâ
 as_sp_polygons: no visible global function definition for
-  ‘SpatialPolygons’
+  âSpatialPolygonsâ
 as_sp_polygons: no visible global function definition for
-  ‘SpatialPolygonsDataFrame’
-make_SLDF: no visible global function definition for ‘SpatialLines’
+  âSpatialPolygonsDataFrameâ
+make_SLDF: no visible global function definition for âSpatialLinesâ
 make_SLDF: no visible global function definition for
-  ‘SpatialLinesDataFrame’
-osm_crs: no visible global function definition for ‘CRS’
-ways_nodes2Line: no visible global function definition for ‘Line’
-ways_nodes2Polygon: no visible global function definition for ‘Polygon’
+  âSpatialLinesDataFrameâ
+osm_crs: no visible global function definition for âCRSâ
+ways_nodes2Line: no visible global function definition for âLineâ
+ways_nodes2Polygon: no visible global function definition for âPolygonâ
 ```
 ```
 checking data for non-ASCII characters ... NOTE
@@ -3211,9 +3211,9 @@ Status: 3 NOTEs
 Maintainer: Thibaut Jombart <t.jombart@imperial.ac.uk>
 
 ```
-checking whether package ‘outbreaker’ can be installed ... ERROR
+checking whether package âoutbreakerâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/outbreaker.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/outbreaker.Rcheck/00install.outâ for details.
 Status: 1 ERROR
 ```
 
@@ -3222,13 +3222,13 @@ Maintainer: Marco Scutari <marco.scutari@gmail.com>
 
 ```
 checking package dependencies ... ERROR
-Package suggested but not available: ‘Rgraphviz’
+Package suggested but not available: âRgraphvizâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3242,11 +3242,11 @@ Malformed Title field: should not end in a period.
 ```
 ```
 checking R code for possible problems ... NOTE
-CalGIF: no visible binding for global variable ‘PAGIData’
-CalGIF2: no visible binding for global variable ‘PAGIData’
-PAGI.Main: no visible binding for global variable ‘PAGIData’
-getclass.labels: no visible binding for global variable ‘ExampleData’
-getdataset: no visible binding for global variable ‘ExampleData’
+CalGIF: no visible binding for global variable âPAGIDataâ
+CalGIF2: no visible binding for global variable âPAGIDataâ
+PAGI.Main: no visible binding for global variable âPAGIDataâ
+getclass.labels: no visible binding for global variable âExampleDataâ
+getdataset: no visible binding for global variable âExampleDataâ
 ```
 ```
 checking Rd line widths ... NOTE
@@ -3275,12 +3275,12 @@ Maintainer: Marc Johannes <JohannesMarc@gmail.com>
 
 ```
 checking package dependencies ... ERROR
-Packages required but not available: ‘affy’ ‘Biobase’
+Packages required but not available: âaffyâ âBiobaseâ
 
-Packages suggested but not available: ‘hu6800.db’ ‘golubEsets’
+Packages suggested but not available: âhu6800.dbâ âgolubEsetsâ
 
 Depends: includes the non-default packages:
-  ‘svmpath’ ‘kernlab’ ‘affy’ ‘Biobase’ ‘ROCR’ ‘igraph’ ‘lpSolve’
+  âsvmpathâ âkernlabâ âaffyâ âBiobaseâ âROCRâ âigraphâ âlpSolveâ
 Adding so many packages to the search path is excessive and importing
 selectively is preferable.
 
@@ -3288,7 +3288,7 @@ The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3298,7 +3298,7 @@ Maintainer: Van Trung Pham <trungpv88@gmail.com>
 
 ```
 checking examples ... ERROR
-Running examples in ‘PBC-Ex.R’ failed
+Running examples in âPBC-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -3341,7 +3341,7 @@ Execution halted
 ```
 ```
 checking tests ... ERROR
-Running the tests in ‘tests/optim.R’ failed.
+Running the tests in âtests/optim.Râ failed.
 Last 13 lines of output:
   > ## Parameters ##
   > ################
@@ -3360,7 +3360,7 @@ Last 13 lines of output:
 ```
 checking running R code from vignettes ... ERROR
 Errors in running code in vignettes:
-when running code in ‘PBC.Rnw’
+when running code in âPBC.Rnwâ
   ...
 
 
@@ -3369,7 +3369,7 @@ when running code in ‘PBC.Rnw’
 
 > myPBC <- pbcGumbel(g)
 
-  When sourcing ‘PBC.R’:
+  When sourcing âPBC.Râ:
 Error: unimplemented type 'expression' in 'copyMatrix'
 Execution halted
 
@@ -3380,13 +3380,13 @@ Error in re-building vignettes:
   ...
 Loading required package: igraph
 
-Attaching package: ‘igraph’
+Attaching package: âigraphâ
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from âpackage:statsâ:
 
     decompose, spectrum
 
-The following object is masked from ‘package:base’:
+The following object is masked from âpackage:baseâ:
 
     union
 
@@ -3409,15 +3409,15 @@ Maintainer: Markus Kalisch <kalisch@stat.math.ethz.ch>
 
 ```
 checking package dependencies ... ERROR
-Packages required but not available: ‘graph’ ‘RBGL’
+Packages required but not available: âgraphâ âRBGLâ
 
-Package suggested but not available: ‘Rgraphviz’
+Package suggested but not available: âRgraphvizâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3427,7 +3427,7 @@ Maintainer: J. Aravind <aravindj@nbpgr.ernet.in>
 
 ```
 checking Rd cross-references ... NOTE
-Package unavailable to check Rd xrefs: ‘RecordLinkage’
+Package unavailable to check Rd xrefs: âRecordLinkageâ
 ```
 ```
 DONE
@@ -3439,13 +3439,13 @@ Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
 
 ```
 checking package dependencies ... ERROR
-Package suggested but not available: ‘seqLogo’
+Package suggested but not available: âseqLogoâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3471,7 +3471,7 @@ Malformed Title field: should not end in a period.
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘popgraph-Ex.R’ failed
+Running examples in âpopgraph-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -3501,13 +3501,13 @@ Maintainer: Daniel Bottomly <bottomly@ohsu.edu>
 
 ```
 checking package dependencies ... ERROR
-Package suggested but not available: ‘VariantAnnotation’
+Package suggested but not available: âVariantAnnotationâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3517,9 +3517,9 @@ Maintainer: Zhian N. Kamvar <kamvarz@science.oregonstate.edu>
 Bug reports: https://github.com/grunwaldlab/poppr/issues
 
 ```
-checking whether package ‘poppr’ can be installed ... ERROR
+checking whether package âpopprâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/poppr.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/poppr.Rcheck/00install.outâ for details.
 Status: 1 ERROR
 ```
 
@@ -3528,16 +3528,16 @@ Maintainer: Yue Deng <anfdeng@163.com>
 
 ```
 checking package dependencies ... ERROR
-Packages required but not available: ‘AnnotationDbi’ ‘GOSemSim’ ‘GO.db’
+Packages required but not available: âAnnotationDbiâ âGOSemSimâ âGO.dbâ
 
 Packages which this enhances but not available for checking:
-  ‘KEGG.db’ ‘org.Hs.eg.db’ ‘org.Sc.sgd.db’ ‘org.Ag.eg.db’
-  ‘org.Pt.eg.db’ ‘org.Rn.eg.db’ ‘org.Ss.eg.db’ ‘org.At.tair.db’
-  ‘org.Bt.eg.db’ ‘org.Ce.eg.db’ ‘org.Cf.eg.db’ ‘org.Dm.eg.db’
-  ‘org.Dr.eg.db’ ‘org.EcK12.eg.db’ ‘org.EcSakai.eg.db’ ‘org.Gg.eg.db’
-  ‘org.Mm.eg.db’ ‘org.Mmu.eg.db’ ‘org.Pf.plasmo.db’ ‘org.Xl.eg.db’
+  âKEGG.dbâ âorg.Hs.eg.dbâ âorg.Sc.sgd.dbâ âorg.Ag.eg.dbâ
+  âorg.Pt.eg.dbâ âorg.Rn.eg.dbâ âorg.Ss.eg.dbâ âorg.At.tair.dbâ
+  âorg.Bt.eg.dbâ âorg.Ce.eg.dbâ âorg.Cf.eg.dbâ âorg.Dm.eg.dbâ
+  âorg.Dr.eg.dbâ âorg.EcK12.eg.dbâ âorg.EcSakai.eg.dbâ âorg.Gg.eg.dbâ
+  âorg.Mm.eg.dbâ âorg.Mmu.eg.dbâ âorg.Pf.plasmo.dbâ âorg.Xl.eg.dbâ
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3547,23 +3547,23 @@ Maintainer: Qianlan Yao <yaoqianlan@yahoo.com>
 
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘igraph’ which was already attached by Depends.
+'library' or 'require' call to âigraphâ which was already attached by Depends.
   Please remove these calls from your code.
 ```
 ```
 checking R code for possible problems ... NOTE
-getCandidates: no visible binding for global variable ‘envData’
-getGraph: no visible binding for global variable ‘envData’
+getCandidates: no visible binding for global variable âenvDataâ
+getGraph: no visible binding for global variable âenvDataâ
 getProvidedDiseaseName: no visible binding for global variable
-  ‘envData’
-getSeed: no visible binding for global variable ‘envData’
+  âenvDataâ
+getSeed: no visible binding for global variable âenvDataâ
 getTopDiseaseMetabolites: no visible binding for global variable
-  ‘envData’
+  âenvDataâ
 ```
 ```
 checking running R code from vignettes ... ERROR
 Errors in running code in vignettes:
-when running code in ‘PROFANCY.Rnw’
+when running code in âPROFANCY.Rnwâ
   ...
 
 > diseaseName <- ProvidedDiseaseName[17]
@@ -3571,7 +3571,7 @@ when running code in ‘PROFANCY.Rnw’
 > example1 <- getTopDiseaseMetabolites(diseaseName = diseaseName, 
 +     network = "EHMN", seedDefault = TRUE, showTop = 30, candidateDefault = TRUE)
 
-  When sourcing ‘PROFANCY.R’:
+  When sourcing âPROFANCY.Râ:
 Error: This graph was created by an old(er) igraph version.
   Call upgrade_graph() on it to use with the current igraph version
 Execution halted
@@ -3585,13 +3585,13 @@ Loading required package: Matrix
 Loading required package: lattice
 Loading required package: igraph
 
-Attaching package: ‘igraph’
+Attaching package: âigraphâ
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from âpackage:statsâ:
 
     decompose, spectrum
 
-The following object is masked from ‘package:base’:
+The following object is masked from âpackage:baseâ:
 
     union
 
@@ -3616,33 +3616,33 @@ Bug reports: http://github.com/trinker/qdap/issues
 ```
 checking R code for possible problems ... NOTE
 plot.cm_distance: no visible global function definition for
-  ‘plot.igraph’
-print.Network: no visible global function definition for ‘plot.igraph’
+  âplot.igraphâ
+print.Network: no visible global function definition for âplot.igraphâ
 print.animated_discourse_map : <anonymous>: no visible global function
-  definition for ‘plot.igraph’
+  definition for âplot.igraphâ
 print.animated_formality : <anonymous>: no visible global function
-  definition for ‘plot.igraph’
+  definition for âplot.igraphâ
 print.animated_lexical_classification : <anonymous>: no visible global
-  function definition for ‘plot.igraph’
+  function definition for âplot.igraphâ
 print.animated_polarity : <anonymous>: no visible global function
-  definition for ‘plot.igraph’
+  definition for âplot.igraphâ
 print.discourse_map: no visible global function definition for
-  ‘plot.igraph’
+  âplot.igraphâ
 print.phrase_net: no visible global function definition for
-  ‘plot.igraph’
+  âplot.igraphâ
 word_network_plot: no visible global function definition for
-  ‘plot.igraph’
+  âplot.igraphâ
 ```
 ```
 checking Rd cross-references ... WARNING
 Missing link or links in documentation object 'plot.cm_distance.Rd':
-  ‘[igraph]{layout}’
+  â[igraph]{layout}â
 
 Missing link or links in documentation object 'word_associate.Rd':
-  ‘[igraph]{layout}’
+  â[igraph]{layout}â
 
 Missing link or links in documentation object 'word_network_plot.Rd':
-  ‘[igraph]{igraph.vertex.shapes}’ ‘[igraph]{layout}’
+  â[igraph]{igraph.vertex.shapes}â â[igraph]{layout}â
 
 See section 'Cross-references' in the 'Writing R Extensions' manual.
 
@@ -3657,9 +3657,9 @@ Maintainer: Brian S. Yandell <byandell@wisc.edu>
 
 ```
 checking package dependencies ... ERROR
-Package required but not available: ‘graph’
+Package required but not available: âgraphâ
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3669,9 +3669,9 @@ Maintainer: Karl G. Kugler <kg.kugler@gmail.com>
 
 ```
 checking package dependencies ... ERROR
-Packages required but not available: ‘graph’ ‘RBGL’
+Packages required but not available: âgraphâ âRBGLâ
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3681,7 +3681,7 @@ Maintainer: Carel F.W. Peeters <cf.peeters@vumc.nl>
 
 ```
 checking examples ... ERROR
-Running examples in ‘rags2ridges-Ex.R’ failed
+Running examples in ârags2ridges-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -3730,16 +3730,16 @@ Maintainer: Jean-Baptiste Denis <Jean-Baptiste.Denis@jouy.inra.fr>
 
 ```
 checking dependencies in R code ... NOTE
-Package in Depends field not imported from: ‘MASS’
+Package in Depends field not imported from: âMASSâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
 ```
 checking R code for possible problems ... NOTE
-bn2nbn: no visible binding for global variable ‘bn.fit’
-nbn2bnfit: no visible global function definition for ‘model2network’
-nbn2bnfit: no visible global function definition for ‘custom.fit’
-simulate8mn: no visible global function definition for ‘mvrnorm’
+bn2nbn: no visible binding for global variable âbn.fitâ
+nbn2bnfit: no visible global function definition for âmodel2networkâ
+nbn2bnfit: no visible global function definition for âcustom.fitâ
+simulate8mn: no visible global function definition for âmvrnormâ
 ```
 ```
 DONE
@@ -3750,29 +3750,29 @@ Status: 2 NOTEs
 Maintainer: Yuan Wang <wangyuanvivien@post.harvard.edu>
 
 ```
-checking whether package ‘RCA’ can be installed ... [70s/71s] WARNING
+checking whether package âRCAâ can be installed ... [70s/71s] WARNING
 Found the following significant warnings:
   glpenv01.c:130:48: warning: incompatible integer to pointer conversion returning 'int' from a function with result type 'ENV *' (aka 'struct ENV *') [-Wint-conversion]
   glpenv01.c:138:43: warning: incompatible integer to pointer conversion returning 'int' from a function with result type 'ENV *' (aka 'struct ENV *') [-Wint-conversion]
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/RCA.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/RCA.Rcheck/00install.outâ for details.
 ```
 ```
 checking top-level files ... NOTE
 Non-standard files/directories found at top level:
-  ‘matrix.pmt’ ‘stack.pmt’ ‘vector.pmt’
+  âmatrix.pmtâ âstack.pmtâ âvector.pmtâ
 ```
 ```
 checking compiled code ... NOTE
-File ‘RCA/libs/RCA.so’:
-  Found ‘_rand’, possibly from ‘rand’ (C)
-    Objects: ‘RCAlib.o’, ‘cs_randperm.o’
-  Found ‘_srand’, possibly from ‘srand’ (C)
-    Objects: ‘RCAlib.o’, ‘cs_randperm.o’
+File âRCA/libs/RCA.soâ:
+  Found â_randâ, possibly from ârandâ (C)
+    Objects: âRCAlib.oâ, âcs_randperm.oâ
+  Found â_srandâ, possibly from âsrandâ (C)
+    Objects: âRCAlib.oâ, âcs_randperm.oâ
 
 Compiled code should not call entry points which might terminate R nor
 write to stdout/stderr instead of to the console, nor the system RNG.
 
-See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
+See âWriting portable packagesâ in the âWriting R Extensionsâ manual.
 ```
 ```
 DONE
@@ -3783,9 +3783,9 @@ Status: 1 WARNING, 2 NOTEs
 Maintainer: Marcelo Goulart Correia <mgoulart.inc@gmail.com>
 
 ```
-checking whether package ‘RcmdrPlugin.RMTCJags’ can be installed ... ERROR
+checking whether package âRcmdrPlugin.RMTCJagsâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/RcmdrPlugin.RMTCJags.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/RcmdrPlugin.RMTCJags.Rcheck/00install.outâ for details.
 Status: 1 ERROR
 ```
 
@@ -3794,11 +3794,11 @@ Maintainer: Mark S. Handcock <handcock@stat.ucla.edu>
 
 ```
 checking dependencies in R code ... NOTE
-Missing or unexported object: ‘igraph::plot.igraph’
+Missing or unexported object: âigraph::plot.igraphâ
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘RDS-Ex.R’ failed
+Running examples in âRDS-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -3824,7 +3824,7 @@ Maintainer: Louis Aslett <aslett@stats.ox.ac.uk>
 
 ```
 checking examples ... ERROR
-Running examples in ‘ReliabilityTheory-Ex.R’ failed
+Running examples in âReliabilityTheory-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -3855,13 +3855,13 @@ Maintainer: Michael Hahsler <mhahsler@lyle.smu.edu>
 
 ```
 checking package dependencies ... ERROR
-Packages suggested but not available: ‘graph’ ‘Rgraphviz’
+Packages suggested but not available: âgraphâ âRgraphvizâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3870,16 +3870,16 @@ Status: 1 ERROR
 Maintainer: Steffen Liebscher <steffen.liebscher@wiwi.uni-halle.de>
 
 ```
-checking whether package ‘restlos’ can be installed ... WARNING
+checking whether package ârestlosâ can be installed ... WARNING
 Found the following significant warnings:
-  Warning: replacing previous import by ‘igraph::normalize’ when loading ‘restlos’
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/restlos.Rcheck/00install.out’ for details.
+  Warning: replacing previous import by âigraph::normalizeâ when loading ârestlosâ
+See â/Users/gaborcsardi/works/igraph/revdep_check/restlos.Rcheck/00install.outâ for details.
 ```
 ```
 checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   plot.flood plot.pMST plot.rdela
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
@@ -3891,9 +3891,9 @@ Status: 1 WARNING, 1 NOTE
 Maintainer: Yang Cao <yiluheihei@gmail.com>
 
 ```
-checking whether package ‘RevEcoR’ can be installed ... ERROR
+checking whether package âRevEcoRâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/RevEcoR.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/RevEcoR.Rcheck/00install.outâ for details.
 Status: 1 ERROR
 ```
 
@@ -3902,23 +3902,23 @@ Maintainer: Oliver Flasch <oliver.flasch@fh-koeln.de>
 
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘igraph’ in package code.
+'library' or 'require' call to âigraphâ in package code.
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
 ```
 checking R code for possible problems ... NOTE
-exprToIgraph: no visible global function definition for ‘graph’
-exprToIgraph: no visible global function definition for ‘V’
-exprToIgraph: no visible global function definition for ‘V<-’
+exprToIgraph: no visible global function definition for âgraphâ
+exprToIgraph: no visible global function definition for âVâ
+exprToIgraph: no visible global function definition for âV<-â
 multiNicheGeneticProgramming: no visible binding for global variable
-  ‘sfClusterApplyLB’
+  âsfClusterApplyLBâ
 multiNicheGeneticProgramming: no visible binding for global variable
-  ‘sfExport’
+  âsfExportâ
 multiNicheSymbolicRegression: no visible binding for global variable
-  ‘sfClusterApplyLB’
+  âsfClusterApplyLBâ
 multiNicheSymbolicRegression: no visible binding for global variable
-  ‘sfExport’
+  âsfExportâ
 ```
 ```
 DONE
@@ -3931,13 +3931,13 @@ Maintainer: Paul Murrell <paul@stat.auckland.ac.nz>
 ```
 checking package dependencies ... ERROR
 Packages suggested but not available:
-  ‘graph’ ‘hyperdraw’ ‘hypergraph’ ‘rggobi’ ‘Rgraphviz’ ‘SVGAnnotation’
+  âgraphâ âhyperdrawâ âhypergraphâ ârggobiâ âRgraphvizâ âSVGAnnotationâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -3959,10 +3959,10 @@ Maintainer: Tommi Tervonen <tommi@smaa.fi>
 
 ```
 checking dependencies in R code ... NOTE
-Package in Depends field not imported from: ‘ROI.plugin.glpk’
+Package in Depends field not imported from: âROI.plugin.glpkâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
-Missing or unexported object: ‘igraph::plot.igraph’
+Missing or unexported object: âigraph::plot.igraphâ
 ```
 ```
 checking Rd line widths ... NOTE
@@ -3996,12 +3996,12 @@ Maintainer: HUANG Ronggui <ronggui.huang@gmail.com>
 
 ```
 checking package dependencies ... NOTE
-Package which this enhances but not available for checking: ‘rjpod’
+Package which this enhances but not available for checking: ârjpodâ
 ```
 ```
-checking whether package ‘RQDA’ can be installed ... ERROR
+checking whether package âRQDAâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/RQDA.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/RQDA.Rcheck/00install.outâ for details.
 Status: 1 ERROR, 1 NOTE
 ```
 
@@ -4011,16 +4011,16 @@ Maintainer: Jon Olav Skoien <jon.skoien@gmail.com>
 ```
 checking dependencies in R code ... NOTE
 'library' or 'require' calls in package code:
-  ‘igraph’ ‘intamap’
+  âigraphâ âintamapâ
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
 ```
 checking R code for possible problems ... NOTE
-netProp: no visible global function definition for ‘graph.data.frame’
-netProp: no visible global function definition for ‘topological.sort’
-netProp: no visible global function definition for ‘V’
-netProp: no visible global function definition for ‘neighbors’
+netProp: no visible global function definition for âgraph.data.frameâ
+netProp: no visible global function definition for âtopological.sortâ
+netProp: no visible global function definition for âVâ
+netProp: no visible global function definition for âneighborsâ
 ```
 ```
 DONE
@@ -4033,13 +4033,13 @@ Bug reports: https://github.com/kolaczyk/sand/issues
 
 ```
 checking package dependencies ... ERROR
-Packages suggested but not available: ‘GO.db’ ‘GOstats’ ‘org.Sc.sgd.db’
+Packages suggested but not available: âGO.dbâ âGOstatsâ âorg.Sc.sgd.dbâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -4049,7 +4049,7 @@ Maintainer: Etienne Lord <m.etienne.lord@gmail.com>
 
 ```
 checking examples ... ERROR
-Running examples in ‘SDDE-Ex.R’ failed
+Running examples in âSDDE-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -4083,7 +4083,7 @@ Malformed Description field: should contain one or more complete sentences.
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘secrlinear-Ex.R’ failed
+Running examples in âsecrlinear-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -4154,24 +4154,24 @@ Maintainer: Mathias Drton <md5@uw.edu>
 
 ```
 checking dependencies in R code ... NOTE
-Package in Depends field not imported from: ‘igraph’
+Package in Depends field not imported from: âigraphâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
 ```
 checking R code for possible problems ... NOTE
 graphID.genericID: no visible global function definition for
-  ‘graph.maxflow’
+  âgraph.maxflowâ
 graphID.genericID: no visible global function definition for
-  ‘graph.adjacency’
+  âgraph.adjacencyâ
 graphID.globalID: no visible global function definition for
-  ‘graph.maxflow’
+  âgraph.maxflowâ
 graphID.globalID: no visible global function definition for
-  ‘graph.adjacency’
+  âgraph.adjacencyâ
 graphID.nonID: no visible global function definition for
-  ‘graph.maxflow’
+  âgraph.maxflowâ
 graphID.nonID: no visible global function definition for
-  ‘graph.adjacency’
+  âgraph.adjacencyâ
 ```
 ```
 DONE
@@ -4187,7 +4187,7 @@ Malformed Description field: should contain one or more complete sentences.
 ```
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘MplusAutomation’ in package code.
+'library' or 'require' call to âMplusAutomationâ in package code.
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
@@ -4195,13 +4195,13 @@ checking dependencies in R code ... NOTE
 checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   semPlotModel.S4
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
 checking R code for possible problems ... NOTE
 semPlotModel.mplus.model: no visible global function definition for
-  ‘readModels’
+  âreadModelsâ
 ```
 ```
 DONE
@@ -4213,7 +4213,7 @@ Maintainer: Bertrand Iooss <biooss@yahoo.fr>
 
 ```
 checking dependencies in R code ... NOTE
-Missing or unexported object: ‘igraph::plot.igraph’
+Missing or unexported object: âigraph::plot.igraphâ
 ```
 ```
 DONE
@@ -4225,9 +4225,9 @@ Maintainer: Petr Novak <petr@umbr.cas.cz>
 
 ```
 checking package dependencies ... ERROR
-Packages required but not available: ‘Biostrings’ ‘rggobi’
+Packages required but not available: âBiostringsâ ârggobiâ
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -4237,12 +4237,12 @@ Maintainer: Luigi Augugliaro <luigi.augugliaro@unipa.it>
 
 ```
 checking R code for possible problems ... NOTE
-gplot.fglasso: no visible global function definition for ‘plot.igraph’
-gplot.sglasso: no visible global function definition for ‘plot.igraph’
+gplot.fglasso: no visible global function definition for âplot.igraphâ
+gplot.sglasso: no visible global function definition for âplot.igraphâ
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘sglasso-Ex.R’ failed
+Running examples in âsglasso-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -4276,9 +4276,9 @@ Status: 1 ERROR, 1 NOTE
 Maintainer: Dylan Beaudette <dylan.beaudette@ca.usda.gov>
 
 ```
-checking whether package ‘sharpshootR’ can be installed ... ERROR
+checking whether package âsharpshootRâ can be installed ... ERROR
 Installation failed.
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/sharpshootR.Rcheck/00install.out’ for details.
+See â/Users/gaborcsardi/works/igraph/revdep_check/sharpshootR.Rcheck/00install.outâ for details.
 Status: 1 ERROR
 ```
 
@@ -4288,14 +4288,14 @@ Maintainer: Binbin Lu <lubinbin220@gmail.com>
 ```
 checking R code for possible problems ... NOTE
 footpoint.nodes: no visible global function definition for
-  ‘coordinates’
-nt.connect: no visible global function definition for ‘bbox’
+  âcoordinatesâ
+nt.connect: no visible global function definition for âbboxâ
 nt.connect: no visible global function definition for
-  ‘as.SpatialLines.SLDF’
+  âas.SpatialLines.SLDFâ
 nt.connect: no visible global function definition for
-  ‘SpatialLinesDataFrame’
-ptsinnt.view: no visible global function definition for ‘bbox’
-readshpnw: no visible global function definition for ‘coordinates’
+  âSpatialLinesDataFrameâ
+ptsinnt.view: no visible global function definition for âbboxâ
+readshpnw: no visible global function definition for âcoordinatesâ
 ```
 ```
 DONE
@@ -4307,9 +4307,9 @@ Maintainer: Jonas Peters <jonas.peters@tuebingen.mpg.de>
 
 ```
 checking package dependencies ... ERROR
-Package required but not available: ‘RBGL’
+Package required but not available: âRBGLâ
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -4320,7 +4320,7 @@ Bug reports: https://github.com/osofr/simcausal/issues
 
 ```
 checking dependencies in R code ... NOTE
-Missing or unexported object: ‘igraph::plot.igraph’
+Missing or unexported object: âigraph::plot.igraphâ
 ```
 ```
 checking re-building of vignette outputs ... NOTE
@@ -4352,10 +4352,10 @@ Status: 2 NOTEs
 Maintainer: Ricardo Pio Monti <ricardo.monti08@gmail.com>
 
 ```
-checking whether package ‘SINGLE’ can be installed ... WARNING
+checking whether package âSINGLEâ can be installed ... WARNING
 Found the following significant warnings:
-  Warning: replacing previous import by ‘dse::permute’ when loading ‘SINGLE’
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/SINGLE.Rcheck/00install.out’ for details.
+  Warning: replacing previous import by âdse::permuteâ when loading âSINGLEâ
+See â/Users/gaborcsardi/works/igraph/revdep_check/SINGLE.Rcheck/00install.outâ for details.
 ```
 ```
 DONE
@@ -4367,7 +4367,7 @@ Maintainer: Nathalie Villa-Vialaneix <nathalie.villa@toulouse.inra.fr>
 
 ```
 checking examples ... ERROR
-Running examples in ‘SOMbrero-Ex.R’ failed
+Running examples in âSOMbrero-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -4433,47 +4433,47 @@ Malformed Title field: should not end in a period.
 ```
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘Matrix’ which was already attached by Depends.
+'library' or 'require' call to âMatrixâ which was already attached by Depends.
   Please remove these calls from your code.
 Packages in Depends field not imported from:
-  ‘Matrix’ ‘igraph’ ‘splines’
+  âMatrixâ âigraphâ âsplinesâ
   These packages need to be imported from (in the NAMESPACE file)
   for when this namespace is loaded but not attached.
 ```
 ```
 checking R code for possible problems ... NOTE
-SJ: no visible binding for global variable ‘bs’
-SJ: no visible global function definition for ‘get.adjacency’
+SJ: no visible binding for global variable âbsâ
+SJ: no visible global function definition for âget.adjacencyâ
 SJ : <anonymous>: no visible global function definition for
-  ‘graph.adjacency’
-SJ: no visible binding for global variable ‘ecount’
-SJ.dag: no visible binding for global variable ‘bs’
+  âgraph.adjacencyâ
+SJ: no visible binding for global variable âecountâ
+SJ.dag: no visible binding for global variable âbsâ
 SJ.dag : <anonymous>: no visible global function definition for
-  ‘graph.adjacency’
-SJ.dag: no visible binding for global variable ‘ecount’
-SJpath: no visible global function definition for ‘get.adjacency’
+  âgraph.adjacencyâ
+SJ.dag: no visible binding for global variable âecountâ
+SJpath: no visible global function definition for âget.adjacencyâ
 SJpath : <anonymous>: no visible global function definition for
-  ‘graph.adjacency’
-generate.dag.data: no visible global function definition for ‘vcount’
+  âgraph.adjacencyâ
+generate.dag.data: no visible global function definition for âvcountâ
 generate.dag.data: no visible global function definition for
-  ‘topological.sort’
+  âtopological.sortâ
 generate.dag.data: no visible global function definition for
-  ‘neighbors’
-grpsel: no visible global function definition for ‘Matrix’
-moralize: no visible global function definition for ‘vcount’
-moralize: no visible global function definition for ‘as.undirected’
-moralize: no visible global function definition for ‘get.adjacency’
-moralize: no visible global function definition for ‘add.edges’
-moralize: no visible global function definition for ‘simplify’
+  âneighborsâ
+grpsel: no visible global function definition for âMatrixâ
+moralize: no visible global function definition for âvcountâ
+moralize: no visible global function definition for âas.undirectedâ
+moralize: no visible global function definition for âget.adjacencyâ
+moralize: no visible global function definition for âadd.edgesâ
+moralize: no visible global function definition for âsimplifyâ
 plot.SJ: no visible global function definition for
-  ‘layout.fruchterman.reingold’
+  âlayout.fruchterman.reingoldâ
 plot.SJ.dag: no visible global function definition for
-  ‘layout.fruchterman.reingold’
-print.SJ: no visible binding for global variable ‘ecount’
-print.SJ: no visible global function definition for ‘ecount’
-print.SJ.dag: no visible binding for global variable ‘ecount’
-print.SJ.dag: no visible global function definition for ‘ecount’
-rdag: no visible global function definition for ‘graph.adjacency’
+  âlayout.fruchterman.reingoldâ
+print.SJ: no visible binding for global variable âecountâ
+print.SJ: no visible global function definition for âecountâ
+print.SJ.dag: no visible binding for global variable âecountâ
+print.SJ.dag: no visible global function definition for âecountâ
+rdag: no visible global function definition for âgraph.adjacencyâ
 ```
 ```
 checking Rd line widths ... NOTE
@@ -4507,11 +4507,11 @@ Maintainer: Tuomas Rajala <tuomas.rajala@iki.fi>
 ```
 checking top-level files ... NOTE
 Non-standard files/directories found at top level:
-  ‘ToAdd.TXT0’ ‘change.log’
+  âToAdd.TXT0â âchange.logâ
 ```
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘Matrix’ in package code.
+'library' or 'require' call to âMatrixâ in package code.
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
@@ -4520,17 +4520,17 @@ checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   cut.sg plot.sg plot.sgadj plot.sgc print.sg print.sgadj print.sgc
   summary.sg summary.sgc t.sg t.sgadj
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
 checking R code for possible problems ... NOTE
-igraph2sg: no visible global function definition for ‘get.adjlist’
-plot.sg: no visible global function definition for ‘rgl.lines’
-plot.sgc: no visible binding for global variable ‘spheres3d’
-plot.sgc: no visible binding for global variable ‘points3d’
-sg2igraph: no visible global function definition for ‘graph.data.frame’
-sg2sparse: no visible global function definition for ‘sparseMatrix’
+igraph2sg: no visible global function definition for âget.adjlistâ
+plot.sg: no visible global function definition for ârgl.linesâ
+plot.sgc: no visible binding for global variable âspheres3dâ
+plot.sgc: no visible binding for global variable âpoints3dâ
+sg2igraph: no visible global function definition for âgraph.data.frameâ
+sg2sparse: no visible global function definition for âsparseMatrixâ
 ```
 ```
 checking Rd line widths ... NOTE
@@ -4566,13 +4566,13 @@ Maintainer: Xiaomeng Ni <ni380910405@yahoo.cn>
 
 ```
 checking package dependencies ... ERROR
-Packages suggested but not available: ‘RBGL’ ‘graph’ ‘EBImage’
+Packages suggested but not available: âRBGLâ âgraphâ âEBImageâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -4589,7 +4589,7 @@ checking installed package size ... NOTE
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘SSN-Ex.R’ failed
+Running examples in âSSN-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -4757,7 +4757,7 @@ F11          0.00000         NA      NA       NA
 F12         -1.09780    0.14820  -7.408   <2e-16 ***
 F13          1.27425    0.14291   8.917   <2e-16 ***
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Signif. codes:  0 â***â 0.001 â**â 0.01 â*â 0.05 â.â 0.1 â â 1
 
 Covariance Parameters:
      Covariance.Model Parameter Estimate
@@ -5190,11 +5190,11 @@ Maintainer: Brandon Stewart <bstewart@fas.harvard.edu>
 ```
 checking dependencies in R code ... NOTE
 Missing or unexported objects:
-  ‘igraph::plot.igraph’ ‘tm::meta’
+  âigraph::plot.igraphâ âtm::metaâ
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘stm-Ex.R’ failed
+Running examples in âstm-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -5214,7 +5214,7 @@ Execution halted
 ```
 checking running R code from vignettes ... [25s/47s] ERROR
 Errors in running code in vignettes:
-when running code in ‘stmVignette.Rnw’
+when running code in âstmVignette.Rnwâ
   ...
 > plot.STM(poliblogPrevFit, type = "summary", xlim = c(0, 
 +     0.4))
@@ -5223,7 +5223,7 @@ when running code in ‘stmVignette.Rnw’
 
 > plot.topicCorr(mod.out.corr)
 
-  When sourcing ‘stmVignette.R’:
+  When sourcing âstmVignette.Râ:
 Error: 'plot.igraph' is not an exported object from 'namespace:igraph'
 Execution halted
 
@@ -5250,15 +5250,15 @@ Maintainer: Kris Sankaran <kriss1@stanford.edu>
 
 ```
 checking package dependencies ... ERROR
-Package required but not available: ‘multtest’
+Package required but not available: âmulttestâ
 
-Package suggested but not available: ‘phyloseq’
+Package suggested but not available: âphyloseqâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
@@ -5269,7 +5269,7 @@ Maintainer: Li Feng <biofengfeng@sina.com>
 ```
 checking running R code from vignettes ... ERROR
 Errors in running code in vignettes:
-when running code in ‘SubpathwayGMir.Rnw’
+when running code in âSubpathwayGMir.Rnwâ
   ...
 
 > DirectGraphList <- GetK2riData("MetabolicGEGEEMGraph")
@@ -5277,7 +5277,7 @@ when running code in ‘SubpathwayGMir.Rnw’
 > DirectInteGraphList <- getInteGraphList(DirectGraphList, 
 +     relations)
 
-  When sourcing ‘SubpathwayGMir.R’:
+  When sourcing âSubpathwayGMir.Râ:
 Error: This graph was created by an old(er) igraph version.
   Call upgrade_graph() on it to use with the current igraph version
 Execution halted
@@ -5287,21 +5287,21 @@ Execution halted
 checking re-building of vignette outputs ... NOTE
 Error in re-building vignettes:
   ...
-Attaching package: ‘XML’
+Attaching package: âXMLâ
 
-The following object is masked from ‘package:tools’:
+The following object is masked from âpackage:toolsâ:
 
     toHTML
 
 Loading required package: igraph
 
-Attaching package: ‘igraph’
+Attaching package: âigraphâ
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from âpackage:statsâ:
 
     decompose, spectrum
 
-The following object is masked from ‘package:base’:
+The following object is masked from âpackage:baseâ:
 
     union
 
@@ -5339,10 +5339,10 @@ Status: 1 NOTE
 Maintainer: Fabrizio Lecci <lecci@cmu.edu>
 
 ```
-checking whether package ‘TDA’ can be installed ... [22s/25s] WARNING
+checking whether package âTDAâ can be installed ... [22s/25s] WARNING
 Found the following significant warnings:
-  Warning: replacing previous import by ‘igraph::knn’ when loading ‘TDA’
-See ‘/Users/gaborcsardi/works/igraph/revdep_check/TDA.Rcheck/00install.out’ for details.
+  Warning: replacing previous import by âigraph::knnâ when loading âTDAâ
+See â/Users/gaborcsardi/works/igraph/revdep_check/TDA.Rcheck/00install.outâ for details.
 ```
 ```
 DONE
@@ -5354,7 +5354,7 @@ Maintainer: Benjamin Blonder <bblonder@gmail.com>
 
 ```
 checking examples ... ERROR
-Running examples in ‘timeordered-Ex.R’ failed
+Running examples in âtimeordered-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -5390,7 +5390,7 @@ Deprecated license: CC BY-NC 3.0 + file LICENSE
 ```
 ```
 checking dependencies in R code ... NOTE
-'library' or 'require' call to ‘survival’ which was already attached by Depends.
+'library' or 'require' call to âsurvivalâ which was already attached by Depends.
   Please remove these calls from your code.
 ```
 ```
@@ -5416,14 +5416,14 @@ Maintainer: Martijn Tennekes <mtennekes@gmail.com>
 ```
 checking Rd cross-references ... WARNING
 Missing link or links in documentation object 'treegraph.Rd':
-  ‘[igraph:layout]{layout}’
+  â[igraph:layout]{layout}â
 
 See section 'Cross-references' in the 'Writing R Extensions' manual.
 
 ```
 ```
 checking examples ... ERROR
-Running examples in ‘treemap-Ex.R’ failed
+Running examples in âtreemap-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -5460,7 +5460,7 @@ Malformed Description field: should contain one or more complete sentences.
 ```
 checking dependencies in R code ... NOTE
 'library' or 'require' calls in package code:
-  ‘gsl’ ‘igraph’ ‘snowfall’
+  âgslâ âigraphâ âsnowfallâ
   Please use :: or requireNamespace() instead.
   See section 'Suggested packages' in the 'Writing R Extensions' manual.
 ```
@@ -5469,31 +5469,31 @@ checking S3 generic/method consistency ... NOTE
 Found the following apparent S3 methods exported but not registered:
   predict.TuneParetoModel print.TuneParetoClassifier
   print.TuneParetoModel print.TuneParetoResult
-See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+See section âRegistering S3 methodsâ in the âWriting R Extensionsâ
 manual.
 ```
 ```
 checking R code for possible problems ... NOTE
 plotDominationGraph: no visible global function definition for
-  ‘graph.adjacency’
+  âgraph.adjacencyâ
 plotDominationGraph: no visible global function definition for
-  ‘layout.norm’
+  âlayout.normâ
 sampleCombinations: no visible global function definition for
-  ‘qrng_alloc’
+  âqrng_allocâ
 sampleCombinations: no visible global function definition for
-  ‘qrng_get’
-tunePareto: no visible global function definition for ‘sfLibrary’
+  âqrng_getâ
+tunePareto: no visible global function definition for âsfLibraryâ
 tunePareto : <anonymous>: no visible global function definition for
-  ‘sfLibrary’
-tunePareto: no visible global function definition for ‘sfExport’
-tunePareto: no visible global function definition for ‘sfLapply’
+  âsfLibraryâ
+tunePareto: no visible global function definition for âsfExportâ
+tunePareto: no visible global function definition for âsfLapplyâ
 tunePareto.NaiveBayes: no visible binding for global variable
-  ‘NaiveBayes’
+  âNaiveBayesâ
 ```
 ```
 checking Rd cross-references ... WARNING
 Missing link or links in documentation object 'plotDominationGraph.Rd':
-  ‘[igraph:plot.graph]{plot.igraph}’
+  â[igraph:plot.graph]{plot.igraph}â
 
 See section 'Cross-references' in the 'Writing R Extensions' manual.
 
@@ -5508,7 +5508,7 @@ Maintainer: Tobias Erhardt <tobias.erhardt@tum.de>
 
 ```
 checking examples ... ERROR
-Running examples in ‘VineCopula-Ex.R’ failed
+Running examples in âVineCopula-Ex.Râ failed
 The error most likely occurred in:
 
 > base::assign(".ptime", proc.time(), pos = "CheckExEnv")
@@ -5540,15 +5540,15 @@ Maintainer: Philip Leifeld <philip.leifeld@uni-konstanz.de>
 
 ```
 checking package dependencies ... ERROR
-Package required but not available: ‘statnet’
+Package required but not available: âstatnetâ
 
-Package suggested but not available: ‘RSiena’
+Package suggested but not available: âRSienaâ
 
 The suggested packages are required for a complete check.
 Checking can be attempted without them by setting the environment
 variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+See section âThe DESCRIPTION fileâ in the âWriting R Extensionsâ
 manual.
 Status: 1 ERROR
 ```
