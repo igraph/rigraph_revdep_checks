@@ -27,193 +27,239 @@
 # Check results
 185 checked out of 185 dependencies 
 
-# Problematic packages
+# Known errors
 
-- [ ] adegenet
-- [ ] agop
-- [ ] ARTIVA
-- [ ] arulesViz
-- [ ] backShift
-- [ ] BANFF
-- [ ] bc3net
-- [ ] BDgraph
-- [ ] bio3d
-- [ ] bipartite
-- [ ] BoolNet
-- [ ] c3net
-- [ ] camel
-- [ ] cape
+- [ ] FCMapper Negative loop and KK layout in example.
+      Solution is to switch to another layout. Need to email.
+
+# Cannot check
+
+- [ ] gemtc Neeeds `BRugs` package, needs to check on Linux.
+- [ ] mlDNA Need extra package, links to GTK? Cairo?
+- [ ] pathClass Extra packages that I cannot install.
+- [ ] RGraphics Needs ggobi.
+- [ ] RQDA Needs GTK?
+
+# Sent email to maintainers about the problem
+
+- [ ] BoolNet Warnings about docs links, fine. Email them.
 - [ ] causaleffect
-- [ ] CausalFX
-- [ ] cccd
-- [ ] CDVine
-- [ ] CePa
-- [ ] CIDnetworks
-- [ ] CINOEDV
-- [ ] clickstream
-- [ ] comato
-- [ ] ConnMatTools
-- [ ] cooptrees
-- [ ] corclass
-- [ ] crimelinkage
-- [ ] cvxclustr
-- [ ] DCGL
-- [ ] dcGOR
-- [ ] degreenet
-- [ ] DiffCorr
-- [ ] diffusionMap
-- [ ] dils
-- [ ] disparityfilter
-- [ ] dna
-- [ ] dnet
-- [ ] Dominance
-- [ ] dpa
-- [ ] DSviaDRM
-- [ ] dynatopmodel
-- [ ] ebdbNet
-- [ ] editrules
-- [ ] enaR
-- [ ] ESEA
-- [ ] fanovaGraph
-- [ ] fastclime
-- [ ] fbRanks
-- [ ] FCMapper
-- [ ] FedData
-- [ ] FisHiCal
-- [ ] flare
-- [ ] FrF2
-- [ ] fuzzyMM
-- [ ] G1DBN
-- [ ] gdistance
-- [ ] gemtc
-- [ ] GeneNet
-- [ ] GeneReg
-- [ ] genlasso
-- [ ] ggenealogy
-- [ ] ggm
-- [ ] gRain
-- [ ] gRapfa
-- [ ] gRbase
-- [ ] gRim
-- [ ] gromovlab
-- [ ] hglasso
-- [ ] huge
-- [ ] igraphdata
-- [ ] igraphtosonia
-- [ ] InteractiveIGraph
-- [ ] intergraph
-- [ ] iRefR
-- [ ] isa2
-- [ ] JGL
-- [ ] kknn
-- [ ] knitrBootstrap
-- [ ] lava
-- [ ] lcd
-- [ ] lfe
-- [ ] linkcomm
-- [ ] lintr
-- [ ] locits
-- [ ] loe
-- [ ] lvm4net
-- [ ] markovchain
-- [ ] MatchingFrontier
-- [ ] matie
-- [ ] metafor
-- [ ] micropan
-- [ ] miniCRAN
-- [ ] mixOmics
-- [ ] mlDNA
-- [ ] modMax
-- [ ] mRMRe
-- [ ] nat
-- [ ] netassoc
-- [ ] netClass
-- [ ] netgen
-- [ ] netgsa
-- [ ] nets
-- [ ] NetSim
-- [ ] nettools
-- [ ] netweavers
-- [ ] networkTomography
-- [ ] optrees
-- [ ] osmar
-- [ ] outbreaker
-- [ ] OutrankingTools
-- [ ] packdep
-- [ ] PAGI
-- [ ] pathClass
-- [ ] PBC
-- [ ] pcalg
-- [ ] PGRdup
-- [ ] phangorn
-- [ ] phyloTop
-- [ ] picasso
-- [ ] popgraph
-- [ ] poplite
-- [ ] poppr
-- [ ] ppiPre
-- [ ] PROFANCY
-- [ ] qdap
-- [ ] qgraph
-- [ ] qtlnet
-- [ ] QuACN
-- [ ] rags2ridges
-- [ ] raster
-- [ ] rbmn
-- [ ] RCA
-- [ ] RcmdrPlugin.RMTCJags
-- [ ] RDS
-- [ ] ReliabilityTheory
-- [ ] rEMM
-- [ ] restlos
-- [ ] RevEcoR
-- [ ] rgexf
-- [ ] rgp
-- [ ] RGraphics
-- [ ] RNetLogo
-- [ ] ror
-- [ ] rPref
-- [ ] RQDA
-- [ ] rtop
-- [ ] RWBP
-- [ ] sand
-- [ ] SDDE
-- [ ] secrlinear
-- [ ] SEMID
-- [ ] semPlot
-- [ ] sensitivity
-- [ ] SeqGrapheR
-- [ ] sglasso
-- [ ] sharpshootR
-- [ ] shp2graph
-- [ ] SID
-- [ ] sidier
-- [ ] simcausal
-- [ ] SINGLE
-- [ ] sirt
-- [ ] smart
-- [ ] smnet
-- [ ] SOMbrero
-- [ ] spacejam
-- [ ] spatgraphs
-- [ ] spdep
-- [ ] SPMS
-- [ ] SSN
-- [ ] stm
-- [ ] structSSI
-- [ ] SubpathwayGMir
-- [ ] surface
-- [ ] synbreed
-- [ ] synRNASeqNet
-- [ ] tcR
-- [ ] TDA
-- [ ] TDAmapper
-- [ ] timeordered
-- [ ] tnet
-- [ ] treemap
-- [ ] TunePareto
-- [ ] VineCopula
-- [ ] xergm
+    - Replaces an import, need to email them.
+    - Has a bug, uses 0 eid, which is not caught in igraph 0.7.1
+- [ ] clickstream union overridden, need to email them
+- [ ] fuzzyMM Replacing union?
+- [ ] loe Replace previous import diversity.
+- [ ] nat `knn` import overwritten.
+- [ ] netgen Replacing imports: `normalize`.
+- [ ] restlos `normalize` import replaced
+- [ ] SINGLE replaced import `permute`
+- [ ] TDA Replace imported `knn`.
+- [ ] SeqGrapheR Extra packages, rggobi.
+- [ ] FCMapper Negative loop and KK layout in example.
+      Solution is to switch to another layout. Need to email.
+
+# Problematic packages after the first round
+
+- [x] bio3d
+    - `plot.igraph` needs to be exported. Fixed.
+    - Other error. Seems unrelated.
+- [x] BoolNet Warnings about docs links, fine. Email them.
+- [x] causaleffect
+    - Replaces an import, need to email them.
+    - graph.formula broken from another package?
+- [x] clickstream union overridden, need to email them
+- [x] comato
+    - `layout.spring` Fixed.
+    - Example error. Fixed.
+- [x] fanovaGraph Error in example. Fixed.
+- [x] FCMapper Error.
+- [x] FisHiCal Data type version. Fixed.
+- [x] fuzzyMM Replacing union?
+- [x] gemtc Neeeds `BRugs` package, needs to check on Linux.
+- [x] intergraph Older data type version. Fixed.
+- [x] loe
+    - Replace previous import diversity.
+    - layout.kamada.kawai has no `start` argument? Fixed.
+- [x] mlDNA Need extra package, links to GTK? Cairo?
+- [x] modMax Bug in `neighbors`? Fixed.
+- [x] nat `knn` import overwritten.
+- [x] netassoc Negative weight in KK layout. Fixed.
+- [x] netgen Replacing imports: `normalize`.
+- [x] netgsa Data type version. Fixed.
+- [x] pathClass Extra packages.
+- [x] PBC Multiple errors. Fixed.
+- [x] popgraph Older data type. Fixed.
+- [x] PROFANCY Older data type. Fixed.
+- [x] rags2ridges neighbors() bug. Fixed.
+- [x] RcmdrPlugin.RMTCJags ??? fixed
+- [x] ReliabilityTheory Data type version. Fixed.
+- [x] restlos `normalize` import replaced
+- [x] RGraphics Needs extra. ggobi.
+- [x] RQDA Needs GTK?
+- [x] SDDE Data type version. Fixed.
+- [x] secrlinear Data type version. Fixed.
+- [x] SeqGrapheR Extra packages, rggobi.
+- [x] SINGLE replaced import `permute`
+- [x] SOMbrero Data type version. Fixed.
+- [x] SubpathwayGMir Data type version. Fixed.
+- [x] TDA Replace imported `knn`.
+- [x] timeordered Error.
+- [x] treemap `layout.fruchterman.reingold` arguments
+- [x] VineCopula Error.
+- [x] xergm Needs extra.
+
+
+# Packages initially found problematic
+
+- [x] adegenet `plot.igraph`, `print.igraph` exports, plus U
+- [x] ARTIVA `layout.spring` and `layout.svd` were removed. Fixed.
+- [x] arulesViz `Rgraphviz` not available. Need to install.
+- [x] backShift Needs `graph` package.
+- [x] bc3net Unrelated.
+- [x] BDgraph `plot.igraph` needs to be exported. Fixed.
+- [x] bio3d
+    - `plot.igraph` needs to be exported. Fixed.
+    - Data format version
+- [x] bipartite Unrelated.
+- [x] BoolNet Warnings about docs links, fine. Email them.
+- [x] c3net Unrelated.
+- [x] camel Unrelated.
+- [x] causaleffect
+    - Replaces an import, need to email them.
+    - graph.formula broken from another package?
+- [x] cccd Error.
+- [x] CePa Unrelated. 
+- [x] CIDnetworks `plot.igraph` export
+- [x] clickstream union overridden, need to email them
+- [x] comato
+    - `layout.spring` Fixed.
+    - Example error
+- [x] ConnMatTools Unrelated.
+- [x] corclass Unrelated
+- [x] cvxclustr Unrelated.
+- [x] DCGL Need `limma` pkg.
+- [x] dcGOR Extra packages.
+- [x] DiffCorr Need extra packages.
+- [x] diffusionMap Unrelated.
+- [x] dils Unrelated
+- [x] dna Unrelated
+- [x] dnet Need extra pkgs.
+- [x] Dominance `plot.igraph` export fixed.
+- [x] dpa Unrelated.
+- [x] dynatopmodel Unrelated.
+- [x] enaR Unrelated.
+- [x] ESEA Need `graph` package.
+- [x] fanovaGraph Error in example.
+- [x] fbRanks Unrelated.
+- [x] FCMapper Error.
+- [x] FedData Need extra packages.
+- [x] FisHiCal Data type version.
+- [x] flare Unrelated.
+- [x] FrF2 Unrelated.
+- [x] fuzzyMM Replacing union?
+- [x] G1DBN Unrelated.
+- [x] gemtc Neeeds `BRugs` package.
+- [x] GeneReg Unrelated.
+- [x] gRain Need `graph` and `Rgraphviz`.
+- [x] gRapfa Unrelated.
+- [x] gRbase Need extra packages.
+- [x] gRim Needs extra packages.
+- [x] gromovlab `plot.igraph` export
+- [x] huge Unrelated.
+- [x] igraphtosonia Unrelated.
+- [x] InteractiveIGraph `plot.igraph` needs to be exported.
+- [x] intergraph Older data type version.
+- [x] iRefR Needs extra packages.
+- [x] JGL Unrelated.
+- [x] kknn Unrelated.
+- [x] knitrBootstrap Unrelated.
+- [x] lava `graph` `Rgraphviz` needed.
+- [x] lcd Unrelated.
+- [x] locits U
+- [x] loe
+    - Replace previous import diversity.
+    - layout.kamada.kawai has no `start` argument?
+- [x] markovchain `plot.igraph` not exported.
+- [x] matie `plot.igraph` export
+- [x] micropan Unrelated.
+- [x] miniCRAN `plot.igraph` not exported.
+- [x] mlDNA Need extra package, links to GTK? Cairo?
+- [x] modMax Bug in `neighbors`?
+- [x] mRMRe `plot.igraph` needs exported.
+- [x] nat `knn` import overwritten.
+- [x] netassoc Error.
+- [x] netClass Needs extra packages.
+- [x] netgen Replacing imports: `normalize`.
+- [x] netgsa Data type version.
+- [x] nets U
+- [x] NetSim U
+- [x] nettools Extra packages.
+- [x] netweavers Extra packages.
+- [x] optrees `plot.igraph` export
+- [x] osmar U
+- [x] outbreaker Needs GSL.
+- [x] packdep Needs extra packages.
+- [x] PAGI U
+- [x] pathClass Extra packages.
+- [x] PBC Multiple errors.
+- [x] pcalg Extra packages.
+- [x] PGRdup U
+- [x] phangorn Extra package.
+- [x] phyloTop U
+- [x] popgraph Older data type.
+- [x] poplite Extra package.
+- [x] poppr `plot.igraph`
+- [x] ppiPre Extra packages.
+- [x] PROFANCY Older data type.
+- [x] qdap `plot.igraph` + U
+- [x] qtlnet Needs `graph` package.
+- [x] QuACN NEeds extra packages.
+- [x] rags2ridges neighbors() bug.
+- [x] rbmn U
+- [x] RCA U
+- [x] RcmdrPlugin.RMTCJags ???
+- [x] RDS `plot.igraph` export
+- [x] ReliabilityTheory Data type version.
+- [x] rEMM Extra packages.
+- [x] restlos `normalize` import replaced
+- [x] RevEcoR `plot.igraph`
+- [x] rgp U
+- [x] RGraphics Needs extra.
+- [x] RNetLogo U
+- [x] ror `plot.igraph` export
+- [x] rPref U
+- [x] RQDA Needs GTK?
+- [x] rtop U
+- [x] sand Extra packages.
+- [x] SDDE DAta type version.
+- [x] secrlinear Data type version.
+- [x] SEMID U
+- [x] semPlot U
+- [x] sensitivity `plot.igraph` export
+- [x] SeqGrapheR Extra packages.
+- [x] sglasso `plot.igraph` export
+- [x] sharpshootR `plot.igraph`
+- [x] shp2graph U
+- [x] SID Needs extra pkgs.
+- [x] simcausal `plot.igraph` export
+- [x] SINGLE replaced import `permute`
+- [x] SOMbrero Data type version.
+- [x] spacejam U
+- [x] spatgraphs U
+- [x] spdep U
+- [x] SPMS Needs extra.
+- [x] SSN U
+- [x] stm `plot.igraph`
+- [x] structSSI Extra pkgs.
+- [x] SubpathwayGMir Data type version.
+- [x] tcR U
+- [x] TDA Replace imported `knn`.
+- [x] timeordered Error.
+- [x] tnet U
+- [x] treemap `layout.fruchterman.reingold` arguments
+- [x] TunePareto U
+- [x] VineCopula Error.
+- [x] xergm Needs extra.
 
 ## adegenet (1.4-2)
 Maintainer: Thibaut Jombart <t.jombart@imperial.ac.uk>
