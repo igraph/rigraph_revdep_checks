@@ -39,6 +39,7 @@
 - [ ] pathClass Extra packages that I cannot install.
 - [ ] RGraphics Needs ggobi.
 - [ ] RQDA Needs GTK?
+- [ ] SeqGrapheR Extra packages, rggobi.
 
 # Sent email to maintainers about the problem
 
@@ -54,7 +55,6 @@
 - [ ] restlos `normalize` import replaced
 - [ ] SINGLE replaced import `permute`
 - [ ] TDA Replace imported `knn`.
-- [ ] SeqGrapheR Extra packages, rggobi.
 - [ ] FCMapper Negative loop and KK layout in example.
       Solution is to switch to another layout. Need to email.
 
