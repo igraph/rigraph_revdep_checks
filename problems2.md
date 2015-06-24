@@ -3,6 +3,7 @@
 
 ## Known problems
 
+- [x] SeqGraphR. API change, emailed them.
 - [x] FCMapper. Cannot fix, they need to update their package.
       I emailed them already.
 - [x] PBC I have no idea what's wrong here, wrote them an email.
@@ -25,7 +26,7 @@
       https://github.com/cran/pcalg/blob/5ebec0ca94df959929a250513a81e73a14c68c76/R/pcalg.R#L7403
 - [x] ppiPre They need to update, emailed them. Need lapply(..., as.vector) here:
 	  https://github.com/cran/ppiPre/blob/1154c7cc92a778f9d054ccb43c3b2a7a11b5e8e1/R/TopologicSims.r#L316
-- [ ] treemap They have a bug, I emailed them.
+- [x] treemap They have a bug, I emailed them.
       https://github.com/cran/treemap/blob/cfa1f28fd3c6bda6fc3a8f1c8208170833f4f131/R/treegraph.R#L98
 
 
